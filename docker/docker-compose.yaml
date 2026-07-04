@@ -1,0 +1,24 @@
+# 文件职责：生产环境 Compose 覆盖配置。
+# 通过 Nginx 网关暴露唯一外部入口，Nuxt 服务只在 Compose 网络内监听。
+name: nuxt-modern-starter-prod
+
+services:
+  gateway:
+    image: nginx:alpine
+    container_name: nuxt-modern-starter-gateway
+    volumes:
+      - ./nginx/gateway.docker.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - '${GATEWAY_HOST_PORT:-3000}:3000'
+    depends_on:
+      nuxt:
+        condition: service_healthy
+    restart: unless-stopped
+
+  nuxt:
+    container_name: nuxt-modern-starter-nuxt
+    env_file:
+      - ../.env.prod
+    environment:
+      NODE_ENV: production
+      NUXT_APP_ENV: prod

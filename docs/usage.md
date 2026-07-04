@@ -45,6 +45,14 @@ Auth is implemented as an opt-in Bearer Token module for `express-modern-starter
 - The backend currently has no RBAC fields in JWT or `/api/me`. Frontend roles and permissions default to empty arrays and should be populated in `normalizeAuthUser()` once the backend contract adds them.
 - Development uses `NUXT_PUBLIC_API_BASE=/api` and Nitro `devProxy` to proxy same-origin browser calls to `NUXT_DEV_PROXY_API`. In production, configure the backend `CORS_ORIGINS` to include the frontend origin when not serving from the same origin.
 
+## Docker Deployment
+
+Docker files follow the `express-modern-starter` layout under `docker/`: production and development Dockerfiles, shared Compose base, environment-specific Compose overrides, and `docker/nginx/gateway.docker.conf`.
+
+- Build a local production image with `pnpm docker:build`.
+- Start production Compose with `pnpm docker:up`; it reads `.env.prod` and exposes the Nginx gateway on `GATEWAY_HOST_PORT` or `3000`.
+- Start development Compose with `pnpm docker:up:dev`; it reads `.env.dev`, bind-mounts the repository, and proxies through the same gateway config.
+
 ## Out of Scope
 
 Analytics, CMS, payment, membership, uploads, more languages, Playwright E2E, and remote CI are not part of v0.1-core. Add them as project-specific modules after the starter core is stable.
@@ -54,7 +62,7 @@ Analytics, CMS, payment, membership, uploads, more languages, Playwright E2E, an
 - Remove i18n: delete `i18n`, `app/plugins/i18n.ts`, `app/middleware/locale.global.ts`, `app/stores/language.ts`, and simplify pages from `[[language]]`.
 - Remove Pinia: delete `app/stores`, remove `@pinia/nuxt`, and replace store usage with local state.
 - Remove Ant Design Vue: remove `@ant-design-vue/nuxt`, `ant-design-vue`, `a-config-provider`, and Ant components.
-- Remove Docker/Nginx: delete `Dockerfile`, `.dockerignore`, `deploy/nginx.conf`, and docker scripts.
+- Remove Docker/Nginx: delete `.dockerignore`, `docker/`, and docker scripts.
 - Remove news examples: delete `config/content/news.ts`, news pages, and related sitemap entries.
 
 After cutting modules, run `pnpm lint`, `pnpm stylelint`, `pnpm typecheck`, `pnpm test`, and `pnpm build`.

@@ -1,0 +1,43 @@
+# 文件职责：开发环境 Compose 覆盖配置。
+# 绑定挂载源码，并通过 Nginx 网关提供与生产接近的入口。
+name: nuxt-modern-starter-dev
+
+services:
+  gateway:
+    image: nginx:alpine
+    container_name: nuxt-modern-starter-gateway-dev
+    volumes:
+      - ./nginx/gateway.docker.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - '${GATEWAY_HOST_PORT:-3000}:3000'
+    depends_on:
+      nuxt:
+        condition: service_healthy
+    restart: unless-stopped
+
+  nuxt:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.dev
+      args:
+        PNPM_VERSION: ${PNPM_VERSION:-11.5.2}
+    container_name: nuxt-modern-starter-nuxt-dev
+    env_file:
+      - ../.env.dev
+    environment:
+      HUSKY: '0'
+      NODE_ENV: development
+      NUXT_APP_ENV: dev
+      HOST: 0.0.0.0
+      PORT: '3000'
+    ports:
+      - '24678:24678'
+    volumes:
+      - ..:/app
+      - app_node_modules:/app/node_modules
+      - app_nuxt:/app/.nuxt
+    command: ['sh', '-c', 'CI=true pnpm install --frozen-lockfile && pnpm dev --host 0.0.0.0']
+
+volumes:
+  app_node_modules:
+  app_nuxt:
