@@ -11,6 +11,58 @@ export default {
     readMore: '阅读更多',
     backHome: '返回首页'
   },
+  auth: {
+    form: {
+      username: '用户名',
+      password: '密码',
+      confirmPassword: '确认密码'
+    },
+    login: {
+      eyebrow: '账户登录',
+      title: '登录',
+      lead: '使用 express-modern-starter 账户登录，登录后会按 redirect 参数回到原页面。',
+      submit: '登录',
+      success: '登录成功',
+      noAccount: '还没有账户？'
+    },
+    register: {
+      eyebrow: '创建账户',
+      title: '注册',
+      lead: '注册只创建账户，后端不会自动登录；注册成功后请继续登录。',
+      submit: '注册',
+      success: '注册成功，请继续登录',
+      hasAccount: '已有账户？'
+    },
+    logout: {
+      submit: '退出登录',
+      success: '已退出登录'
+    },
+    account: {
+      eyebrow: '受保护页面',
+      title: '账户',
+      lead: '此页面通过命名 auth 中间件保护，展示当前登录用户和扩展资料。',
+      sessionTitle: '登录态',
+      profileTitle: '扩展资料',
+      userId: '用户 ID',
+      nickname: '昵称',
+      roles: '角色',
+      permissions: '权限',
+      none: '暂无',
+      emptyProfile: '暂无扩展资料'
+    },
+    validation: {
+      usernameRequired: '请输入用户名',
+      passwordRequired: '请输入密码',
+      confirmPasswordRequired: '请再次输入密码',
+      passwordMin: '密码至少需要 6 个字符',
+      passwordMismatch: '两次输入的密码不一致'
+    },
+    errors: {
+      loginFailed: '登录失败，请检查用户名或密码',
+      registerFailed: '注册失败，请稍后重试',
+      unauthorized: '未登录或无效登录凭证'
+    }
+  },
   home: {
     eyebrow: 'Nuxt 4 · TypeScript · Ant Design Vue',
     title: '面向公开站点的现代 Nuxt 基础骨架',

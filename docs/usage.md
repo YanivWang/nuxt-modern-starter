@@ -32,12 +32,18 @@ To disable dark mode, keep only light tokens, set `DEFAULT_THEME_MODE` to `light
 
 ## Auth Extension Contract
 
-Auth is not implemented in v0.1-core and there are no runtime placeholders. When a project needs auth, add it as an optional module with:
+Auth is implemented as an opt-in Bearer Token module for `express-modern-starter`.
 
-- `app/stores/auth.ts` for session state.
-- `app/composables/useAuth.ts` for login/logout/session APIs.
-- Route middleware only for protected business routes.
-- Tests for SSR session loading and unauthorized redirects.
+- Backend endpoints use the `/api` prefix and return a flat `{ code, msg, ...fields }` envelope. Auth calls therefore use `app/apis/auth.ts` with `$fetch` instead of the generic `{ code, message, data }` `useApi<T>()` contract.
+- `POST /api/register` creates an account but does not log the user in. The register page redirects users to login after success.
+- `POST /api/login` and `POST /api/refresh` return `token` or `accessToken`, plus `refreshToken`. Tokens are stored in JS-readable Nuxt cookies so SSR can attach `Authorization: Bearer <token>`.
+- `useApi<T>()` automatically attaches the access token cookie for business requests. A 401 triggers a single-flight `POST /api/refresh` and retries the failed request once; refresh failure clears the local session.
+- `app/stores/auth.ts` owns `user`, token cookies, `status`, `login`, `register`, `logout`, `fetchMe`, `refresh`, and `reset`.
+- `app/composables/useAuth.ts` exposes the store plus `ensureSession()`, `can()`, and `hasRole()` for pages and middleware.
+- `app/plugins/auth.ts` hydrates `/api/me` on startup when token cookies are present.
+- Protected routes opt in with `definePageMeta({ middleware: 'auth' })`. Optional `route.meta.auth.roles` and `route.meta.auth.permissions` are already checked by the middleware.
+- The backend currently has no RBAC fields in JWT or `/api/me`. Frontend roles and permissions default to empty arrays and should be populated in `normalizeAuthUser()` once the backend contract adds them.
+- Development uses `NUXT_PUBLIC_API_BASE=/api` and Nitro `devProxy` to proxy same-origin browser calls to `NUXT_DEV_PROXY_API`. In production, configure the backend `CORS_ORIGINS` to include the frontend origin when not serving from the same origin.
 
 ## Out of Scope
 

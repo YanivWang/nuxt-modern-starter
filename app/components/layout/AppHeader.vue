@@ -24,6 +24,30 @@
       <a-button :aria-label="$t('common.switchTheme')" @click="toggleTheme">
         {{ resolvedMode === 'dark' ? 'Light' : 'Dark' }}
       </a-button>
+      <NuxtLink
+        v-if="!authStore.isAuthenticated"
+        class="app-header__login"
+        :to="localePath('/login')"
+      >
+        {{ $t('auth.login.title') }}
+      </NuxtLink>
+      <a-dropdown v-else>
+        <a-button>
+          {{ authStore.user?.nickname || authStore.user?.username }}
+        </a-button>
+        <template #overlay>
+          <a-menu>
+            <a-menu-item key="account">
+              <NuxtLink :to="localePath('/account')">{{ $t('auth.account.title') }}</NuxtLink>
+            </a-menu-item>
+            <a-menu-item key="logout">
+              <button class="app-header__menu-button" type="button" @click="handleLogout">
+                {{ $t('auth.logout.submit') }}
+              </button>
+            </a-menu-item>
+          </a-menu>
+        </template>
+      </a-dropdown>
     </div>
   </header>
 </template>
@@ -35,6 +59,7 @@ const router = useRouter()
 const languageStore = useLanguageStore()
 const { localePath, switchLocalePath } = useLocalePath()
 const { resolvedMode, toggleTheme } = useTheme()
+const { authStore, logout } = useAuth()
 
 const handleLanguageChange = async (value: unknown) => {
   if (!SUPPORTED_LOCALES.includes(value as SupportedLocale)) {
@@ -45,6 +70,11 @@ const handleLanguageChange = async (value: unknown) => {
 
   await languageStore.chooseLanguage(locale)
   await router.push(switchLocalePath(locale))
+}
+
+const handleLogout = async () => {
+  await logout()
+  await router.push(localePath('/'))
 }
 </script>
 
@@ -68,6 +98,23 @@ const handleLanguageChange = async (value: unknown) => {
 .app-nav a {
   color: var(--app-color-muted);
   text-decoration: none;
+}
+
+.app-header__login {
+  color: var(--app-color-primary);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.app-header__menu-button {
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
 }
 
 .app-nav a.router-link-active {

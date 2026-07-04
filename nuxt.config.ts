@@ -8,7 +8,7 @@ export default defineNuxtConfig({
   components: [{ path: '~/components', pathPrefix: false }],
   css: ['~/assets/styles/main.scss'],
   runtimeConfig: {
-    apiBase: process.env.NUXT_API_BASE || 'http://localhost:3000/api',
+    apiBase: process.env.NUXT_API_BASE || 'http://localhost:4000/api',
     appEnv: process.env.NUXT_APP_ENV || 'local',
     public: {
       apiBase: process.env.NUXT_PUBLIC_API_BASE || '/api',
@@ -18,8 +18,8 @@ export default defineNuxtConfig({
   nitro: {
     preset: 'node-server',
     devProxy: {
-      '/proxy/api': {
-        target: process.env.NUXT_DEV_PROXY_API || 'http://localhost:3000/api',
+      '/api': {
+        target: process.env.NUXT_DEV_PROXY_API || process.env.NUXT_API_BASE || 'http://localhost:4000/api',
         changeOrigin: true
       }
     }
