@@ -1,5 +1,6 @@
 onlyBuiltDependencies:
   - '@parcel/watcher'
+  - '@yanivjs/yaniv-editor'
   - core-js
   - esbuild
   - unrs-resolver
@@ -8,6 +9,9 @@ confirmModulesPurge: false
 nodeLinker: hoisted
 allowBuilds:
   '@parcel/watcher': true
+  '@yanivjs/yaniv-editor': true
   core-js: true
   esbuild: true
   unrs-resolver: true
+minimumReleaseAgeExclude:
+  - '@yanivjs/yaniv-editor@0.1.1'

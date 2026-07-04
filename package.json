@@ -36,6 +36,7 @@
   "dependencies": {
     "@ant-design-vue/nuxt": "^1.4.6",
     "@pinia/nuxt": "^0.11.3",
+    "@yanivjs/yaniv-editor": "^0.1.1",
     "ant-design-vue": "^4.2.6",
     "nuxt": "^4.4.8",
     "pinia": "^3.0.4",

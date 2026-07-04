@@ -16,7 +16,7 @@ export const tokenCookieOptions = (maxAge: number) => {
     maxAge,
     sameSite: 'lax' as const,
     path: '/',
-    secure: config.appEnv === 'production'
+    secure: config.public.appEnv === 'production'
   }
 }
 

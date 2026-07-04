@@ -16,6 +16,7 @@ export default defineNuxtConfig({
   css: ['~/assets/styles/main.scss'],
   runtimeConfig: {
     public: {
+      appEnv: process.env.NUXT_APP_ENV || 'development',
       apiBase: process.env.NUXT_PUBLIC_API_BASE || 'http://localhost:4000/api',
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000'
     }
@@ -30,6 +31,7 @@ export default defineNuxtConfig({
   routeRules: {
     ...Object.fromEntries(prerenderRoutes.map((route) => [route, { prerender: true }])),
     ...Object.fromEntries(swrRouteRules.map((route) => [route, { swr: 3600 }])),
+    '/editor': { ssr: false },
     '/**': {
       headers: {
         'x-content-type-options': 'nosniff',
