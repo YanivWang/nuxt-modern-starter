@@ -28,6 +28,11 @@ export default defineNuxtConfig({
     strict: true,
     typeCheck: true
   },
+  // 按路由区分渲染策略：
+  // - 未单独配置的路由：默认 SSR
+  // - prerenderRoutes：构建时生成静态 HTML
+  // - swrRouteRules：SSR 结果缓存，并通过 stale-while-revalidate 后台刷新
+  // - /editor：仅客户端渲染，因为编辑器功能依赖浏览器 API
   routeRules: {
     ...Object.fromEntries(prerenderRoutes.map((route) => [route, { prerender: true }])),
     ...Object.fromEntries(swrRouteRules.map((route) => [route, { swr: 3600 }])),
