@@ -1,0 +1,49 @@
+{
+  "name": "nuxt-modern-starter",
+  "type": "module",
+  "private": true,
+  "packageManager": "pnpm@11.5.2",
+  "scripts": {
+    "build": "nuxt build",
+    "commitlint": "commitlint --edit",
+    "dev": "nuxt dev",
+    "docker:build": "docker build -t nuxt-modern-starter:local .",
+    "docker:run": "docker run --rm -p 3000:3000 --env-file .env.example nuxt-modern-starter:local",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint .",
+    "postinstall": "nuxt prepare",
+    "preview": "nuxt preview",
+    "stylelint": "stylelint \"**/*.{css,scss,vue}\"",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "nuxt typecheck"
+  },
+  "dependencies": {
+    "@ant-design-vue/nuxt": "^1.4.6",
+    "@pinia/nuxt": "^0.11.3",
+    "ant-design-vue": "^4.2.6",
+    "nuxt": "^4.4.8",
+    "pinia": "^3.0.4",
+    "vue": "^3.5.0",
+    "vue-i18n": "^11.4.6"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^20.2.0",
+    "@commitlint/config-conventional": "^20.2.0",
+    "@nuxt/eslint": "^1.12.0",
+    "@nuxt/test-utils": "^4.0.3",
+    "eslint": "^10.6.0",
+    "happy-dom": "^20.0.11",
+    "husky": "^9.1.7",
+    "postcss-html": "^1.8.1",
+    "postcss-scss": "^4.0.9",
+    "prettier": "^3.7.4",
+    "sass": "^1.97.0",
+    "stylelint": "^16.26.1",
+    "stylelint-config-standard-scss": "^16.0.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.9",
+    "vue-tsc": "^3.1.8"
+  }
+}

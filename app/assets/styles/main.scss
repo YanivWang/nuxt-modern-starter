@@ -1,0 +1,59 @@
+@use './tokens';
+
+html,
+body,
+#__nuxt {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--app-color-bg);
+  color: var(--app-color-text);
+  font-family: var(--app-font-sans);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+a {
+  color: inherit;
+}
+
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-main {
+  flex: 1;
+}
+
+.page-section {
+  padding: clamp(56px, 10vw, 112px) clamp(20px, 6vw, 80px);
+}
+
+.page-eyebrow {
+  margin: 0 0 14px;
+  color: var(--app-color-primary);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.page-title {
+  max-width: 820px;
+  margin: 0;
+  font-size: clamp(36px, 6vw, 64px);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+}
+
+.page-lead {
+  max-width: 720px;
+  margin: 22px 0 0;
+  color: var(--app-color-muted);
+  font-size: 20px;
+  line-height: 1.7;
+}

@@ -1,0 +1,8 @@
+.nuxt
+.output
+.data
+.nitro
+node_modules
+coverage
+pnpm-lock.yaml
+计划文档.md
