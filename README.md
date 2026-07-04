@@ -62,7 +62,12 @@ Full `v0.1-core` includes complete quality gates plus Docker build/run and Nginx
 
 ```bash
 pnpm dev
+pnpm dev:test
+pnpm dev:prod
 pnpm build
+pnpm build:dev
+pnpm build:test
+pnpm build:prod
 pnpm preview
 pnpm lint
 pnpm stylelint
@@ -71,6 +76,16 @@ pnpm test
 pnpm docker:build
 pnpm docker:run
 ```
+
+## Environment Layers
+
+Environment files follow the Nuxt `--dotenv` convention:
+
+- `.env.dev`: default local development layer, used by `pnpm dev` and `pnpm build:dev`.
+- `.env.test`: test/staging layer, used by `pnpm dev:test` and `pnpm build:test`.
+- `.env.prod`: production layer, used by `pnpm build`, `pnpm build:prod`, and `pnpm dev:prod`.
+
+Keep real secrets out of committed env files. Runtime deployments should still inject final `NUXT_*` values from the platform, container, or process manager.
 
 ## Full v0.1-core Verification
 

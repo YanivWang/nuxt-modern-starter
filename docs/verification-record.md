@@ -26,13 +26,13 @@ printf 'feat: verify v0.1 core\n' | pnpm exec commitlint
 
 ```bash
 pnpm docker:build
-docker run -d --name nuxt-modern-starter-verify -p 3100:3000 --env-file .env.example nuxt-modern-starter:local
+docker run -d --name nuxt-modern-starter-verify -p 3100:3000 --env-file .env.dev nuxt-modern-starter:local
 ```
 
 Docker 镜像构建成功，构建日志确认 Nitro preset 为 `node-server`，并提示可通过 `node .output/server/index.mjs` 预览。容器启动后，`http://localhost:3100/api/health` 返回 `200`：
 
 ```json
-{"code":0,"message":"ok","data":{"status":"ok","timestamp":"2026-07-04T07:15:07.065Z"}}
+{ "code": 0, "message": "ok", "data": { "status": "ok", "timestamp": "2026-07-04T07:15:07.065Z" } }
 ```
 
 Nginx 反代验证使用 `deploy/nginx.conf`、专用 Docker network 和 `nginx:alpine` 完成：

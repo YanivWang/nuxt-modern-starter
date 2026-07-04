@@ -9,5 +9,7 @@ logs
 *.log
 .env
 .env.*
-!.env.example
+!.env.dev
+!.env.prod
+!.env.test
 .DS_Store

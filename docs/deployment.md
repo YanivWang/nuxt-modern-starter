@@ -10,6 +10,22 @@ node .output/server/index.mjs
 
 Production environment variables are injected at container runtime. Do not copy `.env.prod` or real secrets into the Docker image.
 
+## Environment Layers
+
+Local commands load explicit Nuxt dotenv files:
+
+```bash
+pnpm dev        # .env.dev
+pnpm dev:test   # .env.test
+pnpm dev:prod   # .env.prod
+pnpm build      # .env.prod
+pnpm build:dev  # .env.dev
+pnpm build:test # .env.test
+pnpm build:prod # .env.prod
+```
+
+Committed env files should only contain non-secret defaults. Override them with deployment-provided `NUXT_*` variables for real environments.
+
 ## Local Verification
 
 ```bash
