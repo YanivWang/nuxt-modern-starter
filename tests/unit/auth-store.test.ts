@@ -45,13 +45,13 @@ describe('auth store', () => {
   it('writes tokens and hydrates user after login', async () => {
     apiMocks.loginApi.mockResolvedValue({
       code: 200,
-      msg: 'ok',
+      message: 'ok',
       accessToken: 'access-token',
       refreshToken: 'refresh-token'
     })
     apiMocks.fetchMeApi.mockResolvedValue({
       code: 200,
-      msg: 'ok',
+      message: 'ok',
       user: {
         id: 1,
         username: 'alice',
@@ -70,12 +70,12 @@ describe('auth store', () => {
   })
 
   it('clears tokens and user on logout', async () => {
-    apiMocks.logoutApi.mockResolvedValue({ code: 200, msg: 'ok' })
+    apiMocks.logoutApi.mockResolvedValue({ code: 200, message: 'ok' })
 
     const authStore = useAuthStore()
     authStore.setTokens({
       code: 200,
-      msg: 'ok',
+      message: 'ok',
       accessToken: 'access-token',
       refreshToken: 'refresh-token'
     })
@@ -99,7 +99,7 @@ describe('auth store', () => {
   it('fills user from /api/me', async () => {
     apiMocks.fetchMeApi.mockResolvedValue({
       code: 200,
-      msg: 'ok',
+      message: 'ok',
       user: {
         id: 'u_1',
         username: 'bob',
@@ -111,7 +111,7 @@ describe('auth store', () => {
     const authStore = useAuthStore()
     authStore.setTokens({
       code: 200,
-      msg: 'ok',
+      message: 'ok',
       token: 'access-token',
       refreshToken: 'refresh-token'
     })

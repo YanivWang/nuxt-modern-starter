@@ -10,6 +10,8 @@ When a page should be public, add its base path to `PUBLIC_PAGE_PATHS` in `confi
 
 Use `useApi<T>()` for GET and `useApiPost<T>()` for POST. The helper uses `runtimeConfig.apiBase` on the server and `runtimeConfig.public.apiBase` in the browser.
 
+The app-level API contract uses `message` for human-readable status text. Generic business APIs should return `{ code, message, data }`. Backend endpoints that return a flat shape such as `{ code, msg, ...fields }` must be normalized inside their API adapter with `normalizeFlatApiResponse()` so pages, stores, and composables still consume `message`.
+
 Server-side external API requests only forward `cookie`, `authorization`, `x-request-id`, and `accept-language`. Sensitive values are redacted from error logs.
 
 ## Add SEO
@@ -34,7 +36,7 @@ To disable dark mode, keep only light tokens, set `DEFAULT_THEME_MODE` to `light
 
 Auth is implemented as an opt-in Bearer Token module for `express-modern-starter`.
 
-- Backend endpoints use the `/api` prefix and return a flat `{ code, msg, ...fields }` envelope. Auth calls therefore use `app/apis/auth.ts` with `$fetch` instead of the generic `{ code, message, data }` `useApi<T>()` contract.
+- Backend endpoints use the `/api` prefix and return a flat `{ code, msg, ...fields }` envelope. Auth calls therefore use `app/apis/auth.ts` with `$fetch`, but `app/apis/auth.ts` normalizes `msg` to the app-level `message` field before data reaches stores or pages.
 - `POST /api/register` creates an account but does not log the user in. The register page redirects users to login after success.
 - `POST /api/login` and `POST /api/refresh` return `token` or `accessToken`, plus `refreshToken`. Tokens are stored in JS-readable Nuxt cookies so SSR can attach `Authorization: Bearer <token>`.
 - `useApi<T>()` automatically attaches the access token cookie for business requests. A 401 triggers a single-flight `POST /api/refresh` and retries the failed request once; refresh failure clears the local session.

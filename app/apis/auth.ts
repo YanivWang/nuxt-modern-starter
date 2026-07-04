@@ -1,14 +1,11 @@
+import { AUTH_API_ENDPOINTS, type AuthUser, type Permission, type Role } from '../../config/auth'
 import {
-  AUTH_API_ENDPOINTS,
-  type AuthUser,
-  type Permission,
-  type Role
-} from '../../config/auth'
+  normalizeFlatApiResponse,
+  type FlatApiResponse,
+  type NormalizedFlatApiResponse
+} from '../utils/api-contract'
 
-export type AuthEnvelope = {
-  code: number
-  msg: string
-}
+export type AuthEnvelope = NormalizedFlatApiResponse<FlatApiResponse>
 
 export type RegisterPayload = {
   username: string
@@ -17,13 +14,15 @@ export type RegisterPayload = {
 
 export type LoginPayload = RegisterPayload
 
-export type TokenResponse = AuthEnvelope & {
+type BackendTokenResponse = FlatApiResponse & {
   token?: string
   accessToken?: string
   refreshToken: string
   accessTokenExpiresIn?: number
   refreshTokenExpiresIn?: number
 }
+
+export type TokenResponse = NormalizedFlatApiResponse<BackendTokenResponse>
 
 export type BackendUser = {
   id: string | number
@@ -34,13 +33,17 @@ export type BackendUser = {
   permissions?: Permission[]
 }
 
-export type MeResponse = AuthEnvelope & {
+type BackendMeResponse = FlatApiResponse & {
   user: BackendUser
 }
 
-export type ProfileResponse = AuthEnvelope & {
+export type MeResponse = NormalizedFlatApiResponse<BackendMeResponse>
+
+type BackendProfileResponse = FlatApiResponse & {
   profile: Record<string, unknown> | null
 }
+
+export type ProfileResponse = NormalizedFlatApiResponse<BackendProfileResponse>
 
 export type UpdateProfilePayload = Record<string, string | number | boolean | null | undefined>
 
@@ -59,20 +62,23 @@ const createAuthHeaders = (accessToken?: string | null) => {
   return headers
 }
 
-const requestAuth = <T>(
+const requestAuth = async <T extends FlatApiResponse>(
   path: string,
   options: {
     method?: 'GET' | 'POST' | 'PATCH'
     body?: unknown
     accessToken?: string | null
   } = {}
-) =>
-  $fetch<T>(path, {
+) => {
+  const response = await $fetch<T>(path, {
     baseURL: getApiBase(),
     method: options.method || 'GET',
     body: options.body as BodyInit | Record<string, unknown> | null | undefined,
     headers: createAuthHeaders(options.accessToken)
   })
+
+  return normalizeFlatApiResponse(response)
+}
 
 export const normalizeAuthUser = (user: BackendUser): AuthUser => ({
   id: user.id,
@@ -84,42 +90,42 @@ export const normalizeAuthUser = (user: BackendUser): AuthUser => ({
 })
 
 export const registerApi = (payload: RegisterPayload) =>
-  requestAuth<AuthEnvelope>(AUTH_API_ENDPOINTS.register, {
+  requestAuth<FlatApiResponse>(AUTH_API_ENDPOINTS.register, {
     method: 'POST',
     body: payload
   })
 
 export const loginApi = (payload: LoginPayload) =>
-  requestAuth<TokenResponse>(AUTH_API_ENDPOINTS.login, {
+  requestAuth<BackendTokenResponse>(AUTH_API_ENDPOINTS.login, {
     method: 'POST',
     body: payload
   })
 
 export const refreshApi = (refreshToken: string) =>
-  requestAuth<TokenResponse>(AUTH_API_ENDPOINTS.refresh, {
+  requestAuth<BackendTokenResponse>(AUTH_API_ENDPOINTS.refresh, {
     method: 'POST',
     body: { refreshToken }
   })
 
 export const logoutApi = (accessToken: string | null, refreshToken: string | null) =>
-  requestAuth<AuthEnvelope>(AUTH_API_ENDPOINTS.logout, {
+  requestAuth<FlatApiResponse>(AUTH_API_ENDPOINTS.logout, {
     method: 'POST',
     accessToken,
     body: { refreshToken }
   })
 
 export const fetchMeApi = (accessToken: string) =>
-  requestAuth<MeResponse>(AUTH_API_ENDPOINTS.me, {
+  requestAuth<BackendMeResponse>(AUTH_API_ENDPOINTS.me, {
     accessToken
   })
 
 export const fetchProfileApi = (accessToken: string) =>
-  requestAuth<ProfileResponse>(AUTH_API_ENDPOINTS.profile, {
+  requestAuth<BackendProfileResponse>(AUTH_API_ENDPOINTS.profile, {
     accessToken
   })
 
 export const updateProfileApi = (accessToken: string, payload: UpdateProfilePayload) =>
-  requestAuth<ProfileResponse>(AUTH_API_ENDPOINTS.profile, {
+  requestAuth<BackendProfileResponse>(AUTH_API_ENDPOINTS.profile, {
     method: 'PATCH',
     accessToken,
     body: payload

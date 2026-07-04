@@ -46,6 +46,7 @@ Full `v0.1-core` includes complete quality gates plus Docker build/run and Nginx
 - Nuxt 4, TypeScript, pnpm, Pinia, Ant Design Vue, SCSS, and `vue-i18n`.
 - Default-language routes without a prefix and English routes under `/en`.
 - Shared `useApi`, `useLocalePath`, `usePageSeo`, and `useTheme` composables.
+- Opt-in Bearer Token auth module with login, register, logout, account, and protected-route examples.
 - Public pages for home, pricing, help, news list, news detail, and 404.
 - `robots.txt`, `sitemap.xml`, canonical, hreflang, OG metadata, and Article JSON-LD.
 - Docker image and Nginx reverse-proxy sample for Nitro node-server.
@@ -107,6 +108,6 @@ pnpm docker:build
 pnpm docker:run
 ```
 
-For Nginx, run a reverse proxy with `deploy/nginx.conf` pointing at the Nuxt node-server and verify `/_nuxt/` responses include the long-cache rule. This Docker/Nginx validation is part of full `v0.1-core` and is not included in the 30-minute quick-start target.
+For Nginx, run a reverse proxy with `docker/nginx/gateway.docker.conf` pointing at the Nuxt node-server and verify `/_nuxt/` responses include the long-cache rule. This Docker/Nginx validation is part of full `v0.1-core` and is not included in the 30-minute quick-start target.
 
 Current local and Docker/Nginx verification results are recorded in `docs/verification-record.md`.

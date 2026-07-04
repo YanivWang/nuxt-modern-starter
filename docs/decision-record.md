@@ -45,6 +45,12 @@
 - Nuxt 文档同时说明不会转发不适合转发的 headers，例如 `transfer-encoding`、`connection`、`keep-alive`、`upgrade`、`expect`、`host`、`accept`。
 - v0.1 的外部 API 请求采用白名单策略，只显式转发 `cookie`、`authorization`、`x-request-id`、`accept-language`，且错误日志和客户端错误对象不得泄露敏感字段。
 
+### Auth 和 API 契约
+
+- 当前分支已实现 opt-in Bearer Token auth 模块，包含登录、注册、登出、账户示例页、`useAuth`、`auth` store、启动水合和受保护路由守卫。
+- 接受 JS 可读 Nuxt cookie 存储 access token / refresh token 的工程权衡，以便 SSR 首屏可拼接 `Authorization: Bearer <token>`。该方案要求继续遵守不记录 token/cookie、谨慎引入第三方脚本和后续补充 CSP 的安全约束。
+- 应用内 API 响应统一消费 `message`。通用业务接口使用 `{ code, message, data }`；对接 `express-modern-starter` 的 auth 接口仍接收后端 `{ code, msg, ...fields }`，但必须在 `app/apis/auth.ts` 边界通过 `normalizeFlatApiResponse()` 归一化，store/page 层不得直接依赖 `msg`。
+
 ### 内部迁移参考
 
 - 当前工作区未找到 `aippt-home` 参考项目文件，因此本轮不能直接核对其 `i18n/index.ts`、`plugins/i18n.ts`、`middleware/default.global.ts`、`store/language.ts` 和 `pages/[[language]]/...`。
@@ -53,6 +59,6 @@
 
 ### v0.1-core 边界
 
-- v0.1-core 只交付 Nuxt 基础、配置中心、layout、i18n、轻量请求入口、SEO 入口、示例页面、robots/sitemap、基础单测、build、Docker/Nginx 样例和实跑验证。
-- 不创建 auth 运行时代码占位；auth 只在使用文档中写扩展契约。
+- v0.1-core 交付 Nuxt 基础、配置中心、layout、i18n、轻量请求入口、SEO 入口、示例页面、robots/sitemap、opt-in Bearer Token auth、基础单测、build、Docker/Nginx 样例和实跑验证。
+- Auth 是可选模块而非全局强制能力。公开官网页面默认不挂鉴权守卫，受保护页面通过 `definePageMeta({ middleware: 'auth' })` 显式启用。
 - analytics、CMS、支付、会员、上传、更多语言、Playwright E2E、远程 CI 不进入核心闭环。

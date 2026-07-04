@@ -1,16 +1,7 @@
 import type { UseFetchOptions } from 'nuxt/app'
 import { refreshApi } from '../apis/auth'
-import {
-  ACCESS_TOKEN_MAX_AGE,
-  AUTH_COOKIE_KEYS,
-  REFRESH_TOKEN_MAX_AGE
-} from '../../config/auth'
-
-export type ApiResponse<T> = {
-  code: number
-  message: string
-  data: T
-}
+import type { ApiResponse } from '../utils/api-contract'
+import { ACCESS_TOKEN_MAX_AGE, AUTH_COOKIE_KEYS, REFRESH_TOKEN_MAX_AGE } from '../../config/auth'
 
 export type ApiError = {
   statusCode: number

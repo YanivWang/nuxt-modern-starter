@@ -50,7 +50,7 @@ The image runs `.output/server/index.mjs` on port `3000`.
 
 ## Nginx Reverse Proxy
 
-`deploy/nginx.conf` proxies requests to the Nuxt node-server upstream named `nuxt:3000`. It also applies long-cache headers to `/_nuxt/` assets:
+`docker/nginx/gateway.docker.conf` proxies requests to the Nuxt node-server upstream named `nuxt:3000`. It also applies long-cache headers to `/_nuxt/` assets:
 
 ```txt
 Cache-Control: public, max-age=31536000, immutable
