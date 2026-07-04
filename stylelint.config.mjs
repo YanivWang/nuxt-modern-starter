@@ -15,6 +15,12 @@ export default {
     'custom-property-empty-line-before': null,
     'selector-class-pattern': null,
     'selector-id-pattern': null,
+    'selector-pseudo-class-no-unknown': [
+      true,
+      {
+        ignorePseudoClasses: ['deep', 'global', 'slotted']
+      }
+    ],
     'scss/dollar-variable-pattern': null,
     'value-keyword-case': null
   }

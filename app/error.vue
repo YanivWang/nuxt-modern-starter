@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
+import { SITE_NAME } from '../config/site'
 
 const props = defineProps<{
   error: {
@@ -9,11 +10,29 @@ const props = defineProps<{
   }
 }>()
 
-const { t } = useI18n()
+const { t, te } = useI18n()
 const handleError = () => clearError({ redirect: '/' })
 
+const errorTitle = computed(() => {
+  const { statusCode, statusMessage } = props.error
+
+  if (statusMessage && te(statusMessage)) {
+    return t(statusMessage)
+  }
+
+  if (statusCode === 403) {
+    return t('error.forbidden')
+  }
+
+  if (statusCode === 404) {
+    return t('error.title')
+  }
+
+  return t('error.title')
+})
+
 useHead({
-  title: `${props.error.statusCode || 500} · Nuxt Modern Starter`,
+  title: computed(() => `${errorTitle.value} · ${SITE_NAME}`),
   meta: [{ name: 'robots', content: 'noindex,nofollow' }]
 })
 </script>
@@ -21,20 +40,37 @@ useHead({
 <template>
   <NuxtLayout name="empty">
     <main class="error-page">
-      <p class="page-eyebrow">{{ error.statusCode || 500 }}</p>
-      <h1 class="page-title">
-        {{ error.statusMessage || error.message || t('error.title') }}
-      </h1>
-      <p class="page-lead">{{ t('error.message') }}</p>
-      <a-button type="primary" @click="handleError">{{ t('common.backHome') }}</a-button>
+      <div class="page-empty-state">
+        <p class="page-eyebrow">{{ error.statusCode || 500 }}</p>
+        <h1 class="page-title">
+          {{ errorTitle }}
+        </h1>
+        <p class="page-lead">{{ t('error.message') }}</p>
+        <a-button type="primary" size="large" class="error-page__action" @click="handleError">
+          {{ t('common.backHome') }}
+        </a-button>
+      </div>
     </main>
   </NuxtLayout>
 </template>
 
 <style scoped lang="scss">
-.error-page {
-  min-height: 100vh;
-  padding: clamp(72px, 12vw, 140px) clamp(20px, 6vw, 80px);
-  background: var(--app-color-bg);
+.page-empty-state {
+  .page-title {
+    font-size: clamp(28px, 4vw, 40px);
+  }
+
+  .page-lead {
+    margin-top: 16px;
+    font-size: 16px;
+  }
+}
+
+.error-page__action {
+  margin-top: 24px;
+  min-width: 160px;
+  height: 44px;
+  border-radius: 12px;
+  font-weight: 600;
 }
 </style>

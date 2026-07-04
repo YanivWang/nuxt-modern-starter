@@ -60,7 +60,7 @@ export const resolveLocaleRouteDecision = (path: string): LocaleRouteDecision =>
     return {
       type: 'error',
       statusCode: 404,
-      statusMessage: 'Unsupported language'
+      statusMessage: 'error.unsupportedLanguage'
     }
   }
 
@@ -70,7 +70,7 @@ export const resolveLocaleRouteDecision = (path: string): LocaleRouteDecision =>
     return {
       type: 'error',
       statusCode: 404,
-      statusMessage: 'Unsupported language'
+      statusMessage: 'error.unsupportedLanguage'
     }
   }
 

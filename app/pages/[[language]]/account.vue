@@ -41,15 +41,14 @@ const handleLogout = async () => {
 
 <template>
   <PageContainer>
-    <section class="account-page">
-      <div>
-        <p class="page-eyebrow">{{ $t('auth.account.eyebrow') }}</p>
-        <h1 class="page-title">{{ $t('auth.account.title') }}</h1>
-        <p class="page-lead">{{ $t('auth.account.lead') }}</p>
-      </div>
+    <p class="page-eyebrow">{{ $t('auth.account.eyebrow') }}</p>
+    <h1 class="page-title">{{ $t('auth.account.title') }}</h1>
+    <p class="page-lead">{{ $t('auth.account.lead') }}</p>
 
-      <a-card class="account-card" :title="$t('auth.account.sessionTitle')">
-        <a-descriptions bordered :column="1">
+    <div class="page-grid page-grid--2 account-grid">
+      <a-card class="page-surface-card account-card" :bordered="false">
+        <h2 class="account-card__title">{{ $t('auth.account.sessionTitle') }}</h2>
+        <a-descriptions bordered :column="1" size="middle">
           <a-descriptions-item :label="$t('auth.account.userId')">
             {{ authStore.user?.id }}
           </a-descriptions-item>
@@ -75,35 +74,53 @@ const handleLogout = async () => {
           </a-descriptions-item>
         </a-descriptions>
 
-        <a-button class="account-card__logout" danger @click="handleLogout">
-          {{ $t('auth.logout.submit') }}
-        </a-button>
+        <div class="account-card__footer">
+          <a-button danger size="large" @click="handleLogout">
+            {{ $t('auth.logout.submit') }}
+          </a-button>
+        </div>
       </a-card>
 
-      <a-card class="account-card" :title="$t('auth.account.profileTitle')" :loading="pending">
+      <a-card class="page-surface-card account-card" :bordered="false" :loading="pending">
+        <h2 class="account-card__title">{{ $t('auth.account.profileTitle') }}</h2>
         <a-empty v-if="!profileEntries.length" :description="$t('auth.account.emptyProfile')" />
-        <a-descriptions v-else bordered :column="1">
+        <a-descriptions v-else bordered :column="1" size="middle">
           <a-descriptions-item v-for="[key, value] in profileEntries" :key="key" :label="key">
             {{ value ?? '-' }}
           </a-descriptions-item>
         </a-descriptions>
       </a-card>
-    </section>
+    </div>
   </PageContainer>
 </template>
 
 <style scoped lang="scss">
-.account-page {
-  display: grid;
-  gap: 28px;
-  padding: clamp(48px, 8vw, 96px) 0;
+.account-grid {
+  align-items: stretch;
 }
 
 .account-card {
-  max-width: 860px;
+  &:hover {
+    transform: none;
+  }
 }
 
-.account-card__logout {
+.account-card__title {
+  margin: 0 0 20px;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.account-card__footer {
   margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--app-color-border);
+
+  .ant-btn {
+    min-width: 140px;
+    border-radius: 12px;
+    font-weight: 600;
+  }
 }
 </style>

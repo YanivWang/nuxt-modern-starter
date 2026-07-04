@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
+import { ArrowRightOutlined } from '~/utils/antdIcon'
 import { getNewsArticles } from '../../../apis/content'
+import { formatPublishedDate } from '../../../utils/formatDate'
 
 const languageStore = useLanguageStore()
 const { localePath } = useLocalePath()
@@ -17,14 +19,26 @@ usePageSeo({
 
 <template>
   <PageContainer>
-    <p class="page-eyebrow">News</p>
+    <p class="page-eyebrow">{{ $t('news.eyebrow') }}</p>
     <h1 class="page-title">{{ $t('news.title') }}</h1>
     <p class="page-lead">{{ $t('news.lead') }}</p>
-    <div class="news-list">
-      <a-card v-for="article in articles" :key="article.slug" :title="article.title">
-        <p>{{ article.description }}</p>
-        <p class="news-list__date">{{ article.publishedAt }}</p>
-        <NuxtLink :to="localePath(`/news/${article.slug}`)">{{ $t('common.readMore') }}</NuxtLink>
+
+    <div class="page-grid news-list">
+      <a-card
+        v-for="article in articles"
+        :key="article.slug"
+        class="page-surface-card news-card"
+        :bordered="false"
+      >
+        <p class="page-meta">
+          {{ formatPublishedDate(article.publishedAt, languageStore.currentLanguage) }}
+        </p>
+        <h2 class="news-card__title">{{ article.title }}</h2>
+        <p class="news-card__description">{{ article.description }}</p>
+        <NuxtLink :to="localePath(`/news/${article.slug}`)" class="page-text-link">
+          {{ $t('common.readMore') }}
+          <ArrowRightOutlined aria-hidden="true" />
+        </NuxtLink>
       </a-card>
     </div>
   </PageContainer>
@@ -32,12 +46,19 @@ usePageSeo({
 
 <style scoped lang="scss">
 .news-list {
-  display: grid;
-  gap: 20px;
-  margin-top: 40px;
+  grid-template-columns: 1fr;
 }
 
-.news-list__date {
+.news-card__title {
+  margin: 12px 0 0;
+  font-size: clamp(22px, 3vw, 28px);
+  letter-spacing: -0.03em;
+}
+
+.news-card__description {
+  flex: 1;
+  margin: 12px 0 0;
   color: var(--app-color-muted);
+  line-height: 1.75;
 }
 </style>

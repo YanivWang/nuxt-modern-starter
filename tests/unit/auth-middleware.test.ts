@@ -84,7 +84,7 @@ describe('auth middleware decisions', () => {
     ).toEqual({
       type: 'error',
       statusCode: 403,
-      statusMessage: 'Forbidden'
+      statusMessage: 'error.forbidden'
     })
   })
 })

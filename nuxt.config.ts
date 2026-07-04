@@ -37,6 +37,7 @@ export default defineNuxtConfig({
     ...Object.fromEntries(prerenderRoutes.map((route) => [route, { prerender: true }])),
     ...Object.fromEntries(swrRouteRules.map((route) => [route, { swr: 3600 }])),
     '/editor': { ssr: false },
+    '/en/editor': { ssr: false },
     '/**': {
       headers: {
         'x-content-type-options': 'nosniff',

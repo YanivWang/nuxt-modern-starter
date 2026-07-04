@@ -4,7 +4,7 @@ export type NewsArticle = {
   slug: string
   title: Record<SupportedLocale, string>
   description: Record<SupportedLocale, string>
-  body: Record<SupportedLocale, string>
+  body: Record<SupportedLocale, string[]>
   publishedAt: string
 }
 
@@ -12,37 +12,106 @@ export const newsArticles: NewsArticle[] = [
   {
     slug: 'starter-release',
     title: {
-      'zh-CN': 'Nuxt Modern Starter v0.1 发布',
-      'en-US': 'Nuxt Modern Starter v0.1 is ready'
+      'zh-CN': 'Nuxt Modern Starter v0.1 正式发布',
+      'en-US': 'Nuxt Modern Starter v0.1 is officially ready'
     },
     description: {
-      'zh-CN': '基础骨架提供 Nuxt 4、SEO、多语言、请求与部署默认路径。',
-      'en-US': 'The starter ships Nuxt 4, SEO, i18n, request helpers, and deployment defaults.'
+      'zh-CN':
+        '首个公开版本聚焦营销页、内容页、SEO、多语言与可选鉴权，为 SaaS 官网与产品前台提供完整起点。',
+      'en-US':
+        'The first public release focuses on marketing pages, content hubs, SEO, i18n, and optional auth for SaaS websites and product frontends.'
     },
     body: {
-      'zh-CN': '这个版本聚焦公开站点的最小完整闭环，适合官网、营销页、内容站和轻 SaaS 前台开局。',
-      'en-US':
-        'This release focuses on a complete foundation for public websites, marketing pages, content hubs, and lightweight SaaS frontends.'
+      'zh-CN': [
+        'Nuxt Modern Starter v0.1 的目标，是把公开站点最常见的能力整理成一套可直接运行的 Nuxt 4 工程骨架。除了首页、价格、帮助和新闻等营销与内容页面，项目还预置登录、注册、账户页，以及基于 Bearer Token 的可选鉴权流程。',
+        '在工程层面，starter 统一了 localePath、usePageSeo、useApi 与 useTheme 等 composable，默认中文路由无前缀、英文路由挂载在 /en 下，并附带 canonical、hreflang、OG 元数据与新闻 Article JSON-LD。',
+        '如果你正在评估一个 SaaS 官网或产品前台模板，可以从 README 的 Quick Start 开始，30 分钟内完成本地启动，再按 docs/usage.md 逐步替换文案、内容与后端接口。'
+      ],
+      'en-US': [
+        'Nuxt Modern Starter v0.1 organizes the most common public-site capabilities into a runnable Nuxt 4 foundation. Beyond marketing and content pages such as home, pricing, help, and news, it also ships login, registration, account pages, and optional Bearer Token auth.',
+        'On the engineering side, the starter standardizes composables like localePath, usePageSeo, useApi, and useTheme. Chinese routes stay unprefixed, English routes live under /en, and SEO covers canonical, hreflang, OG metadata, and Article JSON-LD for news detail pages.',
+        'If you are evaluating a SaaS website or product frontend template, start with the README quick start to run locally within 30 minutes, then follow docs/usage.md to replace copy, content, and backend integrations step by step.'
+      ]
     },
     publishedAt: '2026-07-04'
   },
   {
     slug: 'deployment-guide',
     title: {
-      'zh-CN': '默认部署路径采用 Node server',
-      'en-US': 'Node server is the default deployment path'
+      'zh-CN': '默认部署路径：Node server + Docker + Nginx',
+      'en-US': 'Default deployment path: Node server, Docker, and Nginx'
     },
     description: {
-      'zh-CN': 'Docker 与 Nginx 样例用于验证自托管部署路径。',
-      'en-US': 'Docker and Nginx examples verify the self-hosted deployment path.'
+      'zh-CN':
+        '项目以 Nitro node-server 为默认部署形态，并提供 Docker 镜像与 Nginx 反向代理样例，方便团队验证自托管上线流程。',
+      'en-US':
+        'The starter defaults to Nitro node-server deployment and includes Docker and Nginx reverse-proxy samples for self-hosted rollout validation.'
     },
     body: {
-      'zh-CN':
-        '生产环境变量通过容器运行时注入，镜像不复制真实 .env 文件，Nuxt 静态资源由 Nginx 配置长缓存。',
-      'en-US':
-        'Production environment variables are injected at runtime, real .env files are not copied into the image, and Nuxt assets receive long-cache headers in Nginx.'
+      'zh-CN': [
+        'Nuxt Modern Starter 的生产部署默认走 Nitro node-server，而不是静态导出。这样可以保留 SSR、routeRules 与新闻页的 SWR 缓存策略，更适合内容会变化的公开站点。',
+        '仓库内提供 docker/Dockerfile 与 docker-compose 样例，可通过 pnpm docker:build 与 pnpm docker:run 快速验证镜像构建与容器启动。Nginx 配置位于 docker/nginx/gateway.docker.conf，建议为 /_nuxt/ 静态资源开启长缓存，以减轻 Node 进程压力。',
+        '安全方面，生产环境变量应通过容器运行时或平台注入，镜像构建阶段不会复制真实 .env 文件。完整验证步骤可参考 docs/deployment.md 与 docs/verification-record.md。'
+      ],
+      'en-US': [
+        'Nuxt Modern Starter defaults to Nitro node-server deployment instead of static export. That keeps SSR, routeRules, and SWR caching for news pages, which fits public sites whose content changes over time.',
+        'The repo includes docker/Dockerfile and docker-compose samples. Use pnpm docker:build and pnpm docker:run to validate image build and container startup. The Nginx config in docker/nginx/gateway.docker.conf should long-cache /_nuxt/ assets to reduce pressure on the Node process.',
+        'For security, inject production environment variables at runtime through the platform or container orchestrator. Real .env files are not copied into the image during build. See docs/deployment.md and docs/verification-record.md for the full validation flow.'
+      ]
     },
     publishedAt: '2026-07-04'
+  },
+  {
+    slug: 'i18n-routing',
+    title: {
+      'zh-CN': '多语言路由设计：默认中文 + /en 英文前缀',
+      'en-US': 'i18n routing design: default Chinese plus /en English prefix'
+    },
+    description: {
+      'zh-CN':
+        '项目采用默认语言无前缀、次要语言带前缀的路由策略，并统一 localePath 与 hreflang 生成规则。',
+      'en-US':
+        'The starter uses unprefixed default-locale routes, prefixed secondary locales, and shared localePath and hreflang rules.'
+    },
+    body: {
+      'zh-CN': [
+        'Nuxt Modern Starter 默认以 zh-CN 作为站点主语言，因此首页、价格、帮助和新闻等公开页直接使用 /、/pricing 这类无前缀路径。英文内容则统一挂载在 /en 前缀下，例如 /en/pricing 与 /en/news/starter-release。',
+        '语言切换不会简单替换 URL 字符串，而是通过 getSwitchLanguageUrl 与 localePath 保持 query 与 hash。这样用户在切换语言时不会丢失筛选条件或锚点位置，SEO 侧的 hreflang 也能和实际路由一一对应。',
+        '扩展第三种语言时，只需在 config/site.ts 注册 locale 与前缀，并补充 i18n 文案与 tests/unit/locale-routing.test.ts 中的断言，避免公开页出现死链或错误 canonical。'
+      ],
+      'en-US': [
+        'Nuxt Modern Starter uses zh-CN as the default site locale, so public pages such as home, pricing, help, and news use unprefixed paths like / and /pricing. English content lives under the /en prefix, for example /en/pricing and /en/news/starter-release.',
+        'Language switching does not blindly rewrite URL strings. getSwitchLanguageUrl and localePath preserve query strings and hash fragments, so users keep filters or anchors when switching languages and hreflang stays aligned with real routes.',
+        'To add a third locale, register it in config/site.ts with its prefix, add i18n messages, and extend tests/unit/locale-routing.test.ts so public pages do not produce broken links or incorrect canonical URLs.'
+      ]
+    },
+    publishedAt: '2026-07-03'
+  },
+  {
+    slug: 'auth-module',
+    title: {
+      'zh-CN': '可选鉴权模块：从示例流程到真实后端',
+      'en-US': 'Optional auth module: from sample flow to real backend'
+    },
+    description: {
+      'zh-CN':
+        '登录、注册、账户页与 auth 中间件已经串联，团队可按需接入 express-modern-starter 或其他 API 服务。',
+      'en-US':
+        'Login, register, account pages, and the auth middleware are wired so teams can connect express-modern-starter or another API service.'
+    },
+    body: {
+      'zh-CN': [
+        '鉴权能力在 Nuxt Modern Starter 中是“可选模块”而非强制依赖。默认提供登录、注册、退出和账户页示例，并通过命名 auth 中间件保护 account 等页面，支持基于角色与 permissions 的访问控制。',
+        '前端请求统一走 useApi，Bearer Token 会随请求发送。接入真实后端时，通常只需调整 API base URL、登录/注册接口路径，以及 token 的持久化策略；页面层的路由守卫与权限判断逻辑可以复用。',
+        '如果项目暂时不需要账号体系，也可以保留公开页与内容中心，先不启用 auth 相关导航入口，等业务工作台准备好后再逐步接入。'
+      ],
+      'en-US': [
+        'Auth in Nuxt Modern Starter is an optional module, not a hard dependency. The starter ships login, register, logout, and account examples, plus a named auth middleware that protects pages like account with role and permission checks.',
+        'Requests go through useApi and attach the Bearer Token automatically. When connecting a real backend, you usually only need to adjust the API base URL, login/register endpoints, and token persistence while reusing route guards and permission checks.',
+        'If you do not need accounts yet, keep the public and content pages first and hide auth navigation until the product workspace is ready to connect.'
+      ]
+    },
+    publishedAt: '2026-07-02'
   }
 ]
 

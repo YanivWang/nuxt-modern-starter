@@ -22,8 +22,8 @@ const { localePath } = useLocalePath()
 
 .base-logo__mark {
   display: inline-grid;
-  width: 32px;
-  height: 32px;
+  width: var(--app-header-control-size);
+  height: var(--app-header-control-size);
   place-items: center;
   border-radius: 10px;
   background: var(--app-color-primary);

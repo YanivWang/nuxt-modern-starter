@@ -5,6 +5,7 @@ import {
   SUPPORTED_LOCALES,
   type SupportedLocale
 } from '../../config/site'
+import { i18n } from '../../i18n'
 import { localizedPath } from '../../config/routes'
 
 type PageSeoInput = {
@@ -24,11 +25,26 @@ type PageSeoInput = {
 const absoluteUrl = (siteUrl: string, path: string) =>
   `${siteUrl.replace(/\/$/, '')}${path === '/' ? '' : path}`
 
+const getLocaleMessage = (locale: SupportedLocale, key: string) => {
+  const value = key.split('.').reduce<unknown>((acc, part) => {
+    if (acc && typeof acc === 'object' && part in acc) {
+      return (acc as Record<string, unknown>)[part]
+    }
+
+    return undefined
+  }, i18n.global.getLocaleMessage(locale))
+
+  return typeof value === 'string' ? value : undefined
+}
+
 export const usePageSeo = (input: PageSeoInput) => {
   const runtimeConfig = useRuntimeConfig()
   const locale = input.locale || useLanguageStore().currentLanguage || DEFAULT_LOCALE
   const title = input.title ? `${input.title} · ${SITE_NAME}` : DEFAULT_SEO.title
-  const description = input.description || DEFAULT_SEO.description
+  const description =
+    input.description ||
+    getLocaleMessage(locale, 'seo.defaultDescription') ||
+    DEFAULT_SEO.description
   const siteUrl = runtimeConfig.public.siteUrl || 'http://localhost:3000'
   const canonicalPath = localizedPath(input.path, locale)
   const canonical = absoluteUrl(siteUrl, canonicalPath)

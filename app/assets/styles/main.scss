@@ -1,4 +1,5 @@
 @use './tokens';
+@use './page-patterns';
 
 html,
 body,
@@ -28,10 +29,58 @@ a {
 
 .app-main {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-container {
+  box-sizing: border-box;
+  width: min(var(--app-container-max), 100%);
+  margin-inline: auto;
+  padding-inline: var(--app-container-padding);
+}
+
+.app-header__icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--app-header-control-size);
+  height: var(--app-header-control-size);
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  color: var(--app-color-muted);
+  background: transparent;
+  cursor: pointer;
+  line-height: 0;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+
+  &:hover,
+  &:focus-visible {
+    color: var(--app-color-text);
+    background: var(--app-color-elevated);
+    border-color: var(--app-color-border);
+  }
+
+  .anticon {
+    display: block;
+    font-size: var(--app-header-icon-size);
+    line-height: 1;
+  }
+
+  &.ant-btn {
+    min-width: unset;
+    line-height: 1;
+    box-shadow: none;
+  }
 }
 
 .page-section {
-  padding: clamp(56px, 10vw, 112px) clamp(20px, 6vw, 80px);
+  padding: clamp(56px, 10vw, 112px) var(--app-container-padding);
 }
 
 .page-eyebrow {

@@ -35,7 +35,7 @@ describe('locale routing decisions', () => {
     expect(resolveLocaleRouteDecision('/fr/pricing')).toEqual({
       type: 'error',
       statusCode: 404,
-      statusMessage: 'Unsupported language'
+      statusMessage: 'error.unsupportedLanguage'
     })
   })
 })

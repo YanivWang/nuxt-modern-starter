@@ -32,7 +32,7 @@ export type AuthMiddlewareDecision =
   | {
       type: 'error'
       statusCode: 403
-      statusMessage: 'Forbidden'
+      statusMessage: 'error.forbidden'
     }
   | {
       type: 'allow'
@@ -59,7 +59,7 @@ export const resolveAuthMiddlewareDecision = (
     return {
       type: 'error',
       statusCode: 403,
-      statusMessage: 'Forbidden'
+      statusMessage: 'error.forbidden'
     }
   }
 

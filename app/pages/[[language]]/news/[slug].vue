@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { ArrowRightOutlined } from '~/utils/antdIcon'
 import { getLocalizedNewsArticle } from '../../../apis/content'
+import { formatPublishedDate } from '../../../utils/formatDate'
 
 const route = useRoute()
 const languageStore = useLanguageStore()
@@ -10,7 +12,7 @@ const article = computed(() => getLocalizedNewsArticle(slug, languageStore.curre
 if (!article.value) {
   throw createError({
     statusCode: 404,
-    statusMessage: 'News article not found'
+    statusMessage: 'news.notFound'
   })
 }
 
@@ -29,22 +31,28 @@ usePageSeo({
 
 <template>
   <PageContainer v-if="article">
-    <p class="page-eyebrow">{{ article.publishedAt }}</p>
+    <p class="page-meta page-meta--article">
+      {{ formatPublishedDate(article.publishedAt, languageStore.currentLanguage) }}
+    </p>
     <h1 class="page-title">{{ article.title }}</h1>
     <p class="page-lead">{{ article.description }}</p>
-    <article class="news-article">
-      <p>{{ article.body }}</p>
+
+    <article class="page-content-block news-article">
+      <p v-for="(paragraph, index) in article.body" :key="index">{{ paragraph }}</p>
     </article>
-    <NuxtLink :to="localePath('/news')">{{ $t('nav.news') }}</NuxtLink>
+
+    <NuxtLink :to="localePath('/news')" class="page-back-link">
+      <ArrowRightOutlined aria-hidden="true" style="transform: rotate(180deg)" />
+      {{ $t('nav.news') }}
+    </NuxtLink>
   </PageContainer>
 </template>
 
 <style scoped lang="scss">
-.news-article {
-  max-width: 760px;
-  margin: 40px 0;
-  color: var(--app-color-text);
-  font-size: 18px;
-  line-height: 1.8;
+.page-meta--article {
+  margin-bottom: 14px;
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 </style>

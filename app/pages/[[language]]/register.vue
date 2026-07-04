@@ -58,9 +58,9 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <PageContainer>
-    <div class="auth-page">
-      <a-card class="auth-card">
+  <div class="auth-page">
+    <AppContainer>
+      <a-card class="auth-card" :bordered="false">
         <p class="page-eyebrow">{{ $t('auth.register.eyebrow') }}</p>
         <h1 class="auth-card__title">{{ $t('auth.register.title') }}</h1>
         <p class="auth-card__lead">{{ $t('auth.register.lead') }}</p>
@@ -71,7 +71,7 @@ const handleSubmit = async () => {
             :label="$t('auth.form.username')"
             :rules="[{ required: true, message: $t('auth.validation.usernameRequired') }]"
           >
-            <a-input v-model:value="form.username" autocomplete="username" />
+            <a-input v-model:value="form.username" autocomplete="username" size="large" />
           </a-form-item>
 
           <a-form-item
@@ -82,7 +82,11 @@ const handleSubmit = async () => {
               { min: 6, message: $t('auth.validation.passwordMin') }
             ]"
           >
-            <a-input-password v-model:value="form.password" autocomplete="new-password" />
+            <a-input-password
+              v-model:value="form.password"
+              autocomplete="new-password"
+              size="large"
+            />
           </a-form-item>
 
           <a-form-item
@@ -90,7 +94,11 @@ const handleSubmit = async () => {
             :label="$t('auth.form.confirmPassword')"
             :rules="[{ validator: validatePasswordConfirm }]"
           >
-            <a-input-password v-model:value="form.confirmPassword" autocomplete="new-password" />
+            <a-input-password
+              v-model:value="form.confirmPassword"
+              autocomplete="new-password"
+              size="large"
+            />
           </a-form-item>
 
           <a-button type="primary" html-type="submit" block :loading="loading">
@@ -103,39 +111,6 @@ const handleSubmit = async () => {
           <NuxtLink :to="localePath('/login')">{{ $t('auth.login.title') }}</NuxtLink>
         </p>
       </a-card>
-    </div>
-  </PageContainer>
+    </AppContainer>
+  </div>
 </template>
-
-<style scoped lang="scss">
-.auth-page {
-  display: flex;
-  justify-content: center;
-  padding: clamp(48px, 8vw, 96px) 0;
-}
-
-.auth-card {
-  width: min(100%, 440px);
-}
-
-.auth-card__title {
-  margin: 0;
-  font-size: 36px;
-  letter-spacing: -0.03em;
-}
-
-.auth-card__lead,
-.auth-card__footer {
-  color: var(--app-color-muted);
-}
-
-.auth-card__lead {
-  margin: 14px 0 28px;
-  line-height: 1.7;
-}
-
-.auth-card__footer {
-  margin: 20px 0 0;
-  text-align: center;
-}
-</style>
