@@ -48,7 +48,7 @@ Full `v0.1-core` includes complete quality gates plus Docker build/run and Nginx
 - Shared `useApi`, `useLocalePath`, `usePageSeo`, and `useTheme` composables.
 - Opt-in Bearer Token auth module with login, register, logout, account, and protected-route examples.
 - Public pages for home, pricing, help, news list, news detail, and 404.
-- `robots.txt`, `sitemap.xml`, canonical, hreflang, OG metadata, and Article JSON-LD.
+- Canonical, hreflang, OG metadata, noindex handling, and Article JSON-LD.
 - Docker image and Nginx reverse-proxy sample for Nitro node-server.
 
 ## Documentation

@@ -4,15 +4,15 @@
 
 Create the page under `app/pages/[[language]]`. Use `localePath()` for internal links and call `usePageSeo()` with the unprefixed canonical path.
 
-When a page should be public, add its base path to `PUBLIC_PAGE_PATHS` in `config/site.ts`. If it needs prerendering or SWR behavior, update `config/routes.ts` so routeRules, sitemap, and hreflang remain synchronized.
+When a page should be public, add its base path to `PUBLIC_PAGE_PATHS` in `config/site.ts`. If it needs prerendering or SWR behavior, update `config/routes.ts` so routeRules and hreflang remain synchronized.
 
 ## Add Requests
 
-Use `useApi<T>()` for GET and `useApiPost<T>()` for POST. The helper uses `runtimeConfig.apiBase` on the server and `runtimeConfig.public.apiBase` in the browser.
+Use `useApi<T>()` for GET and `useApiPost<T>()` for POST. The helper uses `runtimeConfig.public.apiBase` in both SSR and browser code, so `NUXT_PUBLIC_API_BASE` should point directly to the real backend API origin, for example `https://api.example.com/api`.
 
 The app-level API contract uses `message` for human-readable status text. Generic business APIs should return `{ code, message, data }`. Backend endpoints that return a flat shape such as `{ code, msg, ...fields }` must be normalized inside their API adapter with `normalizeFlatApiResponse()` so pages, stores, and composables still consume `message`.
 
-Server-side external API requests only forward `cookie`, `authorization`, `x-request-id`, and `accept-language`. Sensitive values are redacted from error logs.
+Sensitive `authorization` and `cookie` values are redacted from error logs.
 
 ## Add SEO
 
@@ -39,13 +39,13 @@ Auth is implemented as an opt-in Bearer Token module for `express-modern-starter
 - Backend endpoints use the `/api` prefix and return a flat `{ code, msg, ...fields }` envelope. Auth calls therefore use `app/apis/auth.ts` with `$fetch`, but `app/apis/auth.ts` normalizes `msg` to the app-level `message` field before data reaches stores or pages.
 - `POST /api/register` creates an account but does not log the user in. The register page redirects users to login after success.
 - `POST /api/login` and `POST /api/refresh` return `token` or `accessToken`, plus `refreshToken`. Tokens are stored in JS-readable Nuxt cookies so SSR can attach `Authorization: Bearer <token>`.
-- `useApi<T>()` automatically attaches the access token cookie for business requests. A 401 triggers a single-flight `POST /api/refresh` and retries the failed request once; refresh failure clears the local session.
+- `useApi<T>()` and protected auth API calls automatically attach the access token cookie for business requests. A 401 triggers a single-flight `POST /api/refresh` and retries the failed request once; refresh failure clears the local session.
 - `app/stores/auth.ts` owns `user`, token cookies, `status`, `login`, `register`, `logout`, `fetchMe`, `refresh`, and `reset`.
 - `app/composables/useAuth.ts` exposes the store plus `ensureSession()`, `can()`, and `hasRole()` for pages and middleware.
 - `app/plugins/auth.ts` hydrates `/api/me` on startup when token cookies are present.
 - Protected routes opt in with `definePageMeta({ middleware: 'auth' })`. Optional `route.meta.auth.roles` and `route.meta.auth.permissions` are already checked by the middleware.
 - The backend currently has no RBAC fields in JWT or `/api/me`. Frontend roles and permissions default to empty arrays and should be populated in `normalizeAuthUser()` once the backend contract adds them.
-- Development uses `NUXT_PUBLIC_API_BASE=/api` and Nitro `devProxy` to proxy same-origin browser calls to `NUXT_DEV_PROXY_API`. In production, configure the backend `CORS_ORIGINS` to include the frontend origin when not serving from the same origin.
+- Development and production both use `NUXT_PUBLIC_API_BASE` to call the backend directly. Configure CORS on the backend or gateway when the API origin differs from the frontend origin.
 
 ## Docker Deployment
 

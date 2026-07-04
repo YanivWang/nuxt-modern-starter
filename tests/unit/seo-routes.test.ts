@@ -3,7 +3,7 @@ import { PUBLIC_PAGE_PATHS, SUPPORTED_LOCALES } from '../../config/site'
 import { publicLocalizedPaths } from '../../config/routes'
 
 describe('public SEO routes', () => {
-  it('generates localized sitemap paths from the public page list', () => {
+  it('generates localized public paths from the public page list', () => {
     const paths = publicLocalizedPaths()
 
     expect(paths).toContain('/')

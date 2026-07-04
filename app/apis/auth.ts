@@ -4,6 +4,12 @@ import {
   type FlatApiResponse,
   type NormalizedFlatApiResponse
 } from '../utils/api-contract'
+import {
+  clearAuthSession,
+  getRefreshTokenCookie,
+  setAuthTokenCookies,
+  tokenFromResponse
+} from '../utils/auth-session'
 
 export type AuthEnvelope = NormalizedFlatApiResponse<FlatApiResponse>
 
@@ -49,7 +55,7 @@ export type UpdateProfilePayload = Record<string, string | number | boolean | nu
 
 const getApiBase = () => {
   const runtimeConfig = useRuntimeConfig()
-  return import.meta.server ? runtimeConfig.apiBase : runtimeConfig.public.apiBase
+  return runtimeConfig.public.apiBase
 }
 
 const createAuthHeaders = (accessToken?: string | null) => {
@@ -62,22 +68,82 @@ const createAuthHeaders = (accessToken?: string | null) => {
   return headers
 }
 
+const isUnauthorizedError = (error: unknown) => {
+  const fetchError = error as { response?: { status?: number }; statusCode?: number }
+  return fetchError.response?.status === 401 || fetchError.statusCode === 401
+}
+
+let refreshPromise: Promise<string | null> | null = null
+
+const refreshAccessToken = async () => {
+  const refreshToken = getRefreshTokenCookie()
+
+  if (!refreshToken.value) {
+    clearAuthSession()
+    return null
+  }
+
+  try {
+    const response = await refreshApi(refreshToken.value)
+    const nextAccessToken = tokenFromResponse(response)
+
+    if (!nextAccessToken) {
+      clearAuthSession()
+      return null
+    }
+
+    setAuthTokenCookies(response)
+    return nextAccessToken
+  } catch (error) {
+    clearAuthSession()
+    throw error
+  }
+}
+
+export const refreshAccessTokenOnce = () => {
+  refreshPromise ||= refreshAccessToken().finally(() => {
+    refreshPromise = null
+  })
+
+  return refreshPromise
+}
+
 const requestAuth = async <T extends FlatApiResponse>(
   path: string,
   options: {
     method?: 'GET' | 'POST' | 'PATCH'
     body?: unknown
     accessToken?: string | null
+    retryOnUnauthorized?: boolean
   } = {}
 ) => {
-  const response = await $fetch<T>(path, {
-    baseURL: getApiBase(),
-    method: options.method || 'GET',
-    body: options.body as BodyInit | Record<string, unknown> | null | undefined,
-    headers: createAuthHeaders(options.accessToken)
-  })
+  const send = (accessToken = options.accessToken) =>
+    $fetch<T>(path, {
+      baseURL: getApiBase(),
+      method: options.method || 'GET',
+      body: options.body as BodyInit | Record<string, unknown> | null | undefined,
+      headers: createAuthHeaders(accessToken)
+    })
 
-  return normalizeFlatApiResponse(response)
+  try {
+    const response = await send()
+
+    return normalizeFlatApiResponse(response)
+  } catch (error) {
+    if (!options.retryOnUnauthorized || !options.accessToken || !isUnauthorizedError(error)) {
+      throw error
+    }
+
+    const nextAccessToken = await refreshAccessTokenOnce()
+
+    if (!nextAccessToken) {
+      throw error
+    }
+
+    const response = await send(nextAccessToken)
+
+    return normalizeFlatApiResponse(response)
+  }
 }
 
 export const normalizeAuthUser = (user: BackendUser): AuthUser => ({
@@ -116,17 +182,20 @@ export const logoutApi = (accessToken: string | null, refreshToken: string | nul
 
 export const fetchMeApi = (accessToken: string) =>
   requestAuth<BackendMeResponse>(AUTH_API_ENDPOINTS.me, {
-    accessToken
+    accessToken,
+    retryOnUnauthorized: true
   })
 
 export const fetchProfileApi = (accessToken: string) =>
   requestAuth<BackendProfileResponse>(AUTH_API_ENDPOINTS.profile, {
-    accessToken
+    accessToken,
+    retryOnUnauthorized: true
   })
 
 export const updateProfileApi = (accessToken: string, payload: UpdateProfilePayload) =>
   requestAuth<BackendProfileResponse>(AUTH_API_ENDPOINTS.profile, {
     method: 'PATCH',
     accessToken,
-    body: payload
+    body: payload,
+    retryOnUnauthorized: true
   })

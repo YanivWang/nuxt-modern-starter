@@ -53,13 +53,15 @@ export const isSupportedLocale = (locale: string): locale is SupportedLocale =>
 export const localeFromPrefix = (prefix?: string) =>
   SUPPORTED_LOCALES.find((locale) => SITE_LOCALE_PREFIX_MAP[locale] === prefix)
 
-export const matcheRouteLanguage = (prefix?: string) => {
+export const matchRouteLanguage = (prefix?: string) => {
   if (!prefix) {
     return DEFAULT_LOCALE
   }
 
   return localeFromPrefix(prefix)
 }
+
+export const matcheRouteLanguage = matchRouteLanguage
 
 export const exLanguagePrefixByPath = (path: string) => {
   const firstSegment = path.split('/').filter(Boolean)[0]

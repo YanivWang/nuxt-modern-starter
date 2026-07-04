@@ -26,6 +26,8 @@ pnpm build:prod # .env.prod
 
 Committed env files should only contain non-secret defaults. Override them with deployment-provided `NUXT_*` variables for real environments.
 
+Production auth cookies are marked `secure`, so real login flows must be served over HTTPS.
+
 ## Local Verification
 
 ```bash
@@ -50,7 +52,7 @@ The image runs `.output/server/index.mjs` on port `3000`.
 
 ## Nginx Reverse Proxy
 
-`docker/nginx/gateway.docker.conf` proxies requests to the Nuxt node-server upstream named `nuxt:3000`. It also applies long-cache headers to `/_nuxt/` assets:
+`docker/nginx/gateway.docker.conf` proxies requests to the Nuxt app upstream named `nuxt:3000`. Browser API calls go directly to `NUXT_PUBLIC_API_BASE`, so configure CORS on the backend or gateway when the API origin differs from the frontend origin. The gateway also applies long-cache headers to `/_nuxt/` assets:
 
 ```txt
 Cache-Control: public, max-age=31536000, immutable

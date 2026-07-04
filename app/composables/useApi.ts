@@ -1,7 +1,7 @@
 import type { UseFetchOptions } from 'nuxt/app'
-import { refreshApi } from '../apis/auth'
+import { refreshAccessTokenOnce } from '../apis/auth'
 import type { ApiResponse } from '../utils/api-contract'
-import { ACCESS_TOKEN_MAX_AGE, AUTH_COOKIE_KEYS, REFRESH_TOKEN_MAX_AGE } from '../../config/auth'
+import { getAuthToken } from '../utils/auth-session'
 
 export type ApiError = {
   statusCode: number
@@ -33,13 +33,6 @@ type ApiOptions<T> = Omit<
   headers?: HeadersInit
 }
 
-export const FORWARDED_HEADER_WHITELIST = [
-  'cookie',
-  'authorization',
-  'x-request-id',
-  'accept-language'
-] as const
-
 const sanitizeHeaders = (headers: HeadersInit = {}) => {
   const normalizedHeaders = new Headers(headers)
 
@@ -57,78 +50,9 @@ const createApiKey = (method: ApiMethod, path: string, body?: unknown) => {
   return `api:${method}:${path}:${bodyKey}`
 }
 
-const getForwardedHeaders = () => {
-  if (!import.meta.server) {
-    return {}
-  }
-
-  return useRequestHeaders([...FORWARDED_HEADER_WHITELIST])
-}
-
-let refreshPromise: Promise<string | null> | null = null
-
-const tokenCookieOptions = (maxAge: number) => ({
-  maxAge,
-  sameSite: 'lax' as const,
-  path: '/'
-})
-
-const getAccessTokenCookie = () =>
-  useCookie<string | null>(AUTH_COOKIE_KEYS.accessToken, tokenCookieOptions(ACCESS_TOKEN_MAX_AGE))
-
-const getRefreshTokenCookie = () =>
-  useCookie<string | null>(AUTH_COOKIE_KEYS.refreshToken, tokenCookieOptions(REFRESH_TOKEN_MAX_AGE))
-
-const getAuthToken = () => getAccessTokenCookie().value
-
 const isUnauthorizedError = (error: unknown) => {
   const fetchError = error as { response?: { status?: number }; statusCode?: number }
   return fetchError.response?.status === 401 || fetchError.statusCode === 401
-}
-
-const clearAuthSession = () => {
-  getAccessTokenCookie().value = null
-  getRefreshTokenCookie().value = null
-
-  try {
-    useAuthStore().reset()
-  } catch {
-    // Pinia may not be active in isolated utility tests.
-  }
-}
-
-const refreshAccessToken = async () => {
-  const refreshToken = getRefreshTokenCookie()
-
-  if (!refreshToken.value) {
-    clearAuthSession()
-    return null
-  }
-
-  try {
-    const response = await refreshApi(refreshToken.value)
-    const nextAccessToken = response.accessToken || response.token || null
-
-    if (!nextAccessToken) {
-      clearAuthSession()
-      return null
-    }
-
-    getAccessTokenCookie().value = nextAccessToken
-    refreshToken.value = response.refreshToken
-    return nextAccessToken
-  } catch (error) {
-    clearAuthSession()
-    throw error
-  }
-}
-
-const refreshAccessTokenOnce = () => {
-  refreshPromise ||= refreshAccessToken().finally(() => {
-    refreshPromise = null
-  })
-
-  return refreshPromise
 }
 
 const toFetchOptions = (options: MutableFetchOptions) =>
@@ -178,12 +102,8 @@ const createAuthenticatedFetch = (baseHeaders: Headers, explicitToken?: string):
 export const useApi = <T>(path: string, options: ApiOptions<T> = {}) => {
   const runtimeConfig = useRuntimeConfig()
   const method = options.method || 'GET'
-  const isServer = import.meta.server
-  const baseURL = isServer ? runtimeConfig.apiBase : runtimeConfig.public.apiBase
-  const headers = new Headers({
-    ...getForwardedHeaders(),
-    ...options.headers
-  })
+  const baseURL = runtimeConfig.public.apiBase
+  const headers = new Headers(options.headers)
 
   const token = options.token || getAuthToken()
 

@@ -25,3 +25,12 @@ export const normalizeFlatApiResponse = <T extends FlatApiResponse>(
     message: message || msg || ''
   } as NormalizedFlatApiResponse<T>
 }
+
+export const getApiErrorMessage = (error: unknown, fallback: string) => {
+  const apiError = error as {
+    data?: { message?: string; msg?: string }
+    message?: string
+  }
+
+  return apiError.data?.message || apiError.data?.msg || apiError.message || fallback
+}

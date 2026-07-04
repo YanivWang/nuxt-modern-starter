@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { message } from 'ant-design-vue'
 import { useI18n } from 'vue-i18n'
+import { getApiErrorMessage } from '../../utils/api-contract'
 
 const router = useRouter()
 const languageStore = useLanguageStore()
@@ -22,11 +23,6 @@ usePageSeo({
   description: t('auth.register.lead'),
   noindex: true
 })
-
-const errorMessage = (error: unknown, fallback: string) => {
-  const apiError = error as { data?: { msg?: string }; message?: string }
-  return apiError.data?.msg || apiError.message || fallback
-}
 
 const validatePasswordConfirm = async (_rule: unknown, value: string) => {
   if (!value) {
@@ -54,7 +50,7 @@ const handleSubmit = async () => {
       query: { username: form.username }
     })
   } catch (error) {
-    message.error(errorMessage(error, t('auth.errors.registerFailed')))
+    message.error(getApiErrorMessage(error, t('auth.errors.registerFailed')))
   } finally {
     loading.value = false
   }

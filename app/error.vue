@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
 const props = defineProps<{
   error: {
     statusCode?: number
@@ -7,6 +9,7 @@ const props = defineProps<{
   }
 }>()
 
+const { t } = useI18n()
 const handleError = () => clearError({ redirect: '/' })
 
 useHead({
@@ -20,10 +23,10 @@ useHead({
     <main class="error-page">
       <p class="page-eyebrow">{{ error.statusCode || 500 }}</p>
       <h1 class="page-title">
-        {{ error.statusMessage || error.message || 'Something went wrong' }}
+        {{ error.statusMessage || error.message || t('error.title') }}
       </h1>
-      <p class="page-lead">This page is intentionally excluded from sitemap output.</p>
-      <a-button type="primary" @click="handleError">Back home</a-button>
+      <p class="page-lead">{{ t('error.message') }}</p>
+      <a-button type="primary" @click="handleError">{{ t('common.backHome') }}</a-button>
     </main>
   </NuxtLayout>
 </template>

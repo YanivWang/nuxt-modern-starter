@@ -23,7 +23,7 @@
 
 - v0.1 采用 Nuxt 4、TypeScript、pnpm、`app/` 目录结构。
 - 默认部署目标为 Nitro `node-server`，生产启动命令为 `node .output/server/index.mjs`。
-- Nitro 文档确认 `devProxy` 是开发服务器代理配置，v0.1 只允许把它用于本地开发，不把它当作生产反代或后端路由方案。
+- 当前项目定位为前端 Starter，不维护项目自定义 `server/` 目录、Nitro API route 或同源 `/api` 代理。
 - Docker 和 Nginx 样例以及实跑验证进入完整 v0.1-core；Playwright E2E 和远程 CI 不进入 v0.1。
 
 ### Ant Design Vue 接入
@@ -36,14 +36,14 @@
 ### 测试策略
 
 - Nuxt 4 官方测试文档推荐 `@nuxt/test-utils` 搭配 Vitest；需要 Nuxt 运行时的测试放在 Nuxt environment 中。
-- server routes、middleware、composable、redirect/status code 相关测试默认使用 `environment: 'nuxt'`。
+- middleware、composable、redirect/status code 相关测试默认使用 `environment: 'nuxt'`。
 - 纯函数测试可以放在普通 unit 测试中；v0.1 不引入 Playwright E2E。
 
 ### 请求上下文和 header
 
 - Nuxt `useRequestFetch` 文档确认：服务端请求需要手动转发请求上下文和 headers；`useFetch` 在服务端会使用 `useRequestFetch` 转发请求上下文和 headers。
 - Nuxt 文档同时说明不会转发不适合转发的 headers，例如 `transfer-encoding`、`connection`、`keep-alive`、`upgrade`、`expect`、`host`、`accept`。
-- v0.1 的外部 API 请求采用白名单策略，只显式转发 `cookie`、`authorization`、`x-request-id`、`accept-language`，且错误日志和客户端错误对象不得泄露敏感字段。
+- 外部 API 请求通过 `runtimeConfig.public.apiBase` 直连后端，且错误日志和客户端错误对象不得泄露敏感字段。
 
 ### Auth 和 API 契约
 
@@ -59,6 +59,6 @@
 
 ### v0.1-core 边界
 
-- v0.1-core 交付 Nuxt 基础、配置中心、layout、i18n、轻量请求入口、SEO 入口、示例页面、robots/sitemap、opt-in Bearer Token auth、基础单测、build、Docker/Nginx 样例和实跑验证。
+- v0.1-core 交付 Nuxt 基础、配置中心、layout、i18n、轻量请求入口、SEO 入口、示例页面、opt-in Bearer Token auth、基础单测、build、Docker/Nginx 样例和实跑验证。
 - Auth 是可选模块而非全局强制能力。公开官网页面默认不挂鉴权守卫，受保护页面通过 `definePageMeta({ middleware: 'auth' })` 显式启用。
 - analytics、CMS、支付、会员、上传、更多语言、Playwright E2E、远程 CI 不进入核心闭环。

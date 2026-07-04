@@ -1,19 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { FORWARDED_HEADER_WHITELIST } from '../../app/composables/useApi'
-import { normalizeFlatApiResponse } from '../../app/utils/api-contract'
+import { getApiErrorMessage, normalizeFlatApiResponse } from '../../app/utils/api-contract'
 
 describe('useApi request policy', () => {
-  it('only forwards the approved SSR header whitelist', () => {
-    expect(FORWARDED_HEADER_WHITELIST).toEqual([
-      'cookie',
-      'authorization',
-      'x-request-id',
-      'accept-language'
-    ])
-    expect(FORWARDED_HEADER_WHITELIST).not.toContain('host')
-    expect(FORWARDED_HEADER_WHITELIST).not.toContain('connection')
-  })
-
   it('normalizes flat backend messages to the app message field', () => {
     expect(
       normalizeFlatApiResponse({
@@ -28,5 +16,28 @@ describe('useApi request policy', () => {
       accessToken: 'access-token',
       refreshToken: 'refresh-token'
     })
+  })
+
+  it('prefers explicit message while still supporting backend msg', () => {
+    expect(
+      normalizeFlatApiResponse({
+        code: 400,
+        message: 'normalized',
+        msg: 'backend'
+      })
+    ).toEqual({
+      code: 400,
+      message: 'normalized'
+    })
+    expect(normalizeFlatApiResponse({ code: 400, msg: 'backend' })).toEqual({
+      code: 400,
+      message: 'backend'
+    })
+  })
+
+  it('extracts user-facing messages from normalized API errors', () => {
+    expect(getApiErrorMessage({ data: { message: 'normalized' } }, 'fallback')).toBe('normalized')
+    expect(getApiErrorMessage({ data: { msg: 'backend' } }, 'fallback')).toBe('backend')
+    expect(getApiErrorMessage({}, 'fallback')).toBe('fallback')
   })
 })

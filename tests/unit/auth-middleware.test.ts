@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { buildAuthLoginRedirect, isAuthorized } from '../../app/middleware/auth'
+import {
+  buildAuthLoginRedirect,
+  isAuthorized,
+  resolveAuthMiddlewareDecision
+} from '../../app/middleware/auth'
 
 describe('auth middleware decisions', () => {
   it('redirects unauthenticated users to login with the original path', () => {
@@ -7,6 +11,21 @@ describe('auth middleware decisions', () => {
       path: '/login',
       query: {
         redirect: '/account?tab=profile'
+      }
+    })
+
+    expect(
+      resolveAuthMiddlewareDecision(false, '/login', '/account?tab=profile', undefined, {
+        hasRole: () => false,
+        can: () => false
+      })
+    ).toEqual({
+      type: 'redirect',
+      location: {
+        path: '/login',
+        query: {
+          redirect: '/account?tab=profile'
+        }
       }
     })
   })
@@ -46,5 +65,26 @@ describe('auth middleware decisions', () => {
         }
       )
     ).toBe(false)
+  })
+
+  it('returns a 403 decision for authenticated users without required permission', () => {
+    expect(
+      resolveAuthMiddlewareDecision(
+        true,
+        '/login',
+        '/account',
+        {
+          permissions: ['account:write']
+        },
+        {
+          hasRole: () => false,
+          can: (permission) => permission === 'account:read'
+        }
+      )
+    ).toEqual({
+      type: 'error',
+      statusCode: 403,
+      statusMessage: 'Forbidden'
+    })
   })
 })

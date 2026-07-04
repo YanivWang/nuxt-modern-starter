@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { message } from 'ant-design-vue'
 import { useI18n } from 'vue-i18n'
+import { getApiErrorMessage } from '../../utils/api-contract'
 
 const route = useRoute()
 const router = useRouter()
@@ -27,11 +28,6 @@ const redirectTarget = computed(() =>
   typeof route.query.redirect === 'string' ? route.query.redirect : localePath('/account')
 )
 
-const errorMessage = (error: unknown, fallback: string) => {
-  const apiError = error as { data?: { msg?: string }; message?: string }
-  return apiError.data?.msg || apiError.message || fallback
-}
-
 const handleSubmit = async () => {
   loading.value = true
 
@@ -40,7 +36,7 @@ const handleSubmit = async () => {
     message.success(t('auth.login.success'))
     await router.push(redirectTarget.value)
   } catch (error) {
-    message.error(errorMessage(error, t('auth.errors.loginFailed')))
+    message.error(getApiErrorMessage(error, t('auth.errors.loginFailed')))
   } finally {
     loading.value = false
   }

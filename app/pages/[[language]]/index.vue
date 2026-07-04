@@ -4,7 +4,6 @@ import { useI18n } from 'vue-i18n'
 const languageStore = useLanguageStore()
 const { localePath } = useLocalePath()
 const { t } = useI18n()
-const { data: health } = await useApi<{ status: string }>('/health', { server: true })
 
 usePageSeo({
   path: '/',
@@ -25,7 +24,6 @@ usePageSeo({
           <BaseButton>{{ $t('home.primaryCta') }}</BaseButton>
           <NuxtLink :to="localePath('/pricing')">{{ $t('home.secondaryCta') }}</NuxtLink>
         </div>
-        <p class="hero__health">API health: {{ health?.data.status || 'pending' }}</p>
       </div>
     </section>
 
@@ -57,11 +55,6 @@ usePageSeo({
   align-items: center;
   gap: 20px;
   margin-top: 36px;
-}
-
-.hero__health {
-  margin-top: 24px;
-  color: var(--app-color-muted);
 }
 
 .home-grid {

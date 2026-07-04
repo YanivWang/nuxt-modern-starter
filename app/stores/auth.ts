@@ -10,39 +10,24 @@ import {
   type TokenResponse
 } from '../apis/auth'
 import {
-  ACCESS_TOKEN_MAX_AGE,
-  AUTH_COOKIE_KEYS,
-  REFRESH_TOKEN_MAX_AGE,
-  type AuthUser,
-  type Permission,
-  type Role
-} from '../../config/auth'
+  getAccessTokenCookie,
+  getRefreshTokenCookie,
+  tokenFromResponse
+} from '../utils/auth-session'
+import type { AuthUser, Permission, Role } from '../../config/auth'
 
 type AuthStatus = 'idle' | 'loading' | 'authenticated' | 'unauthenticated' | 'refreshing'
 
-const tokenFromResponse = (response: TokenResponse) => response.accessToken || response.token || null
-
-const cookieOptions = (maxAge: number) => ({
-  maxAge,
-  sameSite: 'lax' as const,
-  path: '/'
-})
-
 export const useAuthStore = defineStore('auth', () => {
-  const accessToken = useCookie<string | null>(
-    AUTH_COOKIE_KEYS.accessToken,
-    cookieOptions(ACCESS_TOKEN_MAX_AGE)
-  )
-  const refreshToken = useCookie<string | null>(
-    AUTH_COOKIE_KEYS.refreshToken,
-    cookieOptions(REFRESH_TOKEN_MAX_AGE)
-  )
+  const accessToken = getAccessTokenCookie()
+  const refreshToken = getRefreshTokenCookie()
   const user = ref<AuthUser | null>(null)
   const status = ref<AuthStatus>('idle')
 
   const isAuthenticated = computed(() => Boolean(accessToken.value && user.value))
   const hasRole = (role: Role) => Boolean(user.value?.roles.includes(role))
-  const hasPermission = (permission: Permission) => Boolean(user.value?.permissions.includes(permission))
+  const hasPermission = (permission: Permission) =>
+    Boolean(user.value?.permissions.includes(permission))
 
   const setTokens = (response: TokenResponse) => {
     const nextAccessToken = tokenFromResponse(response)

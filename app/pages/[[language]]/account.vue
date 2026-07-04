@@ -60,7 +60,11 @@ const handleLogout = async () => {
             {{ authStore.user?.nickname || '-' }}
           </a-descriptions-item>
           <a-descriptions-item :label="$t('auth.account.roles')">
-            {{ authStore.user?.roles.length ? authStore.user.roles.join(', ') : $t('auth.account.none') }}
+            {{
+              authStore.user?.roles.length
+                ? authStore.user.roles.join(', ')
+                : $t('auth.account.none')
+            }}
           </a-descriptions-item>
           <a-descriptions-item :label="$t('auth.account.permissions')">
             {{

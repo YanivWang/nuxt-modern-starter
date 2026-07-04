@@ -1,7 +1,7 @@
 import { createPinia, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { AUTH_COOKIE_KEYS } from '../../config/auth'
 import { useAuthStore } from '../../app/stores/auth'
+import { getAccessTokenCookie, getRefreshTokenCookie } from '../../app/utils/auth-session'
 
 const apiMocks = vi.hoisted(() => ({
   loginApi: vi.fn(),
@@ -31,8 +31,8 @@ vi.mock('../../app/apis/auth', () => ({
 }))
 
 const clearAuthCookies = () => {
-  useCookie<string | null>(AUTH_COOKIE_KEYS.accessToken).value = null
-  useCookie<string | null>(AUTH_COOKIE_KEYS.refreshToken).value = null
+  getAccessTokenCookie().value = null
+  getRefreshTokenCookie().value = null
 }
 
 describe('auth store', () => {
@@ -90,8 +90,8 @@ describe('auth store', () => {
 
     await authStore.logout()
 
-    expect(authStore.accessToken).toBeNull()
-    expect(authStore.refreshToken).toBeNull()
+    expect(authStore.accessToken).toBeFalsy()
+    expect(authStore.refreshToken).toBeFalsy()
     expect(authStore.user).toBeNull()
     expect(authStore.status).toBe('unauthenticated')
   })
@@ -125,5 +125,56 @@ describe('auth store', () => {
       permissions: ['account:read']
     })
     expect(authStore.status).toBe('authenticated')
+  })
+
+  it('refreshes tokens with the refresh token cookie', async () => {
+    apiMocks.refreshApi.mockResolvedValue({
+      code: 200,
+      message: 'ok',
+      accessToken: 'next-access-token',
+      refreshToken: 'next-refresh-token'
+    })
+
+    const authStore = useAuthStore()
+    authStore.setTokens({
+      code: 200,
+      message: 'ok',
+      accessToken: 'access-token',
+      refreshToken: 'refresh-token'
+    })
+
+    await expect(authStore.refresh()).resolves.toBe(true)
+
+    expect(apiMocks.refreshApi).toHaveBeenCalledWith('refresh-token')
+    expect(authStore.accessToken).toBe('next-access-token')
+    expect(authStore.refreshToken).toBe('next-refresh-token')
+  })
+
+  it('registers without mutating the local session', async () => {
+    apiMocks.registerApi.mockResolvedValue({
+      code: 200,
+      message: 'created'
+    })
+
+    const authStore = useAuthStore()
+
+    await expect(authStore.register({ username: 'alice', password: 'secret' })).resolves.toEqual({
+      code: 200,
+      message: 'created'
+    })
+
+    expect(authStore.accessToken).toBeFalsy()
+    expect(authStore.refreshToken).toBeFalsy()
+    expect(authStore.user).toBeNull()
+  })
+
+  it('marks the session unauthenticated when fetching user without access token', async () => {
+    const authStore = useAuthStore()
+
+    await expect(authStore.fetchMe()).rejects.toMatchObject({
+      statusCode: 401
+    })
+    expect(authStore.status).toBe('unauthenticated')
+    expect(apiMocks.fetchMeApi).not.toHaveBeenCalled()
   })
 })

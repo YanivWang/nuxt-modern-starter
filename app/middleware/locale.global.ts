@@ -14,55 +14,94 @@ const withoutTrailingSlash = (path: string) => path.replace(/\/+$/, '') || '/'
 
 const isLocaleLikePrefix = (segment?: string) => Boolean(segment && /^[a-z]{2}$/i.test(segment))
 
-export default defineNuxtRouteMiddleware(async (to) => {
-  if (hasTrailingSlash(to.path)) {
-    return navigateTo(
-      {
-        path: withoutTrailingSlash(to.path),
-        query: to.query,
-        hash: to.hash
-      },
-      { redirectCode: 301 }
-    )
+export type LocaleRouteDecision =
+  | {
+      type: 'redirect'
+      path: string
+      redirectCode: 301
+    }
+  | {
+      type: 'error'
+      statusCode: 404
+      statusMessage: string
+    }
+  | {
+      type: 'locale'
+      locale: SupportedLocale
+    }
+
+export const resolveLocaleRouteDecision = (path: string): LocaleRouteDecision => {
+  if (hasTrailingSlash(path)) {
+    return {
+      type: 'redirect',
+      path: withoutTrailingSlash(path),
+      redirectCode: 301
+    }
   }
 
-  const firstSegment = to.path.split('/').filter(Boolean)[0]
+  const firstSegment = path.split('/').filter(Boolean)[0]
 
   if (firstSegment === DEFAULT_PREFIX) {
-    const segmentsWithoutDefaultPrefix = to.path.split('/').filter(Boolean).slice(1)
+    const segmentsWithoutDefaultPrefix = path.split('/').filter(Boolean).slice(1)
     const pathWithoutDefaultPrefix = segmentsWithoutDefaultPrefix.length
       ? `/${segmentsWithoutDefaultPrefix.join('/')}`
       : '/'
 
-    return navigateTo(
-      {
-        path: pathWithoutDefaultPrefix,
-        query: to.query,
-        hash: to.hash
-      },
-      { redirectCode: 301 }
-    )
+    return {
+      type: 'redirect',
+      path: pathWithoutDefaultPrefix,
+      redirectCode: 301
+    }
   }
 
   const locale = firstSegment ? localeFromPrefix(firstSegment) : DEFAULT_LOCALE
 
   if (!locale && isLocaleLikePrefix(firstSegment)) {
-    throw createError({
+    return {
+      type: 'error',
       statusCode: 404,
       statusMessage: 'Unsupported language'
-    })
+    }
   }
 
   const resolvedLocale = (locale || DEFAULT_LOCALE) as SupportedLocale
 
   if (!SUPPORTED_LOCALES.includes(resolvedLocale)) {
-    throw createError({
+    return {
+      type: 'error',
       statusCode: 404,
       statusMessage: 'Unsupported language'
+    }
+  }
+
+  return {
+    type: 'locale',
+    locale: resolvedLocale
+  }
+}
+
+export default defineNuxtRouteMiddleware(async (to) => {
+  const decision = resolveLocaleRouteDecision(to.path)
+
+  if (decision.type === 'redirect') {
+    return navigateTo(
+      {
+        path: decision.path,
+        query: to.query,
+        hash: to.hash
+      },
+      { redirectCode: decision.redirectCode }
+    )
+  }
+
+  if (decision.type === 'error') {
+    throw createError({
+      statusCode: decision.statusCode,
+      statusMessage: decision.statusMessage
     })
   }
 
   const languageStore = useLanguageStore()
-  await languageStore.chooseLanguage(resolvedLocale)
-  await loadLocaleMessages(resolvedLocale)
+  await languageStore.chooseLanguage(decision.locale)
+  await loadLocaleMessages(decision.locale)
 })

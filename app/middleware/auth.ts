@@ -24,21 +24,74 @@ export const isAuthorized = (
   return roleAllowed && permissionAllowed
 }
 
+export type AuthMiddlewareDecision =
+  | {
+      type: 'redirect'
+      location: ReturnType<typeof buildAuthLoginRedirect>
+    }
+  | {
+      type: 'error'
+      statusCode: 403
+      statusMessage: 'Forbidden'
+    }
+  | {
+      type: 'allow'
+    }
+
+export const resolveAuthMiddlewareDecision = (
+  hasSession: boolean,
+  loginPath: string,
+  fullPath: string,
+  authMeta: AuthRouteMeta | undefined,
+  helpers: {
+    hasRole: (role: string) => boolean
+    can: (permission: string) => boolean
+  }
+): AuthMiddlewareDecision => {
+  if (!hasSession) {
+    return {
+      type: 'redirect',
+      location: buildAuthLoginRedirect(loginPath, fullPath)
+    }
+  }
+
+  if (!isAuthorized(authMeta, helpers)) {
+    return {
+      type: 'error',
+      statusCode: 403,
+      statusMessage: 'Forbidden'
+    }
+  }
+
+  return {
+    type: 'allow'
+  }
+}
+
 export default defineNuxtRouteMiddleware(async (to) => {
   const { localePath } = useLocalePath()
   const { ensureSession, hasRole, can } = useAuth()
   const hasSession = await ensureSession()
+  const authMeta = typeof to.meta.auth === 'object' ? (to.meta.auth as AuthRouteMeta) : undefined
+  const decision = resolveAuthMiddlewareDecision(
+    hasSession,
+    localePath('/login'),
+    to.fullPath,
+    authMeta,
+    {
+      hasRole,
+      can
+    }
+  )
 
-  if (!hasSession) {
-    return navigateTo(buildAuthLoginRedirect(localePath('/login'), to.fullPath))
+  if (decision.type === 'redirect') {
+    return navigateTo(decision.location)
   }
 
-  const authMeta = typeof to.meta.auth === 'object' ? (to.meta.auth as AuthRouteMeta) : undefined
-
-  if (!isAuthorized(authMeta, { hasRole, can })) {
+  if (decision.type === 'error') {
     throw createError({
-      statusCode: 403,
-      statusMessage: 'Forbidden'
+      statusCode: decision.statusCode,
+      statusMessage: decision.statusMessage
     })
   }
 })
