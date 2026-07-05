@@ -41,8 +41,8 @@ Requests are split by responsibility:
 - `app/api-core` owns common request types, header helpers, error normalization, log redaction, and typed `$fetch` client creation.
 - `createPublicApiClient()` is the default for public SEO/content data. It strips `authorization` and `cookie` headers, does not refresh sessions, and is safe for SSR/prerender/SWR paths.
 - `createAuthApiClient()` is the default for login, register, refresh, logout, `/me`, and profile requests.
-- `createProductApiClient()` is the default for authenticated workspace/project product workflows. It may attach the access token and retry once after a refresh.
-- `createEditorApiClient()` is the default for authenticated editor document workflows. It delegates to the shared product client so refresh behavior stays consistent.
+- `createProductApiClient()` is the default factory for authenticated workspace/project workflows. Feature adapters such as `fetchWorkspaceProjects()` and `createWorkspaceProject()` should call it instead of pages calling raw URLs.
+- `createEditorApiClient()` is the default factory for authenticated editor document workflows. It delegates to the shared product client so refresh behavior stays consistent. Document adapters live in `app/apis/editor/document.ts`.
 - `app/apis/public`, `app/apis/auth`, `app/apis/product`, and `app/apis/editor` expose business functions. Pages should not scatter raw backend URLs.
 
 Scenario clients decide their own headers. Public clients only keep request metadata such as `accept-language` and `x-request-id`; authenticated clients add Bearer tokens explicitly. Logs redact `authorization` and `cookie`.

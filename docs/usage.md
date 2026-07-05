@@ -38,8 +38,8 @@ Choose the request entrypoint by page and data ownership:
 
 - Public SEO, marketing, help, pricing, news, and docs data belongs in `app/apis/public/*`. Use local typed content there, or call `createPublicApiClient()` inside a domain adapter for token-free backend requests.
 - Login, register, refresh, logout, `/me`, and profile requests belong in `app/apis/auth`.
-- Workspace project list/create/read requests belong in `app/features/workspace/api.ts` and should call `createProductApiClient()` through named domain adapters.
-- Editor document, asset, export, and collaboration requests belong in `app/apis/editor/*` or `app/features/editor/api` and should call `createEditorApiClient()` through a named domain adapter.
+- Workspace project requests belong in `app/features/workspace/api.ts` via `fetchWorkspaceProjects()`, `createWorkspaceProject()`, and `fetchWorkspaceProject()` (paths `/projects`, `/projects/:projectId`).
+- Editor document requests belong in `app/apis/editor/document.ts` via `fetchEditorDocument()` and `saveEditorDocument()` (paths `/documents/:documentId`).
 - Do not add a generic catch-all request composable. Add a named public, auth, product, editor, or feature client when a new request scenario appears.
 
 All request helpers use `runtimeConfig.public.apiBase` in both SSR and browser code, so `NUXT_PUBLIC_API_BASE` should point directly to the real backend API origin, for example `https://api.example.com/api`.
@@ -75,6 +75,37 @@ Do not install `@nuxtjs/i18n` for this template. Language routing is intentional
 Edit `config/theme.ts` and `app/assets/styles/tokens.scss` together. CSS variables are the preferred page styling API; pages should not hardcode brand colors, background colors, body text colors, or borders.
 
 To disable dark mode, keep only light tokens, set `DEFAULT_THEME_MODE` to `light`, and remove the theme toggle in `AppHeader.vue`.
+
+## Add Product Workspace And Editor
+
+The starter ships a real product flow when paired with `nuxt-modern-starter-api`:
+
+| Route                               | Purpose                                                        |
+| ----------------------------------- | -------------------------------------------------------------- |
+| `/app/workspace`                    | Project list, loading/empty states, and blank-project creation |
+| `/app/workspace/:projectId/edit`    | Resolve project `documentId`, then load/save editor content    |
+| `/app/workspace/:projectId/preview` | Fetch saved document HTML and render it with `v-html`          |
+
+API boundaries:
+
+- Workspace adapters in `app/features/workspace/api.ts`: `fetchWorkspaceProjects()`, `createWorkspaceProject()`, `fetchWorkspaceProject()` via `createProductApiClient()`.
+- Editor adapters in `app/apis/editor/document.ts`: `fetchEditorDocument()`, `saveEditorDocument()` via `createEditorApiClient()` (which delegates to the product client).
+- Relative request paths are `/projects` and `/documents/:documentId`; `runtimeConfig.public.apiBase` already includes the `/api` prefix.
+- Both use the backend envelope `{ code, message, data }` and retry once after a single-flight refresh on 401.
+
+Current UI scope:
+
+- Only the blank-project card and the primary create button call `POST /api/projects`. AI/import cards are visual placeholders with no backend wiring yet.
+- Search and segmented filters are UI-only; project listing always calls `GET /api/projects` without query parameters.
+- Preview is an HTML preview of editor content, not a PPT slide renderer. `slideCount` currently comes from project metadata and is not recalculated from document content.
+
+Local full-stack defaults:
+
+- Nuxt: `http://localhost:3000`
+- API gateway: `http://localhost:2026/api`
+- Backend `CORS_ORIGINS` must include `http://localhost:3000`
+
+Standalone `/app/editor?documentId=...` remains a deep-link route with the `editor` layout. It is not in the product sidebar; the primary path is `/app/workspace/:projectId/edit`, which mounts the same `EditorWorkspace` under the product shell layout.
 
 ## Auth Extension Contract
 

@@ -35,7 +35,7 @@ When pairing this frontend with `nuxt-modern-starter-api` in Docker:
 1. Start the API stack from the backend repo, for example `pnpm docker:dev`.
 2. Keep frontend `.env.dev` aligned with the API gateway: `NUXT_PUBLIC_API_BASE=http://localhost:2026/api`.
 3. Keep backend `.env.development` `CORS_ORIGINS` aligned with the Nuxt dev origin: `http://localhost:3000`.
-4. Run `pnpm dev` in this repo and verify login, workspace project list/create, editor save, and preview load.
+4. Run `pnpm dev` in this repo and verify login, `/app/workspace` list/create, `/app/workspace/:projectId/edit` save, and `/app/workspace/:projectId/preview` HTML preview.
 
 ## Local Verification
 

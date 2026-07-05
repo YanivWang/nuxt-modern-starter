@@ -51,6 +51,8 @@ Full `v0.1-core` includes complete quality gates plus Docker build/run and Nginx
 - Separate public SEO routes and logged-in `/app/**` product routes, with product routes rendered as CSR by default.
 - Feature-first product modules under `app/features/*` for complex editor, document, workspace, or SaaS workflows.
 - Opt-in Bearer Token auth module with login, register, logout, product account, and protected-route examples.
+- Product workspace at `/app/workspace`: list and create projects via `nuxt-modern-starter-api` (`GET/POST /api/projects`), open editor at `/app/workspace/:projectId/edit`, preview saved editor HTML at `/app/workspace/:projectId/preview` (rendered with `v-html`, not a slide engine).
+- Authenticated editor document read/save through `GET/PATCH /api/documents/:documentId` with shared `{ code, message, data }` response envelope.
 - Public pages for home, pricing, help, news list, news detail, and 404.
 - Canonical, hreflang, OG metadata, noindex handling, and Article JSON-LD.
 - Docker image and Nginx reverse-proxy sample for Nitro node-server.
@@ -60,8 +62,7 @@ Full `v0.1-core` includes complete quality gates plus Docker build/run and Nginx
 - `docs/architecture.md`: directory responsibilities and runtime flow.
 - `docs/usage.md`: adding pages, requests, SEO, languages, themes, and optional auth.
 - `docs/conventions.md`: config boundaries, tokens, request, test, safety, and accessibility conventions.
-- `docs/deployment.md`: local, Docker, and Nginx deployment validation.
-- `docs/verification-record.md`: latest local verification results and Docker/Nginx status.
+- `docs/deployment.md`: local, Docker, Nginx deployment, and full-stack API pairing validation.
 
 ## Scripts
 
@@ -113,5 +114,3 @@ pnpm docker:run
 ```
 
 For Nginx, run a reverse proxy with `docker/nginx/gateway.docker.conf` pointing at the Nuxt node-server and verify `/_nuxt/` responses include the long-cache rule. This Docker/Nginx validation is part of full `v0.1-core` and is not included in the 30-minute quick-start target.
-
-Current local and Docker/Nginx verification results are recorded in `docs/verification-record.md`.

@@ -51,12 +51,12 @@ export const newsArticles: NewsArticle[] = [
       'zh-CN': [
         'Nuxt Modern Starter 的生产部署默认走 Nitro node-server，而不是静态导出。这样可以保留 SSR、routeRules 与新闻页的 SWR 缓存策略，更适合内容会变化的公开站点。',
         '仓库内提供 docker/Dockerfile 与 docker-compose 样例，可通过 pnpm docker:build 与 pnpm docker:run 快速验证镜像构建与容器启动。Nginx 配置位于 docker/nginx/gateway.docker.conf，建议为 /_nuxt/ 静态资源开启长缓存，以减轻 Node 进程压力。',
-        '安全方面，生产环境变量应通过容器运行时或平台注入，镜像构建阶段不会复制真实 .env 文件。完整验证步骤可参考 docs/deployment.md 与 docs/verification-record.md。'
+        '安全方面，生产环境变量应通过容器运行时或平台注入，镜像构建阶段不会复制真实 .env 文件。完整验证步骤可参考 docs/deployment.md。'
       ],
       'en-US': [
         'Nuxt Modern Starter defaults to Nitro node-server deployment instead of static export. That keeps SSR, routeRules, and SWR caching for news pages, which fits public sites whose content changes over time.',
         'The repo includes docker/Dockerfile and docker-compose samples. Use pnpm docker:build and pnpm docker:run to validate image build and container startup. The Nginx config in docker/nginx/gateway.docker.conf should long-cache /_nuxt/ assets to reduce pressure on the Node process.',
-        'For security, inject production environment variables at runtime through the platform or container orchestrator. Real .env files are not copied into the image during build. See docs/deployment.md and docs/verification-record.md for the full validation flow.'
+        'For security, inject production environment variables at runtime through the platform or container orchestrator. Real .env files are not copied into the image during build. See docs/deployment.md for the full validation flow.'
       ]
     },
     publishedAt: '2026-07-04'
@@ -95,19 +95,19 @@ export const newsArticles: NewsArticle[] = [
     },
     description: {
       'zh-CN':
-        '登录、注册、账户页与 auth 中间件已经串联，团队可按需接入 express-modern-starter 或其他 API 服务。',
+        '登录、注册、账户页、工作台与编辑器已接入 nuxt-modern-starter-api，可在本地完成项目创建、文档保存与预览。',
       'en-US':
-        'Login, register, account pages, and the auth middleware are wired so teams can connect express-modern-starter or another API service.'
+        'Login, register, account, workspace, and editor flows are wired to nuxt-modern-starter-api for local project creation, document save, and preview.'
     },
     body: {
       'zh-CN': [
         '鉴权能力在 Nuxt Modern Starter 中是“可选模块”而非强制依赖。默认提供登录、注册、退出和账户页示例，并通过命名 auth 中间件保护 account 等页面，支持基于角色与 permissions 的访问控制。',
-        '登录后请求走 auth/editor 等场景化 API client，Bearer Token 只在受保护业务请求中发送。接入真实后端时，通常只需调整 API base URL、登录/注册接口路径，以及 token 的持久化策略；页面层的路由守卫与权限判断逻辑可以复用。',
+        '接入 nuxt-modern-starter-api 后，工作台 `/app/workspace` 会调用真实项目 API；当前只有「新建空白 PPT」卡片和顶部创建按钮会触发 `POST /api/projects`，AI/导入卡片仍是占位 UI。创建后可进入 `/app/workspace/:projectId/edit` 保存文档，预览页以 HTML 方式展示已保存内容。请求统一走 `{ code, message, data }` 响应格式，401 时自动 refresh 并重试一次。',
         '如果项目暂时不需要账号体系，也可以保留公开页与内容中心，先不启用 auth 相关导航入口，等业务工作台准备好后再逐步接入。'
       ],
       'en-US': [
         'Auth in Nuxt Modern Starter is an optional module, not a hard dependency. The starter ships login, register, logout, and account examples, plus a named auth middleware that protects pages like account with role and permission checks.',
-        'Logged-in requests go through scenario-specific API clients such as auth and editor clients, and Bearer Tokens are only sent with protected business requests. When connecting a real backend, you usually only need to adjust the API base URL, login/register endpoints, and token persistence while reusing route guards and permission checks.',
+        'When paired with nuxt-modern-starter-api, `/app/workspace` calls real project APIs. Only the blank PPT card and the primary create button currently trigger `POST /api/projects`; AI/import cards remain placeholder UI. After creation, `/app/workspace/:projectId/edit` saves document content and preview renders persisted HTML. Requests use the `{ code, message, data }` envelope and retry once after refresh on 401.',
         'If you do not need accounts yet, keep the public and content pages first and hide auth navigation until the product workspace is ready to connect.'
       ]
     },

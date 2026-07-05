@@ -28,9 +28,9 @@ export const faqItems: FaqItem[] = [
     },
     answer: {
       'zh-CN':
-        'Nuxt Modern Starter 面向公开站点场景：营销官网、SEO 页面、多语言内容站，以及轻量 SaaS 产品前台。它预置首页、价格、帮助、新闻、登录注册与账户页，并附带 SEO、i18n、主题切换和部署样例。',
+        'Nuxt Modern Starter 面向公开站点场景：营销官网、SEO 页面、多语言内容站，以及轻量 SaaS 产品前台。它预置首页、价格、帮助、新闻、登录注册、账户页、工作台与编辑器联调路径，并附带 SEO、i18n、主题切换和部署样例。',
       'en-US':
-        'Nuxt Modern Starter targets public websites: marketing sites, SEO surfaces, multilingual content hubs, and lightweight SaaS frontends. It ships home, pricing, help, news, auth pages, plus SEO, i18n, theme switching, and deployment samples.'
+        'Nuxt Modern Starter targets public websites: marketing sites, SEO surfaces, multilingual content hubs, and lightweight SaaS frontends. It ships home, pricing, help, news, auth pages, workspace/editor integration paths, plus SEO, i18n, theme switching, and deployment samples.'
     }
   },
   {
@@ -54,9 +54,22 @@ export const faqItems: FaqItem[] = [
     },
     answer: {
       'zh-CN':
-        '项目提供可选 Bearer Token 鉴权示例，包含登录、注册、退出与账户页。受保护路由通过命名 auth 中间件控制，支持角色与权限校验。接入真实后端时，调整 app/apis/auth 与具体业务 API 客户端即可。',
+        '项目提供可选 Bearer Token 鉴权示例，包含登录、注册、退出与账户页。受保护路由通过命名 auth 中间件控制，支持角色与权限校验。与 nuxt-modern-starter-api 联调时，工作台与编辑器分别走 app/features/workspace/api.ts 与 app/apis/editor/*。',
       'en-US':
-        'The starter includes optional Bearer Token auth with login, register, logout, and account pages. Protected routes use the named auth middleware with role and permission checks. Connect a real backend by updating app/apis/auth and the relevant domain API clients.'
+        'The starter includes optional Bearer Token auth with login, register, logout, and account pages. Protected routes use the named auth middleware with role and permission checks. When paired with nuxt-modern-starter-api, workspace and editor flows use app/features/workspace/api.ts and app/apis/editor/*.'
+    }
+  },
+  {
+    key: 'workspace',
+    question: {
+      'zh-CN': '工作台与编辑器如何联调后端？',
+      'en-US': 'How do workspace and editor flows connect to the backend?'
+    },
+    answer: {
+      'zh-CN':
+        '先启动 nuxt-modern-starter-api（推荐 pnpm docker:dev），保持前端 .env.dev 的 NUXT_PUBLIC_API_BASE=http://localhost:2026/api，后端 CORS_ORIGINS 包含 http://localhost:3000。登录后访问 /app/workspace 创建项目（空白卡片或顶部按钮），在 /app/workspace/:projectId/edit 保存文档，/app/workspace/:projectId/preview 以 HTML 预览已保存内容。搜索与筛选目前只是 UI，占位未接 API。',
+      'en-US':
+        'Start nuxt-modern-starter-api first (pnpm docker:dev recommended), keep frontend .env.dev at NUXT_PUBLIC_API_BASE=http://localhost:2026/api, and include http://localhost:3000 in backend CORS_ORIGINS. After login, use /app/workspace to create projects (blank card or primary button), /app/workspace/:projectId/edit to save documents, and /app/workspace/:projectId/preview to preview persisted HTML. Search and filters are UI-only placeholders without backend APIs yet.'
     }
   },
   {
@@ -106,9 +119,9 @@ export const faqItems: FaqItem[] = [
     },
     answer: {
       'zh-CN':
-        '完整 v0.1-core 建议依次执行 pnpm lint、pnpm format:check、pnpm stylelint、pnpm typecheck、pnpm test 与 pnpm build。若涉及部署变更，再补充 Docker 构建运行与 Nginx 反向代理验证，结果可参考 docs/verification-record.md。',
+        '完整 v0.1-core 建议依次执行 pnpm lint、pnpm format:check、pnpm stylelint、pnpm typecheck、pnpm test 与 pnpm build。若涉及部署变更，再补充 Docker 构建运行与 Nginx 反向代理验证，步骤可参考 docs/deployment.md。',
       'en-US':
-        'For full v0.1-core, run pnpm lint, pnpm format:check, pnpm stylelint, pnpm typecheck, pnpm test, and pnpm build. If deployment changed, also validate Docker build/run and the Nginx reverse proxy. See docs/verification-record.md for the latest results.'
+        'For full v0.1-core, run pnpm lint, pnpm format:check, pnpm stylelint, pnpm typecheck, pnpm test, and pnpm build. If deployment changed, also validate Docker build/run and the Nginx reverse proxy. See docs/deployment.md for the validation flow.'
     }
   }
 ]
