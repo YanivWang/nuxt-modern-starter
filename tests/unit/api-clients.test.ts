@@ -52,7 +52,7 @@ describe('scenario API clients', () => {
       refreshAccessToken
     })
 
-    await client.request('/editor/documents/doc_1')
+    await client.request('/documents/doc_1')
 
     expect(refreshAccessToken).toHaveBeenCalledTimes(1)
     expect(fetcher).toHaveBeenCalledTimes(2)

@@ -12,6 +12,7 @@
 - `app/composables`: shared runtime APIs such as `useAuth`, `useLocalePath`, `usePageSeo`, and `useTheme`. Feature-specific composables belong under `app/features/<feature>/composables`; backend request clients belong under `app/apis/*`.
 - `app/apis/public`: SEO-safe public content adapters. Public adapters must not depend on auth state or trigger token refresh.
 - `app/apis/auth`: Bearer Token auth adapter. It owns login, register, refresh, logout, `/me`, profile requests, response normalization, and single-flight token refresh.
+- `app/apis/product`: authenticated product workflow client factory. Workspace project and other logged-in product APIs should call `createProductApiClient()` through feature-level adapters.
 - `app/apis/editor`: authenticated editor workflow adapters shared by editor feature routes. Document save/read, asset upload, export, and future collaboration APIs should grow here or move into `app/features/editor/api` when they become feature-internal.
 - `app/utils`: small shared runtime utilities that do not belong to a feature or API core module.
 - `app/stores`: Pinia stores for app UI state, language state, theme state, and opt-in auth state. Feature-specific stores belong under `app/features/<feature>/stores`.
@@ -33,6 +34,8 @@ Business requests use the app-level `{ code, message, data }` contract through s
 
 - Public SEO/content pages use `app/apis/public/*` and `createPublicApiClient()` when a backend request is needed. These requests strip `authorization` and `cookie` headers so they stay safe for SSR, prerender, SWR, and CDN caching.
 - Auth requests use `app/apis/auth`. The adapter targets the current application API contract directly: `{ code, message, data }`; pages and stores read business payloads from `data`.
-- Editor and other logged-in product workflows live under `/app/**`, use feature modules such as `app/features/editor`, and call `app/apis/editor/*` through `createEditorApiClient()` for authenticated requests. These routes are CSR by default; requests may attach Bearer tokens and retry once after a single-flight refresh.
+- Workspace project requests use `app/features/workspace/api.ts` through `createProductApiClient()` for authenticated project list/create/read flows.
+- Editor document requests use `app/apis/editor/*` through `createEditorApiClient()` for authenticated document read/save flows. `createEditorApiClient()` delegates to the shared product client so token refresh behavior stays consistent across product and editor APIs.
+- Logged-in product pages under `/app/**` mount feature modules such as `app/features/workspace` and `app/features/editor`. These routes are CSR by default; requests may attach Bearer tokens and retry once after a single-flight refresh.
 
 Page components should call domain adapters such as `getNewsArticles()` or `saveEditorDocument()`, not raw backend URLs. This keeps backend contract changes localized to `app/apis/*`.

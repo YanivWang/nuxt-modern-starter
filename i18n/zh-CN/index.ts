@@ -212,8 +212,10 @@ export default {
     nav: '工作台',
     eyebrow: '产品工作台',
     title: '管理你的 PPT 作品',
-    lead: '这里是登录后的产品区占位工作台。你可以从作品卡片进入编辑页，也可以直接打开预览页。',
+    lead: '登录后在这里管理 PPT 作品。你可以创建项目、进入编辑页保存内容，也可以打开预览页查看当前文档。',
     empty: '暂无项目，先创建一个空白 PPT。',
+    projectNotFound: '项目不存在或无权访问',
+    previewEmpty: '当前作品还没有内容，先去编辑页添加内容吧。',
     create: '新建作品',
     search: '查找我的作品',
     edit: '编辑',
@@ -227,9 +229,6 @@ export default {
     projectName: '作品名称',
     slideCount: '页面数量',
     backToWorkspace: '返回工作台',
-    editPlaceholder:
-      '这是一个编辑器占位画布，后续可以接入真实 PPT 编辑器、页面缩略图、素材面板和保存接口。',
-    previewPlaceholder: '这是一个预览占位页，用于展示作品播放、分享或导出前的浏览效果。',
     filters: {
       all: '全部',
       recent: '最近更新',

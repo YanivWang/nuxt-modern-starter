@@ -21,12 +21,12 @@
 - Create: `/Users/wangcheng/Documents/workSpace/frontEnd/nuxtProjects/nuxt-modern-starter-api/src/migrations/*create-workspaces-projects-documents.ts`
 - Test: `/Users/wangcheng/Documents/workSpace/frontEnd/nuxtProjects/nuxt-modern-starter-api/src/product-foundation.integration.test.ts`
 
-- [ ] Write failing integration tests for `{ code, message, data }`, project creation/listing, document read/save, and user isolation.
-- [ ] Implement response envelope normalization.
-- [ ] Add Workspace, Project, and Document Sequelize models and migration.
-- [ ] Add Zod schemas, services, controllers, and routes.
-- [ ] Register routes and update OpenAPI generation.
-- [ ] Run backend integration tests and full backend check.
+- [x] Write failing integration tests for `{ code, message, data }`, project creation/listing, document read/save, and user isolation.
+- [x] Implement response envelope normalization.
+- [x] Add Workspace, Project, and Document Sequelize models and migration.
+- [x] Add Zod schemas, services, controllers, and routes.
+- [x] Register routes and update OpenAPI generation.
+- [x] Run backend integration tests and full backend check.
 
 ### Task 2: Frontend Real API Consumption
 
@@ -39,8 +39,8 @@
 - Modify: `/Users/wangcheng/Documents/workSpace/frontEnd/nuxtProjects/nuxt-modern-starter/app/pages/app/editor.vue`
 - Test: `/Users/wangcheng/Documents/workSpace/frontEnd/nuxtProjects/nuxt-modern-starter/tests/unit/*`
 
-- [ ] Update tests to require real API boundary calls instead of static mock data.
-- [ ] Add project/document API modules under feature boundaries.
-- [ ] Change workspace dashboard to load and create projects through API.
-- [ ] Change editor workspace to load and save documents through API.
-- [ ] Run frontend unit tests, typecheck, and build.
+- [x] Update tests to require real API boundary calls instead of static mock data.
+- [x] Add project/document API modules under feature boundaries.
+- [x] Change workspace dashboard to load and create projects through API.
+- [x] Change editor workspace to load and save documents through API.
+- [x] Run frontend unit tests, typecheck, and build.

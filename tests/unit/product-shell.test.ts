@@ -7,11 +7,7 @@ import {
 
 describe('product shell configuration', () => {
   it('centralizes product navigation entries', () => {
-    expect(productNavItems.map((item) => item.path)).toEqual([
-      '/app/workspace',
-      '/app/editor',
-      '/app/account'
-    ])
+    expect(productNavItems.map((item) => item.path)).toEqual(['/app/workspace', '/app/account'])
   })
 
   it('marks every configured product route as authenticated and noindex', () => {

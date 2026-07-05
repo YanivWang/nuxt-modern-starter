@@ -1,8 +1,11 @@
 <script setup lang="ts">
+import type { EditorDocument } from '../../../apis/editor'
 import type { WorkspaceProject } from '../api'
 
 defineProps<{
   project: WorkspaceProject
+  document?: EditorDocument | null
+  pending?: boolean
 }>()
 
 const { localePath } = useLocalePath()
@@ -14,7 +17,9 @@ const { localePath } = useLocalePath()
       <div>
         <p class="page-eyebrow">{{ $t('workspace.previewing') }}</p>
         <h1>{{ project.title }}</h1>
-        <p class="project-preview__description">{{ project.description }}</p>
+        <p v-if="project.description" class="project-preview__description">
+          {{ project.description }}
+        </p>
       </div>
       <NuxtLink :to="localePath(project.editPath)">
         <a-button type="primary">{{ $t('workspace.edit') }}</a-button>
@@ -22,10 +27,18 @@ const { localePath } = useLocalePath()
     </header>
 
     <main class="project-preview__stage">
-      <div class="project-preview__slide">
-        <span />
-        <h2>{{ project.title }}</h2>
-        <p>{{ $t('workspace.previewPlaceholder') }}</p>
+      <div v-if="pending" class="project-preview__loading">
+        <a-spin />
+      </div>
+      <div v-else class="project-preview__slide">
+        <template v-if="document?.content">
+          <div class="project-preview__content" v-html="document.content" />
+        </template>
+        <template v-else>
+          <span />
+          <h2>{{ project.title }}</h2>
+          <p>{{ $t('workspace.previewEmpty') }}</p>
+        </template>
       </div>
     </main>
 
@@ -78,6 +91,12 @@ const { localePath } = useLocalePath()
   place-items: center;
 }
 
+.project-preview__loading {
+  display: grid;
+  place-items: center;
+  min-height: min(50vh, 560px);
+}
+
 .project-preview__slide {
   display: grid;
   width: min(100%, 1080px);
@@ -89,6 +108,7 @@ const { localePath } = useLocalePath()
   background:
     linear-gradient(135deg, rgb(22 119 255 / 18%), transparent 58%),
     linear-gradient(180deg, #ffffff, #f7f9ff);
+  overflow: auto;
 
   span {
     width: 132px;
@@ -114,6 +134,21 @@ const { localePath } = useLocalePath()
     color: rgb(23 32 51 / 62%);
     font-size: clamp(16px, 2vw, 22px);
     line-height: 1.7;
+  }
+}
+
+.project-preview__content {
+  width: 100%;
+  color: #172033;
+  font-size: clamp(16px, 2vw, 22px);
+  line-height: 1.7;
+
+  :deep(h1),
+  :deep(h2),
+  :deep(h3),
+  :deep(p) {
+    margin: 0 0 12px;
+    color: inherit;
   }
 }
 

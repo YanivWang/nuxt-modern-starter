@@ -35,21 +35,30 @@ const statusLabel = (status: WorkspaceProject['status']) => {
 
 const actionCards = [
   {
+    key: 'ai',
     icon: RocketOutlined,
     title: 'workspace.actions.ai.title',
     description: 'workspace.actions.ai.description'
   },
   {
+    key: 'import',
     icon: ReadOutlined,
     title: 'workspace.actions.import.title',
     description: 'workspace.actions.import.description'
   },
   {
+    key: 'blank',
     icon: AppstoreOutlined,
     title: 'workspace.actions.blank.title',
     description: 'workspace.actions.blank.description'
   }
 ] as const
+
+const handleAction = (key: (typeof actionCards)[number]['key']) => {
+  if (key === 'blank') {
+    void handleCreateProject()
+  }
+}
 
 const handleCreateProject = async () => {
   creating.value = true
@@ -83,7 +92,13 @@ const handleCreateProject = async () => {
     </div>
 
     <div class="workspace-actions">
-      <article v-for="action in actionCards" :key="action.title" class="workspace-action">
+      <article
+        v-for="action in actionCards"
+        :key="action.key"
+        class="workspace-action"
+        :class="{ 'workspace-action--clickable': action.key === 'blank' }"
+        @click="action.key === 'blank' && !creating ? handleAction(action.key) : undefined"
+      >
         <span class="workspace-action__icon">
           <component :is="action.icon" aria-hidden="true" />
         </span>
@@ -196,6 +211,10 @@ const handleCreateProject = async () => {
   border-radius: 18px;
   background: var(--app-color-bg);
   box-shadow: 0 12px 32px rgb(15 23 42 / 5%);
+
+  &--clickable {
+    cursor: pointer;
+  }
 
   h2,
   p {

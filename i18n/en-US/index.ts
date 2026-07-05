@@ -223,8 +223,10 @@ export default {
     nav: 'Workspace',
     eyebrow: 'Product workspace',
     title: 'Manage your PPT projects',
-    lead: 'This is the logged-in product workspace placeholder. Open a project card to edit it, or jump straight into preview.',
+    lead: 'Manage authenticated PPT projects here. Create a project, edit and save document content, or open preview to review the latest draft.',
     empty: 'No projects yet. Create a blank PPT to get started.',
+    projectNotFound: 'Project not found or access denied',
+    previewEmpty: 'This project has no content yet. Open the editor to add your first draft.',
     create: 'New project',
     search: 'Search projects',
     edit: 'Edit',
@@ -238,10 +240,6 @@ export default {
     projectName: 'Project name',
     slideCount: 'Slide count',
     backToWorkspace: 'Back to workspace',
-    editPlaceholder:
-      'This placeholder canvas can later connect to the real PPT editor, slide thumbnails, asset panels, and save APIs.',
-    previewPlaceholder:
-      'This placeholder preview shows where playback, sharing, or export review will live.',
     filters: {
       all: 'All',
       recent: 'Recent',

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
+import { getApiErrorMessage } from '~/api-core/api-error'
 import { EditorWorkspace } from '~/features/editor'
 import { fetchWorkspaceProject, type WorkspaceProject } from '~/features/workspace'
 
@@ -14,15 +15,26 @@ const { t } = useI18n()
 const projectId = Array.isArray(route.params.projectId)
   ? route.params.projectId[0]
   : route.params.projectId
-const { data: project } = await useAsyncData(`workspace-project:${projectId}`, async () => {
+
+const { data: project, error } = await useAsyncData(`workspace-project:${projectId}`, async () => {
   const response = await fetchWorkspaceProject(String(projectId))
   return response.data.project
 })
 
-if (!project.value || !project.value.documentId) {
+if (error.value) {
+  const cause = error.value.cause ?? error.value
+  const fetchError = cause as { statusCode?: number; response?: { status?: number } }
+
+  throw createError({
+    statusCode: fetchError.statusCode || fetchError.response?.status || 500,
+    statusMessage: getApiErrorMessage(cause, t('workspace.projectNotFound'))
+  })
+}
+
+if (!project.value?.documentId) {
   throw createError({
     statusCode: 404,
-    statusMessage: 'Project not found'
+    statusMessage: t('workspace.projectNotFound')
   })
 }
 

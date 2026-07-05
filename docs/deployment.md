@@ -28,6 +28,15 @@ Committed env files should only contain non-secret defaults. Override them with 
 
 Production auth cookies are marked `secure`, so real login flows must be served over HTTPS.
 
+## Local Full-Stack Verification
+
+When pairing this frontend with `nuxt-modern-starter-api` in Docker:
+
+1. Start the API stack from the backend repo, for example `pnpm docker:dev`.
+2. Keep frontend `.env.dev` aligned with the API gateway: `NUXT_PUBLIC_API_BASE=http://localhost:2026/api`.
+3. Keep backend `.env.development` `CORS_ORIGINS` aligned with the Nuxt dev origin: `http://localhost:3000`.
+4. Run `pnpm dev` in this repo and verify login, workspace project list/create, editor save, and preview load.
+
 ## Local Verification
 
 ```bash

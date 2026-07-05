@@ -44,7 +44,6 @@ export const productRouteConfigs = [
     path: '/app/editor',
     labelKey: 'editor.title',
     mode: 'editor',
-    nav: true,
     auth: { required: true },
     seo: { noindex: true }
   },
