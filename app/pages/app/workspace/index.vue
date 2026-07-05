@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { WorkspaceDashboard } from '../../../../features/workspace'
 import { useI18n } from 'vue-i18n'
+import { WorkspaceDashboard } from '~/features/workspace'
 
 definePageMeta({
   layout: 'product',

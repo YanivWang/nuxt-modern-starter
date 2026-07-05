@@ -1,1 +1,1 @@
-pnpm lint && pnpm format:check && pnpm stylelint && pnpm typecheck && pnpm test
+pnpm lint-staged && pnpm lint && pnpm stylelint && pnpm typecheck && pnpm test

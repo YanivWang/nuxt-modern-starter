@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { EditorWorkspace } from '../../../features/editor'
-import { SITE_NAME } from '../../../../config/site'
+import { EditorWorkspace } from '~/features/editor'
+import { SITE_NAME } from '~~/config/site'
 
 definePageMeta({
   layout: 'editor',

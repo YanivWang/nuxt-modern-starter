@@ -1,0 +1,14 @@
+{
+  "recommendations": [
+    "Vue.volar",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "stylelint.vscode-stylelint",
+    "EditorConfig.EditorConfig",
+    "vitest.explorer",
+    "ms-azuretools.vscode-docker",
+    "mikestead.dotenv",
+    "lokalise.i18n-ally"
+  ],
+  "unwantedRecommendations": ["octref.vetur"]
+}

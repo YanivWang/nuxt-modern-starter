@@ -5,7 +5,7 @@
 ## Directory Responsibilities
 
 - `app/pages/[[language]]`: localized public route entries. Default language has no prefix, English public pages use `/en`.
-- `app/pages/[[language]]/app`: logged-in product route entries. Their canonical URLs stay language-neutral under `/app/**`; legacy localized product URLs such as `/en/app/workspace` redirect back to `/app/workspace`.
+- `app/pages/app`: logged-in product route entries. Their canonical URLs stay language-neutral under `/app/**`; legacy localized product URLs such as `/en/app/workspace` redirect back to `/app/workspace`.
 - `app/features/product-shell`: logged-in product shell configuration and layout surface. Product navigation and `/app/**` route policy are centralized here instead of being hardcoded in the layout.
 - `app/features`: product and domain modules. Complex product UI, feature composables, feature stores, feature types, and feature API adapters grow here instead of top-level Nuxt folders.
 - `app/api-core`: low-level API policy such as response types, error normalization, header creation, sensitive header redaction, and typed `$fetch` client creation.

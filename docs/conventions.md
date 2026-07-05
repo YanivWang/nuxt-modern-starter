@@ -16,7 +16,7 @@ Use PascalCase for Vue components, `use*` for composables, and typed named expor
 
 ## Page And Feature Boundaries
 
-Public SEO routes live directly under `app/pages/[[language]]`. Logged-in product route entries live under `app/pages/[[language]]/app`, but their canonical URLs stay language-neutral under `/app/**`; do not add new product pages such as editor, account, documents, templates, billing, or settings at the same level as public marketing pages.
+Public SEO routes live directly under `app/pages/[[language]]`. Logged-in product route entries live under `app/pages/app`; do not add new product pages such as editor, account, documents, templates, billing, or settings at the same level as public marketing pages.
 
 Nuxt page files are route entries only. Keep them focused on `definePageMeta`, layout selection, auth middleware, SEO/noindex, route params, and mounting a feature component.
 

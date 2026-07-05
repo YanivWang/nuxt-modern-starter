@@ -1,9 +1,6 @@
 <script setup lang="ts">
-import {
-  ProjectPreviewPlaceholder,
-  getWorkspaceProjectById
-} from '../../../../../features/workspace'
 import { useI18n } from 'vue-i18n'
+import { ProjectEditPlaceholder, getWorkspaceProjectById } from '~/features/workspace'
 
 definePageMeta({
   layout: 'product',
@@ -26,14 +23,14 @@ if (!project) {
 }
 
 usePageSeo({
-  path: `/app/workspace/${project.id}/preview`,
+  path: `/app/workspace/${project.id}/edit`,
   locale: languageStore.currentLanguage,
-  title: `${project.title} · ${t('workspace.preview')}`,
+  title: `${project.title} · ${t('workspace.edit')}`,
   description: project.description,
   noindex: true
 })
 </script>
 
 <template>
-  <ProjectPreviewPlaceholder :project="project" />
+  <ProjectEditPlaceholder :project="project" />
 </template>
