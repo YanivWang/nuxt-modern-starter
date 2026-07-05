@@ -166,11 +166,11 @@ export default {
         name: 'Growth',
         badge: '团队推荐',
         price: '推荐',
-        period: '完整 v0.1-core',
+        period: '完整能力',
         description: '适合需要账号体系、请求封装、部署验证与质量门禁的小团队产品前台。',
         cta: '查看能力清单',
         features: {
-          api: 'useApi 请求封装与 Bearer Token 鉴权',
+          api: '场景化 API client 与 Bearer Token 鉴权',
           auth: '登录、注册、账户页与路由守卫示例',
           deploy: 'Docker 镜像与 Nginx 反向代理样例',
           quality: 'Lint、Stylelint、Typecheck 与 Vitest 测试'
@@ -275,15 +275,16 @@ export default {
     },
     resources: {
       title: '推荐阅读',
-      architecture: 'docs/architecture.md — 目录职责与运行时流程',
-      usage: 'docs/usage.md — 页面、请求、SEO、语言与主题扩展',
+      architecture: 'docs/architecture.md — 目录职责、渲染策略与运行时流程',
+      usage: 'docs/usage.md — 页面、请求、SEO、语言、产品与鉴权扩展',
+      conventions: 'docs/conventions.md — 配置边界、请求分层与编码约定',
       deployment: 'docs/deployment.md — 本地、Docker 与 Nginx 部署验证'
     }
   },
   news: {
     eyebrow: '项目动态',
     title: 'Nuxt Modern Starter 更新与实践笔记',
-    lead: '这里记录 starter 的版本发布、架构决策、部署实践与扩展建议，帮助团队了解项目演进方向，也演示新闻列表、详情页 SEO 与 SWR 缓存策略。',
+    lead: '这里记录 starter 的版本发布、部署实践与扩展建议，也演示新闻列表、详情页 SEO 与 SWR 缓存策略。',
     notFound: '未找到这篇新闻'
   },
   error: {

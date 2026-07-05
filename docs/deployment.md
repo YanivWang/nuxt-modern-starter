@@ -2,7 +2,7 @@
 
 ## Default Target
 
-v0.1-core defaults to Nitro `node-server`. Build output is started with:
+The default deployment target is Nitro `node-server`. Build output is started with:
 
 ```bash
 node .output/server/index.mjs
@@ -35,7 +35,7 @@ When pairing this frontend with `nuxt-modern-starter-api` in Docker:
 1. Start the API stack from the backend repo, for example `pnpm docker:dev`.
 2. Keep frontend `.env.dev` aligned with the API gateway: `NUXT_PUBLIC_API_BASE=http://localhost:2026/api`.
 3. Keep backend `.env.development` `CORS_ORIGINS` aligned with the Nuxt dev origin: `http://localhost:3000`.
-4. Run `pnpm dev` in this repo and verify login, `/app/workspace` list/create/delete, and `/app/docs/:id` editor load/autosave. Route param `:id` is the project id; the page resolves `documentId` before calling editor APIs.
+4. Run `pnpm dev` in this repo and verify login, `/app/workspace` list/create/delete, `/app/docs/:id` editor load/autosave, and `/app/account` session/profile display. Route param `:id` is the project id; the page resolves `documentId` before calling editor APIs.
 
 ## Local Verification
 
@@ -52,12 +52,25 @@ pnpm build
 
 ## Docker Verification
 
+Build and run the production image directly:
+
 ```bash
 pnpm docker:build
 pnpm docker:run
 ```
 
 The image runs `.output/server/index.mjs` on port `3000`.
+
+For the full gateway sample, use Compose:
+
+```bash
+pnpm docker:up      # production stack, reads .env.prod
+pnpm docker:up:dev  # development stack with bind mount, reads .env.dev
+pnpm docker:down
+pnpm docker:down:dev
+```
+
+Production Compose exposes the Nginx gateway on `GATEWAY_HOST_PORT` or `3000` by default.
 
 ## Nginx Reverse Proxy
 
@@ -68,9 +81,3 @@ Cache-Control: public, max-age=31536000, immutable
 ```
 
 Use this file as a deployment sample, not as a universal production config. Real deployments should add TLS, compression, logging, health checks, and platform-specific upstream configuration.
-
-## Other Platforms
-
-Vercel, Cloudflare, and fully static/prerender deployments are documented boundaries only in v0.1-core. Validate them in a separate deployment task before using them as a supported default.
-
-Remote CI is out of scope for v0.1-core.

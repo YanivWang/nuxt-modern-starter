@@ -175,12 +175,12 @@ export default {
         name: 'Growth',
         badge: 'Recommended',
         price: 'Recommended',
-        period: 'Full v0.1-core',
+        period: 'Full starter stack',
         description:
           'Best for small teams that need auth, request helpers, deployment validation, and quality gates.',
         cta: 'View capability list',
         features: {
-          api: 'useApi helpers and Bearer Token auth',
+          api: 'Scenario-specific API clients and Bearer Token auth',
           auth: 'Login, register, account, and route guard examples',
           deploy: 'Docker image and Nginx reverse-proxy samples',
           quality: 'Lint, Stylelint, Typecheck, and Vitest coverage'
@@ -287,15 +287,18 @@ export default {
     },
     resources: {
       title: 'Recommended reading',
-      architecture: 'docs/architecture.md — directory responsibilities and runtime flow',
-      usage: 'docs/usage.md — pages, requests, SEO, languages, and themes',
+      architecture:
+        'docs/architecture.md — directory responsibilities, rendering strategy, and runtime flow',
+      usage: 'docs/usage.md — pages, requests, SEO, languages, product flows, and auth',
+      conventions:
+        'docs/conventions.md — config boundaries, request layering, and coding conventions',
       deployment: 'docs/deployment.md — local, Docker, and Nginx deployment validation'
     }
   },
   news: {
     eyebrow: 'Project updates',
     title: 'Nuxt Modern Starter releases and notes',
-    lead: 'Track starter releases, architecture decisions, deployment practices, and extension guidance. These pages also demonstrate news layouts, Article JSON-LD, and SWR cache rules.',
+    lead: 'Track starter releases, deployment practices, and extension guidance. These pages also demonstrate news layouts, Article JSON-LD, and SWR cache rules.',
     notFound: 'This news article was not found'
   },
   error: {

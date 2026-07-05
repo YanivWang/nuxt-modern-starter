@@ -10,7 +10,7 @@ Create logged-in product pages under `app/pages/app`, and keep links, canonical 
 
 Do not add product pages such as account, documents, editor, templates, workspace, billing, or settings beside public marketing pages. Product routes are client-rendered by default through `csrRouteRules` in `config/routes.ts`.
 
-Register product navigation and route policy in `app/features/product-shell/config.ts` before adding sidebar links or new `/app/**` route entries. Use `ProductRouteMode` values `workspace`, `docs`, or `account`; set `nav: true` only for sidebar items. Do not create localized product links such as `/en/app/...`; the global locale middleware redirects those back to `/app/...`.
+Register product navigation and route policy in `app/features/product-shell/config.ts` before adding sidebar links or new `/app/**` route entries. Use `ProductRouteMode` values `workspace`, `docs`, or `account`; set `nav: true` only for sidebar items. Do not create localized product links such as `/en/app/...`; locale middleware, auth middleware, and server middleware redirect those back to `/app/...`.
 
 ## Add A Feature Module
 
@@ -66,7 +66,7 @@ News details can pass the `article` field to generate Article JSON-LD. `Organiza
 
 ## Add Languages
 
-v0.1-core ships `zh-CN` and `en-US`. To add a language, update `SUPPORTED_LOCALES`, `SITE_LOCALE_PREFIX_MAP`, and `SITE_LANG_MAP`, then add `i18n/<locale>/index.ts` and routing/SEO tests.
+The starter ships `zh-CN` and `en-US`. To add a language, update `SUPPORTED_LOCALES` and `SITE_LOCALE_PREFIX_MAP` in `config/site.ts`, extend `SITE_LANG_MAP` and locale modules in `i18n/index.ts`, then add routing/SEO tests.
 
 Do not install `@nuxtjs/i18n` for this template. Language routing is intentionally handled by `locale.global.ts` and `useLocalePath.ts`. Public pages use URL prefixes such as `/en`; authenticated product pages stay under `/app/**` regardless of UI language.
 
@@ -80,10 +80,11 @@ To disable dark mode, keep only light tokens, set `DEFAULT_THEME_MODE` to `light
 
 The starter ships a real product flow when paired with `nuxt-modern-starter-api`:
 
-| Route            | Purpose                                                                                               |
-| ---------------- | ----------------------------------------------------------------------------------------------------- |
-| `/app/workspace` | Project list, loading/empty states, blank-project creation, and delete                                |
-| `/app/docs/:id`  | Load project by `:id` (project id), resolve `documentId`, then load/save editor content with autosave |
+| Route            | Layout    | Purpose                                                                                               |
+| ---------------- | --------- | ----------------------------------------------------------------------------------------------------- |
+| `/app/workspace` | `product` | Project list, loading/empty states, blank-project creation, delete, and navigation into the editor    |
+| `/app/docs/:id`  | `editor`  | Load project by `:id` (project id), resolve `documentId`, then load/save editor content with autosave |
+| `/app/account`   | `product` | Session details, profile payload, and logout                                                          |
 
 API boundaries:
 
@@ -95,6 +96,7 @@ API boundaries:
 Current UI scope:
 
 - Only the blank-project card and the primary create button call `POST /api/projects`. AI/import cards are visual placeholders with no backend wiring yet.
+- Creating a blank project refreshes the list and navigates directly to `/app/docs/:id`.
 - Search and segmented filters are UI-only; project listing always calls `GET /api/projects` without query parameters.
 - Project cards link to the editor through `getWorkspaceDocPath()`. `slideCount` currently comes from project metadata and is not recalculated from document content.
 
@@ -111,11 +113,14 @@ Local full-stack defaults:
 - API gateway: `http://localhost:2026/api`
 - Backend `CORS_ORIGINS` must include `http://localhost:3000`
 
+For Docker and Nginx deployment validation, see `docs/deployment.md`.
+
 ## Auth Extension Contract
 
 Auth is implemented as an opt-in Bearer Token module for the current application API.
 
 - Backend endpoints use the `/api` prefix and return the standard `{ code, message, data }` envelope. Auth calls use `app/apis/auth/index.ts` through `createAuthApiClient()`, and stores/pages consume token, user, and profile payloads from `data`.
+- Endpoint paths are centralized in `config/auth.ts`: `/register`, `/login`, `/refresh`, `/logout`, `/me`, and `/me/profile`.
 - `POST /api/register` creates an account but does not log the user in. The register page redirects users to login after success.
 - `POST /api/login` and `POST /api/refresh` return `token` or `accessToken`, plus `refreshToken`. Tokens are stored in JS-readable Nuxt cookies for client-side product workflows.
 - `createAuthApiClient()` and `createProductApiClient()` may attach the access token for authenticated business requests. `createEditorApiClient()` delegates to the product client. A 401 triggers a single-flight `POST /api/refresh` and retries the failed request once; refresh failure clears the local session.
@@ -125,26 +130,3 @@ Auth is implemented as an opt-in Bearer Token module for the current application
 - Protected routes opt in with `definePageMeta({ middleware: 'auth' })`. Optional `route.meta.auth.roles` and `route.meta.auth.permissions` are already checked by the middleware.
 - The backend currently has no RBAC fields in JWT or `/api/me`. Frontend roles and permissions default to empty arrays and should be populated in `normalizeAuthUser()` once the backend contract adds them.
 - Development and production both use `NUXT_PUBLIC_API_BASE` to call the backend directly. Configure CORS on the backend or gateway when the API origin differs from the frontend origin.
-
-## Docker Deployment
-
-Docker files live under `docker/`: production and development Dockerfiles, shared Compose base, environment-specific Compose overrides, and `docker/nginx/gateway.docker.conf`.
-
-- Build a local production image with `pnpm docker:build`.
-- Start production Compose with `pnpm docker:up`; it reads `.env.prod` and exposes the Nginx gateway on `GATEWAY_HOST_PORT` or `3000`.
-- Start development Compose with `pnpm docker:up:dev`; it reads `.env.dev`, bind-mounts the repository, and proxies through the same gateway config.
-
-## Out of Scope
-
-Analytics, CMS, payment, membership, uploads, more languages, Playwright E2E, and remote CI are not part of v0.1-core. Add them as project-specific modules after the starter core is stable.
-
-## Cuttable Modules
-
-- Remove i18n: delete `i18n`, `app/plugins/i18n.ts`, `app/middleware/locale.global.ts`, `app/stores/language.ts`, and simplify pages from `[[language]]`.
-- Remove Pinia: delete `app/stores`, remove `@pinia/nuxt`, and replace store usage with local state.
-- Remove Ant Design Vue: remove `@ant-design-vue/nuxt`, `ant-design-vue`, `a-config-provider`, and Ant components.
-- Remove Docker/Nginx: delete `.dockerignore`, `docker/`, and docker scripts.
-- Remove news examples: delete `config/content/news.ts`, news pages, and related sitemap entries.
-- Remove editor feature: delete `app/features/editor`, `app/apis/editor`, `app/pages/app/docs/[id].vue`, and editor-specific tests.
-
-After cutting modules, run `pnpm lint`, `pnpm stylelint`, `pnpm typecheck`, `pnpm test`, and `pnpm build`.

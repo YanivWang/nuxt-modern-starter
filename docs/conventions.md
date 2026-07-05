@@ -5,6 +5,8 @@
 - `runtimeConfig`: deployment-time values such as API hosts, environment, and public site URL.
 - `app/app.config.ts`: UI-level app defaults such as brand text, layout switches, and default theme mode.
 - `config/site.ts`: site metadata, supported locales, navigation, and public page base paths.
+- `config/auth.ts`: auth endpoint paths, cookie keys, token max ages, and auth route meta types.
+- `config/routes.ts`: public/product path helpers and route rule sources for prerender, SWR, and CSR.
 - `config/theme.ts`: TypeScript design tokens and Ant Design Vue token mapping.
 - `app/assets/styles/tokens.scss`: CSS variables consumed by Vue components and pages.
 
@@ -26,7 +28,7 @@ Use `app/features/<feature>/index.ts` as the feature public surface. Other featu
 
 ## Ant Design Vue
 
-v0.1-core uses `@ant-design-vue/nuxt` with `extractStyle: true`.
+The starter uses `@ant-design-vue/nuxt` with `extractStyle: true`.
 
 The active token mapping is in `config/theme.ts` and covers `colorPrimary`, `colorBgBase`, `colorTextBase`, `borderRadius`, and `fontFamily`.
 
@@ -45,7 +47,7 @@ Requests are split by responsibility:
 - `createAuthApiClient()` is the default for login, register, refresh, logout, `/me`, and profile requests.
 - `createProductApiClient()` is the default factory for authenticated workspace/project workflows. Feature adapters such as `fetchWorkspaceProjects()`, `createWorkspaceProject()`, `fetchWorkspaceProject()`, and `deleteWorkspaceProject()` should call it instead of pages calling raw URLs. Use `getWorkspaceDocPath(projectId)` for editor links.
 - `createEditorApiClient()` is the default factory for authenticated editor document workflows. It delegates to the shared product client so refresh behavior stays consistent. Document adapters live in `app/apis/editor/document.ts`.
-- `app/apis/public`, `app/apis/auth`, `app/apis/product`, and `app/apis/editor` expose business functions. Pages should not scatter raw backend URLs.
+- `app/apis/public`, `app/apis/auth`, `app/apis/product`, and `app/apis/editor` expose business functions or client factories. Pages should not scatter raw backend URLs.
 
 Scenario clients decide their own headers. Public clients only keep request metadata such as `accept-language` and `x-request-id`; authenticated clients add Bearer tokens explicitly. Logs redact `authorization` and `cookie`.
 

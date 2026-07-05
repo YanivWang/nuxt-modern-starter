@@ -13,7 +13,7 @@ const quickStartSteps = computed(() =>
   quickStartStepKeys.map((key) => t(`help.quickStart.steps.${key}`))
 )
 
-const resourceKeys = ['architecture', 'usage', 'deployment'] as const
+const resourceKeys = ['architecture', 'usage', 'conventions', 'deployment'] as const
 
 const resources = computed(() => resourceKeys.map((key) => t(`help.resources.${key}`)))
 

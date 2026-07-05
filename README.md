@@ -38,31 +38,27 @@ pnpm test
 pnpm build
 ```
 
-## Delivery Scope
-
-`v0.1-alpha` focuses on local dev/build and the main starter flow.
-
-Full `v0.1-core` includes complete quality gates plus Docker build/run and Nginx reverse-proxy validation. Playwright E2E and remote CI are intentionally out of scope for v0.1.
-
 ## Core Features
 
 - Nuxt 4, TypeScript, pnpm, Pinia, Ant Design Vue, SCSS, and `vue-i18n`.
 - Default-language routes without a prefix and English routes under `/en`.
 - Shared `useLocalePath`, `usePageSeo`, `useTheme`, and scenario-specific API clients.
-- Separate public SEO routes and logged-in `/app/**` product routes, with product routes rendered as CSR by default.
-- Feature-first product modules under `app/features/*` for complex editor, document, workspace, or SaaS workflows.
+- Hybrid rendering: SSR for public pages, prerender for selected marketing routes, SWR for news, and CSR for `/app/**` product routes.
+- Separate public SEO routes and logged-in `/app/**` product routes. Product URLs stay language-neutral; `/en/app/**` redirects to `/app/**`.
+- Feature-first product modules under `app/features/*` for workspace, editor, product shell, and future SaaS workflows.
 - Opt-in Bearer Token auth module with login, register, logout, product account, and protected-route examples.
 - Product workspace at `/app/workspace`: list, create, and delete projects via `nuxt-modern-starter-api` (`GET/POST/DELETE /api/projects`).
 - Editor at `/app/docs/:id` (`:id` is the project id): resolves `documentId`, loads content with `GET /api/documents/:documentId`, and autosaves with `PATCH /api/documents/:documentId` through `@yanivjs/yaniv-editor`.
+- Product account at `/app/account`: session details, profile payload, and logout.
 - Authenticated business responses use the shared `{ code, message, data }` envelope.
-- Public pages for home, pricing, help, news list, news detail, and 404.
+- Public pages for home, pricing, help, news list, news detail, login, register, and 404.
 - Canonical, hreflang, OG metadata, noindex handling, and Article JSON-LD.
-- Docker image and Nginx reverse-proxy sample for Nitro node-server.
+- Docker image, Compose samples, and Nginx reverse-proxy sample for Nitro node-server.
 
 ## Documentation
 
-- `docs/architecture.md`: directory responsibilities and runtime flow.
-- `docs/usage.md`: adding pages, requests, SEO, languages, themes, and optional auth.
+- `docs/architecture.md`: directory responsibilities, rendering strategy, and runtime flow.
+- `docs/usage.md`: adding pages, requests, SEO, languages, themes, workspace/editor, and auth.
 - `docs/conventions.md`: config boundaries, tokens, request, test, safety, and accessibility conventions.
 - `docs/deployment.md`: local, Docker, Nginx deployment, and full-stack API pairing validation.
 
@@ -78,9 +74,12 @@ pnpm build:test
 pnpm build:prod
 pnpm preview
 pnpm lint
+pnpm format
+pnpm format:check
 pnpm stylelint
 pnpm typecheck
 pnpm test
+pnpm test:watch
 pnpm docker:build
 pnpm docker:run
 pnpm docker:up
@@ -99,7 +98,7 @@ Environment files follow the Nuxt `--dotenv` convention:
 
 Keep real secrets out of committed env files. Runtime deployments should still inject final `NUXT_*` values from the platform, container, or process manager.
 
-## Full v0.1-core Verification
+## Verification
 
 Run the full local quality gate:
 
@@ -119,4 +118,4 @@ pnpm docker:build
 pnpm docker:run
 ```
 
-For Nginx, run a reverse proxy with `docker/nginx/gateway.docker.conf` pointing at the Nuxt node-server and verify `/_nuxt/` responses include the long-cache rule. This Docker/Nginx validation is part of full `v0.1-core` and is not included in the 30-minute quick-start target.
+For Nginx, run a reverse proxy with `docker/nginx/gateway.docker.conf` pointing at the Nuxt node-server and verify `/_nuxt/` responses include the long-cache rule. This Docker/Nginx validation is not included in the 30-minute quick-start target.
