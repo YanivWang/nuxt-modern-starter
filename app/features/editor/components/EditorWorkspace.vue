@@ -4,12 +4,18 @@ import { useI18n } from 'vue-i18n'
 import { YanivEditor } from '@yanivjs/yaniv-editor'
 import '@yanivjs/yaniv-editor/style.css'
 import { fetchEditorDocument, saveEditorDocument } from '../../../apis/editor'
+import type { WorkspaceProject } from '../../workspace/api'
+import { ArrowLeftOutlined } from '~/utils/antdIcon'
+
+type EditorProjectContext = Pick<WorkspaceProject, 'id' | 'title'>
 
 const props = defineProps<{
   documentId?: string | null
+  project?: EditorProjectContext | null
 }>()
 
 const { t } = useI18n()
+const { localePath } = useLocalePath()
 const content = ref('')
 const saving = ref(false)
 
@@ -31,6 +37,10 @@ watch(
     content.value = nextDocument?.content ?? ''
   },
   { immediate: true }
+)
+
+const displayTitle = computed(
+  () => props.project?.title || document.value?.title || t('editor.title')
 )
 
 const handleSave = async () => {
@@ -58,17 +68,22 @@ const handleSave = async () => {
 <template>
   <div class="editor-workspace">
     <header class="editor-workspace__header">
-      <p class="editor-workspace__eyebrow">{{ $t('editor.eyebrow') }}</p>
-      <h1 class="editor-workspace__title">{{ document?.title || $t('editor.title') }}</h1>
-      <a-button
-        v-if="documentId"
-        type="primary"
-        :loading="saving"
-        class="editor-workspace__save"
-        @click="handleSave"
-      >
-        {{ $t('workspace.save') }}
-      </a-button>
+      <div class="editor-workspace__header-start">
+        <NuxtLink class="editor-workspace__back" :to="localePath('/app/workspace')">
+          <ArrowLeftOutlined aria-hidden="true" />
+          <span>{{ $t('workspace.backToWorkspace') }}</span>
+        </NuxtLink>
+        <div>
+          <p class="editor-workspace__eyebrow">{{ $t('editor.eyebrow') }}</p>
+          <h1 class="editor-workspace__title">{{ displayTitle }}</h1>
+        </div>
+      </div>
+
+      <div class="editor-workspace__actions">
+        <a-button v-if="documentId" type="primary" :loading="saving" @click="handleSave">
+          {{ $t('workspace.save') }}
+        </a-button>
+      </div>
     </header>
 
     <div class="editor-workspace__surface">
@@ -76,7 +91,12 @@ const handleSave = async () => {
         <a-spin />
       </div>
       <ClientOnly v-else>
-        <YanivEditor v-model="content" :placeholder="$t('editor.placeholder')" />
+        <YanivEditor
+          v-model="content"
+          preset="full"
+          mode="edit"
+          :placeholder="$t('editor.placeholder')"
+        />
         <template #fallback>
           <div class="editor-workspace__loading">
             <a-spin />
@@ -92,7 +112,7 @@ const handleSave = async () => {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  padding: clamp(20px, 4vw, 32px);
+  padding: clamp(16px, 3vw, 24px);
   background:
     radial-gradient(circle at 18% 18%, rgb(22 119 255 / 10%), transparent 34%), var(--app-color-bg);
 }
@@ -106,7 +126,37 @@ const handleSave = async () => {
   margin-bottom: 20px;
 }
 
-.editor-workspace__save {
+.editor-workspace__header-start {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  min-width: 0;
+}
+
+.editor-workspace__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  margin-top: 4px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  color: var(--app-color-muted);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: rgb(15 23 42 / 4%);
+    color: var(--app-color-text);
+  }
+}
+
+.editor-workspace__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   flex-shrink: 0;
 }
 
@@ -141,5 +191,15 @@ const handleSave = async () => {
   flex: 1;
   align-items: center;
   justify-content: center;
+}
+
+@media (width <= 720px) {
+  .editor-workspace__header {
+    flex-direction: column;
+  }
+
+  .editor-workspace__back span {
+    display: none;
+  }
 }
 </style>

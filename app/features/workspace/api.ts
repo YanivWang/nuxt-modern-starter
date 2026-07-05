@@ -14,8 +14,6 @@ export type WorkspaceProject = {
   slideCount: number
   status: WorkspaceProjectStatus
   accent: WorkspaceProjectAccent
-  editPath: string
-  previewPath: string
 }
 
 export type CreateWorkspaceProjectPayload = {
@@ -30,6 +28,8 @@ export type WorkspaceDocument = {
   content: string
   updatedAt: string
 }
+
+export const getWorkspaceDocPath = (id: string) => `/app/docs/${id}`
 
 export const fetchWorkspaceProjects = () =>
   createProductApiClient().request<ApiResponse<{ projects: WorkspaceProject[] }>>('/projects', {

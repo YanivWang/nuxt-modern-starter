@@ -5,10 +5,8 @@ import { describe, expect, it } from 'vitest'
 const projectRoot = resolve(__dirname, '../..')
 const productPageFiles = [
   'app/pages/app/account.vue',
-  'app/pages/app/editor.vue',
-  'app/pages/app/workspace/index.vue',
-  'app/pages/app/workspace/[projectId]/edit.vue',
-  'app/pages/app/workspace/[projectId]/preview.vue'
+  'app/pages/app/docs/[id].vue',
+  'app/pages/app/workspace/index.vue'
 ]
 
 describe('page directory boundaries', () => {

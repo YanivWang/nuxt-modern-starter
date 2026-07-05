@@ -42,6 +42,11 @@ describe('locale routing decisions', () => {
       path: '/app/workspace/deck-1/edit',
       redirectCode: 301
     })
+    expect(resolveLocaleRouteDecision('/en/app/docs/deck-1')).toEqual({
+      type: 'redirect',
+      path: '/app/docs/deck-1',
+      redirectCode: 301
+    })
   })
 
   it('returns a 404 decision for unsupported language prefixes', () => {

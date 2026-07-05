@@ -17,6 +17,7 @@ describe('product route boundaries', () => {
     expect(localizedProductPathToCanonical('/zh/app/workspace/deck-1/edit')).toBe(
       '/app/workspace/deck-1/edit'
     )
+    expect(localizedProductPathToCanonical('/zh/app/docs/deck-1')).toBe('/app/docs/deck-1')
     expect(localizedProductPathToCanonical('/app/workspace')).toBeNull()
     expect(localizedProductPathToCanonical('/en/pricing')).toBeNull()
   })

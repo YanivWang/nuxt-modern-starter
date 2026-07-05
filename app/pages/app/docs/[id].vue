@@ -2,22 +2,24 @@
 import { useI18n } from 'vue-i18n'
 import { getApiErrorMessage } from '~/api-core/api-error'
 import { EditorWorkspace } from '~/features/editor'
-import { fetchWorkspaceProject, type WorkspaceProject } from '~/features/workspace'
+import {
+  fetchWorkspaceProject,
+  getWorkspaceDocPath,
+  type WorkspaceProject
+} from '~/features/workspace'
 
 definePageMeta({
-  layout: 'product',
+  layout: 'editor',
   middleware: 'auth'
 })
 
 const route = useRoute()
 const languageStore = useLanguageStore()
 const { t } = useI18n()
-const projectId = Array.isArray(route.params.projectId)
-  ? route.params.projectId[0]
-  : route.params.projectId
+const id = Array.isArray(route.params.id) ? route.params.id[0] : route.params.id
 
-const { data: project, error } = await useAsyncData(`workspace-project:${projectId}`, async () => {
-  const response = await fetchWorkspaceProject(String(projectId))
+const { data: project, error } = await useAsyncData(`workspace-project:${id}`, async () => {
+  const response = await fetchWorkspaceProject(String(id))
   return response.data.project
 })
 
@@ -42,7 +44,7 @@ const resolvedProject = computed(() => project.value as WorkspaceProject)
 const editorDocumentId = computed(() => resolvedProject.value.documentId)
 
 usePageSeo({
-  path: `/app/workspace/${resolvedProject.value.id}/edit`,
+  path: getWorkspaceDocPath(resolvedProject.value.id),
   locale: languageStore.currentLanguage,
   title: `${resolvedProject.value.title} · ${t('workspace.edit')}`,
   description: resolvedProject.value.description ?? resolvedProject.value.title,
@@ -51,5 +53,5 @@ usePageSeo({
 </script>
 
 <template>
-  <EditorWorkspace :document-id="editorDocumentId" />
+  <EditorWorkspace :document-id="editorDocumentId" :project="resolvedProject" />
 </template>

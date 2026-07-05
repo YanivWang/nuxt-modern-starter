@@ -15,7 +15,7 @@ describe('locale path utilities', () => {
 
   it('does not add language prefixes to authenticated product paths', () => {
     expect(localizedPath('/app/workspace', 'en-US')).toBe('/app/workspace')
-    expect(localizedPath('/app/workspace/deck-1/edit', 'en-US')).toBe('/app/workspace/deck-1/edit')
+    expect(localizedPath('/app/docs/deck-1', 'en-US')).toBe('/app/docs/deck-1')
   })
 
   it('keeps relative path when switching language', () => {

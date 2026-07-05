@@ -7,7 +7,12 @@ import {
   ReadOutlined,
   RocketOutlined
 } from '~/utils/antdIcon'
-import { createWorkspaceProject, fetchWorkspaceProjects, type WorkspaceProject } from '../api'
+import {
+  createWorkspaceProject,
+  fetchWorkspaceProjects,
+  getWorkspaceDocPath,
+  type WorkspaceProject
+} from '../api'
 
 const { localePath } = useLocalePath()
 const router = useRouter()
@@ -69,7 +74,7 @@ const handleCreateProject = async () => {
       description: t('workspace.actions.blank.description')
     })
     await refresh()
-    await router.push(localePath(response.data.project.editPath))
+    await router.push(localePath(getWorkspaceDocPath(response.data.project.id)))
   } catch {
     message.error(t('common.error'))
   } finally {
@@ -139,7 +144,10 @@ const handleCreateProject = async () => {
         class="workspace-project"
         :class="`workspace-project--${project.accent}`"
       >
-        <NuxtLink class="workspace-project__preview" :to="localePath(project.editPath)">
+        <NuxtLink
+          class="workspace-project__preview"
+          :to="localePath(getWorkspaceDocPath(project.id))"
+        >
           <div class="workspace-project__slide">
             <span />
             <strong>{{ project.title }}</strong>
@@ -153,8 +161,9 @@ const handleCreateProject = async () => {
           <p>{{ project.updatedAt }} · {{ project.slideCount }} {{ $t('workspace.slides') }}</p>
 
           <div class="workspace-project__footer">
-            <NuxtLink :to="localePath(project.editPath)">{{ $t('workspace.edit') }}</NuxtLink>
-            <NuxtLink :to="localePath(project.previewPath)">{{ $t('workspace.preview') }}</NuxtLink>
+            <NuxtLink :to="localePath(getWorkspaceDocPath(project.id))">{{
+              $t('workspace.edit')
+            }}</NuxtLink>
           </div>
         </div>
       </article>

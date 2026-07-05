@@ -1,5 +1,6 @@
 import AntdIcon from '@ant-design/icons-vue/es/components/AntdIcon'
 import AppstoreOutlinedSvg from '@ant-design/icons-svg/es/asn/AppstoreOutlined'
+import ArrowLeftOutlinedSvg from '@ant-design/icons-svg/es/asn/ArrowLeftOutlined'
 import ArrowRightOutlinedSvg from '@ant-design/icons-svg/es/asn/ArrowRightOutlined'
 import CheckOutlinedSvg from '@ant-design/icons-svg/es/asn/CheckOutlined'
 import GlobalOutlinedSvg from '@ant-design/icons-svg/es/asn/GlobalOutlined'
@@ -23,6 +24,7 @@ export const createAntdIcon = (displayName: string, icon: IconDefinition) =>
   })
 
 export const AppstoreOutlined = createAntdIcon('AppstoreOutlined', AppstoreOutlinedSvg)
+export const ArrowLeftOutlined = createAntdIcon('ArrowLeftOutlined', ArrowLeftOutlinedSvg)
 export const ArrowRightOutlined = createAntdIcon('ArrowRightOutlined', ArrowRightOutlinedSvg)
 export const CheckOutlined = createAntdIcon('CheckOutlined', CheckOutlinedSvg)
 export const GlobalOutlined = createAntdIcon('GlobalOutlined', GlobalOutlinedSvg)
