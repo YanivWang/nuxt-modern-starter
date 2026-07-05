@@ -24,9 +24,8 @@ describe('api-core', () => {
     })
   })
 
-  it('normalizes API errors from common backend shapes', () => {
+  it('reads API errors from the standard message shape only', () => {
     expect(getApiErrorMessage({ data: { message: 'normalized' } }, 'fallback')).toBe('normalized')
-    expect(getApiErrorMessage({ data: { msg: 'backend' } }, 'fallback')).toBe('backend')
     expect(createApiFailure({ statusCode: 503, message: 'Unavailable' })).toMatchObject({
       statusCode: 503,
       message: 'Unavailable'

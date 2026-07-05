@@ -46,16 +46,20 @@ describe('auth store', () => {
     apiMocks.loginApi.mockResolvedValue({
       code: 200,
       message: 'ok',
-      accessToken: 'access-token',
-      refreshToken: 'refresh-token'
+      data: {
+        accessToken: 'access-token',
+        refreshToken: 'refresh-token'
+      }
     })
     apiMocks.fetchMeApi.mockResolvedValue({
       code: 200,
       message: 'ok',
-      user: {
-        id: 1,
-        username: 'alice',
-        nickname: 'Alice'
+      data: {
+        user: {
+          id: 1,
+          username: 'alice',
+          nickname: 'Alice'
+        }
       }
     })
 
@@ -76,8 +80,10 @@ describe('auth store', () => {
     authStore.setTokens({
       code: 200,
       message: 'ok',
-      accessToken: 'access-token',
-      refreshToken: 'refresh-token'
+      data: {
+        accessToken: 'access-token',
+        refreshToken: 'refresh-token'
+      }
     })
     authStore.user = {
       id: 1,
@@ -100,11 +106,13 @@ describe('auth store', () => {
     apiMocks.fetchMeApi.mockResolvedValue({
       code: 200,
       message: 'ok',
-      user: {
-        id: 'u_1',
-        username: 'bob',
-        roles: ['admin'],
-        permissions: ['account:read']
+      data: {
+        user: {
+          id: 'u_1',
+          username: 'bob',
+          roles: ['admin'],
+          permissions: ['account:read']
+        }
       }
     })
 
@@ -112,8 +120,10 @@ describe('auth store', () => {
     authStore.setTokens({
       code: 200,
       message: 'ok',
-      token: 'access-token',
-      refreshToken: 'refresh-token'
+      data: {
+        token: 'access-token',
+        refreshToken: 'refresh-token'
+      }
     })
 
     await authStore.fetchMe()
@@ -131,16 +141,20 @@ describe('auth store', () => {
     apiMocks.refreshApi.mockResolvedValue({
       code: 200,
       message: 'ok',
-      accessToken: 'next-access-token',
-      refreshToken: 'next-refresh-token'
+      data: {
+        accessToken: 'next-access-token',
+        refreshToken: 'next-refresh-token'
+      }
     })
 
     const authStore = useAuthStore()
     authStore.setTokens({
       code: 200,
       message: 'ok',
-      accessToken: 'access-token',
-      refreshToken: 'refresh-token'
+      data: {
+        accessToken: 'access-token',
+        refreshToken: 'refresh-token'
+      }
     })
 
     await expect(authStore.refresh()).resolves.toBe(true)
@@ -153,14 +167,16 @@ describe('auth store', () => {
   it('registers without mutating the local session', async () => {
     apiMocks.registerApi.mockResolvedValue({
       code: 200,
-      message: 'created'
+      message: 'created',
+      data: null
     })
 
     const authStore = useAuthStore()
 
     await expect(authStore.register({ username: 'alice', password: 'secret' })).resolves.toEqual({
       code: 200,
-      message: 'created'
+      message: 'created',
+      data: null
     })
 
     expect(authStore.accessToken).toBeFalsy()

@@ -6,17 +6,6 @@ export type ApiResponse<T> = {
   data: T
 }
 
-export type FlatApiResponse = {
-  code: number
-  msg?: string
-  message?: string
-}
-
-export type NormalizedFlatApiResponse<T extends FlatApiResponse> = Omit<T, 'msg' | 'message'> & {
-  code: number
-  message: string
-}
-
 export type ApiClientKind = 'public' | 'auth' | 'editor' | 'server'
 
 export type ApiRequestOptions = Omit<FetchOptions<'json'>, 'baseURL' | 'headers'> & {

@@ -28,7 +28,7 @@ const { data: profile, pending } = await useAsyncData('auth-profile', async () =
   }
 
   const response = await fetchProfileApi(authStore.accessToken)
-  return response.profile
+  return response.data.profile
 })
 
 const profileEntries = computed(() => Object.entries(profile.value || {}))

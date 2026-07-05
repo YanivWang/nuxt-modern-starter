@@ -41,7 +41,7 @@ Choose the request entrypoint by page and data ownership:
 
 All request helpers use `runtimeConfig.public.apiBase` in both SSR and browser code, so `NUXT_PUBLIC_API_BASE` should point directly to the real backend API origin, for example `https://api.example.com/api`.
 
-The app-level API contract uses `message` for human-readable status text. Generic business APIs should return `{ code, message, data }`. Backend endpoints that return a flat shape such as `{ code, msg, ...fields }` must be normalized inside their API adapter with `normalizeFlatApiResponse()` so pages, stores, and composables still consume `message`.
+The app-level API contract uses `{ code, message, data }` for every business response. `message` is the only human-readable status field, and business payloads must live under `data`.
 
 Sensitive `authorization` and `cookie` values are redacted from error logs.
 
@@ -67,9 +67,9 @@ To disable dark mode, keep only light tokens, set `DEFAULT_THEME_MODE` to `light
 
 ## Auth Extension Contract
 
-Auth is implemented as an opt-in Bearer Token module for `express-modern-starter`.
+Auth is implemented as an opt-in Bearer Token module for the current application API.
 
-- Backend endpoints use the `/api` prefix and return a flat `{ code, msg, ...fields }` envelope. Auth calls therefore use `app/apis/auth/index.ts` with `$fetch`, but that adapter normalizes `msg` to the app-level `message` field before data reaches stores or pages.
+- Backend endpoints use the `/api` prefix and return the standard `{ code, message, data }` envelope. Auth calls use `app/apis/auth/index.ts` with `$fetch`, and stores/pages consume token, user, and profile payloads from `data`.
 - `POST /api/register` creates an account but does not log the user in. The register page redirects users to login after success.
 - `POST /api/login` and `POST /api/refresh` return `token` or `accessToken`, plus `refreshToken`. Tokens are stored in JS-readable Nuxt cookies so SSR can attach `Authorization: Bearer <token>`.
 - `useApi<T>()`, `useEditorApi<T>()`, and protected auth API calls may attach the access token cookie for authenticated business requests. A 401 triggers a single-flight `POST /api/refresh` and retries the failed request once; refresh failure clears the local session.
@@ -82,7 +82,7 @@ Auth is implemented as an opt-in Bearer Token module for `express-modern-starter
 
 ## Docker Deployment
 
-Docker files follow the `express-modern-starter` layout under `docker/`: production and development Dockerfiles, shared Compose base, environment-specific Compose overrides, and `docker/nginx/gateway.docker.conf`.
+Docker files live under `docker/`: production and development Dockerfiles, shared Compose base, environment-specific Compose overrides, and `docker/nginx/gateway.docker.conf`.
 
 - Build a local production image with `pnpm docker:build`.
 - Start production Compose with `pnpm docker:up`; it reads `.env.prod` and exposes the Nginx gateway on `GATEWAY_HOST_PORT` or `3000`.

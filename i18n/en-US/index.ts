@@ -32,7 +32,7 @@ export default {
     login: {
       eyebrow: 'Account sign in',
       title: 'Log in',
-      lead: 'Sign in with an express-modern-starter account and return to the redirect target.',
+      lead: 'Sign in with your application account and return to the redirect target.',
       submit: 'Log in',
       success: 'Logged in successfully',
       noAccount: 'No account yet?'

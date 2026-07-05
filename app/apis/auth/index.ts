@@ -1,7 +1,6 @@
 import { AUTH_API_ENDPOINTS, type AuthUser, type Permission, type Role } from '../../../config/auth'
-import { normalizeFlatApiResponse } from '../../api-core/api-error'
 import { createBearerHeaders } from '../../api-core/api-headers'
-import type { FlatApiResponse, NormalizedFlatApiResponse } from '../../api-core/api-types'
+import type { ApiResponse } from '../../api-core/api-types'
 import {
   clearAuthSession,
   getRefreshTokenCookie,
@@ -9,7 +8,7 @@ import {
   tokenFromResponse
 } from '../../utils/auth-session'
 
-export type AuthEnvelope = NormalizedFlatApiResponse<FlatApiResponse>
+export type AuthEnvelope = ApiResponse<null>
 
 export type RegisterPayload = {
   username: string
@@ -18,7 +17,7 @@ export type RegisterPayload = {
 
 export type LoginPayload = RegisterPayload
 
-type BackendTokenResponse = FlatApiResponse & {
+export type TokenData = {
   token?: string
   accessToken?: string
   refreshToken: string
@@ -26,7 +25,7 @@ type BackendTokenResponse = FlatApiResponse & {
   refreshTokenExpiresIn?: number
 }
 
-export type TokenResponse = NormalizedFlatApiResponse<BackendTokenResponse>
+export type TokenResponse = ApiResponse<TokenData>
 
 export type BackendUser = {
   id: string | number
@@ -37,17 +36,17 @@ export type BackendUser = {
   permissions?: Permission[]
 }
 
-type BackendMeResponse = FlatApiResponse & {
+type MeData = {
   user: BackendUser
 }
 
-export type MeResponse = NormalizedFlatApiResponse<BackendMeResponse>
+export type MeResponse = ApiResponse<MeData>
 
-type BackendProfileResponse = FlatApiResponse & {
+type ProfileData = {
   profile: Record<string, unknown> | null
 }
 
-export type ProfileResponse = NormalizedFlatApiResponse<BackendProfileResponse>
+export type ProfileResponse = ApiResponse<ProfileData>
 
 export type UpdateProfilePayload = Record<string, string | number | boolean | null | undefined>
 
@@ -73,14 +72,14 @@ const refreshAccessToken = async () => {
 
   try {
     const response = await refreshApi(refreshToken.value)
-    const nextAccessToken = tokenFromResponse(response)
+    const nextAccessToken = tokenFromResponse(response.data)
 
     if (!nextAccessToken) {
       clearAuthSession()
       return null
     }
 
-    setAuthTokenCookies(response)
+    setAuthTokenCookies(response.data)
     return nextAccessToken
   } catch (error) {
     clearAuthSession()
@@ -96,7 +95,7 @@ export const refreshAccessTokenOnce = () => {
   return refreshPromise
 }
 
-const requestAuth = async <T extends FlatApiResponse>(
+const requestAuth = async <T>(
   path: string,
   options: {
     method?: 'GET' | 'POST' | 'PATCH'
@@ -114,9 +113,7 @@ const requestAuth = async <T extends FlatApiResponse>(
     })
 
   try {
-    const response = await send()
-
-    return normalizeFlatApiResponse(response)
+    return await send()
   } catch (error) {
     if (!options.retryOnUnauthorized || !options.accessToken || !isUnauthorizedError(error)) {
       throw error
@@ -128,9 +125,7 @@ const requestAuth = async <T extends FlatApiResponse>(
       throw error
     }
 
-    const response = await send(nextAccessToken)
-
-    return normalizeFlatApiResponse(response)
+    return await send(nextAccessToken)
   }
 }
 
@@ -144,44 +139,44 @@ export const normalizeAuthUser = (user: BackendUser): AuthUser => ({
 })
 
 export const registerApi = (payload: RegisterPayload) =>
-  requestAuth<FlatApiResponse>(AUTH_API_ENDPOINTS.register, {
+  requestAuth<AuthEnvelope>(AUTH_API_ENDPOINTS.register, {
     method: 'POST',
     body: payload
   })
 
 export const loginApi = (payload: LoginPayload) =>
-  requestAuth<BackendTokenResponse>(AUTH_API_ENDPOINTS.login, {
+  requestAuth<TokenResponse>(AUTH_API_ENDPOINTS.login, {
     method: 'POST',
     body: payload
   })
 
 export const refreshApi = (refreshToken: string) =>
-  requestAuth<BackendTokenResponse>(AUTH_API_ENDPOINTS.refresh, {
+  requestAuth<TokenResponse>(AUTH_API_ENDPOINTS.refresh, {
     method: 'POST',
     body: { refreshToken }
   })
 
 export const logoutApi = (accessToken: string | null, refreshToken: string | null) =>
-  requestAuth<FlatApiResponse>(AUTH_API_ENDPOINTS.logout, {
+  requestAuth<AuthEnvelope>(AUTH_API_ENDPOINTS.logout, {
     method: 'POST',
     accessToken,
     body: { refreshToken }
   })
 
 export const fetchMeApi = (accessToken: string) =>
-  requestAuth<BackendMeResponse>(AUTH_API_ENDPOINTS.me, {
+  requestAuth<MeResponse>(AUTH_API_ENDPOINTS.me, {
     accessToken,
     retryOnUnauthorized: true
   })
 
 export const fetchProfileApi = (accessToken: string) =>
-  requestAuth<BackendProfileResponse>(AUTH_API_ENDPOINTS.profile, {
+  requestAuth<ProfileResponse>(AUTH_API_ENDPOINTS.profile, {
     accessToken,
     retryOnUnauthorized: true
   })
 
 export const updateProfileApi = (accessToken: string, payload: UpdateProfilePayload) =>
-  requestAuth<BackendProfileResponse>(AUTH_API_ENDPOINTS.profile, {
+  requestAuth<ProfileResponse>(AUTH_API_ENDPOINTS.profile, {
     method: 'PATCH',
     accessToken,
     body: payload,

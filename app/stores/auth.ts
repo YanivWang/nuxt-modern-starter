@@ -30,13 +30,13 @@ export const useAuthStore = defineStore('auth', () => {
     Boolean(user.value?.permissions.includes(permission))
 
   const setTokens = (response: TokenResponse) => {
-    const nextAccessToken = tokenFromResponse(response)
+    const nextAccessToken = tokenFromResponse(response.data)
 
     if (nextAccessToken) {
       accessToken.value = nextAccessToken
     }
 
-    refreshToken.value = response.refreshToken
+    refreshToken.value = response.data.refreshToken
   }
 
   const reset = () => {
@@ -56,7 +56,7 @@ export const useAuthStore = defineStore('auth', () => {
     }
 
     const response = await fetchMeApi(accessToken.value)
-    user.value = normalizeAuthUser(response.user)
+    user.value = normalizeAuthUser(response.data.user)
     status.value = 'authenticated'
     return user.value
   }

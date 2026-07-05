@@ -29,7 +29,7 @@ Pages call `usePageSeo` for canonical, alternate, OG, and noindex behavior. Publ
 Business requests use the app-level `{ code, message, data }` contract through scenario-specific API entrypoints:
 
 - Public SEO/content pages use `app/apis/public/*` and `usePublicApi` when a backend request is needed. These requests are token-free by default so they remain compatible with SSR, prerender, SWR, and CDN caching.
-- Auth requests use `app/apis/auth`. The adapter currently targets `express-modern-starter`, whose backend responses are flat `{ code, msg, ...fields }`; the adapter normalizes those responses at the boundary so pages and stores still consume `message`.
+- Auth requests use `app/apis/auth`. The adapter targets the current application API contract directly: `{ code, message, data }`; pages and stores read business payloads from `data`.
 - Editor and other logged-in product workflows live under `/app/**`, use feature modules such as `app/features/editor`, and call `app/apis/editor/*` or `useEditorApi` for authenticated requests. These requests may attach Bearer tokens and retry once after a single-flight refresh.
 
 Page components should call domain adapters such as `getNewsArticles()` or `saveEditorDocument()`, not raw backend URLs. This keeps backend contract changes localized to `app/apis/*`.

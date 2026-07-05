@@ -31,7 +31,7 @@ export default {
     login: {
       eyebrow: '账户登录',
       title: '登录',
-      lead: '使用 express-modern-starter 账户登录，登录后会按 redirect 参数回到原页面。',
+      lead: '使用当前应用账户登录，登录后会按 redirect 参数回到原页面。',
       submit: '登录',
       success: '登录成功',
       noAccount: '还没有账户？'
