@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { message } from 'ant-design-vue'
 import { useI18n } from 'vue-i18n'
-import { fetchProfileApi } from '../../apis/auth'
+import { fetchProfileApi } from '../../../apis/auth'
 
 definePageMeta({
+  layout: 'product',
   middleware: 'auth'
 })
 
@@ -14,7 +15,7 @@ const { localePath } = useLocalePath()
 const { authStore, logout } = useAuth()
 
 usePageSeo({
-  path: '/account',
+  path: '/app/account',
   locale: languageStore.currentLanguage,
   title: t('auth.account.title'),
   description: t('auth.account.lead'),

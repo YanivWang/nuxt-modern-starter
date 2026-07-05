@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { message } from 'ant-design-vue'
 import { useI18n } from 'vue-i18n'
-import { getApiErrorMessage } from '../../utils/api-contract'
+import { getApiErrorMessage } from '../../api-core/api-error'
 
 const router = useRouter()
 const languageStore = useLanguageStore()

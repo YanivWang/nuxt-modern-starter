@@ -1,5 +1,5 @@
 import { defineNuxtConfig } from 'nuxt/config'
-import { prerenderRoutes, swrRouteRules } from './config/routes'
+import { csrRouteRules, prerenderRoutes, swrRouteRules } from './config/routes'
 
 const isTest = process.env.NODE_ENV === 'test' || process.env.VITEST
 
@@ -32,12 +32,11 @@ export default defineNuxtConfig({
   // - 未单独配置的路由：默认 SSR
   // - prerenderRoutes：构建时生成静态 HTML
   // - swrRouteRules：SSR 结果缓存，并通过 stale-while-revalidate 后台刷新
-  // - /editor：仅客户端渲染，因为编辑器功能依赖浏览器 API
+  // - csrRouteRules：登录后的产品区仅客户端渲染，适合编辑器、账户中心等强交互页面
   routeRules: {
     ...Object.fromEntries(prerenderRoutes.map((route) => [route, { prerender: true }])),
     ...Object.fromEntries(swrRouteRules.map((route) => [route, { swr: 3600 }])),
-    '/editor': { ssr: false },
-    '/en/editor': { ssr: false },
+    ...Object.fromEntries(csrRouteRules.map((route) => [route, { ssr: false }])),
     '/**': {
       headers: {
         'x-content-type-options': 'nosniff',

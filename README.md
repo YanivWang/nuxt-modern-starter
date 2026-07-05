@@ -46,7 +46,9 @@ Full `v0.1-core` includes complete quality gates plus Docker build/run and Nginx
 - Nuxt 4, TypeScript, pnpm, Pinia, Ant Design Vue, SCSS, and `vue-i18n`.
 - Default-language routes without a prefix and English routes under `/en`.
 - Shared `useApi`, `useLocalePath`, `usePageSeo`, and `useTheme` composables.
-- Opt-in Bearer Token auth module with login, register, logout, account, and protected-route examples.
+- Separate public SEO routes and logged-in `/app/**` product routes, with product routes rendered as CSR by default.
+- Feature-first product modules under `app/features/*` for complex editor, document, workspace, or SaaS workflows.
+- Opt-in Bearer Token auth module with login, register, logout, product account, and protected-route examples.
 - Public pages for home, pricing, help, news list, news detail, and 404.
 - Canonical, hreflang, OG metadata, noindex handling, and Article JSON-LD.
 - Docker image and Nginx reverse-proxy sample for Nitro node-server.

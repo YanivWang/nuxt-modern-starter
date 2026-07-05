@@ -1,9 +1,8 @@
 import type { UseFetchOptions } from 'nuxt/app'
-import type { ApiClientKind } from '../api-core/api-types'
+import type { ApiClientKind, ApiResponse } from '../api-core/api-types'
 import { createBearerHeaders, createHeaders, sanitizeHeaders } from '../api-core/api-headers'
 import { createApiFailure, isUnauthorizedError } from '../api-core/api-error'
 import { refreshAccessTokenOnce } from '../apis/auth'
-import type { ApiResponse } from '../utils/api-contract'
 import { getAuthToken } from '../utils/auth-session'
 
 export type ApiError = {

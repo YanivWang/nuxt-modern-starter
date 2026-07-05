@@ -2,9 +2,33 @@
 
 ## Add a Page
 
-Create the page under `app/pages/[[language]]`. Use `localePath()` for internal links and call `usePageSeo()` with the unprefixed canonical path.
+Create public SEO pages directly under `app/pages/[[language]]`. Use `localePath()` for internal links and call `usePageSeo()` with the unprefixed canonical path.
 
 When a page should be public, add its base path to `PUBLIC_PAGE_PATHS` in `config/site.ts`. If it needs prerendering or SWR behavior, update `config/routes.ts` so routeRules and hreflang remain synchronized.
+
+Create logged-in product pages under `app/pages/[[language]]/app`. Product pages should set the product or editor layout, opt in to auth middleware when required, set `noindex`, and mount a feature component from `app/features/*`.
+
+Do not add product pages such as account, documents, editor, templates, workspace, billing, or settings beside public marketing pages. Product routes are client-rendered by default through `csrRouteRules` in `config/routes.ts`.
+
+## Add A Feature Module
+
+Create complex product behavior under `app/features/<feature>`.
+
+```txt
+app/features/editor/
+  components/
+  composables/
+  stores/
+  api/
+  types/
+  constants/
+  utils/
+  index.ts
+```
+
+Use the feature `index.ts` as the public export surface. Nuxt pages and other features should import from `app/features/<feature>` instead of importing internal files from another feature.
+
+Keep top-level `app/components`, `app/composables`, and `app/stores` for shared primitives only.
 
 ## Add Requests
 
@@ -12,7 +36,7 @@ Choose the request entrypoint by page and data ownership:
 
 - Public SEO, marketing, help, pricing, news, and docs data belongs in `app/apis/public/*`. Use local typed content there, or call `usePublicApi<T>()` for token-free backend requests.
 - Login, register, refresh, logout, `/me`, and profile requests belong in `app/apis/auth`.
-- Editor document, asset, export, and collaboration requests belong in `app/apis/editor/*` and should call `useEditorApi<T>()`.
+- Editor document, asset, export, and collaboration requests belong in `app/apis/editor/*` or `app/features/editor/api` and should call `useEditorApi<T>()`.
 - `useApi<T>()` and `useApiPost<T>()` remain available as a generic authenticated business entry, but new pages should prefer a named domain adapter.
 
 All request helpers use `runtimeConfig.public.apiBase` in both SSR and browser code, so `NUXT_PUBLIC_API_BASE` should point directly to the real backend API origin, for example `https://api.example.com/api`.
@@ -75,6 +99,6 @@ Analytics, CMS, payment, membership, uploads, more languages, Playwright E2E, an
 - Remove Ant Design Vue: remove `@ant-design-vue/nuxt`, `ant-design-vue`, `a-config-provider`, and Ant components.
 - Remove Docker/Nginx: delete `.dockerignore`, `docker/`, and docker scripts.
 - Remove news examples: delete `config/content/news.ts`, news pages, and related sitemap entries.
-- Remove editor APIs: delete `app/apis/editor`, `app/composables/useEditorApi.ts`, and editor-specific tests after removing the editor route.
+- Remove editor feature: delete `app/features/editor`, `app/apis/editor`, `app/composables/useEditorApi.ts`, product editor pages under `app/pages/[[language]]/app`, and editor-specific tests.
 
 After cutting modules, run `pnpm lint`, `pnpm stylelint`, `pnpm typecheck`, `pnpm test`, and `pnpm build`.

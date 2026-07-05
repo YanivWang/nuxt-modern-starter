@@ -28,7 +28,7 @@
           <template #overlay>
             <a-menu>
               <a-menu-item key="account">
-                <NuxtLink :to="localePath('/account')">{{ $t('auth.account.title') }}</NuxtLink>
+                <NuxtLink :to="localePath('/app/account')">{{ $t('auth.account.title') }}</NuxtLink>
               </a-menu-item>
               <a-menu-item key="logout">
                 <button class="app-header__menu-button" type="button" @click="handleLogout">

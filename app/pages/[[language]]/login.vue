@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { message } from 'ant-design-vue'
 import { useI18n } from 'vue-i18n'
-import { getApiErrorMessage } from '../../utils/api-contract'
+import { getApiErrorMessage } from '../../api-core/api-error'
 
 const route = useRoute()
 const router = useRouter()
@@ -25,7 +25,7 @@ usePageSeo({
 })
 
 const redirectTarget = computed(() =>
-  typeof route.query.redirect === 'string' ? route.query.redirect : localePath('/account')
+  typeof route.query.redirect === 'string' ? route.query.redirect : localePath('/app/account')
 )
 
 const handleSubmit = async () => {

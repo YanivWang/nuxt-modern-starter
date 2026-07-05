@@ -7,15 +7,15 @@ import {
 
 describe('auth middleware decisions', () => {
   it('redirects unauthenticated users to login with the original path', () => {
-    expect(buildAuthLoginRedirect('/login', '/account?tab=profile')).toEqual({
+    expect(buildAuthLoginRedirect('/login', '/app/account?tab=profile')).toEqual({
       path: '/login',
       query: {
-        redirect: '/account?tab=profile'
+        redirect: '/app/account?tab=profile'
       }
     })
 
     expect(
-      resolveAuthMiddlewareDecision(false, '/login', '/account?tab=profile', undefined, {
+      resolveAuthMiddlewareDecision(false, '/login', '/app/account?tab=profile', undefined, {
         hasRole: () => false,
         can: () => false
       })
@@ -24,7 +24,7 @@ describe('auth middleware decisions', () => {
       location: {
         path: '/login',
         query: {
-          redirect: '/account?tab=profile'
+          redirect: '/app/account?tab=profile'
         }
       }
     })
@@ -72,7 +72,7 @@ describe('auth middleware decisions', () => {
       resolveAuthMiddlewareDecision(
         true,
         '/login',
-        '/account',
+        '/app/account',
         {
           permissions: ['account:write']
         },

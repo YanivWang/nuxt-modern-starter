@@ -14,6 +14,16 @@
 
 Use PascalCase for Vue components, `use*` for composables, and typed named exports from `config`. Pages should assemble content and call shared helpers; they should not duplicate locale prefix, SEO URL, or API base URL logic.
 
+## Page And Feature Boundaries
+
+Public SEO routes live directly under `app/pages/[[language]]`. Logged-in product routes live under `app/pages/[[language]]/app`; do not add new product pages such as editor, account, documents, templates, billing, or settings at the same level as public marketing pages.
+
+Nuxt page files are route entries only. Keep them focused on `definePageMeta`, layout selection, auth middleware, SEO/noindex, route params, and mounting a feature component.
+
+Top-level `app/components`, `app/composables`, and `app/stores` are for shared framework-level primitives. Feature-specific components, composables, stores, types, constants, and utilities belong under `app/features/<feature>`.
+
+Use `app/features/<feature>/index.ts` as the feature public surface. Other features should import from that index instead of reaching into another feature's internal folders.
+
 ## Ant Design Vue
 
 v0.1-core uses `@ant-design-vue/nuxt` with `extractStyle: true`. The frozen fallback standard is manual plugin installation plus `ConfigProvider` token injection if the module blocks install, SSR style extraction, build, types, or token mapping.
@@ -31,7 +41,7 @@ Requests are split by responsibility:
 - `app/api-core` owns common request types, header helpers, error normalization, log redaction, and typed `$fetch` client creation.
 - `usePublicApi` is the default for public SEO/content data. It does not attach Bearer tokens and does not refresh sessions.
 - `useEditorApi` is the default for logged-in editor/product workflows. It may attach the access token and retry once after a refresh.
-- `useApi` remains the generic authenticated business request entry for compatibility, but new domain APIs should prefer a clearer public/auth/editor adapter.
+- `useApi` is the generic authenticated business request entry. New domain APIs should prefer a clearer public/auth/editor adapter when the scenario is known.
 - `app/apis/public`, `app/apis/auth`, and `app/apis/editor` expose business functions. Pages should not scatter raw backend URLs.
 
 The stable key format is `api:<kind>:<method>:<path>:<body>`, and callers should pass a custom `key` only when they also keep all conflicting `useFetch` options consistent for that key.
@@ -39,6 +49,8 @@ The stable key format is `api:<kind>:<method>:<path>:<body>`, and callers should
 Server-side external API header forwarding is allowlisted to `cookie`, `authorization`, `x-request-id`, and `accept-language`. Logs redact `authorization` and `cookie`.
 
 Public adapters must not read token cookies or call refresh endpoints. If a public page needs personalized data, put that personalized request behind a client-only authenticated component so the SEO HTML remains cache-safe.
+
+Product routes under `/app/**` are client-rendered by default through `csrRouteRules` in `config/routes.ts`. Public SEO routes and product CSR routes must stay in separate route lists.
 
 ## Tests
 

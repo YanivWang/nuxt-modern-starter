@@ -1,35 +1,22 @@
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n'
 import { YanivEditor } from '@yanivjs/yaniv-editor'
 import '@yanivjs/yaniv-editor/style.css'
-import { SITE_NAME } from '../../../config/site'
 
-definePageMeta({
-  layout: 'empty',
-  middleware: 'auth'
-})
-
-const { t } = useI18n()
 const content = ref('')
-
-useHead({
-  title: computed(() => `${t('editor.metaTitle')} · ${SITE_NAME}`),
-  meta: [{ name: 'robots', content: 'noindex,nofollow' }]
-})
 </script>
 
 <template>
-  <div class="editor-page">
-    <header class="editor-page__header">
-      <p class="editor-page__eyebrow">{{ $t('editor.eyebrow') }}</p>
-      <h1 class="editor-page__title">{{ $t('editor.title') }}</h1>
+  <div class="editor-workspace">
+    <header class="editor-workspace__header">
+      <p class="editor-workspace__eyebrow">{{ $t('editor.eyebrow') }}</p>
+      <h1 class="editor-workspace__title">{{ $t('editor.title') }}</h1>
     </header>
 
-    <div class="editor-page__surface">
+    <div class="editor-workspace__surface">
       <ClientOnly>
         <YanivEditor v-model="content" :placeholder="$t('editor.placeholder')" />
         <template #fallback>
-          <div class="editor-page__loading">
+          <div class="editor-workspace__loading">
             <a-spin />
           </div>
         </template>
@@ -39,7 +26,7 @@ useHead({
 </template>
 
 <style scoped lang="scss">
-.editor-page {
+.editor-workspace {
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -48,12 +35,12 @@ useHead({
     radial-gradient(circle at 18% 18%, rgb(22 119 255 / 10%), transparent 34%), var(--app-color-bg);
 }
 
-.editor-page__header {
+.editor-workspace__header {
   flex-shrink: 0;
   margin-bottom: 20px;
 }
 
-.editor-page__eyebrow {
+.editor-workspace__eyebrow {
   margin: 0 0 8px;
   color: var(--app-color-primary);
   font-size: 12px;
@@ -62,13 +49,13 @@ useHead({
   text-transform: uppercase;
 }
 
-.editor-page__title {
+.editor-workspace__title {
   margin: 0;
   font-size: clamp(22px, 3vw, 28px);
   letter-spacing: -0.03em;
 }
 
-.editor-page__surface {
+.editor-workspace__surface {
   display: flex;
   flex: 1;
   min-height: 0;
@@ -79,7 +66,7 @@ useHead({
   box-shadow: 0 12px 32px rgb(15 23 42 / 5%);
 }
 
-.editor-page__loading {
+.editor-workspace__loading {
   display: flex;
   flex: 1;
   align-items: center;

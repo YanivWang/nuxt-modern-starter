@@ -20,6 +20,12 @@ export const localizedPath = (path: string, locale: SupportedLocale) => {
 export const publicLocalizedPaths = (locales: readonly SupportedLocale[] = ['zh-CN', 'en-US']) =>
   locales.flatMap((locale) => PUBLIC_PAGE_PATHS.map((path) => localizedPath(path, locale)))
 
+export const productRoutePatterns = ['/app/**'] as const
+
+export const productLocalizedPathPatterns = (
+  locales: readonly SupportedLocale[] = ['zh-CN', 'en-US']
+) => locales.flatMap((locale) => productRoutePatterns.map((path) => localizedPath(path, locale)))
+
 export const prerenderRoutes = publicLocalizedPaths().filter(
   (path) =>
     path === '/' ||
@@ -31,3 +37,5 @@ export const prerenderRoutes = publicLocalizedPaths().filter(
 )
 
 export const swrRouteRules = ['/news/**', '/en/news/**'] as const
+
+export const csrRouteRules = productLocalizedPathPatterns()

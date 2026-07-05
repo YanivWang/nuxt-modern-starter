@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { getApiErrorMessage, normalizeFlatApiResponse } from '../../app/utils/api-contract'
+import { getApiErrorMessage, normalizeFlatApiResponse } from '../../app/api-core/api-error'
 import {
   createScenarioApiKey,
   createPublicApiHeaders,
