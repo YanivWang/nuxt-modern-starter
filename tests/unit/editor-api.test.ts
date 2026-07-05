@@ -16,7 +16,7 @@ describe('editor API boundary', () => {
 
     fetchEditorDocument('doc_1')
 
-    expect(apiMocks.request).toHaveBeenCalledWith('/editor/documents/doc_1', {
+    expect(apiMocks.request).toHaveBeenCalledWith('/documents/doc_1', {
       method: 'GET'
     })
   })
@@ -29,7 +29,7 @@ describe('editor API boundary', () => {
       content: '<p>Hello</p>'
     })
 
-    expect(apiMocks.request).toHaveBeenCalledWith('/editor/documents/doc_1', {
+    expect(apiMocks.request).toHaveBeenCalledWith('/documents/doc_1', {
       method: 'PATCH',
       body: {
         title: 'Draft',

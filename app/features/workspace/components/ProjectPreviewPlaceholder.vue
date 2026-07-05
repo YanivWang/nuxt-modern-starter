@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { WorkspaceProject } from '../data'
+import type { WorkspaceProject } from '../api'
 
 defineProps<{
   project: WorkspaceProject

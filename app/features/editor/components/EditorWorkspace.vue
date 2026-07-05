@@ -1,19 +1,81 @@
 <script setup lang="ts">
+import { message } from 'ant-design-vue'
+import { useI18n } from 'vue-i18n'
 import { YanivEditor } from '@yanivjs/yaniv-editor'
 import '@yanivjs/yaniv-editor/style.css'
+import { fetchEditorDocument, saveEditorDocument } from '../../../apis/editor'
 
+const props = defineProps<{
+  documentId?: string | null
+}>()
+
+const { t } = useI18n()
 const content = ref('')
+const saving = ref(false)
+
+const { data: document, pending } = await useAsyncData(
+  props.documentId ? `editor-document:${props.documentId}` : 'editor-document:new',
+  async () => {
+    if (!props.documentId) {
+      return null
+    }
+
+    const response = await fetchEditorDocument(props.documentId)
+    return response.data.document
+  }
+)
+
+watch(
+  document,
+  (nextDocument) => {
+    content.value = nextDocument?.content ?? ''
+  },
+  { immediate: true }
+)
+
+const handleSave = async () => {
+  if (!props.documentId) {
+    return
+  }
+
+  saving.value = true
+
+  try {
+    const response = await saveEditorDocument(props.documentId, {
+      title: document.value?.title,
+      content: content.value
+    })
+    document.value = response.data.document
+    message.success(t('workspace.save'))
+  } catch {
+    message.error(t('common.error'))
+  } finally {
+    saving.value = false
+  }
+}
 </script>
 
 <template>
   <div class="editor-workspace">
     <header class="editor-workspace__header">
       <p class="editor-workspace__eyebrow">{{ $t('editor.eyebrow') }}</p>
-      <h1 class="editor-workspace__title">{{ $t('editor.title') }}</h1>
+      <h1 class="editor-workspace__title">{{ document?.title || $t('editor.title') }}</h1>
+      <a-button
+        v-if="documentId"
+        type="primary"
+        :loading="saving"
+        class="editor-workspace__save"
+        @click="handleSave"
+      >
+        {{ $t('workspace.save') }}
+      </a-button>
     </header>
 
     <div class="editor-workspace__surface">
-      <ClientOnly>
+      <div v-if="pending" class="editor-workspace__loading">
+        <a-spin />
+      </div>
+      <ClientOnly v-else>
         <YanivEditor v-model="content" :placeholder="$t('editor.placeholder')" />
         <template #fallback>
           <div class="editor-workspace__loading">
@@ -36,8 +98,16 @@ const content = ref('')
 }
 
 .editor-workspace__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
   flex-shrink: 0;
   margin-bottom: 20px;
+}
+
+.editor-workspace__save {
+  flex-shrink: 0;
 }
 
 .editor-workspace__eyebrow {

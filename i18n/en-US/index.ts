@@ -17,7 +17,8 @@ export default {
     switchLanguage: 'Switch language',
     switchTheme: 'Switch theme',
     readMore: 'Read more',
-    backHome: 'Back home'
+    backHome: 'Back home',
+    error: 'Something went wrong. Please try again.'
   },
   auth: {
     header: {
@@ -223,6 +224,7 @@ export default {
     eyebrow: 'Product workspace',
     title: 'Manage your PPT projects',
     lead: 'This is the logged-in product workspace placeholder. Open a project card to edit it, or jump straight into preview.',
+    empty: 'No projects yet. Create a blank PPT to get started.',
     create: 'New project',
     search: 'Search projects',
     edit: 'Edit',

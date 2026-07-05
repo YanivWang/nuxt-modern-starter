@@ -1,13 +1,6 @@
-import type { AuthApiClientOptions } from '../auth/client'
-import { refreshAccessTokenOnce } from '../auth'
-import { createAuthApiClient } from '../auth/client'
-import { getAuthToken } from '../../utils/auth-session'
+import { createProductApiClient, type ProductApiClientOptions } from '../product/client'
 
-export type EditorApiClientOptions = Omit<AuthApiClientOptions, 'refreshAccessToken'>
+export type EditorApiClientOptions = ProductApiClientOptions
 
 export const createEditorApiClient = (options: EditorApiClientOptions = {}) =>
-  createAuthApiClient({
-    ...options,
-    accessToken: options.accessToken ?? getAuthToken(),
-    refreshAccessToken: refreshAccessTokenOnce
-  })
+  createProductApiClient(options)

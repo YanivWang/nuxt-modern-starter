@@ -16,7 +16,8 @@ export default {
     switchLanguage: '切换语言',
     switchTheme: '切换主题',
     readMore: '阅读更多',
-    backHome: '返回首页'
+    backHome: '返回首页',
+    error: '操作失败，请稍后重试'
   },
   auth: {
     header: {
@@ -212,6 +213,7 @@ export default {
     eyebrow: '产品工作台',
     title: '管理你的 PPT 作品',
     lead: '这里是登录后的产品区占位工作台。你可以从作品卡片进入编辑页，也可以直接打开预览页。',
+    empty: '暂无项目，先创建一个空白 PPT。',
     create: '新建作品',
     search: '查找我的作品',
     edit: '编辑',

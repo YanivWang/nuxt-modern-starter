@@ -1,13 +1,27 @@
 <script setup lang="ts">
+import { message } from 'ant-design-vue'
+import { useI18n } from 'vue-i18n'
 import {
   AppstoreOutlined,
   ArrowRightOutlined,
   ReadOutlined,
   RocketOutlined
 } from '~/utils/antdIcon'
-import { workspaceProjects, type WorkspaceProject } from '../data'
+import { createWorkspaceProject, fetchWorkspaceProjects, type WorkspaceProject } from '../api'
 
 const { localePath } = useLocalePath()
+const router = useRouter()
+const { t } = useI18n()
+const creating = ref(false)
+
+const {
+  data: projects,
+  pending,
+  refresh
+} = await useAsyncData('workspace-projects', async () => {
+  const response = await fetchWorkspaceProjects()
+  return response.data.projects
+})
 
 const statusLabel = (status: WorkspaceProject['status']) => {
   const labels = {
@@ -36,6 +50,23 @@ const actionCards = [
     description: 'workspace.actions.blank.description'
   }
 ] as const
+
+const handleCreateProject = async () => {
+  creating.value = true
+
+  try {
+    const response = await createWorkspaceProject({
+      title: t('workspace.actions.blank.title'),
+      description: t('workspace.actions.blank.description')
+    })
+    await refresh()
+    await router.push(localePath(response.data.project.editPath))
+  } catch {
+    message.error(t('common.error'))
+  } finally {
+    creating.value = false
+  }
+}
 </script>
 
 <template>
@@ -46,7 +77,9 @@ const actionCards = [
         <h1 class="workspace-dashboard__title">{{ $t('workspace.title') }}</h1>
         <p class="workspace-dashboard__lead">{{ $t('workspace.lead') }}</p>
       </div>
-      <a-button type="primary" size="large">{{ $t('workspace.create') }}</a-button>
+      <a-button type="primary" size="large" :loading="creating" @click="handleCreateProject">
+        {{ $t('workspace.create') }}
+      </a-button>
     </div>
 
     <div class="workspace-actions">
@@ -74,9 +107,19 @@ const actionCards = [
       <a-input-search class="workspace-toolbar__search" :placeholder="$t('workspace.search')" />
     </div>
 
-    <div class="workspace-grid">
+    <div v-if="pending" class="workspace-loading">
+      <a-spin />
+    </div>
+
+    <a-empty
+      v-else-if="!projects?.length"
+      class="workspace-empty"
+      :description="$t('workspace.empty')"
+    />
+
+    <div v-else class="workspace-grid">
       <article
-        v-for="project in workspaceProjects"
+        v-for="project in projects"
         :key="project.id"
         class="workspace-project"
         :class="`workspace-project--${project.accent}`"
@@ -196,6 +239,13 @@ const actionCards = [
 
 .workspace-toolbar__search {
   width: min(280px, 100%);
+}
+
+.workspace-loading,
+.workspace-empty {
+  display: grid;
+  min-height: 220px;
+  place-items: center;
 }
 
 .workspace-grid {

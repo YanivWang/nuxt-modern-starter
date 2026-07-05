@@ -1,5 +1,4 @@
 export { default as ProjectEditPlaceholder } from './components/ProjectEditPlaceholder.vue'
 export { default as ProjectPreviewPlaceholder } from './components/ProjectPreviewPlaceholder.vue'
 export { default as WorkspaceDashboard } from './components/WorkspaceDashboard.vue'
-export { getWorkspaceProjectById, workspaceProjects } from './data'
-export type { WorkspaceProject, WorkspaceProjectStatus } from './data'
+export * from './api'
