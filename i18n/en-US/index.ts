@@ -226,49 +226,19 @@ export default {
   },
   workspace: {
     nav: 'Workspace',
-    eyebrow: 'Product workspace',
     title: 'Manage your PPT projects',
-    lead: 'Manage authenticated PPT projects here. Create a project and edit or save document content.',
-    empty: 'No projects yet. Create a blank PPT to get started.',
+    defaultTitle: 'Untitled project',
+    empty: 'No projects yet. Use the button above to create one.',
     projectNotFound: 'Project not found or access denied',
-    create: 'New project',
-    search: 'Search projects',
+    create: 'New blank PPT',
     edit: 'Edit',
     delete: 'Delete',
     deleteCancel: 'Cancel',
     deleteConfirm: 'Delete "{title}"? This action cannot be undone.',
     deleteSuccess: 'Project deleted',
     save: 'Save',
-    slides: 'slides',
-    slide: 'Slide',
-    properties: 'Properties',
     projectName: 'Project name',
-    slideCount: 'Slide count',
-    backToWorkspace: 'Back to workspace',
-    filters: {
-      all: 'All',
-      recent: 'Recent',
-      shared: 'Shared'
-    },
-    status: {
-      draft: 'Draft',
-      ready: 'Ready',
-      shared: 'Shared'
-    },
-    actions: {
-      ai: {
-        title: 'AI PPT',
-        description: 'Generate a deck from one sentence or outline'
-      },
-      import: {
-        title: 'Import document',
-        description: 'Upload a document and create a deck structure'
-      },
-      blank: {
-        title: 'Blank PPT',
-        description: 'Start from an empty canvas'
-      }
-    }
+    backToWorkspace: 'Back to workspace'
   },
   help: {
     eyebrow: 'Help center',

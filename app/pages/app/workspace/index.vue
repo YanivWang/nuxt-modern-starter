@@ -14,7 +14,7 @@ usePageSeo({
   path: '/app/workspace',
   locale: languageStore.currentLanguage,
   title: t('workspace.nav'),
-  description: t('workspace.lead'),
+  description: t('workspace.title'),
   noindex: true
 })
 </script>

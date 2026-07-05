@@ -215,49 +215,19 @@ export default {
   },
   workspace: {
     nav: '工作台',
-    eyebrow: '产品工作台',
     title: '管理你的 PPT 作品',
-    lead: '登录后在这里管理 PPT 作品。你可以创建项目，并在编辑页保存内容。',
-    empty: '暂无项目，先创建一个空白 PPT。',
+    defaultTitle: '未命名作品',
+    empty: '暂无作品，点击右上角按钮创建。',
     projectNotFound: '项目不存在或无权访问',
-    create: '新建作品',
-    search: '查找我的作品',
+    create: '新建空白 PPT',
     edit: '编辑',
     delete: '删除',
     deleteCancel: '取消',
     deleteConfirm: '确定删除「{title}」吗？此操作不可恢复。',
     deleteSuccess: '作品已删除',
     save: '保存',
-    slides: '页',
-    slide: '页面',
-    properties: '属性面板',
     projectName: '作品名称',
-    slideCount: '页面数量',
-    backToWorkspace: '返回工作台',
-    filters: {
-      all: '全部',
-      recent: '最近更新',
-      shared: '共享作品'
-    },
-    status: {
-      draft: '草稿',
-      ready: '可编辑',
-      shared: '已共享'
-    },
-    actions: {
-      ai: {
-        title: 'AI 新增 PPT',
-        description: '从一句话或大纲开始生成作品'
-      },
-      import: {
-        title: '导入文档生成',
-        description: '上传文档并生成演示稿结构'
-      },
-      blank: {
-        title: '新建空白 PPT',
-        description: '从空白画布开始自由编辑'
-      }
-    }
+    backToWorkspace: '返回工作台'
   },
   help: {
     eyebrow: '帮助中心',

@@ -4,7 +4,11 @@ import { useI18n } from 'vue-i18n'
 import { YanivEditor } from '@yanivjs/yaniv-editor'
 import '@yanivjs/yaniv-editor/style.css'
 import { fetchEditorDocument, saveEditorDocument } from '../../../apis/editor'
-import type { WorkspaceProject } from '../../workspace/api'
+import {
+  createWorkspaceProject,
+  getWorkspaceDocPath,
+  type WorkspaceProject
+} from '../../workspace/api'
 import { ArrowLeftOutlined } from '~/utils/antdIcon'
 
 type EditorProjectContext = Pick<WorkspaceProject, 'id' | 'title'>
@@ -14,11 +18,16 @@ const props = defineProps<{
   project?: EditorProjectContext | null
 }>()
 
+const emit = defineEmits<{
+  'project-created': [project: WorkspaceProject]
+}>()
+
 const AUTOSAVE_DEBOUNCE_MS = 2000
 
 const { t } = useI18n()
 const languageStore = useLanguageStore()
 const { localePath } = useLocalePath()
+const router = useRouter()
 const editorRef = ref<InstanceType<typeof YanivEditor> | null>(null)
 const editorInitialContent = ref('<p></p>')
 const editorReady = ref(false)
@@ -27,27 +36,55 @@ const saveFailed = ref(false)
 const dirty = ref(false)
 const lastSavedAt = ref<number | null>(null)
 const initialSnapshot = ref('')
+const draftDocumentId = ref<string | null>(null)
 
 const EDITOR_MODE = 'edit' as const
 const EDITOR_PRESET = 'full' as const
 
 let autosaveTimer: ReturnType<typeof setTimeout> | null = null
 
+const effectiveDocumentId = computed(() => props.documentId ?? draftDocumentId.value)
+const isDraftMode = computed(() => !props.documentId && !draftDocumentId.value)
+
+const isBlankEditorContent = (html: string) => {
+  const normalized = html
+    .replace(/<br\s*\/?>/gi, '')
+    .replace(/<\/?p[^>]*>/gi, '')
+    .replace(/&nbsp;/gi, '')
+    .trim()
+
+  return normalized.length === 0
+}
+
 const { data: document, pending } = await useAsyncData(
-  props.documentId ? `editor-document:${props.documentId}` : 'editor-document:new',
+  () =>
+    effectiveDocumentId.value
+      ? `editor-document:${effectiveDocumentId.value}`
+      : 'editor-document:new',
   async () => {
-    if (!props.documentId) {
+    if (!effectiveDocumentId.value) {
       return null
     }
 
-    const response = await fetchEditorDocument(props.documentId)
+    const response = await fetchEditorDocument(effectiveDocumentId.value)
     return response.data.document
-  }
+  },
+  { watch: [effectiveDocumentId] }
 )
 
 watch(
   document,
   (nextDocument) => {
+    if (editorReady.value) {
+      if (nextDocument?.updatedAt) {
+        const updatedAt = new Date(nextDocument.updatedAt).getTime()
+        if (!Number.isNaN(updatedAt)) {
+          lastSavedAt.value = updatedAt
+        }
+      }
+      return
+    }
+
     editorInitialContent.value = nextDocument?.content?.trim() || '<p></p>'
 
     if (nextDocument?.updatedAt) {
@@ -60,9 +97,21 @@ watch(
   { immediate: true }
 )
 
-const displayTitle = computed(
-  () => props.project?.title || document.value?.title || t('editor.title')
-)
+const displayTitle = computed(() => {
+  if (props.project?.title) {
+    return props.project.title
+  }
+
+  if (document.value?.title) {
+    return document.value.title
+  }
+
+  if (isDraftMode.value) {
+    return t('workspace.defaultTitle')
+  }
+
+  return t('editor.title')
+})
 
 const autosaveHintText = computed(() => {
   if (saving.value) {
@@ -106,17 +155,52 @@ const resetDirtyBaseline = () => {
 }
 
 const markDirty = () => {
-  if (pending.value || !editorReady.value) {
+  if (!editorReady.value) {
     return
   }
 
   dirty.value = takeSnapshot() !== initialSnapshot.value
 }
 
+const ensureDraftProject = async (): Promise<string | null> => {
+  if (effectiveDocumentId.value) {
+    return effectiveDocumentId.value
+  }
+
+  const contentToSave = getEditorContentHtml()
+  if (isBlankEditorContent(contentToSave)) {
+    return null
+  }
+
+  const response = await createWorkspaceProject({
+    title: t('workspace.defaultTitle')
+  })
+  const { project, document: createdDocument } = response.data
+
+  await saveEditorDocument(createdDocument.id, {
+    title: t('workspace.defaultTitle'),
+    content: contentToSave
+  })
+
+  draftDocumentId.value = createdDocument.id
+  document.value = {
+    ...createdDocument,
+    content: contentToSave
+  }
+  emit('project-created', project)
+  await router.replace(localePath(getWorkspaceDocPath(project.id)))
+
+  return createdDocument.id
+}
+
 const scheduleAutosave = () => {
   markDirty()
 
-  if (!dirty.value || !props.documentId) {
+  if (!dirty.value) {
+    return
+  }
+
+  if (!effectiveDocumentId.value && isBlankEditorContent(getEditorContentHtml())) {
     return
   }
 
@@ -131,16 +215,29 @@ const scheduleAutosave = () => {
 }
 
 const persistDocument = async () => {
-  if (!props.documentId || pending.value || saving.value || !dirty.value) {
+  if (saving.value || !dirty.value) {
     return
   }
 
-  const contentToSave = getEditorContentHtml()
   saving.value = true
   saveFailed.value = false
 
   try {
-    const response = await saveEditorDocument(props.documentId, {
+    let documentId = effectiveDocumentId.value
+
+    if (!documentId) {
+      documentId = await ensureDraftProject()
+      if (!documentId) {
+        return
+      }
+
+      lastSavedAt.value = Date.now()
+      resetDirtyBaseline()
+      return
+    }
+
+    const contentToSave = getEditorContentHtml()
+    const response = await saveEditorDocument(documentId, {
       title: document.value?.title,
       content: contentToSave
     })
@@ -168,7 +265,7 @@ const flushAutosave = async () => {
     autosaveTimer = null
   }
 
-  if (dirty.value && props.documentId) {
+  if (dirty.value) {
     await persistDocument()
   }
 }
@@ -218,7 +315,7 @@ onBeforeRouteLeave(async () => {
         </div>
       </div>
 
-      <div v-if="documentId" class="editor-workspace__actions">
+      <div v-if="effectiveDocumentId || !isDraftMode" class="editor-workspace__actions">
         <p
           v-if="autosaveHintText"
           class="editor-workspace__autosave"
@@ -230,10 +327,10 @@ onBeforeRouteLeave(async () => {
     </header>
 
     <div class="editor-workspace__surface">
-      <div v-if="pending" class="editor-workspace__loading">
+      <div v-if="pending && !editorReady" class="editor-workspace__loading">
         <a-spin />
       </div>
-      <ClientOnly v-if="!pending">
+      <ClientOnly v-if="!pending || editorReady">
         <YanivEditor
           ref="editorRef"
           :mode="EDITOR_MODE"

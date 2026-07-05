@@ -6,6 +6,7 @@ import CheckOutlinedSvg from '@ant-design/icons-svg/es/asn/CheckOutlined'
 import DeleteOutlinedSvg from '@ant-design/icons-svg/es/asn/DeleteOutlined'
 import GlobalOutlinedSvg from '@ant-design/icons-svg/es/asn/GlobalOutlined'
 import MoonOutlinedSvg from '@ant-design/icons-svg/es/asn/MoonOutlined'
+import PlusOutlinedSvg from '@ant-design/icons-svg/es/asn/PlusOutlined'
 import ReadOutlinedSvg from '@ant-design/icons-svg/es/asn/ReadOutlined'
 import RocketOutlinedSvg from '@ant-design/icons-svg/es/asn/RocketOutlined'
 import SearchOutlinedSvg from '@ant-design/icons-svg/es/asn/SearchOutlined'
@@ -31,6 +32,7 @@ export const CheckOutlined = createAntdIcon('CheckOutlined', CheckOutlinedSvg)
 export const DeleteOutlined = createAntdIcon('DeleteOutlined', DeleteOutlinedSvg)
 export const GlobalOutlined = createAntdIcon('GlobalOutlined', GlobalOutlinedSvg)
 export const MoonOutlined = createAntdIcon('MoonOutlined', MoonOutlinedSvg)
+export const PlusOutlined = createAntdIcon('PlusOutlined', PlusOutlinedSvg)
 export const ReadOutlined = createAntdIcon('ReadOutlined', ReadOutlinedSvg)
 export const RocketOutlined = createAntdIcon('RocketOutlined', RocketOutlinedSvg)
 export const SearchOutlined = createAntdIcon('SearchOutlined', SearchOutlinedSvg)

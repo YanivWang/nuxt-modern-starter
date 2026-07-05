@@ -95,9 +95,8 @@ API boundaries:
 
 Current UI scope:
 
-- Only the blank-project card and the primary create button call `POST /api/projects`. AI/import cards are visual placeholders with no backend wiring yet.
+- The header create button calls `POST /api/projects` with the default title from i18n (`workspace.defaultTitle`).
 - Creating a blank project refreshes the list and navigates directly to `/app/docs/:id`.
-- Search and segmented filters are UI-only; project listing always calls `GET /api/projects` without query parameters.
 - Project cards link to the editor through `getWorkspaceDocPath()`. `slideCount` currently comes from project metadata and is not recalculated from document content.
 
 Editor behavior:

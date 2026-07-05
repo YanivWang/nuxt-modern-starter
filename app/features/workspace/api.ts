@@ -1,7 +1,6 @@
 import type { ApiResponse } from '../../api-core/api-types'
 import { createProductApiClient } from '../../apis/product/client'
 
-export type WorkspaceProjectStatus = 'draft' | 'ready' | 'shared'
 export type WorkspaceProjectAccent = 'blue' | 'green' | 'violet' | 'amber' | 'cyan' | 'rose'
 
 export type WorkspaceProject = {
@@ -11,8 +10,6 @@ export type WorkspaceProject = {
   title: string
   description: string | null
   updatedAt: string
-  slideCount: number
-  status: WorkspaceProjectStatus
   accent: WorkspaceProjectAccent
 }
 
@@ -29,7 +26,13 @@ export type WorkspaceDocument = {
   updatedAt: string
 }
 
+export const WORKSPACE_NEW_PROJECT_ID = 'new'
+
 export const getWorkspaceDocPath = (id: string) => `/app/docs/${id}`
+
+export const getWorkspaceNewDocPath = () => getWorkspaceDocPath(WORKSPACE_NEW_PROJECT_ID)
+
+export const isNewWorkspaceProjectId = (id: string) => id === WORKSPACE_NEW_PROJECT_ID
 
 export const fetchWorkspaceProjects = () =>
   createProductApiClient().request<ApiResponse<{ projects: WorkspaceProject[] }>>('/projects', {

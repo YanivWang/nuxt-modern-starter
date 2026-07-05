@@ -57,4 +57,14 @@ describe('workspace API boundary', () => {
       method: 'DELETE'
     })
   })
+
+  it('exposes the draft editor entry path', async () => {
+    const { getWorkspaceNewDocPath, isNewWorkspaceProjectId, WORKSPACE_NEW_PROJECT_ID } =
+      await import('../../app/features/workspace/api')
+
+    expect(WORKSPACE_NEW_PROJECT_ID).toBe('new')
+    expect(getWorkspaceNewDocPath()).toBe('/app/docs/new')
+    expect(isNewWorkspaceProjectId('new')).toBe(true)
+    expect(isNewWorkspaceProjectId('project_1')).toBe(false)
+  })
 })
