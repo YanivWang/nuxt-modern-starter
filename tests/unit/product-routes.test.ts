@@ -1,14 +1,24 @@
 import { describe, expect, it } from 'vitest'
 import {
   csrRouteRules,
-  productLocalizedPathPatterns,
+  localizedProductPathToCanonical,
+  productPathPatterns,
   publicLocalizedPaths
 } from '../../config/routes'
 
 describe('product route boundaries', () => {
-  it('generates localized CSR route patterns for the authenticated product area', () => {
-    expect(productLocalizedPathPatterns()).toEqual(['/app/**', '/en/app/**'])
-    expect(csrRouteRules).toEqual(['/app/**', '/en/app/**'])
+  it('keeps authenticated product routes language-neutral', () => {
+    expect(productPathPatterns()).toEqual(['/app/**'])
+    expect(csrRouteRules).toEqual(['/app/**'])
+  })
+
+  it('normalizes localized product paths to canonical product paths', () => {
+    expect(localizedProductPathToCanonical('/en/app/workspace')).toBe('/app/workspace')
+    expect(localizedProductPathToCanonical('/zh/app/workspace/deck-1/edit')).toBe(
+      '/app/workspace/deck-1/edit'
+    )
+    expect(localizedProductPathToCanonical('/app/workspace')).toBeNull()
+    expect(localizedProductPathToCanonical('/en/pricing')).toBeNull()
   })
 
   it('keeps product routes out of the public SEO route list', () => {

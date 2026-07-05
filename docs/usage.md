@@ -6,9 +6,11 @@ Create public SEO pages directly under `app/pages/[[language]]`. Use `localePath
 
 When a page should be public, add its base path to `PUBLIC_PAGE_PATHS` in `config/site.ts`. If it needs prerendering or SWR behavior, update `config/routes.ts` so routeRules and hreflang remain synchronized.
 
-Create logged-in product pages under `app/pages/[[language]]/app`. Product pages should set the product or editor layout, opt in to auth middleware when required, set `noindex`, and mount a feature component from `app/features/*`.
+Create logged-in product pages under `app/pages/[[language]]/app`, but keep links, canonical paths, and route config under language-neutral `/app/**` URLs. Product pages should set the product or editor layout, opt in to auth middleware when required, set `noindex`, and mount a feature component from `app/features/*`.
 
 Do not add product pages such as account, documents, editor, templates, workspace, billing, or settings beside public marketing pages. Product routes are client-rendered by default through `csrRouteRules` in `config/routes.ts`.
+
+Register product navigation and route policy in `app/features/product-shell/config.ts` before adding sidebar links or new `/app/**` route entries. Do not create localized product links such as `/en/app/...`; the global locale middleware redirects those back to `/app/...`.
 
 ## Add A Feature Module
 
@@ -49,15 +51,17 @@ Public adapters must stay free of token cookies and refresh behavior. This keeps
 
 ## Add SEO
 
-Use `usePageSeo({ path, title, description })`. The composable adds title, description, canonical, OG metadata, and alternate links for `zh-CN` and `en-US`.
+Use `usePageSeo({ path, title, description })`. The composable adds title, description, canonical, OG metadata, and alternate links for public `zh-CN` and `en-US` pages. `noindex` product pages keep canonical and OG metadata but skip alternate links.
 
 News details can pass the `article` field to generate Article JSON-LD. `Organization` and `WebSite` JSON-LD are recommended future additions when a real brand domain and logo are available.
+
+`server/routes/sitemap.xml.ts` and `server/routes/robots.txt.ts` are generated from public route/content configuration. Keep `/app/**`, login, and register pages out of sitemap and blocked in robots rules.
 
 ## Add Languages
 
 v0.1-core ships `zh-CN` and `en-US`. To add a language, update `SUPPORTED_LOCALES`, `SITE_LOCALE_PREFIX_MAP`, and `SITE_LANG_MAP`, then add `i18n/<locale>/index.ts` and routing/SEO tests.
 
-Do not install `@nuxtjs/i18n` for this template. Language routing is intentionally handled by `locale.global.ts` and `useLocalePath.ts`.
+Do not install `@nuxtjs/i18n` for this template. Language routing is intentionally handled by `locale.global.ts` and `useLocalePath.ts`. Public pages use URL prefixes such as `/en`; authenticated product pages stay under `/app/**` regardless of UI language.
 
 ## Theme Customization
 

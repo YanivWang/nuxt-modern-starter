@@ -218,6 +218,53 @@ export default {
     placeholder: 'Start writing your content...',
     metaTitle: 'Editor'
   },
+  workspace: {
+    nav: 'Workspace',
+    eyebrow: 'Product workspace',
+    title: 'Manage your PPT projects',
+    lead: 'This is the logged-in product workspace placeholder. Open a project card to edit it, or jump straight into preview.',
+    create: 'New project',
+    search: 'Search projects',
+    edit: 'Edit',
+    preview: 'Preview',
+    save: 'Save',
+    editing: 'Editing',
+    previewing: 'Project preview',
+    slides: 'slides',
+    slide: 'Slide',
+    properties: 'Properties',
+    projectName: 'Project name',
+    slideCount: 'Slide count',
+    backToWorkspace: 'Back to workspace',
+    editPlaceholder:
+      'This placeholder canvas can later connect to the real PPT editor, slide thumbnails, asset panels, and save APIs.',
+    previewPlaceholder:
+      'This placeholder preview shows where playback, sharing, or export review will live.',
+    filters: {
+      all: 'All',
+      recent: 'Recent',
+      shared: 'Shared'
+    },
+    status: {
+      draft: 'Draft',
+      ready: 'Ready',
+      shared: 'Shared'
+    },
+    actions: {
+      ai: {
+        title: 'AI PPT',
+        description: 'Generate a deck from one sentence or outline'
+      },
+      import: {
+        title: 'Import document',
+        description: 'Upload a document and create a deck structure'
+      },
+      blank: {
+        title: 'Blank PPT',
+        description: 'Start from an empty canvas'
+      }
+    }
+  },
   help: {
     eyebrow: 'Help center',
     title: 'Learn how to use Nuxt Modern Starter',

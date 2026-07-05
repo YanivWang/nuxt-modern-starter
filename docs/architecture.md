@@ -4,8 +4,9 @@
 
 ## Directory Responsibilities
 
-- `app/pages/[[language]]`: localized route entries. Default language has no prefix, English uses `/en`.
-- `app/pages/[[language]]/app`: logged-in product routes. These routes are client-rendered by default, protected with auth where needed, and excluded from public SEO route lists.
+- `app/pages/[[language]]`: localized public route entries. Default language has no prefix, English public pages use `/en`.
+- `app/pages/[[language]]/app`: logged-in product route entries. Their canonical URLs stay language-neutral under `/app/**`; legacy localized product URLs such as `/en/app/workspace` redirect back to `/app/workspace`.
+- `app/features/product-shell`: logged-in product shell configuration and layout surface. Product navigation and `/app/**` route policy are centralized here instead of being hardcoded in the layout.
 - `app/features`: product and domain modules. Complex product UI, feature composables, feature stores, feature types, and feature API adapters grow here instead of top-level Nuxt folders.
 - `app/api-core`: low-level API policy such as response types, error normalization, header creation, sensitive header redaction, and typed `$fetch` client creation.
 - `app/composables`: shared runtime APIs such as `useAuth`, `useLocalePath`, `usePageSeo`, and `useTheme`. Feature-specific composables belong under `app/features/<feature>/composables`; backend request clients belong under `app/apis/*`.
@@ -17,14 +18,16 @@
 - `app/components/base`: reusable low-level examples such as `BaseLogo`, `BaseButton`, and `PageContainer`.
 - `app/components/layout`: shell components with no business dependencies.
 - `config`: site metadata, route lists, theme tokens, and typed local content.
+- `server/middleware/product-canonical.ts`: early canonical redirect for localized product URLs, for example `/en/app/workspace` to `/app/workspace`, before page auth logic runs.
+- `server/routes/robots.txt.ts` and `server/routes/sitemap.xml.ts`: SEO server routes. They include public localized pages and content detail pages while excluding login, register, and `/app/**` product routes.
 - `i18n`: `vue-i18n` setup and language message modules.
 - `docker`: Dockerfiles, Compose layers, and the Nginx gateway sample for the default Node server path.
 
 ## Runtime Flow
 
-`locale.global.ts` normalizes routes before page rendering. It removes trailing slashes, redirects `/zh` and `/zh/*` to default-language paths, returns 404 for unsupported language prefixes such as `/fr/pricing`, loads locale messages, and updates the language store.
+`locale.global.ts` normalizes routes before page rendering. It removes trailing slashes, redirects `/zh` and `/zh/*` to default-language paths, redirects localized product paths such as `/en/app/workspace` to language-neutral `/app/workspace`, returns 404 for unsupported language prefixes such as `/fr/pricing`, loads locale messages, and updates the language store.
 
-Pages call `usePageSeo` for canonical, alternate, OG, and noindex behavior. Public page paths are centralized in `config/routes.ts` so `routeRules` and hreflang generation stay aligned. Product route patterns are also centralized there; `/app/**` and `/en/app/**` are generated as CSR-only route rules.
+Pages call `usePageSeo` for canonical, alternate, OG, and noindex behavior. Public page paths are centralized in `config/routes.ts` so `routeRules`, sitemap generation, and hreflang generation stay aligned. Product route patterns are also centralized there; only `/app/**` is generated as a CSR-only route rule because logged-in product routes are not localized in the URL.
 
 Business requests use the app-level `{ code, message, data }` contract through scenario-specific API entrypoints:
 

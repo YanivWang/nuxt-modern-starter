@@ -207,6 +207,52 @@ export default {
     placeholder: '开始撰写你的内容...',
     metaTitle: '编辑器'
   },
+  workspace: {
+    nav: '工作台',
+    eyebrow: '产品工作台',
+    title: '管理你的 PPT 作品',
+    lead: '这里是登录后的产品区占位工作台。你可以从作品卡片进入编辑页，也可以直接打开预览页。',
+    create: '新建作品',
+    search: '查找我的作品',
+    edit: '编辑',
+    preview: '预览',
+    save: '保存',
+    editing: '正在编辑',
+    previewing: '作品预览',
+    slides: '页',
+    slide: '页面',
+    properties: '属性面板',
+    projectName: '作品名称',
+    slideCount: '页面数量',
+    backToWorkspace: '返回工作台',
+    editPlaceholder:
+      '这是一个编辑器占位画布，后续可以接入真实 PPT 编辑器、页面缩略图、素材面板和保存接口。',
+    previewPlaceholder: '这是一个预览占位页，用于展示作品播放、分享或导出前的浏览效果。',
+    filters: {
+      all: '全部',
+      recent: '最近更新',
+      shared: '共享作品'
+    },
+    status: {
+      draft: '草稿',
+      ready: '可编辑',
+      shared: '已共享'
+    },
+    actions: {
+      ai: {
+        title: 'AI 新增 PPT',
+        description: '从一句话或大纲开始生成作品'
+      },
+      import: {
+        title: '导入文档生成',
+        description: '上传文档并生成演示稿结构'
+      },
+      blank: {
+        title: '新建空白 PPT',
+        description: '从空白画布开始自由编辑'
+      }
+    }
+  },
   help: {
     eyebrow: '帮助中心',
     title: '快速了解 Nuxt Modern Starter 的使用方式',

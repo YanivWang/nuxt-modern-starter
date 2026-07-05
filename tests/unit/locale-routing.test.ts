@@ -31,6 +31,19 @@ describe('locale routing decisions', () => {
     })
   })
 
+  it('redirects localized product URLs to language-neutral product URLs', () => {
+    expect(resolveLocaleRouteDecision('/en/app/workspace')).toEqual({
+      type: 'redirect',
+      path: '/app/workspace',
+      redirectCode: 301
+    })
+    expect(resolveLocaleRouteDecision('/en/app/workspace/deck-1/edit')).toEqual({
+      type: 'redirect',
+      path: '/app/workspace/deck-1/edit',
+      redirectCode: 301
+    })
+  })
+
   it('returns a 404 decision for unsupported language prefixes', () => {
     expect(resolveLocaleRouteDecision('/fr/pricing')).toEqual({
       type: 'error',

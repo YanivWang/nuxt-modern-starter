@@ -4,6 +4,7 @@ import {
   SUPPORTED_LOCALES,
   type SupportedLocale
 } from '../../config/site'
+import { localizedProductPathToCanonical } from '../../config/routes'
 import { loadLocaleMessages, localeFromPrefix } from '../../i18n'
 
 const DEFAULT_PREFIX = SITE_LOCALE_PREFIX_MAP[DEFAULT_LOCALE]
@@ -39,10 +40,12 @@ export const resolveLocaleRouteDecision = (path: string): LocaleRouteDecision =>
     }
   }
 
-  const firstSegment = path.split('/').filter(Boolean)[0]
+  const segments = path.split('/').filter(Boolean)
+  const [firstSegment] = segments
+  const productCanonicalPath = localizedProductPathToCanonical(path)
 
   if (firstSegment === DEFAULT_PREFIX) {
-    const segmentsWithoutDefaultPrefix = path.split('/').filter(Boolean).slice(1)
+    const segmentsWithoutDefaultPrefix = segments.slice(1)
     const pathWithoutDefaultPrefix = segmentsWithoutDefaultPrefix.length
       ? `/${segmentsWithoutDefaultPrefix.join('/')}`
       : '/'
@@ -50,6 +53,14 @@ export const resolveLocaleRouteDecision = (path: string): LocaleRouteDecision =>
     return {
       type: 'redirect',
       path: pathWithoutDefaultPrefix,
+      redirectCode: 301
+    }
+  }
+
+  if (productCanonicalPath) {
+    return {
+      type: 'redirect',
+      path: productCanonicalPath,
       redirectCode: 301
     }
   }

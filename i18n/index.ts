@@ -7,6 +7,7 @@ import {
   SUPPORTED_LOCALES,
   type SupportedLocale
 } from '../config/site'
+import { isProductPath } from '../config/routes'
 
 export const STORAGE_KEY_LANGUAGE = 'nuxt-modern-starter-language'
 
@@ -85,6 +86,11 @@ export const getSwitchLanguageUrl = (
   queryAndHash = ''
 ) => {
   const relativePath = relativeLangPath(fullPath)
+
+  if (isProductPath(relativePath)) {
+    return `${relativePath}${queryAndHash}`
+  }
+
   const targetPrefix = SITE_LOCALE_PREFIX_MAP[targetLocale]
   const path =
     targetLocale === DEFAULT_LOCALE

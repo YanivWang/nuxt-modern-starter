@@ -7,8 +7,30 @@ import {
 
 export type PublicPagePath = (typeof PUBLIC_PAGE_PATHS)[number]
 
+export const isProductPath = (path: string) => {
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`
+
+  return normalizedPath === '/app' || normalizedPath.startsWith('/app/')
+}
+
+export const localizedProductPathToCanonical = (path: string) => {
+  const segments = path.split('/').filter(Boolean)
+  const [firstSegment, secondSegment] = segments
+  const localePrefixes = Object.values(SITE_LOCALE_PREFIX_MAP)
+
+  if (firstSegment && localePrefixes.includes(firstSegment) && secondSegment === 'app') {
+    return `/${segments.slice(1).join('/')}`
+  }
+
+  return null
+}
+
 export const localizedPath = (path: string, locale: SupportedLocale) => {
   const normalizedPath = path === '/' ? '' : path
+
+  if (isProductPath(path)) {
+    return path
+  }
 
   if (locale === DEFAULT_LOCALE) {
     return normalizedPath || '/'
@@ -22,9 +44,7 @@ export const publicLocalizedPaths = (locales: readonly SupportedLocale[] = ['zh-
 
 export const productRoutePatterns = ['/app/**'] as const
 
-export const productLocalizedPathPatterns = (
-  locales: readonly SupportedLocale[] = ['zh-CN', 'en-US']
-) => locales.flatMap((locale) => productRoutePatterns.map((path) => localizedPath(path, locale)))
+export const productPathPatterns = () => [...productRoutePatterns]
 
 export const prerenderRoutes = publicLocalizedPaths().filter(
   (path) =>
@@ -38,4 +58,4 @@ export const prerenderRoutes = publicLocalizedPaths().filter(
 
 export const swrRouteRules = ['/news/**', '/en/news/**'] as const
 
-export const csrRouteRules = productLocalizedPathPatterns()
+export const csrRouteRules = productPathPatterns()

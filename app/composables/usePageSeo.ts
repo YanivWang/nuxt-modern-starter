@@ -22,6 +22,10 @@ type PageSeoInput = {
   }
 }
 
+type PageSeoLinkInput = Pick<PageSeoInput, 'path' | 'locale' | 'noindex'> & {
+  siteUrl: string
+}
+
 const absoluteUrl = (siteUrl: string, path: string) =>
   `${siteUrl.replace(/\/$/, '')}${path === '/' ? '' : path}`
 
@@ -35,6 +39,30 @@ const getLocaleMessage = (locale: SupportedLocale, key: string) => {
   }, i18n.global.getLocaleMessage(locale))
 
   return typeof value === 'string' ? value : undefined
+}
+
+export const buildPageSeoLinks = (input: PageSeoLinkInput) => {
+  const locale = input.locale || DEFAULT_LOCALE
+  const canonical = absoluteUrl(input.siteUrl, localizedPath(input.path, locale))
+  const canonicalLink = { rel: 'canonical', href: canonical }
+
+  if (input.noindex) {
+    return [canonicalLink]
+  }
+
+  return [
+    canonicalLink,
+    ...SUPPORTED_LOCALES.map((targetLocale) => ({
+      rel: 'alternate',
+      hreflang: targetLocale,
+      href: absoluteUrl(input.siteUrl, localizedPath(input.path, targetLocale))
+    })),
+    {
+      rel: 'alternate',
+      hreflang: 'x-default',
+      href: absoluteUrl(input.siteUrl, localizedPath(input.path, DEFAULT_LOCALE))
+    }
+  ]
 }
 
 export const usePageSeo = (input: PageSeoInput) => {
@@ -61,19 +89,7 @@ export const usePageSeo = (input: PageSeoInput) => {
       { property: 'og:locale', content: locale },
       ...(input.noindex ? [{ name: 'robots', content: 'noindex,nofollow' }] : [])
     ],
-    link: [
-      { rel: 'canonical', href: canonical },
-      ...SUPPORTED_LOCALES.map((targetLocale) => ({
-        rel: 'alternate',
-        hreflang: targetLocale,
-        href: absoluteUrl(siteUrl, localizedPath(input.path, targetLocale))
-      })),
-      {
-        rel: 'alternate',
-        hreflang: 'x-default',
-        href: absoluteUrl(siteUrl, localizedPath(input.path, DEFAULT_LOCALE))
-      }
-    ],
+    link: buildPageSeoLinks({ siteUrl, path: input.path, locale, noindex: input.noindex }),
     script: input.article
       ? [
           {

@@ -16,7 +16,7 @@ Use PascalCase for Vue components, `use*` for composables, and typed named expor
 
 ## Page And Feature Boundaries
 
-Public SEO routes live directly under `app/pages/[[language]]`. Logged-in product routes live under `app/pages/[[language]]/app`; do not add new product pages such as editor, account, documents, templates, billing, or settings at the same level as public marketing pages.
+Public SEO routes live directly under `app/pages/[[language]]`. Logged-in product route entries live under `app/pages/[[language]]/app`, but their canonical URLs stay language-neutral under `/app/**`; do not add new product pages such as editor, account, documents, templates, billing, or settings at the same level as public marketing pages.
 
 Nuxt page files are route entries only. Keep them focused on `definePageMeta`, layout selection, auth middleware, SEO/noindex, route params, and mounting a feature component.
 
@@ -48,7 +48,13 @@ Scenario clients decide their own headers. Public clients only keep request meta
 
 Public adapters must not read token cookies or call refresh endpoints. If a public page needs personalized data, put that personalized request behind a client-only authenticated component so the SEO HTML remains cache-safe.
 
-Product routes under `/app/**` are client-rendered by default through `csrRouteRules` in `config/routes.ts`. Public SEO routes and product CSR routes must stay in separate route lists.
+Product routes under `/app/**` are client-rendered by default through `csrRouteRules` in `config/routes.ts`. Do not add `/en/app/**` or other localized product route rules; language choice inside the product app is UI state, not part of the authenticated product URL.
+
+Product navigation and route policy belong in `app/features/product-shell/config.ts`. Add new workspace, document, template, billing, or settings routes there before wiring links in the product UI.
+
+## SEO Server Routes
+
+`server/routes/sitemap.xml.ts` and `server/routes/robots.txt.ts` are the canonical crawler entrypoints. Sitemap output should include public localized pages and public content details only. Product routes, login, and register pages stay `noindex` and must remain out of sitemap.
 
 ## Tests
 

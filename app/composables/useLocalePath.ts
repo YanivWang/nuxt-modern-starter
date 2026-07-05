@@ -1,4 +1,5 @@
 import { DEFAULT_LOCALE, SITE_LOCALE_PREFIX_MAP, type SupportedLocale } from '../../config/site'
+import { isProductPath } from '../../config/routes'
 import { getSwitchLanguageUrl, relativeLangPath } from '../../i18n'
 
 const withQueryAndHash = (path: string, query?: string, hash?: string) => {
@@ -14,6 +15,10 @@ export const useLocalePath = () => {
 
   const localePath = (path: string, locale = languageStore.currentLanguage) => {
     const relativePath = relativeLangPath(path)
+
+    if (isProductPath(relativePath)) {
+      return relativePath
+    }
 
     if (locale === DEFAULT_LOCALE) {
       return relativePath

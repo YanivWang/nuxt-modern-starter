@@ -1,4 +1,19 @@
 import type { AuthRouteMeta } from '../../config/auth'
+import { localizedPath, localizedProductPathToCanonical } from '../../config/routes'
+
+export const buildProductCanonicalRedirect = (path: string) => {
+  const canonicalPath = localizedProductPathToCanonical(path)
+
+  if (canonicalPath) {
+    return {
+      type: 'redirect',
+      path: canonicalPath,
+      redirectCode: 301
+    } as const
+  }
+
+  return null
+}
 
 export const buildAuthLoginRedirect = (loginPath: string, fullPath: string) => ({
   path: loginPath,
@@ -69,13 +84,26 @@ export const resolveAuthMiddlewareDecision = (
 }
 
 export default defineNuxtRouteMiddleware(async (to) => {
-  const { localePath } = useLocalePath()
+  const canonicalRedirect = buildProductCanonicalRedirect(to.path)
+
+  if (canonicalRedirect) {
+    return navigateTo(
+      {
+        path: canonicalRedirect.path,
+        query: to.query,
+        hash: to.hash
+      },
+      { redirectCode: canonicalRedirect.redirectCode }
+    )
+  }
+
   const { ensureSession, hasRole, can } = useAuth()
+  const languageStore = useLanguageStore()
   const hasSession = await ensureSession()
   const authMeta = typeof to.meta.auth === 'object' ? (to.meta.auth as AuthRouteMeta) : undefined
   const decision = resolveAuthMiddlewareDecision(
     hasSession,
-    localePath('/login'),
+    localizedPath('/login', languageStore.currentLanguage),
     to.fullPath,
     authMeta,
     {
