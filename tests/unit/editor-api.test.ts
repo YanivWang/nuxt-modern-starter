@@ -1,10 +1,14 @@
 import { describe, expect, it, vi } from 'vitest'
 
 const apiMocks = vi.hoisted(() => ({
-  useEditorApi: vi.fn()
+  request: vi.fn()
 }))
 
-vi.mock('../../app/composables/useEditorApi', () => apiMocks)
+vi.mock('../../app/apis/editor/client', () => ({
+  createEditorApiClient: () => ({
+    request: apiMocks.request
+  })
+}))
 
 describe('editor API boundary', () => {
   it('reads editor documents through the authenticated editor request entrypoint', async () => {
@@ -12,7 +16,7 @@ describe('editor API boundary', () => {
 
     fetchEditorDocument('doc_1')
 
-    expect(apiMocks.useEditorApi).toHaveBeenCalledWith('/editor/documents/doc_1', {
+    expect(apiMocks.request).toHaveBeenCalledWith('/editor/documents/doc_1', {
       method: 'GET'
     })
   })
@@ -25,7 +29,7 @@ describe('editor API boundary', () => {
       content: '<p>Hello</p>'
     })
 
-    expect(apiMocks.useEditorApi).toHaveBeenCalledWith('/editor/documents/doc_1', {
+    expect(apiMocks.request).toHaveBeenCalledWith('/editor/documents/doc_1', {
       method: 'PATCH',
       body: {
         title: 'Draft',

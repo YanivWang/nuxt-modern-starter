@@ -24,12 +24,12 @@ export const newsArticles: NewsArticle[] = [
     body: {
       'zh-CN': [
         'Nuxt Modern Starter v0.1 的目标，是把公开站点最常见的能力整理成一套可直接运行的 Nuxt 4 工程骨架。除了首页、价格、帮助和新闻等营销与内容页面，项目还预置登录、注册、账户页，以及基于 Bearer Token 的可选鉴权流程。',
-        '在工程层面，starter 统一了 localePath、usePageSeo、useApi 与 useTheme 等 composable，默认中文路由无前缀、英文路由挂载在 /en 下，并附带 canonical、hreflang、OG 元数据与新闻 Article JSON-LD。',
+        '在工程层面，starter 统一了 localePath、usePageSeo、useTheme 与场景化 API client，默认中文路由无前缀、英文路由挂载在 /en 下，并附带 canonical、hreflang、OG 元数据与新闻 Article JSON-LD。',
         '如果你正在评估一个 SaaS 官网或产品前台模板，可以从 README 的 Quick Start 开始，30 分钟内完成本地启动，再按 docs/usage.md 逐步替换文案、内容与后端接口。'
       ],
       'en-US': [
         'Nuxt Modern Starter v0.1 organizes the most common public-site capabilities into a runnable Nuxt 4 foundation. Beyond marketing and content pages such as home, pricing, help, and news, it also ships login, registration, account pages, and optional Bearer Token auth.',
-        'On the engineering side, the starter standardizes composables like localePath, usePageSeo, useApi, and useTheme. Chinese routes stay unprefixed, English routes live under /en, and SEO covers canonical, hreflang, OG metadata, and Article JSON-LD for news detail pages.',
+        'On the engineering side, the starter standardizes localePath, usePageSeo, useTheme, and scenario-specific API clients. Chinese routes stay unprefixed, English routes live under /en, and SEO covers canonical, hreflang, OG metadata, and Article JSON-LD for news detail pages.',
         'If you are evaluating a SaaS website or product frontend template, start with the README quick start to run locally within 30 minutes, then follow docs/usage.md to replace copy, content, and backend integrations step by step.'
       ]
     },
@@ -102,12 +102,12 @@ export const newsArticles: NewsArticle[] = [
     body: {
       'zh-CN': [
         '鉴权能力在 Nuxt Modern Starter 中是“可选模块”而非强制依赖。默认提供登录、注册、退出和账户页示例，并通过命名 auth 中间件保护 account 等页面，支持基于角色与 permissions 的访问控制。',
-        '前端请求统一走 useApi，Bearer Token 会随请求发送。接入真实后端时，通常只需调整 API base URL、登录/注册接口路径，以及 token 的持久化策略；页面层的路由守卫与权限判断逻辑可以复用。',
+        '登录后请求走 auth/editor 等场景化 API client，Bearer Token 只在受保护业务请求中发送。接入真实后端时，通常只需调整 API base URL、登录/注册接口路径，以及 token 的持久化策略；页面层的路由守卫与权限判断逻辑可以复用。',
         '如果项目暂时不需要账号体系，也可以保留公开页与内容中心，先不启用 auth 相关导航入口，等业务工作台准备好后再逐步接入。'
       ],
       'en-US': [
         'Auth in Nuxt Modern Starter is an optional module, not a hard dependency. The starter ships login, register, logout, and account examples, plus a named auth middleware that protects pages like account with role and permission checks.',
-        'Requests go through useApi and attach the Bearer Token automatically. When connecting a real backend, you usually only need to adjust the API base URL, login/register endpoints, and token persistence while reusing route guards and permission checks.',
+        'Logged-in requests go through scenario-specific API clients such as auth and editor clients, and Bearer Tokens are only sent with protected business requests. When connecting a real backend, you usually only need to adjust the API base URL, login/register endpoints, and token persistence while reusing route guards and permission checks.',
         'If you do not need accounts yet, keep the public and content pages first and hide auth navigation until the product workspace is ready to connect.'
       ]
     },

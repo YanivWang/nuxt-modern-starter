@@ -3,13 +3,13 @@ export type ApiFailure = {
   message: string
 }
 
-export const getApiErrorMessage = (error: unknown, fallback: string) => {
+export const getApiErrorMessage = (error: unknown, defaultMessage: string) => {
   const apiError = error as {
     data?: { message?: string }
     message?: string
   }
 
-  return apiError.data?.message || apiError.message || fallback
+  return apiError.data?.message || apiError.message || defaultMessage
 }
 
 export const createApiFailure = (input: Partial<ApiFailure> = {}): ApiFailure => ({

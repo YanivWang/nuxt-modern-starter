@@ -1,12 +1,14 @@
 import { AUTH_API_ENDPOINTS, type AuthUser, type Permission, type Role } from '../../../config/auth'
-import { createBearerHeaders } from '../../api-core/api-headers'
 import type { ApiResponse } from '../../api-core/api-types'
+import { createAuthApiClient } from './client'
 import {
   clearAuthSession,
   getRefreshTokenCookie,
   setAuthTokenCookies,
   tokenFromResponse
 } from '../../utils/auth-session'
+
+export * from './client'
 
 export type AuthEnvelope = ApiResponse<null>
 
@@ -50,16 +52,6 @@ export type ProfileResponse = ApiResponse<ProfileData>
 
 export type UpdateProfilePayload = Record<string, string | number | boolean | null | undefined>
 
-const getApiBase = () => {
-  const runtimeConfig = useRuntimeConfig()
-  return runtimeConfig.public.apiBase
-}
-
-const isUnauthorizedError = (error: unknown) => {
-  const fetchError = error as { response?: { status?: number }; statusCode?: number }
-  return fetchError.response?.status === 401 || fetchError.statusCode === 401
-}
-
 let refreshPromise: Promise<string | null> | null = null
 
 const refreshAccessToken = async () => {
@@ -95,7 +87,7 @@ export const refreshAccessTokenOnce = () => {
   return refreshPromise
 }
 
-const requestAuth = async <T>(
+const sendAuthApiRequest = async <T>(
   path: string,
   options: {
     method?: 'GET' | 'POST' | 'PATCH'
@@ -104,29 +96,15 @@ const requestAuth = async <T>(
     retryOnUnauthorized?: boolean
   } = {}
 ) => {
-  const send = (accessToken = options.accessToken) =>
-    $fetch<T>(path, {
-      baseURL: getApiBase(),
-      method: options.method || 'GET',
-      body: options.body as BodyInit | Record<string, unknown> | null | undefined,
-      headers: createBearerHeaders(accessToken)
-    })
+  const client = createAuthApiClient({
+    accessToken: options.accessToken,
+    refreshAccessToken: options.retryOnUnauthorized ? refreshAccessTokenOnce : undefined
+  })
 
-  try {
-    return await send()
-  } catch (error) {
-    if (!options.retryOnUnauthorized || !options.accessToken || !isUnauthorizedError(error)) {
-      throw error
-    }
-
-    const nextAccessToken = await refreshAccessTokenOnce()
-
-    if (!nextAccessToken) {
-      throw error
-    }
-
-    return await send(nextAccessToken)
-  }
+  return client.request<T>(path, {
+    method: options.method || 'GET',
+    body: options.body as BodyInit | Record<string, unknown> | null | undefined
+  })
 }
 
 export const normalizeAuthUser = (user: BackendUser): AuthUser => ({
@@ -139,44 +117,44 @@ export const normalizeAuthUser = (user: BackendUser): AuthUser => ({
 })
 
 export const registerApi = (payload: RegisterPayload) =>
-  requestAuth<AuthEnvelope>(AUTH_API_ENDPOINTS.register, {
+  sendAuthApiRequest<AuthEnvelope>(AUTH_API_ENDPOINTS.register, {
     method: 'POST',
     body: payload
   })
 
 export const loginApi = (payload: LoginPayload) =>
-  requestAuth<TokenResponse>(AUTH_API_ENDPOINTS.login, {
+  sendAuthApiRequest<TokenResponse>(AUTH_API_ENDPOINTS.login, {
     method: 'POST',
     body: payload
   })
 
 export const refreshApi = (refreshToken: string) =>
-  requestAuth<TokenResponse>(AUTH_API_ENDPOINTS.refresh, {
+  sendAuthApiRequest<TokenResponse>(AUTH_API_ENDPOINTS.refresh, {
     method: 'POST',
     body: { refreshToken }
   })
 
 export const logoutApi = (accessToken: string | null, refreshToken: string | null) =>
-  requestAuth<AuthEnvelope>(AUTH_API_ENDPOINTS.logout, {
+  sendAuthApiRequest<AuthEnvelope>(AUTH_API_ENDPOINTS.logout, {
     method: 'POST',
     accessToken,
     body: { refreshToken }
   })
 
 export const fetchMeApi = (accessToken: string) =>
-  requestAuth<MeResponse>(AUTH_API_ENDPOINTS.me, {
+  sendAuthApiRequest<MeResponse>(AUTH_API_ENDPOINTS.me, {
     accessToken,
     retryOnUnauthorized: true
   })
 
 export const fetchProfileApi = (accessToken: string) =>
-  requestAuth<ProfileResponse>(AUTH_API_ENDPOINTS.profile, {
+  sendAuthApiRequest<ProfileResponse>(AUTH_API_ENDPOINTS.profile, {
     accessToken,
     retryOnUnauthorized: true
   })
 
 export const updateProfileApi = (accessToken: string, payload: UpdateProfilePayload) =>
-  requestAuth<ProfileResponse>(AUTH_API_ENDPOINTS.profile, {
+  sendAuthApiRequest<ProfileResponse>(AUTH_API_ENDPOINTS.profile, {
     method: 'PATCH',
     accessToken,
     body: payload,

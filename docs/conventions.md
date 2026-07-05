@@ -26,7 +26,7 @@ Use `app/features/<feature>/index.ts` as the feature public surface. Other featu
 
 ## Ant Design Vue
 
-v0.1-core uses `@ant-design-vue/nuxt` with `extractStyle: true`. The frozen fallback standard is manual plugin installation plus `ConfigProvider` token injection if the module blocks install, SSR style extraction, build, types, or token mapping.
+v0.1-core uses `@ant-design-vue/nuxt` with `extractStyle: true`.
 
 The active token mapping is in `config/theme.ts` and covers `colorPrimary`, `colorBgBase`, `colorTextBase`, `borderRadius`, and `fontFamily`.
 
@@ -39,14 +39,12 @@ Prefer semantic CSS variables from `tokens.scss`. Do not hardcode brand colors, 
 Requests are split by responsibility:
 
 - `app/api-core` owns common request types, header helpers, error normalization, log redaction, and typed `$fetch` client creation.
-- `usePublicApi` is the default for public SEO/content data. It does not attach Bearer tokens and does not refresh sessions.
-- `useEditorApi` is the default for logged-in editor/product workflows. It may attach the access token and retry once after a refresh.
-- `useApi` is the generic authenticated business request entry. New domain APIs should prefer a clearer public/auth/editor adapter when the scenario is known.
+- `createPublicApiClient()` is the default for public SEO/content data. It strips `authorization` and `cookie` headers, does not refresh sessions, and is safe for SSR/prerender/SWR paths.
+- `createAuthApiClient()` is the default for login, register, refresh, logout, `/me`, and profile requests.
+- `createEditorApiClient()` is the default for logged-in editor/product workflows. It may attach the access token and retry once after a refresh.
 - `app/apis/public`, `app/apis/auth`, and `app/apis/editor` expose business functions. Pages should not scatter raw backend URLs.
 
-The stable key format is `api:<kind>:<method>:<path>:<body>`, and callers should pass a custom `key` only when they also keep all conflicting `useFetch` options consistent for that key.
-
-Server-side external API header forwarding is allowlisted to `cookie`, `authorization`, `x-request-id`, and `accept-language`. Logs redact `authorization` and `cookie`.
+Scenario clients decide their own headers. Public clients only keep request metadata such as `accept-language` and `x-request-id`; authenticated clients add Bearer tokens explicitly. Logs redact `authorization` and `cookie`.
 
 Public adapters must not read token cookies or call refresh endpoints. If a public page needs personalized data, put that personalized request behind a client-only authenticated component so the SEO HTML remains cache-safe.
 

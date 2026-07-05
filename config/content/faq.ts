@@ -54,9 +54,9 @@ export const faqItems: FaqItem[] = [
     },
     answer: {
       'zh-CN':
-        '项目提供可选 Bearer Token 鉴权示例，包含登录、注册、退出与账户页。受保护路由通过命名 auth 中间件控制，支持角色与权限校验。接入真实后端时，只需替换 useApi 的目标地址与 token 存储逻辑。',
+        '项目提供可选 Bearer Token 鉴权示例，包含登录、注册、退出与账户页。受保护路由通过命名 auth 中间件控制，支持角色与权限校验。接入真实后端时，调整 app/apis/auth 与具体业务 API 客户端即可。',
       'en-US':
-        'The starter includes optional Bearer Token auth with login, register, logout, and account pages. Protected routes use the named auth middleware with role and permission checks. Connect a real backend by replacing useApi targets and token persistence.'
+        'The starter includes optional Bearer Token auth with login, register, logout, and account pages. Protected routes use the named auth middleware with role and permission checks. Connect a real backend by updating app/apis/auth and the relevant domain API clients.'
     }
   },
   {

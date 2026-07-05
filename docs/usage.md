@@ -34,10 +34,10 @@ Keep top-level `app/components`, `app/composables`, and `app/stores` for shared 
 
 Choose the request entrypoint by page and data ownership:
 
-- Public SEO, marketing, help, pricing, news, and docs data belongs in `app/apis/public/*`. Use local typed content there, or call `usePublicApi<T>()` for token-free backend requests.
+- Public SEO, marketing, help, pricing, news, and docs data belongs in `app/apis/public/*`. Use local typed content there, or call `createPublicApiClient()` inside a domain adapter for token-free backend requests.
 - Login, register, refresh, logout, `/me`, and profile requests belong in `app/apis/auth`.
-- Editor document, asset, export, and collaboration requests belong in `app/apis/editor/*` or `app/features/editor/api` and should call `useEditorApi<T>()`.
-- `useApi<T>()` and `useApiPost<T>()` remain available as a generic authenticated business entry, but new pages should prefer a named domain adapter.
+- Editor document, asset, export, and collaboration requests belong in `app/apis/editor/*` or `app/features/editor/api` and should call `createEditorApiClient()` through a named domain adapter.
+- Do not add a generic catch-all request composable. Add a named public, auth, editor, or feature client when a new request scenario appears.
 
 All request helpers use `runtimeConfig.public.apiBase` in both SSR and browser code, so `NUXT_PUBLIC_API_BASE` should point directly to the real backend API origin, for example `https://api.example.com/api`.
 
@@ -69,10 +69,10 @@ To disable dark mode, keep only light tokens, set `DEFAULT_THEME_MODE` to `light
 
 Auth is implemented as an opt-in Bearer Token module for the current application API.
 
-- Backend endpoints use the `/api` prefix and return the standard `{ code, message, data }` envelope. Auth calls use `app/apis/auth/index.ts` with `$fetch`, and stores/pages consume token, user, and profile payloads from `data`.
+- Backend endpoints use the `/api` prefix and return the standard `{ code, message, data }` envelope. Auth calls use `app/apis/auth/index.ts` through `createAuthApiClient()`, and stores/pages consume token, user, and profile payloads from `data`.
 - `POST /api/register` creates an account but does not log the user in. The register page redirects users to login after success.
-- `POST /api/login` and `POST /api/refresh` return `token` or `accessToken`, plus `refreshToken`. Tokens are stored in JS-readable Nuxt cookies so SSR can attach `Authorization: Bearer <token>`.
-- `useApi<T>()`, `useEditorApi<T>()`, and protected auth API calls may attach the access token cookie for authenticated business requests. A 401 triggers a single-flight `POST /api/refresh` and retries the failed request once; refresh failure clears the local session.
+- `POST /api/login` and `POST /api/refresh` return `token` or `accessToken`, plus `refreshToken`. Tokens are stored in JS-readable Nuxt cookies for client-side product workflows.
+- `createAuthApiClient()` and `createEditorApiClient()` may attach the access token for authenticated business requests. A 401 triggers a single-flight `POST /api/refresh` and retries the failed request once; refresh failure clears the local session.
 - `app/stores/auth.ts` owns `user`, token cookies, `status`, `login`, `register`, `logout`, `fetchMe`, `refresh`, and `reset`.
 - `app/composables/useAuth.ts` exposes the store plus `ensureSession()`, `can()`, and `hasRole()` for pages and middleware.
 - `app/plugins/auth.ts` hydrates `/api/me` on startup when token cookies are present.
@@ -99,6 +99,6 @@ Analytics, CMS, payment, membership, uploads, more languages, Playwright E2E, an
 - Remove Ant Design Vue: remove `@ant-design-vue/nuxt`, `ant-design-vue`, `a-config-provider`, and Ant components.
 - Remove Docker/Nginx: delete `.dockerignore`, `docker/`, and docker scripts.
 - Remove news examples: delete `config/content/news.ts`, news pages, and related sitemap entries.
-- Remove editor feature: delete `app/features/editor`, `app/apis/editor`, `app/composables/useEditorApi.ts`, product editor pages under `app/pages/[[language]]/app`, and editor-specific tests.
+- Remove editor feature: delete `app/features/editor`, `app/apis/editor`, product editor pages under `app/pages/[[language]]/app`, and editor-specific tests.
 
 After cutting modules, run `pnpm lint`, `pnpm stylelint`, `pnpm typecheck`, `pnpm test`, and `pnpm build`.

@@ -41,11 +41,19 @@ export const createApiClient = ({
         throw error
       }
 
+      const retryHeaders = createHeaders(headers)
+
       createHeaders(nextHeaders).forEach((value, key) => {
-        headers.set(key, value)
+        retryHeaders.set(key, value)
       })
 
-      return fetcher<T>(path, toFetchOptions(fetchOptions))
+      return fetcher<T>(
+        path,
+        toFetchOptions({
+          ...fetchOptions,
+          headers: retryHeaders
+        })
+      )
     }
   }
 
