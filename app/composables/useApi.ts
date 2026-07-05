@@ -1,4 +1,7 @@
 import type { UseFetchOptions } from 'nuxt/app'
+import type { ApiClientKind } from '../api-core/api-types'
+import { createBearerHeaders, createHeaders, sanitizeHeaders } from '../api-core/api-headers'
+import { createApiFailure, isUnauthorizedError } from '../api-core/api-error'
 import { refreshAccessTokenOnce } from '../apis/auth'
 import type { ApiResponse } from '../utils/api-contract'
 import { getAuthToken } from '../utils/auth-session'
@@ -22,7 +25,7 @@ type MutableFetchOptions = {
 
 type FetchRequest = Parameters<typeof $fetch>[0]
 
-type ApiOptions<T> = Omit<
+export type ApiOptions<T> = Omit<
   UseFetchOptions<ApiResponse<T>>,
   'method' | 'key' | 'headers' | 'body'
 > & {
@@ -33,27 +36,20 @@ type ApiOptions<T> = Omit<
   headers?: HeadersInit
 }
 
-const sanitizeHeaders = (headers: HeadersInit = {}) => {
-  const normalizedHeaders = new Headers(headers)
-
-  for (const key of ['authorization', 'cookie']) {
-    if (normalizedHeaders.has(key)) {
-      normalizedHeaders.set(key, '[redacted]')
-    }
-  }
-
-  return Object.fromEntries(normalizedHeaders.entries())
-}
-
-const createApiKey = (method: ApiMethod, path: string, body?: unknown) => {
+export const createScenarioApiKey = (
+  kind: ApiClientKind,
+  method: ApiMethod,
+  path: string,
+  body?: unknown
+) => {
   const bodyKey = body ? JSON.stringify(body) : ''
-  return `api:${method}:${path}:${bodyKey}`
+  return `api:${kind}:${method}:${path}:${bodyKey}`
 }
 
-const isUnauthorizedError = (error: unknown) => {
-  const fetchError = error as { response?: { status?: number }; statusCode?: number }
-  return fetchError.response?.status === 401 || fetchError.statusCode === 401
-}
+export const createPublicApiHeaders = (headers: HeadersInit = {}) => createHeaders(headers)
+
+export const createAuthenticatedApiHeaders = (token?: string | null, headers: HeadersInit = {}) =>
+  createBearerHeaders(token, headers)
 
 const toFetchOptions = (options: MutableFetchOptions) =>
   options as unknown as NonNullable<Parameters<typeof $fetch>[1]>
@@ -99,17 +95,16 @@ const createAuthenticatedFetch = (baseHeaders: Headers, explicitToken?: string):
   return apiFetch as typeof $fetch
 }
 
-export const useApi = <T>(path: string, options: ApiOptions<T> = {}) => {
+export const requestScenarioApi = <T>(
+  kind: ApiClientKind,
+  path: string,
+  options: ApiOptions<T> = {},
+  headers: Headers,
+  shouldRefreshOnUnauthorized: boolean
+) => {
   const runtimeConfig = useRuntimeConfig()
   const method = options.method || 'GET'
   const baseURL = runtimeConfig.public.apiBase
-  const headers = new Headers(options.headers)
-
-  const token = options.token || getAuthToken()
-
-  if (token) {
-    headers.set('authorization', `Bearer ${token}`)
-  }
 
   return useFetch<ApiResponse<T>>(path, {
     ...options,
@@ -117,15 +112,16 @@ export const useApi = <T>(path: string, options: ApiOptions<T> = {}) => {
     baseURL,
     body: options.body,
     headers,
-    $fetch: createAuthenticatedFetch(headers, options.token),
-    key: options.key || createApiKey(method, path, options.body),
+    $fetch: shouldRefreshOnUnauthorized ? createAuthenticatedFetch(headers, options.token) : $fetch,
+    key: options.key || createScenarioApiKey(kind, method, path, options.body),
     onResponseError({ response }) {
-      const error: ApiError = {
+      const error = createApiFailure({
         statusCode: response.status,
         message: response.statusText || 'Request failed'
-      }
+      }) as ApiError
 
       console.error('[useApi] request failed', {
+        kind,
         path,
         method,
         headers: sanitizeHeaders(headers),
@@ -135,6 +131,13 @@ export const useApi = <T>(path: string, options: ApiOptions<T> = {}) => {
       throw createError(error)
     }
   })
+}
+
+export const useApi = <T>(path: string, options: ApiOptions<T> = {}) => {
+  const token = options.token || getAuthToken()
+  const headers = createAuthenticatedApiHeaders(token, options.headers)
+
+  return requestScenarioApi('auth', path, options, headers, true)
 }
 
 export const useApiPost = <T>(path: string, body?: ApiBody, options: ApiOptions<T> = {}) =>

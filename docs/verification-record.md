@@ -42,3 +42,27 @@ docker run -d --name nuxt-modern-starter-nginx-verify --network nuxt-modern-star
 - `http://localhost:3200/` 返回 `200`。
 - 代理后的 `/_nuxt/DgEloujL.js` 返回 `200`。
 - `/_nuxt/` 静态资源响应包含 `Cache-Control: public, max-age=31536000, immutable`。
+
+## 2026-07-05 企业化请求架构改造验证
+
+以下命令已通过：
+
+```bash
+corepack pnpm test tests/unit/api-core.test.ts tests/unit/use-api.test.ts tests/unit/public-content-api.test.ts tests/unit/editor-api.test.ts tests/unit/auth-store.test.ts
+corepack pnpm format:check
+corepack pnpm lint
+corepack pnpm stylelint
+corepack pnpm test
+corepack pnpm typecheck
+corepack pnpm build
+```
+
+验证结果：
+
+- focused tests：5 个测试文件、20 条用例通过，覆盖 `api-core`、public/editor 场景入口、public content adapter、editor adapter 和 auth store。
+- format/lint/stylelint：全部通过。
+- full tests：12 个测试文件、37 条用例通过。
+- typecheck：Nuxt typecheck 通过。
+- build：Nuxt production build 通过，Nitro preset 仍为 `node-server`，并完成 `/`、`/pricing`、`/help`、`/en`、`/en/pricing`、`/en/help` 的 prerender。
+
+构建期间仍有 Vite/Nuxt sourcemap 与 chunk size 警告，但未阻断构建。当前最大 chunk 主要来自编辑器/Ant Design Vue 相关依赖，后续可在编辑器功能稳定后再评估动态导入和 manual chunks。

@@ -26,9 +26,19 @@ Prefer semantic CSS variables from `tokens.scss`. Do not hardcode brand colors, 
 
 ## Requests
 
-`useApi` wraps Nuxt `useFetch`. The stable key format is `api:<method>:<path>:<body>`, and callers should pass a custom `key` only when they also keep all conflicting `useFetch` options consistent for that key.
+Requests are split by responsibility:
+
+- `app/api-core` owns common request types, header helpers, error normalization, log redaction, and typed `$fetch` client creation.
+- `usePublicApi` is the default for public SEO/content data. It does not attach Bearer tokens and does not refresh sessions.
+- `useEditorApi` is the default for logged-in editor/product workflows. It may attach the access token and retry once after a refresh.
+- `useApi` remains the generic authenticated business request entry for compatibility, but new domain APIs should prefer a clearer public/auth/editor adapter.
+- `app/apis/public`, `app/apis/auth`, and `app/apis/editor` expose business functions. Pages should not scatter raw backend URLs.
+
+The stable key format is `api:<kind>:<method>:<path>:<body>`, and callers should pass a custom `key` only when they also keep all conflicting `useFetch` options consistent for that key.
 
 Server-side external API header forwarding is allowlisted to `cookie`, `authorization`, `x-request-id`, and `accept-language`. Logs redact `authorization` and `cookie`.
+
+Public adapters must not read token cookies or call refresh endpoints. If a public page needs personalized data, put that personalized request behind a client-only authenticated component so the SEO HTML remains cache-safe.
 
 ## Tests
 

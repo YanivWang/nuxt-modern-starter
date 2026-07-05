@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ArrowRightOutlined } from '~/utils/antdIcon'
-import { getLocalizedNewsArticle } from '../../../apis/content'
+import { getLocalizedNewsArticle } from '../../../apis/public/content'
 import { formatPublishedDate } from '../../../utils/formatDate'
 
 const route = useRoute()

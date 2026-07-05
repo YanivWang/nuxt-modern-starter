@@ -1,15 +1,13 @@
-import { AUTH_API_ENDPOINTS, type AuthUser, type Permission, type Role } from '../../config/auth'
-import {
-  normalizeFlatApiResponse,
-  type FlatApiResponse,
-  type NormalizedFlatApiResponse
-} from '../utils/api-contract'
+import { AUTH_API_ENDPOINTS, type AuthUser, type Permission, type Role } from '../../../config/auth'
+import { normalizeFlatApiResponse } from '../../api-core/api-error'
+import { createBearerHeaders } from '../../api-core/api-headers'
+import type { FlatApiResponse, NormalizedFlatApiResponse } from '../../api-core/api-types'
 import {
   clearAuthSession,
   getRefreshTokenCookie,
   setAuthTokenCookies,
   tokenFromResponse
-} from '../utils/auth-session'
+} from '../../utils/auth-session'
 
 export type AuthEnvelope = NormalizedFlatApiResponse<FlatApiResponse>
 
@@ -56,16 +54,6 @@ export type UpdateProfilePayload = Record<string, string | number | boolean | nu
 const getApiBase = () => {
   const runtimeConfig = useRuntimeConfig()
   return runtimeConfig.public.apiBase
-}
-
-const createAuthHeaders = (accessToken?: string | null) => {
-  const headers = new Headers()
-
-  if (accessToken) {
-    headers.set('authorization', `Bearer ${accessToken}`)
-  }
-
-  return headers
 }
 
 const isUnauthorizedError = (error: unknown) => {
@@ -122,7 +110,7 @@ const requestAuth = async <T extends FlatApiResponse>(
       baseURL: getApiBase(),
       method: options.method || 'GET',
       body: options.body as BodyInit | Record<string, unknown> | null | undefined,
-      headers: createAuthHeaders(accessToken)
+      headers: createBearerHeaders(accessToken)
     })
 
   try {

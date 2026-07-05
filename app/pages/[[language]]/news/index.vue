@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { ArrowRightOutlined } from '~/utils/antdIcon'
-import { getNewsArticles } from '../../../apis/content'
+import { getNewsArticles } from '../../../apis/public/content'
 import { formatPublishedDate } from '../../../utils/formatDate'
 
 const languageStore = useLanguageStore()

@@ -49,7 +49,9 @@
 
 - 当前分支已实现 opt-in Bearer Token auth 模块，包含登录、注册、登出、账户示例页、`useAuth`、`auth` store、启动水合和受保护路由守卫。
 - 接受 JS 可读 Nuxt cookie 存储 access token / refresh token 的工程权衡，以便 SSR 首屏可拼接 `Authorization: Bearer <token>`。该方案要求继续遵守不记录 token/cookie、谨慎引入第三方脚本和后续补充 CSP 的安全约束。
-- 应用内 API 响应统一消费 `message`。通用业务接口使用 `{ code, message, data }`；对接 `express-modern-starter` 的 auth 接口仍接收后端 `{ code, msg, ...fields }`，但必须在 `app/apis/auth.ts` 边界通过 `normalizeFlatApiResponse()` 归一化，store/page 层不得直接依赖 `msg`。
+- 应用内 API 响应统一消费 `message`。通用业务接口使用 `{ code, message, data }`；对接 `express-modern-starter` 的 auth 接口仍接收后端 `{ code, msg, ...fields }`，但必须在 `app/apis/auth/index.ts` 边界通过 `normalizeFlatApiResponse()` 归一化，store/page 层不得直接依赖 `msg`。
+- 请求层采用中型企业化分层：`app/api-core` 统一底层类型、错误、header 和 `$fetch` client 策略；`usePublicApi` 面向公开 SEO/内容请求且默认无 token；`useEditorApi` 面向登录态编辑器请求且允许 401 refresh；`app/apis/public`、`app/apis/auth`、`app/apis/editor` 分别承接公开内容、认证生命周期和编辑器工作流。
+- 公开 SEO 页面不得默认读取 token cookie 或触发 refresh。需要个性化数据时，应放在 client-only 的登录态组件内，避免污染 prerender、SWR、爬虫抓取和 CDN 缓存。
 
 ### 内部迁移参考
 
