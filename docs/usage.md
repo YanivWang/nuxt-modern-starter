@@ -10,7 +10,7 @@ Create logged-in product pages under `app/pages/app`, and keep links, canonical 
 
 Do not add product pages such as account, documents, editor, templates, workspace, billing, or settings beside public marketing pages. Product routes are client-rendered by default through `csrRouteRules` in `config/routes.ts`.
 
-Register product navigation and route policy in `app/features/product-shell/config.ts` before adding sidebar links or new `/app/**` route entries. Do not create localized product links such as `/en/app/...`; the global locale middleware redirects those back to `/app/...`.
+Register product navigation and route policy in `app/features/product-shell/config.ts` before adding sidebar links or new `/app/**` route entries. Use `ProductRouteMode` values `workspace`, `docs`, or `account`; set `nav: true` only for sidebar items. Do not create localized product links such as `/en/app/...`; the global locale middleware redirects those back to `/app/...`.
 
 ## Add A Feature Module
 
@@ -38,7 +38,7 @@ Choose the request entrypoint by page and data ownership:
 
 - Public SEO, marketing, help, pricing, news, and docs data belongs in `app/apis/public/*`. Use local typed content there, or call `createPublicApiClient()` inside a domain adapter for token-free backend requests.
 - Login, register, refresh, logout, `/me`, and profile requests belong in `app/apis/auth`.
-- Workspace project requests belong in `app/features/workspace/api.ts` via `fetchWorkspaceProjects()`, `createWorkspaceProject()`, and `fetchWorkspaceProject()` (paths `/projects`, `/projects/:projectId`).
+- Workspace project requests belong in `app/features/workspace/api.ts` via `fetchWorkspaceProjects()`, `createWorkspaceProject()`, `fetchWorkspaceProject()`, and `deleteWorkspaceProject()` (paths `/projects`, `/projects/:projectId`). Use `getWorkspaceDocPath(projectId)` when linking to the editor route.
 - Editor document requests belong in `app/apis/editor/document.ts` via `fetchEditorDocument()` and `saveEditorDocument()` (paths `/documents/:documentId`).
 - Do not add a generic catch-all request composable. Add a named public, auth, product, editor, or feature client when a new request scenario appears.
 
@@ -80,16 +80,15 @@ To disable dark mode, keep only light tokens, set `DEFAULT_THEME_MODE` to `light
 
 The starter ships a real product flow when paired with `nuxt-modern-starter-api`:
 
-| Route                               | Purpose                                                        |
-| ----------------------------------- | -------------------------------------------------------------- |
-| `/app/workspace`                    | Project list, loading/empty states, and blank-project creation |
-| `/app/workspace/:projectId/edit`    | Resolve project `documentId`, then load/save editor content    |
-| `/app/workspace/:projectId/preview` | Fetch saved document HTML and render it with `v-html`          |
+| Route            | Purpose                                                                                               |
+| ---------------- | ----------------------------------------------------------------------------------------------------- |
+| `/app/workspace` | Project list, loading/empty states, blank-project creation, and delete                                |
+| `/app/docs/:id`  | Load project by `:id` (project id), resolve `documentId`, then load/save editor content with autosave |
 
 API boundaries:
 
-- Workspace adapters in `app/features/workspace/api.ts`: `fetchWorkspaceProjects()`, `createWorkspaceProject()`, `fetchWorkspaceProject()` via `createProductApiClient()`.
-- Editor adapters in `app/apis/editor/document.ts`: `fetchEditorDocument()`, `saveEditorDocument()` via `createEditorApiClient()` (which delegates to the product client).
+- Workspace adapters in `app/features/workspace/api.ts`: `fetchWorkspaceProjects()`, `createWorkspaceProject()`, `fetchWorkspaceProject()`, and `deleteWorkspaceProject()` via `createProductApiClient()`. `getWorkspaceDocPath(projectId)` returns `/app/docs/:id`.
+- Editor adapters in `app/apis/editor/document.ts`: `fetchEditorDocument()` and `saveEditorDocument()` via `createEditorApiClient()` (which delegates to the product client).
 - Relative request paths are `/projects` and `/documents/:documentId`; `runtimeConfig.public.apiBase` already includes the `/api` prefix.
 - Both use the backend envelope `{ code, message, data }` and retry once after a single-flight refresh on 401.
 
@@ -97,15 +96,20 @@ Current UI scope:
 
 - Only the blank-project card and the primary create button call `POST /api/projects`. AI/import cards are visual placeholders with no backend wiring yet.
 - Search and segmented filters are UI-only; project listing always calls `GET /api/projects` without query parameters.
-- Preview is an HTML preview of editor content, not a PPT slide renderer. `slideCount` currently comes from project metadata and is not recalculated from document content.
+- Project cards link to the editor through `getWorkspaceDocPath()`. `slideCount` currently comes from project metadata and is not recalculated from document content.
+
+Editor behavior:
+
+- `/app/docs/:id` uses the `editor` layout and mounts `EditorWorkspace` with `@yanivjs/yaniv-editor`.
+- Route param `:id` is the **project id**. The page calls `fetchWorkspaceProject(id)`, requires a non-null `documentId`, then loads/saves the linked document through editor APIs.
+- Content autosaves after a 2-second debounce and flushes on route leave.
+- Register the route in `product-shell/config.ts` with `mode: 'docs'`; it is not a sidebar nav item.
 
 Local full-stack defaults:
 
 - Nuxt: `http://localhost:3000`
 - API gateway: `http://localhost:2026/api`
 - Backend `CORS_ORIGINS` must include `http://localhost:3000`
-
-Standalone `/app/editor?documentId=...` remains a deep-link route with the `editor` layout. It is not in the product sidebar; the primary path is `/app/workspace/:projectId/edit`, which mounts the same `EditorWorkspace` under the product shell layout.
 
 ## Auth Extension Contract
 
@@ -141,6 +145,6 @@ Analytics, CMS, payment, membership, uploads, more languages, Playwright E2E, an
 - Remove Ant Design Vue: remove `@ant-design-vue/nuxt`, `ant-design-vue`, `a-config-provider`, and Ant components.
 - Remove Docker/Nginx: delete `.dockerignore`, `docker/`, and docker scripts.
 - Remove news examples: delete `config/content/news.ts`, news pages, and related sitemap entries.
-- Remove editor feature: delete `app/features/editor`, `app/apis/editor`, product editor pages under `app/pages/app`, and editor-specific tests.
+- Remove editor feature: delete `app/features/editor`, `app/apis/editor`, `app/pages/app/docs/[id].vue`, and editor-specific tests.
 
 After cutting modules, run `pnpm lint`, `pnpm stylelint`, `pnpm typecheck`, `pnpm test`, and `pnpm build`.

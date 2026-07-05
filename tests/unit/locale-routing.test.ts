@@ -37,11 +37,6 @@ describe('locale routing decisions', () => {
       path: '/app/workspace',
       redirectCode: 301
     })
-    expect(resolveLocaleRouteDecision('/en/app/workspace/deck-1/edit')).toEqual({
-      type: 'redirect',
-      path: '/app/workspace/deck-1/edit',
-      redirectCode: 301
-    })
     expect(resolveLocaleRouteDecision('/en/app/docs/deck-1')).toEqual({
       type: 'redirect',
       path: '/app/docs/deck-1',

@@ -5,8 +5,8 @@
 ## Directory Responsibilities
 
 - `app/pages/[[language]]`: localized public route entries. Default language has no prefix, English public pages use `/en`.
-- `app/pages/app`: logged-in product route entries. Their canonical URLs stay language-neutral under `/app/**`; legacy localized product URLs such as `/en/app/workspace` redirect back to `/app/workspace`.
-- `app/features/product-shell`: logged-in product shell configuration and layout surface. Product navigation and `/app/**` route policy are centralized here instead of being hardcoded in the layout. Sidebar nav currently exposes workspace and account only; project edit/preview routes and legacy `/app/editor` deep links are registered without sidebar entries.
+- `app/pages/app`: logged-in product route entries. Current pages: `workspace/index.vue` (`/app/workspace`), `docs/[id].vue` (`/app/docs/:id`), and `account.vue` (`/app/account`). Canonical URLs stay language-neutral under `/app/**`; localized product URLs such as `/en/app/workspace` redirect back to `/app/workspace`.
+- `app/features/product-shell`: logged-in product shell configuration and layout surface. Product navigation and `/app/**` route policy are centralized in `config.ts` through `productRouteConfigs` and `ProductRouteMode` (`workspace`, `docs`, `account`). Sidebar nav exposes workspace and account only; `/app/docs/:id` is registered with `mode: 'docs'` without a sidebar entry and uses the dedicated `editor` layout.
 - `app/features`: product and domain modules. Complex product UI, feature composables, feature stores, feature types, and feature API adapters grow here instead of top-level Nuxt folders.
 - `app/api-core`: low-level API policy such as response types, error normalization, header creation, sensitive header redaction, and typed `$fetch` client creation.
 - `app/composables`: shared runtime APIs such as `useAuth`, `useLocalePath`, `usePageSeo`, and `useTheme`. Feature-specific composables belong under `app/features/<feature>/composables`; backend request clients belong under `app/apis/*`.
@@ -14,7 +14,7 @@
 - `app/apis/auth`: Bearer Token auth adapter. It owns login, register, refresh, logout, `/me`, profile requests, response normalization, and single-flight token refresh.
 - `app/apis/product`: authenticated product workflow client factory. Workspace project and other logged-in product APIs should call `createProductApiClient()` through feature-level adapters.
 - `app/apis/editor`: authenticated editor workflow adapters shared by editor feature routes. Document save/read, asset upload, export, and future collaboration APIs should grow here or move into `app/features/editor/api` when they become feature-internal.
-- `app/utils`: small shared runtime utilities that do not belong to a feature or API core module.
+- `app/utils`: small shared runtime utilities such as `antdIcon.ts` for on-demand Ant Design SVG icons, plus helpers that do not belong to a feature or API core module.
 - `app/stores`: Pinia stores for app UI state, language state, theme state, and opt-in auth state. Feature-specific stores belong under `app/features/<feature>/stores`.
 - `app/components/base`: reusable low-level examples such as `BaseLogo`, `BaseButton`, and `PageContainer`.
 - `app/components/layout`: shell components with no business dependencies.
@@ -34,8 +34,8 @@ Business requests use the app-level `{ code, message, data }` contract through s
 
 - Public SEO/content pages use `app/apis/public/*` and `createPublicApiClient()` when a backend request is needed. These requests strip `authorization` and `cookie` headers so they stay safe for SSR, prerender, SWR, and CDN caching.
 - Auth requests use `app/apis/auth`. The adapter targets the current application API contract directly: `{ code, message, data }`; pages and stores read business payloads from `data`.
-- Workspace project requests use `app/features/workspace/api.ts` through `fetchWorkspaceProjects()`, `createWorkspaceProject()`, and `fetchWorkspaceProject()` with `createProductApiClient()`.
+- Workspace project requests use `app/features/workspace/api.ts` through `fetchWorkspaceProjects()`, `createWorkspaceProject()`, `fetchWorkspaceProject()`, and `deleteWorkspaceProject()` with `createProductApiClient()`. `getWorkspaceDocPath(projectId)` builds `/app/docs/:id` editor links from a project id.
 - Editor document requests use `app/apis/editor/document.ts` through `fetchEditorDocument()` and `saveEditorDocument()` with `createEditorApiClient()`. `createEditorApiClient()` delegates to the shared product client so token refresh behavior stays consistent across product and editor APIs.
-- Logged-in product pages under `/app/**` mount feature modules such as `app/features/workspace` and `app/features/editor`. These routes are CSR by default; requests may attach Bearer tokens and retry once after a single-flight refresh.
+- Logged-in product pages under `/app/**` mount feature modules such as `app/features/workspace` and `app/features/editor`. The workspace dashboard uses the `product` layout; `app/pages/app/docs/[id].vue` uses the `editor` layout, loads the project by route `:id`, requires a linked `documentId`, then mounts `EditorWorkspace` with `@yanivjs/yaniv-editor`, 2-second debounced autosave, and route-leave flush. These routes are CSR by default; requests may attach Bearer tokens and retry once after a single-flight refresh.
 
-Page components should call domain adapters such as `getNewsArticles()`, `fetchWorkspaceProjects()`, `createWorkspaceProject()`, `fetchWorkspaceProject()`, `fetchEditorDocument()`, or `saveEditorDocument()`, not raw backend URLs. This keeps backend contract changes localized to `app/apis/*` and `app/features/workspace/api.ts`.
+Page components should call domain adapters such as `getNewsArticles()`, `fetchWorkspaceProjects()`, `createWorkspaceProject()`, `fetchWorkspaceProject()`, `deleteWorkspaceProject()`, `fetchEditorDocument()`, or `saveEditorDocument()`, not raw backend URLs. This keeps backend contract changes localized to `app/apis/*` and `app/features/workspace/api.ts`.

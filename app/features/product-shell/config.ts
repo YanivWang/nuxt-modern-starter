@@ -1,4 +1,4 @@
-export type ProductRouteMode = 'workspace' | 'edit' | 'account'
+export type ProductRouteMode = 'workspace' | 'docs' | 'account'
 
 export type ProductRouteConfig = {
   path: string
@@ -29,7 +29,7 @@ export const productRouteConfigs = [
   {
     path: '/app/docs/:id',
     labelKey: 'workspace.edit',
-    mode: 'edit',
+    mode: 'docs',
     auth: { required: true },
     seo: { noindex: true }
   },

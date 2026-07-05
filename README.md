@@ -16,16 +16,17 @@ The quick-start target is `pnpm install && pnpm dev`: a new project should be ab
 
 ## Verified Versions
 
-| Tool                 | Version |
-| -------------------- | ------- |
-| Node                 | 22.22.3 |
-| pnpm                 | 11.5.2  |
-| Nuxt                 | 4.4.8   |
-| vue-i18n             | 11.4.6  |
-| @pinia/nuxt          | 0.11.3  |
-| ant-design-vue       | 4.2.6   |
-| @ant-design-vue/nuxt | 1.4.6   |
-| Vitest               | 4.1.9   |
+| Tool                  | Version |
+| --------------------- | ------- |
+| Node                  | 22.22.3 |
+| pnpm                  | 11.5.2  |
+| Nuxt                  | 4.4.8   |
+| vue-i18n              | 11.4.6  |
+| @pinia/nuxt           | 0.11.3  |
+| ant-design-vue        | 4.2.6   |
+| @ant-design-vue/nuxt  | 1.4.6   |
+| @yanivjs/yaniv-editor | 0.1.2   |
+| Vitest                | 4.1.9   |
 
 When upgrading dependencies, update this section and run at least:
 
@@ -51,8 +52,9 @@ Full `v0.1-core` includes complete quality gates plus Docker build/run and Nginx
 - Separate public SEO routes and logged-in `/app/**` product routes, with product routes rendered as CSR by default.
 - Feature-first product modules under `app/features/*` for complex editor, document, workspace, or SaaS workflows.
 - Opt-in Bearer Token auth module with login, register, logout, product account, and protected-route examples.
-- Product workspace at `/app/workspace`: list and create projects via `nuxt-modern-starter-api` (`GET/POST /api/projects`), open editor at `/app/workspace/:projectId/edit`, preview saved editor HTML at `/app/workspace/:projectId/preview` (rendered with `v-html`, not a slide engine).
-- Authenticated editor document read/save through `GET/PATCH /api/documents/:documentId` with shared `{ code, message, data }` response envelope.
+- Product workspace at `/app/workspace`: list, create, and delete projects via `nuxt-modern-starter-api` (`GET/POST/DELETE /api/projects`).
+- Editor at `/app/docs/:id` (`:id` is the project id): resolves `documentId`, loads content with `GET /api/documents/:documentId`, and autosaves with `PATCH /api/documents/:documentId` through `@yanivjs/yaniv-editor`.
+- Authenticated business responses use the shared `{ code, message, data }` envelope.
 - Public pages for home, pricing, help, news list, news detail, and 404.
 - Canonical, hreflang, OG metadata, noindex handling, and Article JSON-LD.
 - Docker image and Nginx reverse-proxy sample for Nitro node-server.
@@ -81,6 +83,10 @@ pnpm typecheck
 pnpm test
 pnpm docker:build
 pnpm docker:run
+pnpm docker:up
+pnpm docker:up:dev
+pnpm docker:down
+pnpm docker:down:dev
 ```
 
 ## Environment Layers

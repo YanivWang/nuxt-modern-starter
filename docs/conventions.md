@@ -30,6 +30,8 @@ v0.1-core uses `@ant-design-vue/nuxt` with `extractStyle: true`.
 
 The active token mapping is in `config/theme.ts` and covers `colorPrimary`, `colorBgBase`, `colorTextBase`, `borderRadius`, and `fontFamily`.
 
+Import Ant Design icons through `app/utils/antdIcon.ts` so only the SVGs a screen needs are bundled, instead of pulling in the full `@ant-design/icons-vue` package.
+
 ## Design Tokens
 
 Prefer semantic CSS variables from `tokens.scss`. Do not hardcode brand colors, page backgrounds, body text, or border colors inside page components unless the value is local illustrative content.
@@ -41,7 +43,7 @@ Requests are split by responsibility:
 - `app/api-core` owns common request types, header helpers, error normalization, log redaction, and typed `$fetch` client creation.
 - `createPublicApiClient()` is the default for public SEO/content data. It strips `authorization` and `cookie` headers, does not refresh sessions, and is safe for SSR/prerender/SWR paths.
 - `createAuthApiClient()` is the default for login, register, refresh, logout, `/me`, and profile requests.
-- `createProductApiClient()` is the default factory for authenticated workspace/project workflows. Feature adapters such as `fetchWorkspaceProjects()` and `createWorkspaceProject()` should call it instead of pages calling raw URLs.
+- `createProductApiClient()` is the default factory for authenticated workspace/project workflows. Feature adapters such as `fetchWorkspaceProjects()`, `createWorkspaceProject()`, `fetchWorkspaceProject()`, and `deleteWorkspaceProject()` should call it instead of pages calling raw URLs. Use `getWorkspaceDocPath(projectId)` for editor links.
 - `createEditorApiClient()` is the default factory for authenticated editor document workflows. It delegates to the shared product client so refresh behavior stays consistent. Document adapters live in `app/apis/editor/document.ts`.
 - `app/apis/public`, `app/apis/auth`, `app/apis/product`, and `app/apis/editor` expose business functions. Pages should not scatter raw backend URLs.
 
@@ -51,7 +53,7 @@ Public adapters must not read token cookies or call refresh endpoints. If a publ
 
 Product routes under `/app/**` are client-rendered by default through `csrRouteRules` in `config/routes.ts`. Do not add `/en/app/**` or other localized product route rules; language choice inside the product app is UI state, not part of the authenticated product URL.
 
-Product navigation and route policy belong in `app/features/product-shell/config.ts`. Add new workspace, document, template, billing, or settings routes there before wiring links in the product UI.
+Product navigation and route policy belong in `app/features/product-shell/config.ts`. Register new routes in `productRouteConfigs` with a `ProductRouteMode` (`workspace`, `docs`, or `account`), set `nav: true` only for sidebar entries, and wire links in the product UI after the route policy exists.
 
 ## SEO Server Routes
 

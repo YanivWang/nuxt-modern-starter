@@ -95,19 +95,19 @@ export const newsArticles: NewsArticle[] = [
     },
     description: {
       'zh-CN':
-        '登录、注册、账户页、工作台与编辑器已接入 nuxt-modern-starter-api，可在本地完成项目创建、文档保存与预览。',
+        '登录、注册、账户页、工作台与编辑器已接入 nuxt-modern-starter-api，可在本地完成项目创建、删除、文档加载与自动保存。',
       'en-US':
-        'Login, register, account, workspace, and editor flows are wired to nuxt-modern-starter-api for local project creation, document save, and preview.'
+        'Login, register, account, workspace, and editor flows are wired to nuxt-modern-starter-api for local project creation, deletion, document load, and autosave.'
     },
     body: {
       'zh-CN': [
         '鉴权能力在 Nuxt Modern Starter 中是“可选模块”而非强制依赖。默认提供登录、注册、退出和账户页示例，并通过命名 auth 中间件保护 account 等页面，支持基于角色与 permissions 的访问控制。',
-        '接入 nuxt-modern-starter-api 后，工作台 `/app/workspace` 会调用真实项目 API；当前只有「新建空白 PPT」卡片和顶部创建按钮会触发 `POST /api/projects`，AI/导入卡片仍是占位 UI。创建后可进入 `/app/workspace/:projectId/edit` 保存文档，预览页以 HTML 方式展示已保存内容。请求统一走 `{ code, message, data }` 响应格式，401 时自动 refresh 并重试一次。',
+        '接入 nuxt-modern-starter-api 后，工作台 `/app/workspace` 会调用真实项目 API；当前只有「新建空白 PPT」卡片和顶部创建按钮会触发 `POST /api/projects`，AI/导入卡片仍是占位 UI。创建或删除项目后，通过 `/app/docs/:id`（:id 为项目 id）加载并自动保存文档。请求统一走 `{ code, message, data }` 响应格式，401 时自动 refresh 并重试一次。',
         '如果项目暂时不需要账号体系，也可以保留公开页与内容中心，先不启用 auth 相关导航入口，等业务工作台准备好后再逐步接入。'
       ],
       'en-US': [
         'Auth in Nuxt Modern Starter is an optional module, not a hard dependency. The starter ships login, register, logout, and account examples, plus a named auth middleware that protects pages like account with role and permission checks.',
-        'When paired with nuxt-modern-starter-api, `/app/workspace` calls real project APIs. Only the blank PPT card and the primary create button currently trigger `POST /api/projects`; AI/import cards remain placeholder UI. After creation, `/app/workspace/:projectId/edit` saves document content and preview renders persisted HTML. Requests use the `{ code, message, data }` envelope and retry once after refresh on 401.',
+        'When paired with nuxt-modern-starter-api, `/app/workspace` calls real project APIs. Only the blank PPT card and the primary create button currently trigger `POST /api/projects`; AI/import cards remain placeholder UI. After creating or deleting projects, open `/app/docs/:id` (:id is the project id) to load and autosave document content. Requests use the `{ code, message, data }` envelope and retry once after refresh on 401.',
         'If you do not need accounts yet, keep the public and content pages first and hide auth navigation until the product workspace is ready to connect.'
       ]
     },

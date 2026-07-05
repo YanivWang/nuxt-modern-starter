@@ -22,7 +22,7 @@ describe('product shell configuration', () => {
 
   it('looks up concrete and dynamic product route configs', () => {
     expect(getProductRouteConfig('/app/workspace')?.labelKey).toBe('workspace.nav')
-    expect(getProductRouteConfig('/app/docs/openclaw-guide')?.mode).toBe('edit')
+    expect(getProductRouteConfig('/app/docs/openclaw-guide')?.mode).toBe('docs')
     expect(getProductRouteConfig('/pricing')).toBeNull()
   })
 })
