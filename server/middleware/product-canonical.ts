@@ -1,4 +1,4 @@
-import { getRequestURL, sendRedirect } from 'h3'
+import { defineEventHandler, getRequestURL, sendRedirect } from 'h3'
 import { localizedProductPathToCanonical } from '../../config/routes'
 
 export default defineEventHandler((event) => {

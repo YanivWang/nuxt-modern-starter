@@ -1,3 +1,5 @@
+import { defineEventHandler, setHeader } from 'h3'
+import { useRuntimeConfig } from '#imports'
 import { buildRobotsTxt } from '../utils/seo'
 
 export default defineEventHandler((event) => {
