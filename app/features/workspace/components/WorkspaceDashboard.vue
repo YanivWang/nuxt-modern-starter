@@ -9,6 +9,7 @@ import {
 } from '~/utils/antdIcon'
 import {
   createWorkspaceProject,
+  deleteWorkspaceProject,
   fetchWorkspaceProjects,
   getWorkspaceDocPath,
   type WorkspaceProject
@@ -18,6 +19,7 @@ const { localePath } = useLocalePath()
 const router = useRouter()
 const { t } = useI18n()
 const creating = ref(false)
+const deletingProjectId = ref<string | null>(null)
 
 const {
   data: projects,
@@ -79,6 +81,20 @@ const handleCreateProject = async () => {
     message.error(t('common.error'))
   } finally {
     creating.value = false
+  }
+}
+
+const handleDeleteProject = async (projectId: string) => {
+  deletingProjectId.value = projectId
+
+  try {
+    await deleteWorkspaceProject(projectId)
+    await refresh()
+    message.success(t('workspace.deleteSuccess'))
+  } catch {
+    message.error(t('common.error'))
+  } finally {
+    deletingProjectId.value = null
   }
 }
 </script>
@@ -164,6 +180,23 @@ const handleCreateProject = async () => {
             <NuxtLink :to="localePath(getWorkspaceDocPath(project.id))">{{
               $t('workspace.edit')
             }}</NuxtLink>
+            <a-popconfirm
+              :title="$t('workspace.deleteConfirm', { title: project.title })"
+              :ok-text="$t('workspace.delete')"
+              :cancel-text="$t('workspace.deleteCancel')"
+              @confirm="handleDeleteProject(project.id)"
+            >
+              <a-button
+                type="link"
+                danger
+                size="small"
+                class="workspace-project__delete"
+                :loading="deletingProjectId === project.id"
+                @click.stop
+              >
+                {{ $t('workspace.delete') }}
+              </a-button>
+            </a-popconfirm>
           </div>
         </div>
       </article>
@@ -351,6 +384,7 @@ const handleCreateProject = async () => {
 
 .workspace-project__footer {
   display: flex;
+  align-items: center;
   gap: 14px;
   margin-top: 18px;
 
@@ -360,6 +394,12 @@ const handleCreateProject = async () => {
     font-weight: 700;
     text-decoration: none;
   }
+}
+
+.workspace-project__delete {
+  padding-inline: 0;
+  font-size: 14px;
+  font-weight: 700;
 }
 
 .workspace-project--blue {

@@ -14,10 +14,24 @@ const props = defineProps<{
   project?: EditorProjectContext | null
 }>()
 
+const AUTOSAVE_DEBOUNCE_MS = 2000
+
 const { t } = useI18n()
+const languageStore = useLanguageStore()
 const { localePath } = useLocalePath()
-const content = ref('')
+const editorRef = ref<InstanceType<typeof YanivEditor> | null>(null)
+const editorInitialContent = ref('<p></p>')
+const editorReady = ref(false)
 const saving = ref(false)
+const saveFailed = ref(false)
+const dirty = ref(false)
+const lastSavedAt = ref<number | null>(null)
+const initialSnapshot = ref('')
+
+const EDITOR_MODE = 'edit' as const
+const EDITOR_PRESET = 'full' as const
+
+let autosaveTimer: ReturnType<typeof setTimeout> | null = null
 
 const { data: document, pending } = await useAsyncData(
   props.documentId ? `editor-document:${props.documentId}` : 'editor-document:new',
@@ -34,7 +48,14 @@ const { data: document, pending } = await useAsyncData(
 watch(
   document,
   (nextDocument) => {
-    content.value = nextDocument?.content ?? ''
+    editorInitialContent.value = nextDocument?.content?.trim() || '<p></p>'
+
+    if (nextDocument?.updatedAt) {
+      const updatedAt = new Date(nextDocument.updatedAt).getTime()
+      if (!Number.isNaN(updatedAt)) {
+        lastSavedAt.value = updatedAt
+      }
+    }
   },
   { immediate: true }
 )
@@ -43,26 +64,144 @@ const displayTitle = computed(
   () => props.project?.title || document.value?.title || t('editor.title')
 )
 
-const handleSave = async () => {
-  if (!props.documentId) {
+const autosaveHintText = computed(() => {
+  if (saving.value) {
+    return t('editor.autosave.saving')
+  }
+
+  if (saveFailed.value) {
+    return t('editor.autosave.failed')
+  }
+
+  if (lastSavedAt.value == null) {
+    return ''
+  }
+
+  return t('editor.autosave.saved', {
+    time: formatSavedAt(lastSavedAt.value)
+  })
+})
+
+const formatSavedAt = (timestamp: number) => {
+  const date = new Date(timestamp)
+
+  if (Number.isNaN(date.getTime())) {
+    return ''
+  }
+
+  return date.toLocaleTimeString(undefined, {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  })
+}
+
+const getEditorContentHtml = () => editorRef.value?.getHTML()?.trim() ?? ''
+
+const takeSnapshot = () => getEditorContentHtml()
+
+const resetDirtyBaseline = () => {
+  initialSnapshot.value = takeSnapshot()
+  dirty.value = false
+}
+
+const markDirty = () => {
+  if (pending.value || !editorReady.value) {
     return
   }
 
+  dirty.value = takeSnapshot() !== initialSnapshot.value
+}
+
+const scheduleAutosave = () => {
+  markDirty()
+
+  if (!dirty.value || !props.documentId) {
+    return
+  }
+
+  if (autosaveTimer != null) {
+    clearTimeout(autosaveTimer)
+  }
+
+  autosaveTimer = setTimeout(() => {
+    autosaveTimer = null
+    void persistDocument()
+  }, AUTOSAVE_DEBOUNCE_MS)
+}
+
+const persistDocument = async () => {
+  if (!props.documentId || pending.value || saving.value || !dirty.value) {
+    return
+  }
+
+  const contentToSave = getEditorContentHtml()
   saving.value = true
+  saveFailed.value = false
 
   try {
     const response = await saveEditorDocument(props.documentId, {
       title: document.value?.title,
-      content: content.value
+      content: contentToSave
     })
     document.value = response.data.document
-    message.success(t('workspace.save'))
+    lastSavedAt.value = Date.now()
+
+    const currentContent = getEditorContentHtml()
+    initialSnapshot.value = currentContent
+    dirty.value = currentContent !== contentToSave
+
+    if (dirty.value) {
+      scheduleAutosave()
+    }
   } catch {
-    message.error(t('common.error'))
+    saveFailed.value = true
+    message.error(t('editor.autosave.failed'))
   } finally {
     saving.value = false
   }
 }
+
+const flushAutosave = async () => {
+  if (autosaveTimer != null) {
+    clearTimeout(autosaveTimer)
+    autosaveTimer = null
+  }
+
+  if (dirty.value && props.documentId) {
+    await persistDocument()
+  }
+}
+
+const onEditorUpdate = () => {
+  scheduleAutosave()
+}
+
+watch(editorRef, async (editor) => {
+  if (editor == null || pending.value) {
+    return
+  }
+
+  await nextTick()
+  editorReady.value = true
+  resetDirtyBaseline()
+})
+
+onBeforeUnmount(() => {
+  if (autosaveTimer != null) {
+    clearTimeout(autosaveTimer)
+    autosaveTimer = null
+  }
+})
+
+onBeforeRouteLeave(async () => {
+  if (saving.value) {
+    return true
+  }
+
+  await flushAutosave()
+  return true
+})
 </script>
 
 <template>
@@ -79,10 +218,14 @@ const handleSave = async () => {
         </div>
       </div>
 
-      <div class="editor-workspace__actions">
-        <a-button v-if="documentId" type="primary" :loading="saving" @click="handleSave">
-          {{ $t('workspace.save') }}
-        </a-button>
+      <div v-if="documentId" class="editor-workspace__actions">
+        <p
+          v-if="autosaveHintText"
+          class="editor-workspace__autosave"
+          :class="{ 'is-error': saveFailed, 'is-saving': saving }"
+        >
+          {{ autosaveHintText }}
+        </p>
       </div>
     </header>
 
@@ -90,12 +233,15 @@ const handleSave = async () => {
       <div v-if="pending" class="editor-workspace__loading">
         <a-spin />
       </div>
-      <ClientOnly v-else>
+      <ClientOnly v-if="!pending">
         <YanivEditor
-          v-model="content"
-          preset="full"
-          mode="edit"
-          :placeholder="$t('editor.placeholder')"
+          ref="editorRef"
+          :mode="EDITOR_MODE"
+          :preset="EDITOR_PRESET"
+          :locale="languageStore.currentLanguage"
+          :initial-content="editorInitialContent"
+          @update="onEditorUpdate"
+          @update:content="onEditorUpdate"
         />
         <template #fallback>
           <div class="editor-workspace__loading">
@@ -158,6 +304,21 @@ const handleSave = async () => {
   align-items: center;
   gap: 8px;
   flex-shrink: 0;
+}
+
+.editor-workspace__autosave {
+  margin: 0;
+  color: var(--app-color-muted);
+  font-size: 12px;
+  white-space: nowrap;
+
+  &.is-saving {
+    color: var(--app-color-primary);
+  }
+
+  &.is-error {
+    color: #cf1322;
+  }
 }
 
 .editor-workspace__eyebrow {

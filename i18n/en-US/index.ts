@@ -217,7 +217,12 @@ export default {
     eyebrow: 'Yaniv Editor',
     title: 'Content editor',
     placeholder: 'Start writing your content...',
-    metaTitle: 'Editor'
+    metaTitle: 'Editor',
+    autosave: {
+      saving: 'Saving…',
+      saved: 'Auto-saved · {time}',
+      failed: 'Auto-save failed, will retry on next edit'
+    }
   },
   workspace: {
     nav: 'Workspace',
@@ -229,6 +234,10 @@ export default {
     create: 'New project',
     search: 'Search projects',
     edit: 'Edit',
+    delete: 'Delete',
+    deleteCancel: 'Cancel',
+    deleteConfirm: 'Delete "{title}"? This action cannot be undone.',
+    deleteSuccess: 'Project deleted',
     save: 'Save',
     slides: 'slides',
     slide: 'Slide',

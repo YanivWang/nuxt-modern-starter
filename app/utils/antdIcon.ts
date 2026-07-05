@@ -3,6 +3,7 @@ import AppstoreOutlinedSvg from '@ant-design/icons-svg/es/asn/AppstoreOutlined'
 import ArrowLeftOutlinedSvg from '@ant-design/icons-svg/es/asn/ArrowLeftOutlined'
 import ArrowRightOutlinedSvg from '@ant-design/icons-svg/es/asn/ArrowRightOutlined'
 import CheckOutlinedSvg from '@ant-design/icons-svg/es/asn/CheckOutlined'
+import DeleteOutlinedSvg from '@ant-design/icons-svg/es/asn/DeleteOutlined'
 import GlobalOutlinedSvg from '@ant-design/icons-svg/es/asn/GlobalOutlined'
 import MoonOutlinedSvg from '@ant-design/icons-svg/es/asn/MoonOutlined'
 import ReadOutlinedSvg from '@ant-design/icons-svg/es/asn/ReadOutlined'
@@ -27,6 +28,7 @@ export const AppstoreOutlined = createAntdIcon('AppstoreOutlined', AppstoreOutli
 export const ArrowLeftOutlined = createAntdIcon('ArrowLeftOutlined', ArrowLeftOutlinedSvg)
 export const ArrowRightOutlined = createAntdIcon('ArrowRightOutlined', ArrowRightOutlinedSvg)
 export const CheckOutlined = createAntdIcon('CheckOutlined', CheckOutlinedSvg)
+export const DeleteOutlined = createAntdIcon('DeleteOutlined', DeleteOutlinedSvg)
 export const GlobalOutlined = createAntdIcon('GlobalOutlined', GlobalOutlinedSvg)
 export const MoonOutlined = createAntdIcon('MoonOutlined', MoonOutlinedSvg)
 export const ReadOutlined = createAntdIcon('ReadOutlined', ReadOutlinedSvg)

@@ -47,4 +47,14 @@ describe('workspace API boundary', () => {
       method: 'GET'
     })
   })
+
+  it('deletes projects through the authenticated product request entrypoint', async () => {
+    const { deleteWorkspaceProject } = await import('../../app/features/workspace/api')
+
+    deleteWorkspaceProject('project_1')
+
+    expect(apiMocks.request).toHaveBeenCalledWith('/projects/project_1', {
+      method: 'DELETE'
+    })
+  })
 })

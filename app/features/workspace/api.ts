@@ -51,3 +51,8 @@ export const createWorkspaceProject = (payload: CreateWorkspaceProjectPayload) =
     method: 'POST',
     body: payload
   })
+
+export const deleteWorkspaceProject = (projectId: string) =>
+  createProductApiClient().request<ApiResponse<null>>(`/projects/${projectId}`, {
+    method: 'DELETE'
+  })

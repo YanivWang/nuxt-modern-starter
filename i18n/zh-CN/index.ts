@@ -206,7 +206,12 @@ export default {
     eyebrow: 'Yaniv Editor',
     title: '内容编辑器',
     placeholder: '开始撰写你的内容...',
-    metaTitle: '编辑器'
+    metaTitle: '编辑器',
+    autosave: {
+      saving: '保存中…',
+      saved: '已自动保存 · {time}',
+      failed: '自动保存失败，将继续重试'
+    }
   },
   workspace: {
     nav: '工作台',
@@ -218,6 +223,10 @@ export default {
     create: '新建作品',
     search: '查找我的作品',
     edit: '编辑',
+    delete: '删除',
+    deleteCancel: '取消',
+    deleteConfirm: '确定删除「{title}」吗？此操作不可恢复。',
+    deleteSuccess: '作品已删除',
     save: '保存',
     slides: '页',
     slide: '页面',
