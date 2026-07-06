@@ -19,7 +19,7 @@
   - PageContainer、ArrowRightOutlined 图标
 
   SEO / 边界：
-  - usePageSeo 完整 SEO；swrRouteRules 启用 SWR 缓存
+  - usePageSeo 完整 SEO；SSR + SWR，动态内容经 API 按 locale 拉取，水合复用 payload
   - sitemap 收录；AppHeader 主导航有入口
 -->
 <script setup lang="ts">
@@ -31,15 +31,16 @@ import { formatPublishedDate } from '../../../utils/formatDate'
 const languageStore = useLanguageStore()
 const { localePath } = useLocalePath()
 const { t } = useI18n()
+const nuxtApp = useNuxtApp()
 
 const { data: articles } = await useAsyncData(
   () => `news-articles:${languageStore.currentLanguage}`,
-  async () => {
-    const response = await fetchNewsArticles(languageStore.currentLanguage)
-    return response.data.articles
-  },
+  () => fetchNewsArticles(languageStore.currentLanguage).then((response) => response.data.articles),
   {
-    watch: [() => languageStore.currentLanguage]
+    watch: [() => languageStore.currentLanguage],
+    getCachedData(key) {
+      return nuxtApp.payload.data[key] ?? nuxtApp.static.data[key]
+    }
   }
 )
 

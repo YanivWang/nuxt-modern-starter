@@ -93,9 +93,9 @@ export const faqItems: FaqItem[] = [
     },
     answer: {
       'zh-CN':
-        'FAQ 仍存放在 config/content/faq.ts，通过 app/apis/public/content.ts 按语言读取；新闻内容已改为从 nuxt-modern-starter-api 的 GET /api/content/news 拉取。后续 FAQ 也可同样替换为 CMS 或后台 API，而页面组件无需大改。',
+        'FAQ 仍存放在 config/content/faq.ts，通过 app/apis/public/content.ts 按语言读取；新闻与定价内容从 nuxt-modern-starter-api 的 GET /api/content/news、GET /api/content/pricing 拉取。后续 FAQ 也可同样替换为 CMS 或后台 API，而页面组件无需大改。',
       'en-US':
-        'FAQ still lives in config/content/faq.ts and is loaded by locale through app/apis/public/content.ts. News content now comes from nuxt-modern-starter-api via GET /api/content/news. You can later swap FAQ to a CMS or backend API without rewriting page components.'
+        'FAQ still lives in config/content/faq.ts and is loaded by locale through app/apis/public/content.ts. News and pricing content come from nuxt-modern-starter-api via GET /api/content/news and GET /api/content/pricing. You can later swap FAQ to a CMS or backend API without rewriting page components.'
     }
   },
   {

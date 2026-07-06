@@ -22,7 +22,7 @@
   - PageContainer、BaseButton、CheckOutlined 图标
 
   SEO / 边界：
-  - usePageSeo 完整 SEO 元数据；默认 SSR，每次请求拉取最新定价
+  - usePageSeo 完整 SEO 元数据；SSR + SWR，动态内容经 API 按 locale 拉取，水合复用 payload
   - AppHeader 主导航、首页 secondary CTA、product-shell 底部导航均有入口
 -->
 <script setup lang="ts">
@@ -31,15 +31,16 @@ import { fetchPricingPage } from '../../apis/public/content'
 
 const languageStore = useLanguageStore()
 const { localePath } = useLocalePath()
+const nuxtApp = useNuxtApp()
 
 const { data: pricing } = await useAsyncData(
   () => `pricing-page:${languageStore.currentLanguage}`,
-  async () => {
-    const response = await fetchPricingPage(languageStore.currentLanguage)
-    return response.data.pricing
-  },
+  () => fetchPricingPage(languageStore.currentLanguage).then((response) => response.data.pricing),
   {
-    watch: [() => languageStore.currentLanguage]
+    watch: [() => languageStore.currentLanguage],
+    getCachedData(key) {
+      return nuxtApp.payload.data[key] ?? nuxtApp.static.data[key]
+    }
   }
 )
 

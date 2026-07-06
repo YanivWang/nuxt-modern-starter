@@ -20,7 +20,7 @@
   SEO / 边界：
   - slug 不存在 → createError 404（news.notFound）
   - usePageSeo 传入 article 参数，生成 Article JSON-LD 结构化数据
-  - sitemap 按 slug 逐篇收录
+  - SSR + SWR，水合复用 payload；sitemap 按 slug 逐篇收录
 -->
 <script setup lang="ts">
 import { ArrowRightOutlined } from '~/utils/antdIcon'
@@ -30,16 +30,20 @@ import { formatPublishedDate } from '../../../utils/formatDate'
 const route = useRoute()
 const languageStore = useLanguageStore()
 const { localePath } = useLocalePath()
+const nuxtApp = useNuxtApp()
 const slug = route.params.slug as string
 
 const { data: article, error } = await useAsyncData(
   () => `news-article:${slug}:${languageStore.currentLanguage}`,
-  async () => {
-    const response = await fetchLocalizedNewsArticle(slug, languageStore.currentLanguage)
-    return response.data.article
-  },
+  () =>
+    fetchLocalizedNewsArticle(slug, languageStore.currentLanguage).then(
+      (response) => response.data.article
+    ),
   {
-    watch: [() => languageStore.currentLanguage, () => slug]
+    watch: [() => languageStore.currentLanguage, () => slug],
+    getCachedData(key) {
+      return nuxtApp.payload.data[key] ?? nuxtApp.static.data[key]
+    }
   }
 )
 

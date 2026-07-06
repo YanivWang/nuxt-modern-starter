@@ -157,66 +157,6 @@ export default {
     ctaEyebrow: '准备开始搭建',
     ctaTitle: '用这套 Nuxt 基础骨架，更快搭出一个像样的产品前台。'
   },
-  pricing: {
-    eyebrow: '使用方案',
-    title: '按团队规模选择合适的起步方式',
-    lead: '以下方案展示 Nuxt Modern Starter 在不同场景下的推荐用法。Starter 适合个人验证与原型，Growth 覆盖完整工程闭环，Custom 面向需要深度定制的企业团队。',
-    note: '价格仅为示例结构，实际使用时请替换为你们产品的套餐、权益说明与转化按钮。',
-    plans: {
-      starter: {
-        name: 'Starter',
-        badge: '个人入门',
-        price: '免费',
-        period: '开源模板',
-        description: '适合个人学习、概念验证，或快速搭建公开营销页原型。',
-        cta: '立即开始',
-        features: {
-          nuxt: 'Nuxt 4 + TypeScript + Pinia 基础工程',
-          pages: '首页、价格、帮助、新闻等公开页面',
-          i18n: '中英文路由与语言切换',
-          seo: 'Canonical、hreflang 与 OG 元数据'
-        }
-      },
-      growth: {
-        name: 'Growth',
-        badge: '团队推荐',
-        price: '推荐',
-        period: '完整能力',
-        description: '适合需要账号体系、请求封装、部署验证与质量门禁的小团队产品前台。',
-        cta: '查看能力清单',
-        features: {
-          api: '场景化 API client 与 Bearer Token 鉴权',
-          auth: '登录、注册、账户页与路由守卫示例',
-          deploy: 'Docker 镜像与 Nginx 反向代理样例',
-          quality: 'Lint、Stylelint、Typecheck 与 Vitest 测试'
-        }
-      },
-      custom: {
-        name: 'Custom',
-        badge: '企业定制',
-        price: '联系我们',
-        period: '按需扩展',
-        description: '适合需要品牌主题、CMS 接入、复杂权限或多区域部署的企业项目。',
-        cta: '沟通需求',
-        features: {
-          theme: '设计 token 与 Ant Design Vue 主题深度定制',
-          content: 'FAQ、新闻等内容迁移至 CMS 或 API',
-          docs: '架构文档、使用指南与部署手册',
-          support: '按需补充 E2E、CI 与运维集成方案'
-        }
-      }
-    },
-    includes: {
-      eyebrow: '所有方案共同包含',
-      title: '一套可复用的公开站点基础能力',
-      items: {
-        stack: 'Nuxt 4、Vue 3、SCSS 设计 token 与 Ant Design Vue 组件体系',
-        routing: '默认语言无前缀、英文 /en 前缀，以及统一 localePath 工具',
-        content: 'Typed 本地 FAQ 与新闻数据，便于后续替换数据源',
-        editor: '内置 Yaniv Editor 示例页，便于扩展富文本或文档场景'
-      }
-    }
-  },
   editor: {
     eyebrow: 'Yaniv Editor',
     title: '内容编辑器',

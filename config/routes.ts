@@ -65,5 +65,5 @@ export const prerenderRoutes = publicLocalizedPaths().filter(
     path === '/en/help'
 )
 
-// 新闻内容更新频率较低，适合 SWR；定价页走默认 SSR，每次请求拉最新 API 数据。
-export const swrRouteRules = ['/news/**', '/en/news/**'] as const
+// 新闻、定价等动态内容走 API，更新频率较低，适合 SWR 缓存 SSR 结果。
+export const swrRouteRules = ['/news/**', '/en/news/**', '/pricing', '/en/pricing'] as const

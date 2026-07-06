@@ -165,69 +165,6 @@ export default {
     ctaEyebrow: 'Ready to build',
     ctaTitle: 'Use this Nuxt foundation to launch a polished product frontend faster.'
   },
-  pricing: {
-    eyebrow: 'Usage plans',
-    title: 'Choose the right starting point for your team',
-    lead: 'These plans show recommended ways to adopt Nuxt Modern Starter. Starter fits personal validation, Growth covers the full engineering loop, and Custom is for teams that need deeper customization.',
-    note: 'Prices are example structure only. Replace them with your real plans, benefits, and conversion CTAs in production.',
-    plans: {
-      starter: {
-        name: 'Starter',
-        badge: 'Personal',
-        price: 'Free',
-        period: 'Open-source template',
-        description:
-          'Best for learning, proof of concept, or quickly scaffolding a public marketing site.',
-        cta: 'Get started',
-        features: {
-          nuxt: 'Nuxt 4 + TypeScript + Pinia foundation',
-          pages: 'Home, pricing, help, news, and other public pages',
-          i18n: 'Chinese and English routes with language switching',
-          seo: 'Canonical, hreflang, and OG metadata'
-        }
-      },
-      growth: {
-        name: 'Growth',
-        badge: 'Recommended',
-        price: 'Recommended',
-        period: 'Full starter stack',
-        description:
-          'Best for small teams that need auth, request helpers, deployment validation, and quality gates.',
-        cta: 'View capability list',
-        features: {
-          api: 'Scenario-specific API clients and Bearer Token auth',
-          auth: 'Login, register, account, and route guard examples',
-          deploy: 'Docker image and Nginx reverse-proxy samples',
-          quality: 'Lint, Stylelint, Typecheck, and Vitest coverage'
-        }
-      },
-      custom: {
-        name: 'Custom',
-        badge: 'Enterprise',
-        price: 'Talk to us',
-        period: 'Tailored extension',
-        description:
-          'Best for enterprise projects that need brand theming, CMS integration, or multi-region deployment.',
-        cta: 'Discuss requirements',
-        features: {
-          theme: 'Design tokens and Ant Design Vue theme customization',
-          content: 'Move FAQ and news content to a CMS or API',
-          docs: 'Architecture, usage, and deployment documentation',
-          support: 'Optional E2E, CI, and ops integration support'
-        }
-      }
-    },
-    includes: {
-      eyebrow: 'Included in every plan',
-      title: 'A reusable public-site foundation',
-      items: {
-        stack: 'Nuxt 4, Vue 3, SCSS design tokens, and Ant Design Vue components',
-        routing: 'Default locale without prefix, English under /en, and shared localePath helpers',
-        content: 'Typed local FAQ and news data that can later be replaced by a CMS',
-        editor: 'Built-in Yaniv Editor sample page for rich text or docs scenarios'
-      }
-    }
-  },
   editor: {
     eyebrow: 'Yaniv Editor',
     title: 'Content editor',
