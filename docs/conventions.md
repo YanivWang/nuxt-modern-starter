@@ -55,11 +55,15 @@ HTTP requests follow a flat, mainstream layout:
 
 Scenario clients decide their own headers. Public clients only keep request metadata such as `accept-language` and `x-request-id`; authenticated clients add Bearer tokens explicitly. Logs redact `authorization` and `cookie`.
 
+Successful business responses must use `code: 200` in the `{ code, message, data }` envelope. The shared HTTP client rejects other business codes and throws a normalized failure with the backend `message`.
+
 Public adapters must not read token cookies or call refresh endpoints. If a public page needs personalized data, put that personalized request behind a client-only authenticated component so the SEO HTML remains cache-safe.
 
 Product routes (`/workspace/**`, `/docs/**`, `/account`) are client-rendered by default through `csrRouteRules` in `config/routes.ts`. Do not add localized product route rules such as `/en/workspace`; language choice inside the product app is UI state, not part of the authenticated product URL. If someone opens `/en/workspace`, locale and server middleware redirect to `/workspace` with 301.
 
 Product sidebar navigation belongs in `app/features/product-shell/config.ts` through `productNavItems` and `productFooterNavItems`. Account access belongs in `UserAccountMenu`, not the sidebar. Page-level auth and noindex are declared with `definePageMeta` and `usePageSeo`.
+
+Auth redirect query values must stay on same-origin relative paths. Use `resolveSafeRedirectPath()` from `app/utils/safe-redirect.ts` instead of passing raw `route.query.redirect` to `router.push()`.
 
 ## SEO Server Routes
 

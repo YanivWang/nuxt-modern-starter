@@ -40,7 +40,7 @@ app/features/editor/
   components/
   composables/
   stores/
-  api/
+  api.ts
   types/
   constants/
   utils/
@@ -273,8 +273,8 @@ API boundaries:
 
 Current UI scope:
 
-- The header create button calls `POST /api/projects` with the default title from i18n (`workspace.defaultTitle`).
-- Creating a blank project refreshes the list and navigates directly to `/docs/:id`.
+- The header create button navigates to `/docs/new`. The editor creates the project on first save through `createWorkspaceProject()` with the default title from i18n (`workspace.defaultTitle`).
+- After a blank project is created, the editor replaces the route with `/docs/:id` for the new project id.
 - Project cards link to the editor through `getWorkspaceDocPath()`. `slideCount` currently comes from project metadata and is not recalculated from document content.
 
 Editor behavior:

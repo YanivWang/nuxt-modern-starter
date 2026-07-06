@@ -9,7 +9,12 @@ const { localePath } = useLocalePath()
 const { authStore, logout } = useAuth()
 const { avatarUrl, initials } = useUserAvatar()
 
-const { data: profile, pending } = await useAsyncData('auth-profile', async () => {
+const {
+  data: profile,
+  pending,
+  error,
+  refresh
+} = await useAsyncData('auth-profile', async () => {
   if (!authStore.accessToken) {
     return null
   }
@@ -31,6 +36,18 @@ const handleLogout = async () => {
   <section class="account-settings">
     <a-card class="account-settings__card" :bordered="false" :loading="pending">
       <h1 class="account-settings__title">{{ $t('accountNav.settings') }}</h1>
+
+      <a-alert
+        v-if="error"
+        type="error"
+        show-icon
+        :message="$t('common.loadFailed')"
+        class="account-settings__alert"
+      >
+        <template #action>
+          <a-button size="small" @click="() => refresh()">{{ $t('common.retry') }}</a-button>
+        </template>
+      </a-alert>
 
       <div class="account-settings__rows">
         <div class="account-settings__row">
@@ -115,6 +132,10 @@ const handleLogout = async () => {
   font-size: 24px;
   font-weight: 700;
   line-height: 1.2;
+}
+
+.account-settings__alert {
+  margin: 0 28px 16px;
 }
 
 .account-settings__rows {

@@ -1,5 +1,10 @@
 import { describe, expect, it, vi } from 'vitest'
-import { createApiFailure, getApiErrorMessage, isUnauthorizedError } from '../../app/lib/http/error'
+import {
+  createApiFailure,
+  assertApiSuccess,
+  getApiErrorMessage,
+  isUnauthorizedError
+} from '../../app/lib/http/error'
 import { createApiClient } from '../../app/lib/http/client'
 import { createBearerHeaders, sanitizeHeaders } from '../../app/lib/http/headers'
 
@@ -27,6 +32,38 @@ describe('lib/http', () => {
       message: 'Unavailable'
     })
     expect(isUnauthorizedError({ response: { status: 401 } })).toBe(true)
+  })
+
+  it('throws when the API envelope reports a non-200 business code', () => {
+    expect(() =>
+      assertApiSuccess({
+        code: 422,
+        message: 'Validation failed',
+        data: null
+      })
+    ).toThrow(
+      expect.objectContaining({
+        statusCode: 422,
+        message: 'Validation failed'
+      })
+    )
+  })
+
+  it('rejects non-200 API envelopes from typed fetch clients', async () => {
+    const fetcher = vi.fn().mockResolvedValue({
+      code: 500,
+      message: 'Server error',
+      data: null
+    })
+    const client = createApiClient({
+      baseURL: 'https://api.example.com',
+      fetcher
+    })
+
+    await expect(client.request('/projects')).rejects.toMatchObject({
+      statusCode: 500,
+      message: 'Server error'
+    })
   })
 
   it('creates typed fetch clients with default baseURL and headers', async () => {

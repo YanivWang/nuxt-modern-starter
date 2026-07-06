@@ -18,7 +18,9 @@ export default {
     switchTheme: '切换主题',
     readMore: '阅读更多',
     backHome: '返回首页',
-    error: '操作失败，请稍后重试'
+    error: '操作失败，请稍后重试',
+    loadFailed: '加载失败，请稍后重试',
+    retry: '重试'
   },
   productNav: {
     workspace: '工作台',

@@ -1,0 +1,90 @@
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+
+const sessionMocks = vi.hoisted(() => ({
+  getRefreshTokenCookie: vi.fn(),
+  clearAuthSession: vi.fn(),
+  setAuthTokenCookies: vi.fn(),
+  tokenFromResponse: vi.fn(),
+  getAuthToken: vi.fn()
+}))
+
+const clientMocks = vi.hoisted(() => ({
+  request: vi.fn()
+}))
+
+const attributionMocks = vi.hoisted(() => ({
+  mergeAttributionIntoBody: vi.fn((body: Record<string, unknown>) => ({
+    ...body,
+    utm_source: 'ads'
+  }))
+}))
+
+vi.mock('../../app/utils/auth-session', () => sessionMocks)
+vi.mock('../../app/utils/attribution-params', () => attributionMocks)
+vi.mock('../../app/api/clients', () => ({
+  createAuthApiClient: vi.fn(() => ({
+    request: clientMocks.request
+  }))
+}))
+
+describe('auth api', () => {
+  beforeEach(async () => {
+    vi.resetModules()
+    vi.clearAllMocks()
+    sessionMocks.getRefreshTokenCookie.mockReturnValue({ value: 'refresh-token' })
+    sessionMocks.tokenFromResponse.mockReturnValue('next-access-token')
+    sessionMocks.getAuthToken.mockReturnValue('access-token')
+  })
+
+  it('deduplicates concurrent refresh requests', async () => {
+    let resolveRefresh: ((value: unknown) => void) | undefined
+    clientMocks.request.mockImplementation(
+      () =>
+        new Promise((resolve) => {
+          resolveRefresh = resolve
+        })
+    )
+
+    const { refreshAccessTokenOnce } = await import('../../app/api/auth')
+    const first = refreshAccessTokenOnce()
+    const second = refreshAccessTokenOnce()
+
+    expect(clientMocks.request).toHaveBeenCalledTimes(1)
+
+    resolveRefresh?.({
+      code: 200,
+      message: 'ok',
+      data: {
+        accessToken: 'next-access-token',
+        refreshToken: 'next-refresh-token'
+      }
+    })
+
+    await expect(first).resolves.toBe('next-access-token')
+    await expect(second).resolves.toBe('next-access-token')
+  })
+
+  it('merges attribution params into register payloads', async () => {
+    clientMocks.request.mockResolvedValue({
+      code: 200,
+      message: 'created',
+      data: null
+    })
+
+    const { registerApi } = await import('../../app/api/auth')
+    await registerApi({ username: 'alice', password: 'secret' })
+
+    expect(attributionMocks.mergeAttributionIntoBody).toHaveBeenCalledWith({
+      username: 'alice',
+      password: 'secret'
+    })
+    expect(clientMocks.request).toHaveBeenCalledWith('/register', {
+      method: 'POST',
+      body: {
+        username: 'alice',
+        password: 'secret',
+        utm_source: 'ads'
+      }
+    })
+  })
+})

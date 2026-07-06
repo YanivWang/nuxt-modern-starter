@@ -19,7 +19,9 @@ export default {
     switchTheme: 'Switch theme',
     readMore: 'Read more',
     backHome: 'Back home',
-    error: 'Something went wrong. Please try again.'
+    error: 'Something went wrong. Please try again.',
+    loadFailed: 'Failed to load data. Please try again.',
+    retry: 'Retry'
   },
   productNav: {
     workspace: 'Workspace',

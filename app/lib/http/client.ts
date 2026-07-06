@@ -1,6 +1,14 @@
-import type { ApiClientOptions, ApiRequestOptions } from './types'
+import type { ApiClientOptions, ApiRequestOptions, ApiResponse } from './types'
 import { createHeaders } from './headers'
-import { isUnauthorizedError } from './error'
+import { assertApiSuccess, isUnauthorizedError } from './error'
+
+const isApiEnvelope = (result: unknown): result is ApiResponse<unknown> =>
+  Boolean(
+    result &&
+    typeof result === 'object' &&
+    'code' in result &&
+    typeof (result as ApiResponse<unknown>).code === 'number'
+  )
 
 type FetchRequest = Parameters<typeof $fetch>[0]
 
@@ -29,7 +37,13 @@ export const createApiClient = ({
     }
 
     try {
-      return await fetcher<T>(path, toFetchOptions(fetchOptions))
+      const result = await fetcher<T>(path, toFetchOptions(fetchOptions))
+
+      if (isApiEnvelope(result)) {
+        assertApiSuccess(result)
+      }
+
+      return result
     } catch (error) {
       if (!onUnauthorized || !isUnauthorizedError(error)) {
         throw error
@@ -47,13 +61,19 @@ export const createApiClient = ({
         retryHeaders.set(key, value)
       })
 
-      return fetcher<T>(
+      const result = await fetcher<T>(
         path,
         toFetchOptions({
           ...fetchOptions,
           headers: retryHeaders
         })
       )
+
+      if (isApiEnvelope(result)) {
+        assertApiSuccess(result)
+      }
+
+      return result
     }
   }
 

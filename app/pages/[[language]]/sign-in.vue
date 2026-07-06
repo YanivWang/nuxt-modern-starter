@@ -28,6 +28,7 @@
 import { message } from 'ant-design-vue'
 import { useI18n } from 'vue-i18n'
 import { getApiErrorMessage } from '~/lib/http/error'
+import { resolveSafeRedirectPath } from '~/utils/safe-redirect'
 
 const route = useRoute()
 const router = useRouter()
@@ -51,7 +52,10 @@ usePageSeo({
 })
 
 const redirectTarget = computed(() =>
-  typeof route.query.redirect === 'string' ? route.query.redirect : localePath('/workspace')
+  resolveSafeRedirectPath(
+    typeof route.query.redirect === 'string' ? route.query.redirect : undefined,
+    localePath('/workspace')
+  )
 )
 
 const handleSubmit = async () => {

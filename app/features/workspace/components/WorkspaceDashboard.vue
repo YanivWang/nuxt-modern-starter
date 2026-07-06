@@ -18,6 +18,7 @@ const deletingProjectId = ref<string | null>(null)
 const {
   data: projects,
   pending,
+  error,
   refresh
 } = await useAsyncData('workspace-projects', async () => {
   const response = await fetchWorkspaceProjects()
@@ -56,6 +57,18 @@ const handleDeleteProject = async (projectId: string) => {
     <div v-if="pending" class="workspace-loading">
       <a-spin />
     </div>
+
+    <a-alert
+      v-else-if="error"
+      type="error"
+      show-icon
+      :message="$t('common.loadFailed')"
+      class="workspace-error"
+    >
+      <template #action>
+        <a-button size="small" @click="() => refresh()">{{ $t('common.retry') }}</a-button>
+      </template>
+    </a-alert>
 
     <a-empty
       v-else-if="!projects?.length"
@@ -108,7 +121,8 @@ const handleDeleteProject = async (projectId: string) => {
 }
 
 .workspace-loading,
-.workspace-empty {
+.workspace-empty,
+.workspace-error {
   display: grid;
   min-height: 220px;
   place-items: center;
