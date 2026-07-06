@@ -7,6 +7,7 @@ import {
   setAuthTokenCookies,
   tokenFromResponse
 } from '../../utils/auth-session'
+import { mergeAttributionIntoBody } from '../../utils/attribution-params'
 
 export * from './client'
 
@@ -119,7 +120,7 @@ export const normalizeAuthUser = (user: BackendUser): AuthUser => ({
 export const registerApi = (payload: RegisterPayload) =>
   sendAuthApiRequest<AuthEnvelope>(AUTH_API_ENDPOINTS.register, {
     method: 'POST',
-    body: payload
+    body: mergeAttributionIntoBody(payload) as RegisterPayload & Record<string, string>
   })
 
 export const loginApi = (payload: LoginPayload) =>

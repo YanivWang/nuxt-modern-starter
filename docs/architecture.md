@@ -20,14 +20,14 @@
 - `app/apis/auth`: Bearer Token auth adapter. It owns login, register, refresh, logout, `/me`, profile requests, response normalization, and single-flight token refresh.
 - `app/apis/product`: authenticated product workflow client factory only (`createProductApiClient()`). Business adapters such as workspace project APIs live under `app/features/workspace/api.ts`.
 - `app/apis/editor`: authenticated editor workflow adapters shared by editor feature routes. Document save/read APIs live in `document.ts` and call `createProductApiClient()` directly.
-- `app/utils`: small shared runtime utilities such as `antdIcon.ts` for on-demand Ant Design SVG icons and `auth-session.ts` for token cookie helpers.
+- `app/utils`: small shared runtime utilities such as `antdIcon.ts` for on-demand Ant Design SVG icons, `auth-session.ts` for token cookie helpers, `attribution-params.ts` for marketing attribution persistence, and `load-script.ts` for deferred external script injection.
 - `app/stores`: Pinia stores for app UI state, language state, theme state, and opt-in auth state. Feature-specific stores belong under `app/features/<feature>/stores`.
-- `app/components/base`: reusable low-level examples such as `BaseLogo`, `BaseButton`, and `PageContainer`.
+- `app/components/base`: reusable low-level examples such as `BaseLogo`, `BaseButton`, `BasePicture`, and `PageContainer`.
 - `app/components/layout`: shell components including `AppHeader`, `AppShellHeader`, and `UserAccountMenu`.
 - `app/layouts`: route-level shells. `default` for public pages, `product` for sidebar-backed product pages, `editor` for full-screen editor routes, and `empty` for minimal pages.
 - `app/middleware/locale.global.ts`: global locale normalization before page rendering, including product canonical 301 redirects via `localizedProductPathToCanonical`.
 - `app/middleware/auth.ts`: named auth middleware for protected product routes (session, login redirect, RBAC). Does not handle product canonical redirects.
-- `app/plugins`: startup hooks such as `auth.ts` session hydration and `i18n.ts` setup.
+- `app/plugins`: startup hooks such as `auth.ts` session hydration, `i18n.ts` setup, `attribution.client.ts` first-load and SPA attribution capture, and `analytics.client.ts` deferred third-party script loading behind env guards.
 - `config`: site metadata, route lists, auth constants, theme tokens, and typed local content.
 - `config/auth.ts`: auth endpoint paths, cookie keys, token max ages, auth route meta types, and frontend redirect constants (`AUTH_REDIRECTS.login = '/sign-in'`).
 - `config/routes.ts`: public/product path helpers, prerender/SWR/CSR route rule sources, and localized product URL canonicalization (`isProductPath`, `localizedProductPathToCanonical`).

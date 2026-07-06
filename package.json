@@ -28,6 +28,7 @@
     "postinstall": "nuxt prepare",
     "prepare": "husky",
     "preview": "nuxt preview",
+    "quality": "pnpm lint && pnpm format:check && pnpm stylelint && pnpm typecheck && pnpm test && pnpm build",
     "stylelint": "stylelint \"**/*.{css,scss,vue}\"",
     "test": "vitest run",
     "test:watch": "vitest",

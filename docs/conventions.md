@@ -66,4 +66,12 @@ Use Nuxt test environment for composables, route middleware, server routes, and 
 
 ## Safety and Accessibility
 
-Do not log secrets, tokens, or cookies. Keep images sized and optimized before adding them to public pages. Load third-party scripts only behind explicit project requirements. Interactive controls need accessible labels, visible focus states, and keyboard-friendly behavior.
+Do not log secrets, tokens, or cookies. Keep images sized and optimized before adding them to public pages.
+
+Third-party analytics scripts should stay behind explicit env toggles. The starter ships an analytics plugin slot, but analytics remains disabled by default. When enabling it, relax `script-src` in `nuxt.config.ts` for the script origin and keep `connect-src` aligned with the analytics provider if needed.
+
+Channel attribution uses client-side `localStorage` only. It does not affect SSR, prerender, SWR, or CDN cache safety. Clear attribution only on explicit logout; do not tie attribution cleanup to generic auth reset paths.
+
+Fork projects targeting EU or other consent-regulated regions must add their own cookie or consent banner (CMP). The starter does not ship a CMP.
+
+Load third-party scripts only behind explicit project requirements. Interactive controls need accessible labels, visible focus states, and keyboard-friendly behavior.

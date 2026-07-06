@@ -14,6 +14,7 @@ import {
   getRefreshTokenCookie,
   tokenFromResponse
 } from '../utils/auth-session'
+import { clearAttributionParams } from '../utils/attribution-params'
 import type { AuthUser, Permission, Role } from '../../config/auth'
 
 type AuthStatus = 'idle' | 'loading' | 'authenticated' | 'unauthenticated' | 'refreshing'
@@ -96,6 +97,7 @@ export const useAuthStore = defineStore('auth', () => {
         await logoutApi(accessToken.value, refreshToken.value)
       }
     } finally {
+      clearAttributionParams()
       reset()
     }
   }

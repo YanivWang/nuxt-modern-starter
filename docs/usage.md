@@ -1,5 +1,24 @@
 # Usage
 
+## Release Quality Gate
+
+Before tagging, deploying, or running `pnpm docker:up`, run the full local quality gate:
+
+```bash
+pnpm quality
+```
+
+`pnpm quality` runs `lint`, `format:check`, `stylelint`, `typecheck`, `test`, and `build`. Husky pre-commit still runs the faster subset (`lint`, `stylelint`, `typecheck`, `test`) on every commit and intentionally skips `format:check` and `build` to keep day-to-day commits fast.
+
+Typical release flow:
+
+```bash
+pnpm quality
+pnpm docker:up
+```
+
+`pnpm build` reads committed `.env.prod` placeholder URLs. Sitemap generation falls back to local slugs when the content API is unavailable, so the quality gate does not depend on a live backend.
+
 ## Add a Page
 
 Create public SEO pages directly under `app/pages/[[language]]`. Use `localePath()` for internal links and call `usePageSeo()` with the unprefixed canonical path.
@@ -58,11 +77,169 @@ Public adapters must stay free of token cookies and refresh behavior. This keeps
 
 ## Add SEO
 
-Use `usePageSeo({ path, title, description })`. The composable adds title, description, canonical, OG metadata, and alternate links for public `zh-CN` and `en-US` pages. `noindex` product pages keep canonical and OG metadata but skip alternate links.
+Use `usePageSeo({ path, title, description })`. The composable adds title, description, canonical, Open Graph metadata, Twitter Card metadata, and alternate links for public `zh-CN` and `en-US` pages.
 
-News details can pass the `article` field to generate Article JSON-LD. `Organization` and `WebSite` JSON-LD are recommended future additions when a real brand domain and logo are available.
+Automatic enhancements (no extra page props required):
+
+- Twitter Card: `twitter:card=summary_large_image`, plus `twitter:title`, `twitter:description`, and `twitter:image`.
+- Open Graph: `og:type` (`website` by default, `article` when `article` is passed), and `og:site_name` from `SITE_NAME`.
+- Resolved titles: `og:title` and `twitter:title` always use the resolved title (`${title} · ${SITE_NAME}` when a page title is provided).
+- Default OG image: `public/og-default.png` via `DEFAULT_SEO.ogImage` in `config/site.ts`.
+
+Opt-in JSON-LD and verification:
+
+| Parameter                                       | Default | Behavior                                                             |
+| ----------------------------------------------- | ------- | -------------------------------------------------------------------- |
+| `webPage?: boolean`                             | `false` | Emits WebPage JSON-LD                                                |
+| `includeOrganization?: boolean`                 | `false` | Emits Organization JSON-LD (home page only in the starter)           |
+| `article?: { title, description, publishedAt }` | —       | Emits Article JSON-LD and sets `og:type=article`                     |
+| `siteVerification?: { baidu?, google? }`        | —       | Emits search-console verification meta tags when tokens are provided |
+
+Home page example:
+
+```typescript
+const runtimeConfig = useRuntimeConfig()
+
+usePageSeo({
+  path: '/',
+  title: t('home.title'),
+  description: t('home.lead'),
+  webPage: true,
+  includeOrganization: true,
+  siteVerification: {
+    google: runtimeConfig.public.googleSiteVerification || undefined,
+    baidu: runtimeConfig.public.baiduSiteVerification || undefined
+  }
+})
+```
+
+News detail example:
+
+```typescript
+usePageSeo({
+  path: `/news/${slug}`,
+  title: article.title,
+  description: article.description,
+  article: {
+    title: article.title,
+    description: article.description,
+    publishedAt: article.publishedAt
+  }
+})
+```
+
+`WebPage` and `Organization` JSON-LD are implemented. `WebSite` JSON-LD remains a future addition when a real brand domain and richer site metadata are available.
+
+`noindex` product pages keep canonical, OG, and Twitter metadata but skip alternate links.
 
 `server/routes/sitemap.xml.ts` and `server/routes/robots.txt.ts` are generated from public route/content configuration. Keep product routes, sign-in, and sign-up pages out of sitemap and blocked in robots rules.
+
+Environment placeholders for search-console verification:
+
+```bash
+NUXT_PUBLIC_GOOGLE_SITE_VERIFICATION=
+NUXT_PUBLIC_BAIDU_SITE_VERIFICATION=
+```
+
+Read these from `runtimeConfig.public` and pass them into `usePageSeo`. Do not hardcode verification tokens in page source.
+
+## Channel Attribution
+
+The starter persists marketing attribution parameters in `localStorage` through `app/utils/attribution-params.ts` and `app/plugins/attribution.client.ts`.
+
+Supported keys include `utm_*`, `bd_vid`, `clickid`, `gclid`, `msclkid`, `fbclid`, and `ttclid`. Fork projects can append more keys to `ATTRIBUTION_KEY_PATTERNS`.
+
+Storage strategy is **last-touch merge by key**:
+
+- A later landing URL only overwrites keys present in that query.
+- Keys not present in the new query are preserved.
+
+Example:
+
+1. Land on `/?utm_source=a&utm_medium=cpc`
+2. Later land on `/?gclid=b`
+3. Storage contains `utm_source`, `utm_medium`, and `gclid`
+
+Capture behavior:
+
+- The attribution plugin reads `router.currentRoute.value.query` on startup to cover first-load landings.
+- `router.afterEach` covers later SPA navigations.
+
+Registration example:
+
+- `registerApi()` merges stored attribution into the request body before sending.
+- Backend acceptance of these fields is a fork-specific API contract.
+- Login conversion is not wired in v1; call `mergeAttributionIntoBody()` inside `loginApi()` in fork projects when needed.
+
+Storage lifecycle:
+
+- Attribution survives SPA navigation, full page refresh, and token refresh failure.
+- Attribution is **not** cleared inside generic `reset()` or `clearAuthSession()`.
+- Attribution is cleared only on explicit `logout()`.
+
+Shared-device note:
+
+- If user A lands with UTM params and never logs out, user B registering in the same browser may inherit those params. Fork projects should handle this with product-specific UX or cleanup rules if needed.
+
+Manual checks:
+
+```bash
+# land with params, inspect localStorage key attribution_params
+/?utm_source=test
+
+# register request body should include stored attribution fields
+```
+
+## Analytics Plugin Slot
+
+Analytics is disabled by default and loaded only on the client through `app/plugins/analytics.client.ts`.
+
+Environment variables:
+
+```bash
+NUXT_PUBLIC_ANALYTICS_ENABLED=false
+NUXT_PUBLIC_ANALYTICS_SCRIPT_SRC=
+NUXT_PUBLIC_ANALYTICS_DEFER_MS=3000
+```
+
+v1 supports one external script URL injected after a timeout defer. It does **not** support a full GTM container bootstrap, inline `dataLayer` setup, or multi-script queues.
+
+Guard behavior:
+
+| Condition                                       | Result                                |
+| ----------------------------------------------- | ------------------------------------- |
+| `analyticsEnabled !== true`                     | Silent skip                           |
+| enabled but `analyticsScriptSrc` is blank       | Silent skip                           |
+| enabled with a valid script URL and relaxed CSP | Script loads after `analyticsDeferMs` |
+
+When enabling analytics, update `script-src` in `nuxt.config.ts`. The default CSP blocks external scripts:
+
+```txt
+script-src 'self' 'unsafe-inline' https://www.googletagmanager.com;
+```
+
+Single-file GA4 scripts such as `https://www.googletagmanager.com/gtag/js?id=...` can use `NUXT_PUBLIC_ANALYTICS_SCRIPT_SRC`. A complete GTM container still requires inline bootstrap work outside v1.
+
+Load failures caused by CSP or network errors are caught and logged with `console.warn`; they do not throw uncaught client errors.
+
+## BasePicture
+
+Use `BasePicture` for responsive hero or content images with optional WebP fallback:
+
+```vue
+<BasePicture
+  src="/demo-hero.png"
+  webp-src="/demo-hero.webp"
+  alt="Product preview"
+  width="960"
+  height="540"
+  loading="eager"
+  fetchpriority="high"
+  sizes="(min-width: 900px) 960px, 100vw"
+/>
+```
+
+Provide `width`, `height`, and `sizes` on LCP-critical images. The starter keeps the home hero as CSS decoration and documents `BasePicture` instead of forcing a home-page UI change.
 
 ## Add Languages
 

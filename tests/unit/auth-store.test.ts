@@ -11,6 +11,14 @@ const apiMocks = vi.hoisted(() => ({
   registerApi: vi.fn()
 }))
 
+const attributionMocks = vi.hoisted(() => ({
+  clearAttributionParams: vi.fn()
+}))
+
+vi.mock('../../app/utils/attribution-params', () => ({
+  clearAttributionParams: attributionMocks.clearAttributionParams
+}))
+
 vi.mock('../../app/apis/auth', () => ({
   ...apiMocks,
   normalizeAuthUser: (user: {
@@ -96,9 +104,29 @@ describe('auth store', () => {
 
     await authStore.logout()
 
+    expect(attributionMocks.clearAttributionParams).toHaveBeenCalledOnce()
     expect(authStore.accessToken).toBeFalsy()
     expect(authStore.refreshToken).toBeFalsy()
     expect(authStore.user).toBeNull()
+    expect(authStore.status).toBe('unauthenticated')
+  })
+
+  it('does not clear attribution when refresh fails and reset runs', async () => {
+    apiMocks.refreshApi.mockRejectedValue(new Error('refresh failed'))
+
+    const authStore = useAuthStore()
+    authStore.setTokens({
+      code: 200,
+      message: 'ok',
+      data: {
+        accessToken: 'access-token',
+        refreshToken: 'refresh-token'
+      }
+    })
+
+    await expect(authStore.refresh()).rejects.toThrow('refresh failed')
+
+    expect(attributionMocks.clearAttributionParams).not.toHaveBeenCalled()
     expect(authStore.status).toBe('unauthenticated')
   })
 

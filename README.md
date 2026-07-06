@@ -53,7 +53,9 @@ pnpm build
 - Product account at `/account`: session details, profile payload, and logout (via user menu).
 - Authenticated business responses use the shared `{ code, message, data }` envelope.
 - Public pages for home, pricing, help, news list, news detail, sign-in, sign-up, and 404.
-- Canonical, hreflang, OG metadata, noindex handling, and Article JSON-LD.
+- Canonical, hreflang, OG metadata, Twitter Card metadata, noindex handling, Article JSON-LD, and home-page WebPage / Organization JSON-LD opt-ins.
+- Channel attribution persistence, registration body merge, and deferred analytics plugin slot.
+- `BasePicture` component for responsive image examples.
 - Docker image, Compose samples, and Nginx reverse-proxy sample for Nitro node-server.
 
 ## Documentation
@@ -81,6 +83,7 @@ pnpm stylelint
 pnpm typecheck
 pnpm test
 pnpm test:watch
+pnpm quality
 pnpm docker:build
 pnpm docker:run
 pnpm docker:up
@@ -104,13 +107,10 @@ Keep real secrets out of committed env files. Runtime deployments should still i
 Run the full local quality gate:
 
 ```bash
-pnpm lint
-pnpm format:check
-pnpm stylelint
-pnpm typecheck
-pnpm test
-pnpm build
+pnpm quality
 ```
+
+`pnpm quality` runs lint, format:check, stylelint, typecheck, test, and build. Husky pre-commit keeps the faster subset for everyday commits.
 
 Then verify deployment samples:
 

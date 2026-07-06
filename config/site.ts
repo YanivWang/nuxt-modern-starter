@@ -31,3 +31,9 @@ export const DEFAULT_SEO = {
   description: SITE_DESCRIPTION,
   ogImage: '/og-default.png'
 } as const
+
+/** JSON-LD Organization：url 运行时 absoluteUrl(siteUrl, '/')；logo 运行时 absoluteUrl(siteUrl, logo 路径) */
+export const SITE_ORG = {
+  name: SITE_NAME,
+  logo: '/og-default.png'
+} as const

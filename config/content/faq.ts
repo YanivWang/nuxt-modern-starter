@@ -80,9 +80,9 @@ export const faqItems: FaqItem[] = [
     },
     answer: {
       'zh-CN':
-        'usePageSeo 为公开页生成 title、description、canonical 与 hreflang。新闻详情额外输出 Article JSON-LD。404 与受保护页可配置 noindex，OG 元数据与默认 ogImage 也可在 site 配置中集中维护。',
+        'usePageSeo 为公开页生成 title、description、canonical、hreflang、Open Graph 与 Twitter Card。og:title 与 twitter:title 共用 resolved title（含站点名后缀）。新闻详情额外输出 Article JSON-LD 并将 og:type 设为 article。首页可通过 webPage 与 includeOrganization 输出 WebPage / Organization JSON-LD；WebSite JSON-LD 仍为后续扩展项。404 与受保护页可配置 noindex，默认 ogImage 位于 public/og-default.png。',
       'en-US':
-        'usePageSeo generates title, description, canonical, and hreflang for public pages. News detail pages also emit Article JSON-LD. 404 and protected pages can use noindex, while OG metadata and the default ogImage live in site config.'
+        'usePageSeo generates title, description, canonical, hreflang, Open Graph, and Twitter Card metadata for public pages. og:title and twitter:title share the resolved title with the site-name suffix. News detail pages also emit Article JSON-LD and set og:type to article. The home page can opt into WebPage and Organization JSON-LD; WebSite JSON-LD remains a future addition. 404 and protected pages can use noindex, and the default ogImage lives at public/og-default.png.'
     }
   },
   {
@@ -132,9 +132,9 @@ export const faqItems: FaqItem[] = [
     },
     answer: {
       'zh-CN':
-        '发布前建议依次执行 pnpm lint、pnpm format:check、pnpm stylelint、pnpm typecheck、pnpm test 与 pnpm build。若涉及部署变更，再补充 Docker 构建运行与 Nginx 反向代理验证，步骤可参考 docs/deployment.md。',
+        '发布或部署前运行 pnpm quality。该命令依次执行 lint、format:check、stylelint、typecheck、test 与 build。日常提交仍由 Husky pre-commit 提供更快的 lint/stylelint/typecheck/test 反馈。若涉及部署变更，再补充 Docker 构建运行与 Nginx 反向代理验证，步骤可参考 docs/deployment.md。',
       'en-US':
-        'Before release, run pnpm lint, pnpm format:check, pnpm stylelint, pnpm typecheck, pnpm test, and pnpm build. If deployment changed, also validate Docker build/run and the Nginx reverse proxy. See docs/deployment.md for the validation flow.'
+        'Run pnpm quality before release or deployment. It executes lint, format:check, stylelint, typecheck, test, and build. Day-to-day commits still use the faster Husky pre-commit subset. If deployment changed, also validate Docker build/run and the Nginx reverse proxy. See docs/deployment.md for the validation flow.'
     }
   }
 ]

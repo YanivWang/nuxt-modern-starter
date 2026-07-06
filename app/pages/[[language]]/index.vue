@@ -93,11 +93,19 @@ const workflowSteps = computed(() => [
   t('home.workflow.steps.auth')
 ])
 
+const runtimeConfig = useRuntimeConfig()
+
 usePageSeo({
   path: '/',
   locale: languageStore.currentLanguage,
   title: t('home.title'),
-  description: t('home.lead')
+  description: t('home.lead'),
+  webPage: true,
+  includeOrganization: true,
+  siteVerification: {
+    google: runtimeConfig.public.googleSiteVerification || undefined,
+    baidu: runtimeConfig.public.baiduSiteVerification || undefined
+  }
 })
 </script>
 
