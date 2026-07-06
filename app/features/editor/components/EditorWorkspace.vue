@@ -418,22 +418,16 @@ onBeforeRouteLeave(async () => {
         <div v-if="pending && !editorReady" class="editor-workspace__loading">
           <a-spin />
         </div>
-        <ClientOnly v-if="!pending || editorReady">
-          <YanivEditor
-            ref="editorRef"
-            :mode="EDITOR_MODE"
-            :preset="EDITOR_PRESET"
-            :locale="languageStore.currentLanguage"
-            :initial-content="editorInitialContent"
-            @update="onEditorUpdate"
-            @update:content="onEditorUpdate"
-          />
-          <template #fallback>
-            <div class="editor-workspace__loading">
-              <a-spin />
-            </div>
-          </template>
-        </ClientOnly>
+        <YanivEditor
+          v-if="!pending || editorReady"
+          ref="editorRef"
+          :mode="EDITOR_MODE"
+          :preset="EDITOR_PRESET"
+          :locale="languageStore.currentLanguage"
+          :initial-content="editorInitialContent"
+          @update="onEditorUpdate"
+          @update:content="onEditorUpdate"
+        />
       </div>
     </main>
   </div>
