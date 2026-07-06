@@ -24,7 +24,7 @@
     "docker:up:dev": "docker compose --env-file .env.dev -f docker/docker-compose.base.yaml -f docker/docker-compose.dev.yaml up --build",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "lint": "eslint .",
+    "lint": "eslint . --max-warnings 0",
     "postinstall": "nuxt prepare",
     "prepare": "husky",
     "preview": "nuxt preview",
@@ -35,7 +35,11 @@
     "typecheck": "nuxt typecheck"
   },
   "lint-staged": {
-    "*.{js,ts,vue,mjs,json,md,css,scss}": "prettier --write"
+    "*.{js,ts,vue,mjs}": [
+      "prettier --write",
+      "eslint --fix --max-warnings 0"
+    ],
+    "*.{json,md,css,scss}": "prettier --write"
   },
   "dependencies": {
     "@ant-design-vue/nuxt": "^1.4.6",

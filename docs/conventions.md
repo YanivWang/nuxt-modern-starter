@@ -64,6 +64,27 @@ Product sidebar navigation belongs in `app/features/product-shell/config.ts` thr
 
 Use Nuxt test environment for composables, route middleware, server routes, and status code behavior. Pure utilities can use plain Vitest.
 
+## Tooling And Formatting
+
+Formatting and lint responsibilities are split on purpose:
+
+| Tool           | Role                                                                                       |
+| -------------- | ------------------------------------------------------------------------------------------ |
+| Prettier       | Source of truth for JS/TS/Vue/Markdown/JSON/CSS/SCSS formatting                            |
+| ESLint         | Code quality and Vue semantics; markup self-closing rules are aligned with Prettier output |
+| Stylelint      | SCSS/CSS/Vue style blocks only; does not format script or template markup                  |
+| Husky          | `lint-staged` on commit, then full `pnpm lint`, `stylelint`, `typecheck`, and `test`       |
+| `pnpm quality` | Release gate: adds `format:check` and `build` on top of the pre-commit subset              |
+
+Commit flow for staged code files:
+
+1. `prettier --write`
+2. `eslint --fix --max-warnings 0`
+
+Do not hand-edit Vue template void/empty tags into a style that Prettier will rewrite on commit. Empty elements such as `<img>`, `<source>`, `<slot>`, `<div>`, and `<span>` should stay in Prettier's self-closing form (`<tag />`) so ESLint and Prettier stay consistent.
+
+`pnpm lint` runs with `--max-warnings 0`. Fix or align rules instead of ignoring formatting warnings in Vue templates.
+
 ## Safety and Accessibility
 
 Do not log secrets, tokens, or cookies. Keep images sized and optimized before adding them to public pages.
