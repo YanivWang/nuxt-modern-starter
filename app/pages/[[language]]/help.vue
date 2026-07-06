@@ -1,3 +1,28 @@
+<!--
+  【帮助中心】
+
+  路由：/help、/en/help
+  Layout：default
+
+  UI 区块：
+  - 页头：eyebrow、标题、导语
+  - Quick Start：4 步有序指引（install → dev → explore → extend）
+  - Resources：4 项文档资源清单（architecture / usage / conventions / deployment）
+  - FAQ：a-collapse 折叠面板，逐项展示问答
+
+  用户流程：
+  - 访客查阅上手步骤与 FAQ；定价页 Growth 方案 CTA 也会跳转至此
+
+  数据 / API：
+  - FAQ：getFaqItems() → config/content/faq.ts（按当前语言过滤）
+  - 快速开始与资源文案：i18n help.* 键
+
+  子组件：
+  - PageContainer、CheckOutlined 图标
+
+  SEO / 边界：
+  - usePageSeo 完整 SEO；AppHeader 与 AppFooter 均有入口
+-->
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { CheckOutlined } from '~/utils/antdIcon'

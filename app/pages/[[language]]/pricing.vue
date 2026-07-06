@@ -1,3 +1,30 @@
+<!--
+  【定价页】
+
+  路由：/pricing、/en/pricing
+  Layout：default
+
+  UI 区块：
+  - 页头：eyebrow、标题、导语
+  - Plans：三档方案卡片（Starter / Growth / Custom），含价格、描述、功能清单、CTA 按钮
+  - Growth 方案 featured 高亮（ribbon 徽章 + primary 按钮）
+  - Includes：starter 通用能力说明（stack / routing / content / editor，双列清单）
+  - 底部 note 备注
+
+  用户流程：
+  - Starter、Custom → CTA 跳转 /sign-up
+  - Growth → CTA 跳转 /help
+
+  数据 / API：
+  - 纯静态 i18n（pricing.plans.*、pricing.includes.*），无后端请求
+
+  子组件：
+  - PageContainer、BaseButton、CheckOutlined 图标
+
+  SEO / 边界：
+  - usePageSeo 完整 SEO 元数据
+  - AppHeader 主导航、首页 secondary CTA、product-shell 底部导航均有入口
+-->
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { CheckOutlined } from '~/utils/antdIcon'

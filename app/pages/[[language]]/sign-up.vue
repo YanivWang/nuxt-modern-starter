@@ -1,3 +1,30 @@
+<!--
+  【注册页】
+
+  路由：/sign-up、/en/sign-up
+  Layout：default
+
+  UI 区块：
+  - 居中 auth-card：用户名、密码、确认密码输入框、提交按钮
+  - 底部链接：跳转登录页
+
+  用户流程：
+  - 填写表单 → 提交
+  - 成功：message 提示 → 跳转 /sign-in?username=xxx（预填用户名）
+  - 失败：展示 API 错误信息
+
+  数据 / API：
+  - useAuth().register() → app/apis/auth
+
+  表单校验：
+  - username 必填
+  - password 必填且最少 6 位
+  - confirmPassword 必填且须与 password 一致（自定义 validator）
+
+  SEO / 边界：
+  - noindex
+  - 首页 Hero/CTA、定价页 Starter/Custom 方案、AppHeader 均有入口
+-->
 <script setup lang="ts">
 import { message } from 'ant-design-vue'
 import { useI18n } from 'vue-i18n'

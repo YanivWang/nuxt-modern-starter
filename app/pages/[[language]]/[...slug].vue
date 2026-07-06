@@ -1,3 +1,24 @@
+<!--
+  【公开区 404 兜底页】
+
+  路由：任意未匹配的公开路径（如 /foo、/en/unknown-page）
+  Layout：default
+
+  UI 区块：
+  - 404 eyebrow、错误标题、错误描述
+  - 「返回首页」链接 → /
+
+  用户流程：
+  - 访问不存在的公开 URL → 展示友好 404 页 → 可回首页
+
+  数据 / API：
+  - 无；纯 i18n 文案（error.*）
+
+  SEO / 边界：
+  - setResponseStatus(404) 返回 HTTP 404 状态码
+  - noindex 避免未知路径被搜索引擎收录
+  - Nuxt catch-all 路由兜底；不支持的语言前缀由 locale middleware 单独处理
+-->
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 

@@ -1,3 +1,27 @@
+<!--
+  【新闻列表页】
+
+  路由：/news、/en/news
+  Layout：default
+
+  UI 区块：
+  - 页头：eyebrow、标题、导语
+  - 文章列表：卡片网格，每项含发布日期、标题、摘要、「阅读更多」链接
+
+  用户流程：
+  - 浏览文章列表 → 点击卡片跳转 /news/:slug 详情页
+
+  数据 / API：
+  - getNewsArticles(currentLanguage) → config/content/news.ts（本地静态数据）
+  - formatPublishedDate() 格式化发布日期
+
+  子组件：
+  - PageContainer、ArrowRightOutlined 图标
+
+  SEO / 边界：
+  - usePageSeo 完整 SEO；swrRouteRules 启用 SWR 缓存
+  - sitemap 收录；AppHeader 主导航有入口
+-->
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { ArrowRightOutlined } from '~/utils/antdIcon'

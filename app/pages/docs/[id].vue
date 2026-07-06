@@ -1,3 +1,34 @@
+<!--
+  【编辑器页】
+
+  路由：/docs/:id、/docs/new（:id 为 workspace 项目 id）
+  Layout：editor | 鉴权：auth 中间件 | key：workspace-editor
+
+  页面职责（薄包装层）：
+  - 解析路由 id，区分新建（/docs/new）与编辑（/docs/:id）
+  - 加载 workspace 项目元数据，传递给 EditorWorkspace
+  - 管理 cachedProject 缓存，避免路由切换时闪烁
+
+  用户流程：
+  - 新建：/docs/new → EditorWorkspace 首次保存时 createWorkspaceProject → replace 到 /docs/:id
+  - 编辑：/docs/:id → fetchWorkspaceProject → 加载 documentId → 编辑器渲染并自动保存
+  - 标题修改、返回工作台等交互在 EditorWorkspace 内完成
+
+  数据 / API：
+  - fetchWorkspaceProject(id)：获取项目（无 documentId 则 404）
+  - EditorWorkspace 内部：fetchEditorDocument / saveEditorDocument / createWorkspaceProject / updateWorkspaceProject
+
+  子组件：
+  - EditorWorkspace（app/features/editor）
+    - EditorWorkspaceHeader：返回工作台、可编辑标题、自动保存状态
+    - YanivEditor（@yanivjs/yaniv-editor）：PPT 编辑器，2s debounce 自动保存
+
+  SEO / 边界：
+  - noindex
+  - 编辑模式 pending 且无缓存时显示全屏 loading
+  - 项目不存在或 API 失败 → createError（404/500）
+  - project-created / project-updated 事件同步更新 cachedProject 与 SEO title
+-->
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { getApiErrorMessage } from '~/api-core/api-error'

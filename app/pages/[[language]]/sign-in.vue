@@ -1,3 +1,29 @@
+<!--
+  【登录页】
+
+  路由：/sign-in、/en/sign-in
+  Layout：default
+
+  UI 区块：
+  - 居中 auth-card：用户名输入框、密码输入框、提交按钮
+  - 底部链接：跳转注册页
+
+  用户流程：
+  - 填写 username + password → 提交
+  - 成功：message 提示 → 跳转 ?redirect= 指定路径，或默认 /workspace
+  - 失败：展示 API 错误信息
+
+  数据 / API：
+  - useAuth().login() → app/apis/auth（Bearer Token 鉴权）
+
+  表单校验：
+  - username、password 均为必填
+
+  SEO / 边界：
+  - noindex（不被搜索引擎收录）
+  - auth 中间件拦截未登录访问产品区时，会重定向至此页并附带 redirect query
+  - 注册成功后可能携带 ?username= 预填（由注册页跳转）
+-->
 <script setup lang="ts">
 import { message } from 'ant-design-vue'
 import { useI18n } from 'vue-i18n'

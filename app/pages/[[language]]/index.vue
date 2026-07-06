@@ -1,3 +1,29 @@
+<!--
+  【营销首页】
+
+  路由：/、/en（可选语言前缀 [[language]]）
+  Layout：default（公开页默认布局）
+
+  UI 区块：
+  - Hero：标题、副文案、主 CTA（注册）与次 CTA（定价）、右侧装饰性 preview 卡片
+  - Stats：3 项数据统计（页面数 / 模块数 / 部署方式）
+  - Features：6 张功能卡片（设计系统、i18n、SEO、鉴权、内容、部署）
+  - Workflow：3 步上手流程说明
+  - Closing CTA：底部再次引导注册
+
+  用户流程：
+  - 访客浏览产品介绍 → 点击注册跳转 /sign-up，或点击定价跳转 /pricing
+
+  数据 / API：
+  - 纯静态 i18n 文案（home.*），无后端请求
+
+  子组件：
+  - AppContainer、PageContainer、BaseButton（页面内直接组合，无 feature 子组件）
+
+  SEO / 边界：
+  - usePageSeo 设置 title/description/canonical/hreflang
+  - nuxt.config 预渲染此页
+-->
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import {

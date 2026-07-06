@@ -1,3 +1,27 @@
+<!--
+  【新闻详情页】
+
+  路由：/news/:slug、/en/news/:slug（如 /news/starter-release）
+  Layout：default
+
+  UI 区块：
+  - 发布日期（大写 meta 样式）
+  - 文章标题、摘要
+  - 正文：article.body 段落数组逐段渲染
+  - 底部「返回新闻列表」链接
+
+  用户流程：
+  - 从列表页进入 → 阅读全文 → 返回 /news
+
+  数据 / API：
+  - getLocalizedNewsArticle(slug, language) → config/content/news.ts
+  - formatPublishedDate() 格式化日期
+
+  SEO / 边界：
+  - slug 不存在 → createError 404（news.notFound）
+  - usePageSeo 传入 article 参数，生成 Article JSON-LD 结构化数据
+  - sitemap 按 slug 逐篇收录
+-->
 <script setup lang="ts">
 import { ArrowRightOutlined } from '~/utils/antdIcon'
 import { getLocalizedNewsArticle } from '../../../apis/public/content'
