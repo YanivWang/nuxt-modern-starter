@@ -242,15 +242,16 @@ export default {
         install: 'Enable Corepack, then run pnpm install.',
         dev: 'Run pnpm dev and browse default Chinese routes plus /en English routes.',
         explore:
-          'Review home, pricing, help, and news pages to understand the public-site structure.',
+          'Review home, pricing, about, help, and news pages to understand the public-site structure.',
         extend: 'Follow docs/usage.md to add pages, requests, SEO, and optional auth.'
       }
     },
     resources: {
       title: 'Recommended reading',
       architecture:
-        'docs/architecture.md — directory responsibilities, rendering strategy, and runtime flow',
-      usage: 'docs/usage.md — pages, requests, SEO, languages, product flows, and auth',
+        'docs/architecture.md — directory responsibilities, rendering strategy, feature modules, and runtime flow',
+      usage:
+        'docs/usage.md — pages, requests, SEO, languages, workspace/editor/account flows, and auth',
       conventions:
         'docs/conventions.md — config boundaries, request layering, and coding conventions',
       deployment: 'docs/deployment.md — local, Docker, and Nginx deployment validation'

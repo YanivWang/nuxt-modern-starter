@@ -230,14 +230,14 @@ export default {
       steps: {
         install: '启用 Corepack，执行 pnpm install 安装依赖。',
         dev: '运行 pnpm dev，本地访问默认中文路由与 /en 英文路由。',
-        explore: '从首页、价格、帮助和新闻页了解公开站点信息结构。',
+        explore: '从首页、价格、关于、帮助和新闻页了解公开站点信息结构。',
         extend: '按 docs/usage.md 添加页面、请求、SEO 与可选鉴权模块。'
       }
     },
     resources: {
       title: '推荐阅读',
-      architecture: 'docs/architecture.md — 目录职责、渲染策略与运行时流程',
-      usage: 'docs/usage.md — 页面、请求、SEO、语言、产品与鉴权扩展',
+      architecture: 'docs/architecture.md — 目录职责、渲染策略、特性模块与运行时流程',
+      usage: 'docs/usage.md — 页面、请求、SEO、语言、工作台/编辑器/账户与鉴权扩展',
       conventions: 'docs/conventions.md — 配置边界、请求分层与编码约定',
       deployment: 'docs/deployment.md — 本地、Docker 与 Nginx 部署验证'
     }

@@ -43,22 +43,34 @@ pnpm build
 - Nuxt 4, TypeScript, pnpm, Pinia, Ant Design Vue, SCSS, and `vue-i18n`.
 - Default-language routes without a prefix and English routes under `/en`.
 - Shared `useLocalePath`, `usePageSeo`, `useTheme`, and scenario-specific API clients.
-- Hybrid rendering: SSR for public pages, prerender for selected marketing routes, SWR for news, and CSR for product routes (`/workspace/**`, `/docs/**`, `/account`).
+- Hybrid rendering: SSR for public pages, prerender for selected marketing routes, SWR for news and pricing, and CSR for product routes (`/workspace/**`, `/docs/**`, `/account`).
 - Separate public SEO routes and logged-in product routes. Product URLs stay language-neutral; `/en/workspace`, `/en/docs/**`, and `/en/account` redirect to canonical paths without a locale prefix.
-- Feature-first product modules under `app/features/*` for workspace, editor, product shell, templates, and future SaaS workflows.
-- Opt-in Bearer Token auth module with sign-in, sign-up, logout, user menu, and protected-route examples.
-- Product workspace at `/workspace`: list, create, and delete projects via `nuxt-modern-starter-api` (`GET/POST/DELETE /api/projects`).
+- Feature-first product modules under `app/features/*` for workspace, editor, product shell, account shell, templates, and future SaaS workflows.
+- Opt-in Bearer Token auth module with sign-in, sign-up, logout, user menu, safe redirect handling, and protected-route examples.
+- Product workspace at `/workspace`: list, create, and delete projects via `nuxt-modern-starter-api` (`GET/POST/PATCH/DELETE /api/projects`).
 - Theme templates placeholder at `/workspace/templates` (no API yet).
-- Editor at `/docs/:id` (`:id` is the project id): resolves `documentId`, loads content with `GET /api/documents/:documentId`, and autosaves with `PATCH /api/documents/:documentId` through `@yanivjs/yaniv-editor`.
-- Product account at `/account`: session details, profile payload, and logout (via user menu).
-- Authenticated business responses use the shared `{ code, message, data }` envelope.
-- Public pages for home, pricing, help, news list, news detail, sign-in, sign-up, and 404.
+- Editor at `/docs/:id` and `/docs/new` (`:id` is the project id): resolves `documentId`, loads content with `GET /api/documents/:documentId`, autosaves with `PATCH /api/documents/:documentId`, and updates titles with `PATCH /api/projects/:projectId` through `@yanivjs/yaniv-editor`.
+- Product account at `/account`: dedicated account layout, profile payload, and logout (via user menu).
+- Authenticated business responses use the shared `{ code, message, data }` envelope with automatic `code === 200` validation in the HTTP client.
+- Public pages for home, pricing, about, help, news list, news detail, sign-in, sign-up, and 404.
 - Canonical, hreflang, OG metadata, Twitter Card metadata, noindex handling, Article JSON-LD, and home-page WebPage / Organization JSON-LD opt-ins.
 - Channel attribution persistence, registration body merge, and deferred analytics plugin slot.
 - `BasePicture` component for responsive image examples.
 - Docker image, Compose samples, and Nginx reverse-proxy sample for Nitro node-server.
 
 ## Documentation
+
+Full architecture handbook (VitePress, recommended for newcomers):
+
+```bash
+pnpm docs:dev      # http://localhost:5173
+pnpm docs:build
+pnpm docs:preview
+```
+
+Source lives in `docs-site/`.
+
+Repository reference docs (linked from README / help page):
 
 - `docs/architecture.md`: directory responsibilities, rendering strategy, and runtime flow.
 - `docs/usage.md`: adding pages, requests, SEO, languages, themes, workspace/editor, and auth.
@@ -101,6 +113,20 @@ Environment files follow the Nuxt `--dotenv` convention:
 - `.env.prod`: production layer, used by `pnpm build`, `pnpm build:prod`, and `pnpm dev:prod`.
 
 Keep real secrets out of committed env files. Runtime deployments should still inject final `NUXT_*` values from the platform, container, or process manager.
+
+Key public variables:
+
+```bash
+NUXT_PUBLIC_SITE_URL=
+NUXT_PUBLIC_API_BASE=
+NUXT_PUBLIC_GOOGLE_SITE_VERIFICATION=
+NUXT_PUBLIC_BAIDU_SITE_VERIFICATION=
+NUXT_PUBLIC_ANALYTICS_ENABLED=false
+NUXT_PUBLIC_ANALYTICS_SCRIPT_SRC=
+NUXT_PUBLIC_ANALYTICS_DEFER_MS=3000
+```
+
+Docker Compose also sets `NUXT_APP_ENV=production` or `NUXT_APP_ENV=dev`, which controls auth cookie `secure` behavior. See `docs/deployment.md` for the full variable table.
 
 ## Verification
 

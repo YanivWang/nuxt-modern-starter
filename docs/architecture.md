@@ -4,34 +4,38 @@
 
 ## Directory Responsibilities
 
-- `app/pages/[[language]]`: localized public route entries. Default language has no prefix, English public pages use `/en`. Current pages include home, pricing, help, news list/detail, sign-in, sign-up, and the catch-all 404 handler.
+- `app/pages/[[language]]`: localized public route entries. Default language has no prefix, English public pages use `/en`. Current pages include home, pricing, about, help, news list/detail, sign-in, sign-up, and the catch-all 404 handler.
 - `app/pages/workspace`: logged-in workspace routes. `index.vue` maps to `/workspace`; `templates/index.vue` maps to `/workspace/templates` (placeholder, no API).
-- `app/pages/docs/[id].vue`: full-screen editor at `/docs/:id` (`:id` is the project id).
-- `app/pages/account.vue`: account page at `/account`, reached from the user menu.
+- `app/pages/docs/[id].vue`: full-screen editor at `/docs/:id` or `/docs/new` (`:id` is the project id, or `new` for draft creation).
+- `app/pages/account.vue`: account settings at `/account`, reached from `UserAccountMenu`.
 - Product URLs stay language-neutral (`/workspace`, `/docs/:id`, `/account`); localized product URLs such as `/en/workspace` redirect to the canonical path without a locale prefix.
-- `app/features/product-shell`: logged-in product shell configuration and layout surface. Sidebar navigation is centralized in `config.ts` through `productNavItems` and `productFooterNavItems`. Account is not a sidebar item; it lives in `UserAccountMenu`.
+- `app/features/product-shell`: sidebar-backed product shell. Navigation is centralized in `config.ts` through `productNavItems` and `productFooterNavItems`. Account is not a sidebar item; it lives in `UserAccountMenu`.
+- `app/features/account-shell`: account settings shell with top bar and compact sidebar via `accountNavItems`.
+- `app/features/account`: account settings UI (`AccountPage`) for profile display and logout.
 - `app/features/workspace`: workspace dashboard UI and project API adapters in `api.ts`.
 - `app/features/editor`: editor UI (`EditorWorkspace`, `EditorWorkspaceHeader`) built on `@yanivjs/yaniv-editor`.
 - `app/features/templates`: theme templates placeholder UI (`ThemeTemplatesPage`).
 - `app/features`: other product and domain modules. Complex product UI, feature composables, feature stores, feature types, and feature API adapters grow here instead of top-level Nuxt folders.
-- `app/lib/http`: shared HTTP wrapper, response types, header helpers, error normalization, and typed `$fetch` client creation.
+- `app/lib/http`: shared HTTP wrapper, response types, header helpers, envelope validation (`assertApiSuccess`), error normalization, and typed `$fetch` client creation.
 - `app/api`: cross-feature request adapters (`public.ts`, `auth.ts`) plus scenario client factories in `clients.ts`.
 - `app/composables`: shared runtime APIs such as `useAuth`, `useLocalePath`, `usePageSeo`, `useTheme`, `useLanguageSwitch`, and `useUserAvatar`. Feature-specific composables belong under `app/features/<feature>/composables`; feature-only request adapters belong under `app/features/<feature>/api.ts`.
 - `app/api/public.ts`: SEO-safe public content adapters. Public adapters must not depend on auth state or trigger token refresh.
 - `app/api/auth.ts`: Bearer Token auth adapter. It owns login, register, refresh, logout, `/me`, profile requests, response normalization, single-flight token refresh, and `createProductApiClient()`.
 - `app/features/workspace/api.ts`: authenticated workspace project adapters.
 - `app/features/editor/api.ts`: authenticated editor document adapters.
-- `app/utils`: small shared runtime utilities such as `antdIcon.ts` for on-demand Ant Design SVG icons, `auth-session.ts` for token cookie helpers, `attribution-params.ts` for marketing attribution persistence, and `load-script.ts` for deferred external script injection.
-- `app/stores`: Pinia stores for app UI state, language state, theme state, and opt-in auth state. Feature-specific stores belong under `app/features/<feature>/stores`.
+- `app/utils`: small shared runtime utilities such as `antdIcon.ts` for on-demand Ant Design SVG icons, `auth-session.ts` for token cookie helpers, `attribution-params.ts` for marketing attribution persistence, `safe-redirect.ts` for login redirect validation, and `load-script.ts` for deferred external script injection.
+- `app/stores`: Pinia stores for language state, theme state, and opt-in auth state. Feature-specific stores belong under `app/features/<feature>/stores`.
 - `app/components/base`: reusable low-level examples such as `BaseLogo`, `BaseButton`, `BasePicture`, and `PageContainer`.
 - `app/components/layout`: shell components including `AppHeader`, `AppShellHeader`, and `UserAccountMenu`.
-- `app/layouts`: route-level shells. `default` for public pages, `product` for sidebar-backed product pages, `editor` for full-screen editor routes, and `empty` for minimal pages.
+- `app/layouts`: route-level shells. `default` for public pages, `product` for sidebar-backed workspace routes, `editor` for full-screen editor routes, `account` for account settings, and `empty` for minimal pages.
 - `app/middleware/locale.global.ts`: global locale normalization before page rendering, including product canonical 301 redirects via `localizedProductPathToCanonical`.
 - `app/middleware/auth.ts`: named auth middleware for protected product routes (session, login redirect, RBAC). Does not handle product canonical redirects.
 - `app/plugins`: startup hooks such as `auth.ts` session hydration, `i18n.ts` setup, `attribution.client.ts` first-load and SPA attribution capture, and `analytics.client.ts` deferred third-party script loading behind env guards.
 - `config`: site metadata, route lists, auth constants, theme tokens, and typed local content.
+- `config/site.ts`: site metadata, supported locales, navigation, and `PUBLIC_PAGE_PATHS` (`/`, `/pricing`, `/about`, `/help`, `/news`). Sign-in and sign-up are intentionally excluded.
 - `config/auth.ts`: auth endpoint paths, cookie keys, token max ages, auth route meta types, and frontend redirect constants (`AUTH_REDIRECTS.login = '/sign-in'`).
 - `config/routes.ts`: public/product path helpers, prerender/SWR/CSR route rule sources, and localized product URL canonicalization (`isProductPath`, `localizedProductPathToCanonical`).
+- `config/content/faq.ts`: typed local FAQ content consumed by `~/api/public`.
 - `server/middleware/product-canonical.ts`: early server-side 301 redirect for localized product URLs, for example `/en/workspace` to `/workspace`.
 - `server/routes/robots.txt.ts` and `server/routes/sitemap.xml.ts`: SEO server routes. They include public localized pages and content detail pages while excluding sign-in, sign-up, and product routes.
 - `i18n`: `vue-i18n` setup, `SITE_LANG_MAP`, locale message modules, and language-switch URL helpers.
@@ -42,8 +46,8 @@
 Route rendering is centralized in `nuxt.config.ts` through `config/routes.ts`:
 
 - Default public routes: SSR.
-- `prerenderRoutes`: build-time static HTML for selected public pages such as `/`, `/pricing`, `/help`, and their `/en` variants.
-- `swrRouteRules`: SSR with 1-hour SWR cache for `/news/**` and `/en/news/**`.
+- `prerenderRoutes`: build-time static HTML for selected public pages such as `/`, `/about`, `/help`, and their `/en` variants.
+- `swrRouteRules`: SSR with 1-hour SWR cache for `/news/**`, `/en/news/**`, `/pricing`, and `/en/pricing`.
 - `csrRouteRules`: client-only rendering for product routes (`/workspace/**`, `/docs/**`, `/account`).
 
 This keeps SEO pages cache-friendly while product pages stay session-aware and interaction-heavy.
@@ -60,8 +64,8 @@ Business requests use the app-level `{ code, message, data }` contract through s
 
 - Public SEO/content pages use `~/api/public` and `createPublicApiClient()` when a backend request is needed. These requests strip `authorization` and `cookie` headers so they stay safe for SSR, prerender, SWR, and CDN caching.
 - Auth requests use `~/api/auth`. The adapter targets the current application API contract directly: `{ code, message, data }`; pages and stores read business payloads from `data`.
-- Workspace project requests use `~/features/workspace/api.ts` through `fetchWorkspaceProjects()`, `createWorkspaceProject()`, `fetchWorkspaceProject()`, and `deleteWorkspaceProject()` with `createProductApiClient()`. `getWorkspaceDocPath(projectId)` builds `/docs/:id` editor links from a project id.
+- Workspace project requests use `~/features/workspace/api.ts` through `fetchWorkspaceProjects()`, `createWorkspaceProject()`, `fetchWorkspaceProject()`, `updateWorkspaceProject()`, and `deleteWorkspaceProject()` with `createProductApiClient()`. `getWorkspaceDocPath(projectId)` and `getWorkspaceNewDocPath()` build editor links.
 - Editor document requests use `~/features/editor/api.ts` through `fetchEditorDocument()` and `saveEditorDocument()` with `createProductApiClient()`.
-- Logged-in product pages mount feature modules such as `app/features/workspace` and `app/features/editor`. `/workspace` and `/workspace/templates` and `/account` use the `product` layout with sidebar navigation and `AppShellHeader`. `/docs/[id].vue` uses the `editor` layout, loads the project by route `:id`, requires a linked `documentId`, then mounts `EditorWorkspace` with `@yanivjs/yaniv-editor`, 2-second debounced autosave, and route-leave flush. These routes are CSR by default; requests may attach Bearer tokens and retry once after a single-flight refresh.
+- Logged-in product pages mount feature modules under `app/features/*`. `/workspace` and `/workspace/templates` use the `product` layout with `ProductShell` sidebar navigation and `AppShellHeader`. `/docs/[id].vue` uses the `editor` layout, loads the project by route `:id` (or creates on first save for `/docs/new`), requires a linked `documentId` for existing projects, then mounts `EditorWorkspace` with `@yanivjs/yaniv-editor`, 2-second debounced autosave, title editing via `updateWorkspaceProject()`, and route-leave flush. `/account` uses the `account` layout with `AccountShell`. These routes are CSR by default; requests may attach Bearer tokens and retry once after a single-flight refresh.
 
-Page components should call domain adapters such as `getNewsArticles()`, `fetchWorkspaceProjects()`, `createWorkspaceProject()`, `fetchWorkspaceProject()`, `deleteWorkspaceProject()`, `fetchEditorDocument()`, or `saveEditorDocument()`, not raw backend URLs. This keeps backend contract changes localized to `~/api/*` and `~/features/*/api.ts`.
+Page components should call domain adapters such as `fetchNewsArticles()`, `fetchLocalizedNewsArticle()`, `fetchPricingPage()`, `fetchWorkspaceProjects()`, `createWorkspaceProject()`, `fetchWorkspaceProject()`, `updateWorkspaceProject()`, `deleteWorkspaceProject()`, `fetchEditorDocument()`, or `saveEditorDocument()`, not raw backend URLs. This keeps backend contract changes localized to `~/api/*` and `~/features/*/api.ts`.

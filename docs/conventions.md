@@ -2,7 +2,7 @@
 
 ## Configuration Boundaries
 
-- `runtimeConfig`: deployment-time values such as API hosts, environment, and public site URL.
+- `runtimeConfig`: deployment-time values such as API hosts, environment (`appEnv`), and public site URL.
 - `app/app.config.ts`: UI-level app defaults such as brand text, layout switches, and default theme mode.
 - `config/site.ts`: site metadata, supported locales, navigation, and public page base paths.
 - `config/auth.ts`: auth endpoint paths, cookie keys, token max ages, and auth route meta types.
@@ -11,6 +11,8 @@
 - `app/assets/styles/tokens.scss`: CSS variables consumed by Vue components and pages.
 
 `runtimeConfig.public.siteUrl` should be set in production. Local development falls back to `http://localhost:3000`; production deployments should fail review if this remains unchanged.
+
+`runtimeConfig.public.appEnv` controls auth cookie `secure` behavior. Local `.env.*` files leave it at the default `development`; Docker Compose sets `NUXT_APP_ENV=production` for the production stack and `NUXT_APP_ENV=dev` for the development stack. Real HTTPS login flows require `appEnv === 'production'`.
 
 ## Naming
 
@@ -42,7 +44,7 @@ Prefer semantic CSS variables from `tokens.scss`. Do not hardcode brand colors, 
 
 HTTP requests follow a flat, mainstream layout:
 
-- `app/lib/http` owns the shared `$fetch` wrapper, response types, header helpers, and error normalization.
+- `app/lib/http` owns the shared `$fetch` wrapper, response types, header helpers, envelope validation (`assertApiSuccess`), and error normalization.
 - `app/api/clients.ts` exposes `createPublicApiClient()`, `createAuthApiClient()`, and the authenticated product default via `createProductApiClient()` in `app/api/auth.ts`.
 - `app/api/public.ts` and `app/api/auth.ts` hold cross-feature business adapters. Pages should import from `~/api/public` or `~/api/auth`, not raw backend URLs.
 - Feature-only adapters live in `app/features/<feature>/api.ts` (for example workspace projects and editor documents).
@@ -51,7 +53,7 @@ HTTP requests follow a flat, mainstream layout:
 
 `createAuthApiClient()` is the default for login, register, refresh, logout, `/me`, and profile requests.
 
-`createProductApiClient()` is the default for authenticated workspace and editor workflows. Workspace adapters such as `fetchWorkspaceProjects()` and editor adapters such as `fetchEditorDocument()` should call it instead of pages calling raw URLs. Use `getWorkspaceDocPath(projectId)` for editor links.
+`createProductApiClient()` is the default for authenticated workspace and editor workflows. Workspace adapters such as `fetchWorkspaceProjects()`, `updateWorkspaceProject()`, and editor adapters such as `fetchEditorDocument()` should call it instead of pages calling raw URLs. Use `getWorkspaceDocPath(projectId)` or `getWorkspaceNewDocPath()` for editor links.
 
 Scenario clients decide their own headers. Public clients only keep request metadata such as `accept-language` and `x-request-id`; authenticated clients add Bearer tokens explicitly. Logs redact `authorization` and `cookie`.
 
@@ -61,7 +63,7 @@ Public adapters must not read token cookies or call refresh endpoints. If a publ
 
 Product routes (`/workspace/**`, `/docs/**`, `/account`) are client-rendered by default through `csrRouteRules` in `config/routes.ts`. Do not add localized product route rules such as `/en/workspace`; language choice inside the product app is UI state, not part of the authenticated product URL. If someone opens `/en/workspace`, locale and server middleware redirect to `/workspace` with 301.
 
-Product sidebar navigation belongs in `app/features/product-shell/config.ts` through `productNavItems` and `productFooterNavItems`. Account access belongs in `UserAccountMenu`, not the sidebar. Page-level auth and noindex are declared with `definePageMeta` and `usePageSeo`.
+Product sidebar navigation belongs in `app/features/product-shell/config.ts` through `productNavItems` and `productFooterNavItems`. Account settings navigation belongs in `app/features/account-shell/config.ts` through `accountNavItems`. Account access from the product shell lives in `UserAccountMenu`, not the product sidebar. Page-level auth and noindex are declared with `definePageMeta` and `usePageSeo`.
 
 Auth redirect query values must stay on same-origin relative paths. Use `resolveSafeRedirectPath()` from `app/utils/safe-redirect.ts` instead of passing raw `route.query.redirect` to `router.push()`.
 

@@ -26,7 +26,20 @@ pnpm build:prod # .env.prod
 
 Committed env files should only contain non-secret defaults. Override them with deployment-provided `NUXT_*` variables for real environments.
 
-Production auth cookies are marked `secure`, so real login flows must be served over HTTPS.
+### Runtime variables
+
+| Variable                               | Purpose                                                              | Local default                                                    |
+| -------------------------------------- | -------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| `NUXT_PUBLIC_SITE_URL`                 | Canonical site origin for SEO, sitemap, and robots                   | `http://localhost:3000`                                          |
+| `NUXT_PUBLIC_API_BASE`                 | Backend API origin including `/api` prefix                           | `http://localhost:2026/api`                                      |
+| `NUXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | Google Search Console verification token                             | empty                                                            |
+| `NUXT_PUBLIC_BAIDU_SITE_VERIFICATION`  | Baidu verification token                                             | empty                                                            |
+| `NUXT_PUBLIC_ANALYTICS_ENABLED`        | Must be exactly `true` to enable analytics plugin                    | `false`                                                          |
+| `NUXT_PUBLIC_ANALYTICS_SCRIPT_SRC`     | Single deferred third-party script URL                               | empty                                                            |
+| `NUXT_PUBLIC_ANALYTICS_DEFER_MS`       | Client defer before loading analytics script                         | `3000`                                                           |
+| `NUXT_APP_ENV`                         | Controls auth cookie `secure` flag via `runtimeConfig.public.appEnv` | `development` locally; Docker Compose sets `production` or `dev` |
+
+Production auth cookies are marked `secure` when `NUXT_APP_ENV=production`, so real login flows must be served over HTTPS.
 
 ## Local Full-Stack Verification
 
@@ -35,20 +48,17 @@ When pairing this frontend with `nuxt-modern-starter-api` in Docker:
 1. Start the API stack from the backend repo, for example `pnpm docker:dev`.
 2. Keep frontend `.env.dev` aligned with the API gateway: `NUXT_PUBLIC_API_BASE=http://localhost:2026/api`.
 3. Keep backend `.env.development` `CORS_ORIGINS` aligned with the Nuxt dev origin: `http://localhost:3000`.
-4. Run `pnpm dev` in this repo and verify sign-in, `/workspace` list/create/delete, `/docs/:id` editor load/autosave, `/workspace/templates` placeholder, and `/account` session/profile display via the user menu. Route param `:id` is the project id; the page resolves `documentId` before calling editor APIs.
+4. Run `pnpm dev` in this repo and verify sign-in, `/workspace` list/create/delete, `/docs/new` and `/docs/:id` editor load/autosave/title edit, `/workspace/templates` placeholder, and `/account` profile display and logout via the user menu. Route param `:id` is the project id; the page resolves `documentId` before calling editor APIs.
 
 ## Local Verification
 
+Run the full release gate:
+
 ```bash
-pnpm install
-pnpm dev
-pnpm lint
-pnpm format:check
-pnpm stylelint
-pnpm typecheck
-pnpm test
-pnpm build
+pnpm quality
 ```
+
+`pnpm quality` runs lint, format:check, stylelint, typecheck, test, and build. Husky pre-commit keeps the faster subset for everyday commits.
 
 ## Docker Verification
 
@@ -64,8 +74,8 @@ The image runs `.output/server/index.mjs` on port `3000`.
 For the full gateway sample, use Compose:
 
 ```bash
-pnpm docker:up      # production stack, reads .env.prod
-pnpm docker:up:dev  # development stack with bind mount, reads .env.dev
+pnpm docker:up      # production stack, reads .env.prod, sets NUXT_APP_ENV=production
+pnpm docker:up:dev  # development stack with bind mount, reads .env.dev, sets NUXT_APP_ENV=dev
 pnpm docker:down
 pnpm docker:down:dev
 ```

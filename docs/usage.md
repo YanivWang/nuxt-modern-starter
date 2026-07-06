@@ -23,13 +23,13 @@ pnpm docker:up
 
 Create public SEO pages directly under `app/pages/[[language]]`. Use `localePath()` for internal links and call `usePageSeo()` with the unprefixed canonical path.
 
-When a page should be public, add its base path to `PUBLIC_PAGE_PATHS` in `config/site.ts`. If it needs prerendering or SWR behavior, update `config/routes.ts` so routeRules and hreflang remain synchronized.
+When a page should be public, add its base path to `PUBLIC_PAGE_PATHS` in `config/site.ts`. Sign-in and sign-up stay out of this list because they are noindex auth pages. If it needs prerendering or SWR behavior, update `config/routes.ts` so routeRules and hreflang remain synchronized.
 
-Create logged-in product pages under `app/pages/workspace`, `app/pages/docs`, or top-level `app/pages/account.vue`. Keep links, canonical paths, and route config under language-neutral product URLs (`/workspace`, `/docs/:id`, `/account`). Product pages should set the product or editor layout, opt in to auth middleware when required, set `noindex`, and mount a feature component from `app/features/*`.
+Create logged-in product pages under `app/pages/workspace`, `app/pages/docs`, or top-level `app/pages/account.vue`. Keep links, canonical paths, and route config under language-neutral product URLs (`/workspace`, `/docs/:id`, `/account`). Product pages should set the `product`, `editor`, or `account` layout, opt in to auth middleware when required, set `noindex`, and mount a feature component from `app/features/*`.
 
 Do not add product pages beside public marketing pages under `app/pages/[[language]]`. Product routes are client-rendered by default through `csrRouteRules` in `config/routes.ts`.
 
-Register sidebar entries in `app/features/product-shell/config.ts` through `productNavItems` and `productFooterNavItems` before adding links. Do not create localized product links such as `/en/workspace`; locale middleware and server middleware redirect those back to canonical product paths. Account access belongs in `UserAccountMenu`, not the sidebar.
+Register sidebar entries in `app/features/product-shell/config.ts` through `productNavItems` and `productFooterNavItems` before adding workspace links. Account settings use `app/features/account-shell/config.ts` through `accountNavItems` when extending the account layout. Do not create localized product links such as `/en/workspace`; locale middleware and server middleware redirect those back to canonical product paths. Account access belongs in `UserAccountMenu`, not the product sidebar.
 
 ## Add A Feature Module
 
@@ -55,9 +55,9 @@ Keep top-level `app/components`, `app/composables`, and `app/stores` for shared 
 
 Choose the request entrypoint by page and data ownership:
 
-- Public SEO, marketing, help, pricing, news, and docs data belongs in `~/api/public`. Use local typed content there, or call `createPublicApiClient()` inside the adapter for token-free backend requests.
-- Sign-in, sign-up, refresh, logout, `/me`, and profile requests belong in `~/api/auth`.
-- Workspace project requests belong in `~/features/workspace/api.ts` via `fetchWorkspaceProjects()`, `createWorkspaceProject()`, `fetchWorkspaceProject()`, and `deleteWorkspaceProject()` (paths `/projects`, `/projects/:projectId`). Use `getWorkspaceDocPath(projectId)` when linking to the editor route.
+- Public SEO, marketing, help, pricing, news, and FAQ data belongs in `~/api/public`. Use local typed content there (`getFaqItems()` reads `config/content/faq.ts`), or call `createPublicApiClient()` inside the adapter for token-free backend requests such as `fetchNewsArticles()`, `fetchLocalizedNewsArticle()`, and `fetchPricingPage()`.
+- Sign-in, sign-up, refresh, logout, `/me`, and profile requests belong in `~/api/auth` (`fetchProfileApi()`, `updateProfileApi()`).
+- Workspace project requests belong in `~/features/workspace/api.ts` via `fetchWorkspaceProjects()`, `createWorkspaceProject()`, `fetchWorkspaceProject()`, `updateWorkspaceProject()`, and `deleteWorkspaceProject()` (paths `/projects`, `/projects/:projectId`). Use `getWorkspaceDocPath(projectId)` or `getWorkspaceNewDocPath()` when linking to the editor route.
 - Editor document requests belong in `~/features/editor/api.ts` via `fetchEditorDocument()` and `saveEditorDocument()` (paths `/documents/:documentId`). These call `createProductApiClient()` from `~/api/auth`.
 - Do not add a generic catch-all request composable. Add a named public, auth, product, editor, or feature client when a new request scenario appears.
 
@@ -69,7 +69,7 @@ Local full-stack development with `nuxt-modern-starter-api` Docker defaults to:
 - API gateway: `http://localhost:2026/api`
 - Backend `CORS_ORIGINS` must include the Nuxt origin, for example `http://localhost:3000`.
 
-The app-level API contract uses `{ code, message, data }` for every business response. `message` is the only human-readable status field, and business payloads must live under `data`.
+The app-level API contract uses `{ code, message, data }` for every business response. `message` is the only human-readable status field, and business payloads must live under `data`. The shared HTTP client validates `code === 200` through `assertApiSuccess()` and throws a normalized failure otherwise.
 
 Sensitive `authorization` and `cookie` values are redacted from error logs.
 
@@ -253,6 +253,23 @@ Edit `config/theme.ts` and `app/assets/styles/tokens.scss` together. CSS variabl
 
 To disable dark mode, keep only light tokens, set `DEFAULT_THEME_MODE` to `light`, and remove the theme toggle in `AppHeader.vue`.
 
+## Environment Variables
+
+Committed dotenv layers (`.env.dev`, `.env.test`, `.env.prod`) provide non-secret defaults. Runtime platforms should override them with `NUXT_*` values.
+
+| Variable                               | Purpose                                                                       |
+| -------------------------------------- | ----------------------------------------------------------------------------- |
+| `NUXT_PUBLIC_SITE_URL`                 | Canonical site origin for SEO, sitemap, and robots                            |
+| `NUXT_PUBLIC_API_BASE`                 | Backend API origin including `/api` prefix                                    |
+| `NUXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | Google Search Console verification token                                      |
+| `NUXT_PUBLIC_BAIDU_SITE_VERIFICATION`  | Baidu verification token                                                      |
+| `NUXT_PUBLIC_ANALYTICS_ENABLED`        | Must be exactly `true` to enable analytics                                    |
+| `NUXT_PUBLIC_ANALYTICS_SCRIPT_SRC`     | Single deferred third-party script URL                                        |
+| `NUXT_PUBLIC_ANALYTICS_DEFER_MS`       | Client defer before loading analytics script                                  |
+| `NUXT_APP_ENV`                         | Controls auth cookie `secure` flag; Docker Compose sets `production` or `dev` |
+
+See `docs/deployment.md` for deployment-specific notes and full-stack pairing defaults.
+
 ## Add Product Workspace And Editor
 
 The starter ships a real product flow when paired with `nuxt-modern-starter-api`:
@@ -262,11 +279,12 @@ The starter ships a real product flow when paired with `nuxt-modern-starter-api`
 | `/workspace`           | `product` | Project list, loading/empty states, blank-project creation, delete, and navigation into the editor    |
 | `/workspace/templates` | `product` | Theme templates placeholder (no API)                                                                  |
 | `/docs/:id`            | `editor`  | Load project by `:id` (project id), resolve `documentId`, then load/save editor content with autosave |
-| `/account`             | `product` | Session details, profile payload, and logout (via user menu)                                          |
+| `/docs/new`            | `editor`  | Draft editor route; creates project and document on first save, then replaces route with `/docs/:id`  |
+| `/account`             | `account` | Profile payload, avatar, extended profile fields, and logout (via user menu)                          |
 
 API boundaries:
 
-- Workspace adapters in `app/features/workspace/api.ts`: `fetchWorkspaceProjects()`, `createWorkspaceProject()`, `fetchWorkspaceProject()`, and `deleteWorkspaceProject()` via `createProductApiClient()`. `getWorkspaceDocPath(projectId)` returns `/docs/:id`.
+- Workspace adapters in `app/features/workspace/api.ts`: `fetchWorkspaceProjects()`, `createWorkspaceProject()`, `fetchWorkspaceProject()`, `updateWorkspaceProject()`, and `deleteWorkspaceProject()` via `createProductApiClient()`. `getWorkspaceDocPath(projectId)` returns `/docs/:id`; `getWorkspaceNewDocPath()` returns `/docs/new`.
 - Editor adapters in `app/features/editor/api.ts`: `fetchEditorDocument()` and `saveEditorDocument()` via `createProductApiClient()`.
 - Relative request paths are `/projects` and `/documents/:documentId`; `runtimeConfig.public.apiBase` already includes the `/api` prefix.
 - Both use the backend envelope `{ code, message, data }` and retry once after a single-flight refresh on 401.
@@ -275,14 +293,19 @@ Current UI scope:
 
 - The header create button navigates to `/docs/new`. The editor creates the project on first save through `createWorkspaceProject()` with the default title from i18n (`workspace.defaultTitle`).
 - After a blank project is created, the editor replaces the route with `/docs/:id` for the new project id.
-- Project cards link to the editor through `getWorkspaceDocPath()`. `slideCount` currently comes from project metadata and is not recalculated from document content.
+- Project cards link to the editor through `getWorkspaceDocPath()`. Cards use decorative accent thumbnails; search and filter controls are UI-only placeholders without backend APIs.
 
 Editor behavior:
 
-- `/docs/:id` uses the `editor` layout and mounts `EditorWorkspace` with `@yanivjs/yaniv-editor`.
-- Route param `:id` is the **project id**. The page calls `fetchWorkspaceProject(id)`, requires a non-null `documentId`, then loads/saves the linked document through editor APIs.
-- Content autosaves after a 2-second debounce and flushes on route leave.
+- `/docs/:id` and `/docs/new` use the `editor` layout and mount `EditorWorkspace` with `@yanivjs/yaniv-editor`.
+- Route param `:id` is the **project id** (or `new` for draft creation). Existing projects call `fetchWorkspaceProject(id)`, require a non-null `documentId`, then load/save the linked document through editor APIs.
+- Content autosaves after a 2-second debounce and flushes on route leave. Title edits call `updateWorkspaceProject()`.
 - The editor header includes language switching and `UserAccountMenu`; it is not a sidebar nav item.
+
+Account behavior:
+
+- `/account` uses the `account` layout with `AccountShell` and mounts `AccountPage`.
+- Profile data loads through `fetchProfileApi()`. API failures show an alert with retry. Logout clears attribution params and redirects to the localized home page.
 
 Local full-stack defaults:
 
@@ -305,5 +328,7 @@ Auth is implemented as an opt-in Bearer Token module for the current application
 - `app/composables/useAuth.ts` exposes the store plus `ensureSession()`, `can()`, and `hasRole()` for pages and middleware.
 - `app/plugins/auth.ts` hydrates `/api/me` on startup when token cookies are present.
 - Protected routes opt in with `definePageMeta({ middleware: 'auth' })`. Optional `route.meta.auth.roles` and `route.meta.auth.permissions` are already checked by the middleware.
+- Login redirect targets must stay on same-origin relative paths. Use `resolveSafeRedirectPath()` from `app/utils/safe-redirect.ts` on the sign-in page instead of passing raw `route.query.redirect` to `router.push()`.
 - The backend currently has no RBAC fields in JWT or `/api/me`. Frontend roles and permissions default to empty arrays and should be populated in `normalizeAuthUser()` once the backend contract adds them.
 - Development and production both use `NUXT_PUBLIC_API_BASE` to call the backend directly. Configure CORS on the backend or gateway when the API origin differs from the frontend origin.
+- Auth cookies use `secure: true` when `runtimeConfig.public.appEnv === 'production'`. Docker Compose sets `NUXT_APP_ENV=production` for the production stack.

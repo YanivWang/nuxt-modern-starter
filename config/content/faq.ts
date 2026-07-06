@@ -28,9 +28,9 @@ export const faqItems: FaqItem[] = [
     },
     answer: {
       'zh-CN':
-        'Nuxt Modern Starter 面向公开站点场景：营销官网、SEO 页面、多语言内容站，以及轻量 SaaS 产品前台。它预置首页、价格、帮助、新闻、登录注册，以及 `/workspace`、`/docs/:id`、`/account` 等产品区联调路径，并附带 SEO、i18n、主题切换和部署样例。',
+        'Nuxt Modern Starter 面向公开站点场景：营销官网、SEO 页面、多语言内容站，以及轻量 SaaS 产品前台。它预置首页、价格、关于、帮助、新闻、登录注册，以及 `/workspace`、`/docs/:id`、`/account` 等产品区联调路径，并附带 SEO、i18n、主题切换和部署样例。',
       'en-US':
-        'Nuxt Modern Starter targets public websites: marketing sites, SEO surfaces, multilingual content hubs, and lightweight SaaS frontends. It ships home, pricing, help, news, auth pages, and product routes such as `/workspace`, `/docs/:id`, and `/account`, plus SEO, i18n, theme switching, and deployment samples.'
+        'Nuxt Modern Starter targets public websites: marketing sites, SEO surfaces, multilingual content hubs, and lightweight SaaS frontends. It ships home, pricing, about, help, news, auth pages, and product routes such as `/workspace`, `/docs/:id`, and `/account`, plus SEO, i18n, theme switching, and deployment samples.'
     }
   },
   {
@@ -54,9 +54,9 @@ export const faqItems: FaqItem[] = [
     },
     answer: {
       'zh-CN':
-        '项目提供可选 Bearer Token 鉴权示例，包含登录、注册、退出与 `/account`（用户菜单入口）。受保护产品路由通过命名 auth 中间件控制，支持角色与权限校验。与 nuxt-modern-starter-api 联调时，工作台走 app/features/workspace/api.ts，编辑器走 app/features/editor/api.ts。',
+        '项目提供可选 Bearer Token 鉴权示例，包含登录、注册、退出与 `/account`（用户菜单入口，独立 account layout）。受保护产品路由通过命名 auth 中间件控制，支持角色与权限校验；登录 redirect 使用 resolveSafeRedirectPath() 防止开放重定向。与 nuxt-modern-starter-api 联调时，工作台走 app/features/workspace/api.ts，编辑器走 app/features/editor/api.ts。',
       'en-US':
-        'The starter includes optional Bearer Token auth with sign-in, sign-up, logout, and `/account` (via the user menu). Protected product routes use the named auth middleware with role and permission checks. When paired with nuxt-modern-starter-api, workspace flows use app/features/workspace/api.ts and editor flows use app/features/editor/api.ts.'
+        'The starter includes optional Bearer Token auth with sign-in, sign-up, logout, and `/account` (via the user menu, using a dedicated account layout). Protected product routes use the named auth middleware with role and permission checks; login redirect uses resolveSafeRedirectPath() to block open redirects. When paired with nuxt-modern-starter-api, workspace flows use app/features/workspace/api.ts and editor flows use app/features/editor/api.ts.'
     }
   },
   {
@@ -106,9 +106,9 @@ export const faqItems: FaqItem[] = [
     },
     answer: {
       'zh-CN':
-        '公开 SEO 页面通过 / 与 /en 前缀区分语言，但登录后的产品区统一使用语言中性 URL，例如 /workspace 与 /docs/:id。UI 语言仍由 language store 控制；若访问 /en/workspace 等路径，locale 与 server middleware 会 301 回到无前缀 canonical。产品路由默认 CSR，sidebar 导航由 product-shell/config.ts 的 productNavItems 管理，账户入口在用户菜单。',
+        '公开 SEO 页面通过 / 与 /en 前缀区分语言，但登录后的产品区统一使用语言中性 URL，例如 /workspace 与 /docs/:id。UI 语言仍由 language store 控制；若访问 /en/workspace 等路径，locale 与 server middleware 会 301 回到无前缀 canonical。产品路由默认 CSR；工作台与模板页使用 product layout 和 product-shell 侧边栏，/account 使用 account layout，账户入口在用户菜单。',
       'en-US':
-        'Public SEO pages use / and /en prefixes, but logged-in product routes stay language-neutral, for example /workspace and /docs/:id. UI language still comes from the language store. If someone opens /en/workspace, locale and server middleware redirect to the canonical path with 301. Product routes are CSR by default; sidebar nav lives in productNavItems, and account access lives in the user menu.'
+        'Public SEO pages use / and /en prefixes, but logged-in product routes stay language-neutral, for example /workspace and /docs/:id. UI language still comes from the language store. If someone opens /en/workspace, locale and server middleware redirect to the canonical path with 301. Product routes are CSR by default; workspace and templates use the product layout and product-shell sidebar, /account uses the account layout, and account access lives in the user menu.'
     }
   },
   {

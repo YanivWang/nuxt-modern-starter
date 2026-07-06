@@ -44,3 +44,7 @@ test-results
 
 # TypeScript / build cache
 *.tsbuildinfo
+
+# VitePress
+docs-site/.vitepress/cache
+docs-site/.vitepress/dist
