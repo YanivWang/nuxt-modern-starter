@@ -40,13 +40,18 @@ Prefer semantic CSS variables from `tokens.scss`. Do not hardcode brand colors, 
 
 ## Requests
 
-Requests are split by responsibility:
+HTTP requests follow a flat, mainstream layout:
 
-- `app/api-core` owns common request types, header helpers, error normalization, log redaction, and typed `$fetch` client creation.
-- `createPublicApiClient()` is the default for public SEO/content data. It strips `authorization` and `cookie` headers, does not refresh sessions, and is safe for SSR/prerender/SWR paths.
-- `createAuthApiClient()` is the default for login, register, refresh, logout, `/me`, and profile requests.
-- `createProductApiClient()` is the default factory for authenticated workspace/project and editor document workflows. Feature adapters such as `fetchWorkspaceProjects()`, `createWorkspaceProject()`, `fetchWorkspaceProject()`, and `deleteWorkspaceProject()` should call it instead of pages calling raw URLs. Editor document adapters in `app/apis/editor/document.ts` also call `createProductApiClient()` directly. Use `getWorkspaceDocPath(projectId)` for editor links.
-- `app/apis/public`, `app/apis/auth`, `app/apis/product`, and `app/apis/editor` expose business functions or client factories. Pages should not scatter raw backend URLs.
+- `app/lib/http` owns the shared `$fetch` wrapper, response types, header helpers, and error normalization.
+- `app/api/clients.ts` exposes `createPublicApiClient()`, `createAuthApiClient()`, and the authenticated product default via `createProductApiClient()` in `app/api/auth.ts`.
+- `app/api/public.ts` and `app/api/auth.ts` hold cross-feature business adapters. Pages should import from `~/api/public` or `~/api/auth`, not raw backend URLs.
+- Feature-only adapters live in `app/features/<feature>/api.ts` (for example workspace projects and editor documents).
+
+`createPublicApiClient()` is the default for public SEO/content data. It strips `authorization` and `cookie` headers, does not refresh sessions, and is safe for SSR/prerender/SWR paths.
+
+`createAuthApiClient()` is the default for login, register, refresh, logout, `/me`, and profile requests.
+
+`createProductApiClient()` is the default for authenticated workspace and editor workflows. Workspace adapters such as `fetchWorkspaceProjects()` and editor adapters such as `fetchEditorDocument()` should call it instead of pages calling raw URLs. Use `getWorkspaceDocPath(projectId)` for editor links.
 
 Scenario clients decide their own headers. Public clients only keep request metadata such as `accept-language` and `x-request-id`; authenticated clients add Bearer tokens explicitly. Logs redact `authorization` and `cookie`.
 

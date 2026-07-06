@@ -26,7 +26,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { CheckOutlined } from '~/utils/antdIcon'
-import { getFaqItems } from '../../apis/public/content'
+import { getFaqItems } from '~/api/public'
 
 const languageStore = useLanguageStore()
 const { t } = useI18n()

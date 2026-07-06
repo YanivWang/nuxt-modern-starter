@@ -1,15 +1,16 @@
-import { AUTH_API_ENDPOINTS, type AuthUser, type Permission, type Role } from '../../../config/auth'
-import type { ApiResponse } from '../../api-core/api-types'
-import { createAuthApiClient } from './client'
+import { AUTH_API_ENDPOINTS, type AuthUser, type Permission, type Role } from '../../config/auth'
+import type { ApiResponse } from '../lib/http/types'
+import { createAuthApiClient, type AuthApiClientOptions } from './clients'
 import {
   clearAuthSession,
+  getAuthToken,
   getRefreshTokenCookie,
   setAuthTokenCookies,
   tokenFromResponse
-} from '../../utils/auth-session'
-import { mergeAttributionIntoBody } from '../../utils/attribution-params'
+} from '../utils/auth-session'
+import { mergeAttributionIntoBody } from '../utils/attribution-params'
 
-export * from './client'
+export { createAuthApiClient, type AuthApiClientOptions } from './clients'
 
 export type AuthEnvelope = ApiResponse<null>
 
@@ -53,6 +54,8 @@ export type ProfileResponse = ApiResponse<ProfileData>
 
 export type UpdateProfilePayload = Record<string, string | number | boolean | null | undefined>
 
+export type ProductApiClientOptions = Omit<AuthApiClientOptions, 'refreshAccessToken'>
+
 let refreshPromise: Promise<string | null> | null = null
 
 const refreshAccessToken = async () => {
@@ -87,6 +90,13 @@ export const refreshAccessTokenOnce = () => {
 
   return refreshPromise
 }
+
+export const createProductApiClient = (options: ProductApiClientOptions = {}) =>
+  createAuthApiClient({
+    ...options,
+    accessToken: options.accessToken ?? getAuthToken(),
+    refreshAccessToken: refreshAccessTokenOnce
+  })
 
 const sendAuthApiRequest = async <T>(
   path: string,

@@ -27,7 +27,7 @@
 -->
 <script setup lang="ts">
 import { CheckOutlined } from '~/utils/antdIcon'
-import { fetchPricingPage } from '../../apis/public/content'
+import { fetchPricingPage } from '~/api/public'
 
 const languageStore = useLanguageStore()
 const { localePath } = useLocalePath()

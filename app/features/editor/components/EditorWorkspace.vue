@@ -3,13 +3,13 @@ import { message } from 'ant-design-vue'
 import { useI18n } from 'vue-i18n'
 import { YanivEditor } from '@yanivjs/yaniv-editor'
 import '@yanivjs/yaniv-editor/style.css'
-import { fetchEditorDocument, saveEditorDocument } from '../../../apis/editor'
+import { fetchEditorDocument, saveEditorDocument } from '../api'
 import {
   createWorkspaceProject,
   getWorkspaceDocPath,
   updateWorkspaceProject,
   type WorkspaceProject
-} from '../../workspace/api'
+} from '~/features/workspace'
 import EditorWorkspaceHeader from './EditorWorkspaceHeader.vue'
 
 type EditorProjectContext = Pick<WorkspaceProject, 'id' | 'title'>

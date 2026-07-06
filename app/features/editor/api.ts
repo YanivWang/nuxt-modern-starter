@@ -1,13 +1,8 @@
-import type { ApiResponse } from '../../api-core/api-types'
-import { createProductApiClient } from '../product/client'
+import type { ApiResponse } from '~/lib/http/types'
+import { createProductApiClient } from '~/api/auth'
+import type { WorkspaceDocument } from '~/features/workspace'
 
-export type EditorDocument = {
-  id: string
-  projectId: string
-  title: string
-  content: string
-  updatedAt?: string
-}
+export type EditorDocument = WorkspaceDocument
 
 export type SaveEditorDocumentPayload = {
   title?: string

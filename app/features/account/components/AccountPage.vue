@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { message } from 'ant-design-vue'
 import { useI18n } from 'vue-i18n'
-import { fetchProfileApi } from '~/apis/auth'
+import { fetchProfileApi } from '~/api/auth'
 
 const router = useRouter()
 const { t } = useI18n()

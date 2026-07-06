@@ -24,7 +24,7 @@
 -->
 <script setup lang="ts">
 import { ArrowRightOutlined } from '~/utils/antdIcon'
-import { fetchLocalizedNewsArticle } from '../../../apis/public/content'
+import { fetchLocalizedNewsArticle } from '~/api/public'
 import { formatPublishedDate } from '../../../utils/formatDate'
 
 const route = useRoute()

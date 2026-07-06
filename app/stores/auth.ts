@@ -8,7 +8,7 @@ import {
   type LoginPayload,
   type RegisterPayload,
   type TokenResponse
-} from '../apis/auth'
+} from '~/api/auth'
 import {
   getAccessTokenCookie,
   getRefreshTokenCookie,

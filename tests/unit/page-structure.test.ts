@@ -23,7 +23,7 @@ describe('page directory boundaries', () => {
     for (const file of productPageFiles) {
       const source = readFileSync(resolve(projectRoot, file), 'utf8')
 
-      expect(source, file).not.toMatch(/from ['"](?:\.\.\/)+(?:features|apis)\//)
+      expect(source, file).not.toMatch(/from ['"](?:\.\.\/)+(?:features|api)\//)
       expect(source, file).not.toMatch(/from ['"](?:\.\.\/)+config\//)
     }
   })

@@ -1,5 +1,5 @@
-import type { ApiResponse } from '../../api-core/api-types'
-import { createProductApiClient } from '../../apis/product/client'
+import type { ApiResponse } from '~/lib/http/types'
+import { createProductApiClient } from '~/api/auth'
 
 export type WorkspaceProjectAccent = 'blue' | 'green' | 'violet' | 'amber' | 'cyan' | 'rose'
 

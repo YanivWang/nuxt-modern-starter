@@ -55,10 +55,10 @@ Keep top-level `app/components`, `app/composables`, and `app/stores` for shared 
 
 Choose the request entrypoint by page and data ownership:
 
-- Public SEO, marketing, help, pricing, news, and docs data belongs in `app/apis/public/*`. Use local typed content there, or call `createPublicApiClient()` inside a domain adapter for token-free backend requests.
-- Sign-in, sign-up, refresh, logout, `/me`, and profile requests belong in `app/apis/auth`.
-- Workspace project requests belong in `app/features/workspace/api.ts` via `fetchWorkspaceProjects()`, `createWorkspaceProject()`, `fetchWorkspaceProject()`, and `deleteWorkspaceProject()` (paths `/projects`, `/projects/:projectId`). Use `getWorkspaceDocPath(projectId)` when linking to the editor route.
-- Editor document requests belong in `app/apis/editor/document.ts` via `fetchEditorDocument()` and `saveEditorDocument()` (paths `/documents/:documentId`). These call `createProductApiClient()` directly.
+- Public SEO, marketing, help, pricing, news, and docs data belongs in `~/api/public`. Use local typed content there, or call `createPublicApiClient()` inside the adapter for token-free backend requests.
+- Sign-in, sign-up, refresh, logout, `/me`, and profile requests belong in `~/api/auth`.
+- Workspace project requests belong in `~/features/workspace/api.ts` via `fetchWorkspaceProjects()`, `createWorkspaceProject()`, `fetchWorkspaceProject()`, and `deleteWorkspaceProject()` (paths `/projects`, `/projects/:projectId`). Use `getWorkspaceDocPath(projectId)` when linking to the editor route.
+- Editor document requests belong in `~/features/editor/api.ts` via `fetchEditorDocument()` and `saveEditorDocument()` (paths `/documents/:documentId`). These call `createProductApiClient()` from `~/api/auth`.
 - Do not add a generic catch-all request composable. Add a named public, auth, product, editor, or feature client when a new request scenario appears.
 
 All request helpers use `runtimeConfig.public.apiBase` in both SSR and browser code, so `NUXT_PUBLIC_API_BASE` should point directly to the real backend API origin, for example `https://api.example.com/api`.
@@ -267,7 +267,7 @@ The starter ships a real product flow when paired with `nuxt-modern-starter-api`
 API boundaries:
 
 - Workspace adapters in `app/features/workspace/api.ts`: `fetchWorkspaceProjects()`, `createWorkspaceProject()`, `fetchWorkspaceProject()`, and `deleteWorkspaceProject()` via `createProductApiClient()`. `getWorkspaceDocPath(projectId)` returns `/docs/:id`.
-- Editor adapters in `app/apis/editor/document.ts`: `fetchEditorDocument()` and `saveEditorDocument()` via `createProductApiClient()`.
+- Editor adapters in `app/features/editor/api.ts`: `fetchEditorDocument()` and `saveEditorDocument()` via `createProductApiClient()`.
 - Relative request paths are `/projects` and `/documents/:documentId`; `runtimeConfig.public.apiBase` already includes the `/api` prefix.
 - Both use the backend envelope `{ code, message, data }` and retry once after a single-flight refresh on 401.
 
@@ -296,7 +296,7 @@ For Docker and Nginx deployment validation, see `docs/deployment.md`.
 
 Auth is implemented as an opt-in Bearer Token module for the current application API.
 
-- Backend endpoints use the `/api` prefix and return the standard `{ code, message, data }` envelope. Auth calls use `app/apis/auth/index.ts` through `createAuthApiClient()`, and stores/pages consume token, user, and profile payloads from `data`.
+- Backend endpoints use the `/api` prefix and return the standard `{ code, message, data }` envelope. Auth calls use `~/api/auth` through `createAuthApiClient()`, and stores/pages consume token, user, and profile payloads from `data`.
 - HTTP endpoint paths are centralized in `config/auth.ts`: `/register`, `/login`, `/refresh`, `/logout`, `/me`, and `/me/profile`. Frontend auth pages use `/sign-in` and `/sign-up`; `AUTH_REDIRECTS.login = '/sign-in'`.
 - `POST /api/register` creates an account but does not log the user in. The sign-up page redirects users to sign-in after success.
 - `POST /api/login` and `POST /api/refresh` return `token` or `accessToken`, plus `refreshToken`. Tokens are stored in JS-readable Nuxt cookies for client-side product workflows.

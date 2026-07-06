@@ -23,7 +23,7 @@
 -->
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import ThemeTemplatesPage from '~/features/templates/components/ThemeTemplatesPage.vue'
+import { ThemeTemplatesPage } from '~/features/templates'
 
 definePageMeta({
   layout: 'product',

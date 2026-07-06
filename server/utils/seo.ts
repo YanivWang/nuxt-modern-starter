@@ -1,4 +1,4 @@
-import type { ApiResponse } from '../../app/api-core/api-types'
+import type { ApiResponse } from '../../app/lib/http/types'
 import { DEFAULT_SITE_URL, SUPPORTED_LOCALES } from '../../config/site'
 import { localizedPath, publicLocalizedPaths } from '../../config/routes'
 

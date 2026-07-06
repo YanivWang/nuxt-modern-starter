@@ -1,8 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
-import { createAuthApiClient } from '../../app/apis/auth/client'
-import { createPublicApiClient } from '../../app/apis/public/client'
+import { createAuthApiClient, createPublicApiClient } from '../../app/api/clients'
 
-describe('scenario API clients', () => {
+describe('api clients', () => {
   it('creates an SSR-safe public client without authorization headers', async () => {
     const expectedBaseURL = useRuntimeConfig().public.apiBase
     const fetcher = vi.fn().mockResolvedValue({

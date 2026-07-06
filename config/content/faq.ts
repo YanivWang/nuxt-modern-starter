@@ -54,9 +54,9 @@ export const faqItems: FaqItem[] = [
     },
     answer: {
       'zh-CN':
-        '项目提供可选 Bearer Token 鉴权示例，包含登录、注册、退出与 `/account`（用户菜单入口）。受保护产品路由通过命名 auth 中间件控制，支持角色与权限校验。与 nuxt-modern-starter-api 联调时，工作台走 app/features/workspace/api.ts，编辑器走 app/apis/editor/*。',
+        '项目提供可选 Bearer Token 鉴权示例，包含登录、注册、退出与 `/account`（用户菜单入口）。受保护产品路由通过命名 auth 中间件控制，支持角色与权限校验。与 nuxt-modern-starter-api 联调时，工作台走 app/features/workspace/api.ts，编辑器走 app/features/editor/api.ts。',
       'en-US':
-        'The starter includes optional Bearer Token auth with sign-in, sign-up, logout, and `/account` (via the user menu). Protected product routes use the named auth middleware with role and permission checks. When paired with nuxt-modern-starter-api, workspace flows use app/features/workspace/api.ts and editor flows use app/apis/editor/*.'
+        'The starter includes optional Bearer Token auth with sign-in, sign-up, logout, and `/account` (via the user menu). Protected product routes use the named auth middleware with role and permission checks. When paired with nuxt-modern-starter-api, workspace flows use app/features/workspace/api.ts and editor flows use app/features/editor/api.ts.'
     }
   },
   {
@@ -93,9 +93,9 @@ export const faqItems: FaqItem[] = [
     },
     answer: {
       'zh-CN':
-        'FAQ 仍存放在 config/content/faq.ts，通过 app/apis/public/content.ts 按语言读取；新闻与定价内容从 nuxt-modern-starter-api 的 GET /api/content/news、GET /api/content/pricing 拉取。后续 FAQ 也可同样替换为 CMS 或后台 API，而页面组件无需大改。',
+        'FAQ 仍存放在 config/content/faq.ts，通过 app/api/public.ts 按语言读取；新闻与定价内容从 nuxt-modern-starter-api 的 GET /api/content/news、GET /api/content/pricing 拉取。后续 FAQ 也可同样替换为 CMS 或后台 API，而页面组件无需大改。',
       'en-US':
-        'FAQ still lives in config/content/faq.ts and is loaded by locale through app/apis/public/content.ts. News and pricing content come from nuxt-modern-starter-api via GET /api/content/news and GET /api/content/pricing. You can later swap FAQ to a CMS or backend API without rewriting page components.'
+        'FAQ still lives in config/content/faq.ts and is loaded by locale through app/api/public.ts. News and pricing content come from nuxt-modern-starter-api via GET /api/content/news and GET /api/content/pricing. You can later swap FAQ to a CMS or backend API without rewriting page components.'
     }
   },
   {

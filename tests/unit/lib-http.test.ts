@@ -1,13 +1,9 @@
 import { describe, expect, it, vi } from 'vitest'
-import {
-  createApiFailure,
-  getApiErrorMessage,
-  isUnauthorizedError
-} from '../../app/api-core/api-error'
-import { createApiClient } from '../../app/api-core/create-api-client'
-import { createBearerHeaders, sanitizeHeaders } from '../../app/api-core/api-headers'
+import { createApiFailure, getApiErrorMessage, isUnauthorizedError } from '../../app/lib/http/error'
+import { createApiClient } from '../../app/lib/http/client'
+import { createBearerHeaders, sanitizeHeaders } from '../../app/lib/http/headers'
 
-describe('api-core', () => {
+describe('lib/http', () => {
   it('creates bearer headers and redacts sensitive headers for logs', () => {
     const headers = createBearerHeaders('access-token', {
       cookie: 'sid=secret',

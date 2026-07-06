@@ -14,7 +14,7 @@
   - 失败：展示 API 错误信息
 
   数据 / API：
-  - useAuth().register() → app/apis/auth
+  - useAuth().register() → app/api/auth
 
   表单校验：
   - username 必填
@@ -28,7 +28,7 @@
 <script setup lang="ts">
 import { message } from 'ant-design-vue'
 import { useI18n } from 'vue-i18n'
-import { getApiErrorMessage } from '../../api-core/api-error'
+import { getApiErrorMessage } from '~/lib/http/error'
 
 const router = useRouter()
 const languageStore = useLanguageStore()

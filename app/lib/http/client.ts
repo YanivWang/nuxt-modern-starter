@@ -1,6 +1,6 @@
-import type { ApiClientOptions, ApiRequestOptions } from './api-types'
-import { createHeaders } from './api-headers'
-import { isUnauthorizedError } from './api-error'
+import type { ApiClientOptions, ApiRequestOptions } from './types'
+import { createHeaders } from './headers'
+import { isUnauthorizedError } from './error'
 
 type FetchRequest = Parameters<typeof $fetch>[0]
 

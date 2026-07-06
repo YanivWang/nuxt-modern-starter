@@ -14,12 +14,13 @@
 - `app/features/editor`: editor UI (`EditorWorkspace`, `EditorWorkspaceHeader`) built on `@yanivjs/yaniv-editor`.
 - `app/features/templates`: theme templates placeholder UI (`ThemeTemplatesPage`).
 - `app/features`: other product and domain modules. Complex product UI, feature composables, feature stores, feature types, and feature API adapters grow here instead of top-level Nuxt folders.
-- `app/api-core`: low-level API policy such as response types, error normalization, header creation, sensitive header redaction, and typed `$fetch` client creation.
-- `app/composables`: shared runtime APIs such as `useAuth`, `useLocalePath`, `usePageSeo`, `useTheme`, `useLanguageSwitch`, and `useUserAvatar`. Feature-specific composables belong under `app/features/<feature>/composables`; backend request clients belong under `app/apis/*`.
-- `app/apis/public`: SEO-safe public content adapters. Public adapters must not depend on auth state or trigger token refresh.
-- `app/apis/auth`: Bearer Token auth adapter. It owns login, register, refresh, logout, `/me`, profile requests, response normalization, and single-flight token refresh.
-- `app/apis/product`: authenticated product workflow client factory only (`createProductApiClient()`). Business adapters such as workspace project APIs live under `app/features/workspace/api.ts`.
-- `app/apis/editor`: authenticated editor workflow adapters shared by editor feature routes. Document save/read APIs live in `document.ts` and call `createProductApiClient()` directly.
+- `app/lib/http`: shared HTTP wrapper, response types, header helpers, error normalization, and typed `$fetch` client creation.
+- `app/api`: cross-feature request adapters (`public.ts`, `auth.ts`) plus scenario client factories in `clients.ts`.
+- `app/composables`: shared runtime APIs such as `useAuth`, `useLocalePath`, `usePageSeo`, `useTheme`, `useLanguageSwitch`, and `useUserAvatar`. Feature-specific composables belong under `app/features/<feature>/composables`; feature-only request adapters belong under `app/features/<feature>/api.ts`.
+- `app/api/public.ts`: SEO-safe public content adapters. Public adapters must not depend on auth state or trigger token refresh.
+- `app/api/auth.ts`: Bearer Token auth adapter. It owns login, register, refresh, logout, `/me`, profile requests, response normalization, single-flight token refresh, and `createProductApiClient()`.
+- `app/features/workspace/api.ts`: authenticated workspace project adapters.
+- `app/features/editor/api.ts`: authenticated editor document adapters.
 - `app/utils`: small shared runtime utilities such as `antdIcon.ts` for on-demand Ant Design SVG icons, `auth-session.ts` for token cookie helpers, `attribution-params.ts` for marketing attribution persistence, and `load-script.ts` for deferred external script injection.
 - `app/stores`: Pinia stores for app UI state, language state, theme state, and opt-in auth state. Feature-specific stores belong under `app/features/<feature>/stores`.
 - `app/components/base`: reusable low-level examples such as `BaseLogo`, `BaseButton`, `BasePicture`, and `PageContainer`.
@@ -57,10 +58,10 @@ Pages call `usePageSeo` for canonical, alternate, OG, and noindex behavior. Publ
 
 Business requests use the app-level `{ code, message, data }` contract through scenario-specific API entrypoints:
 
-- Public SEO/content pages use `app/apis/public/*` and `createPublicApiClient()` when a backend request is needed. These requests strip `authorization` and `cookie` headers so they stay safe for SSR, prerender, SWR, and CDN caching.
-- Auth requests use `app/apis/auth`. The adapter targets the current application API contract directly: `{ code, message, data }`; pages and stores read business payloads from `data`.
-- Workspace project requests use `app/features/workspace/api.ts` through `fetchWorkspaceProjects()`, `createWorkspaceProject()`, `fetchWorkspaceProject()`, and `deleteWorkspaceProject()` with `createProductApiClient()`. `getWorkspaceDocPath(projectId)` builds `/docs/:id` editor links from a project id.
-- Editor document requests use `app/apis/editor/document.ts` through `fetchEditorDocument()` and `saveEditorDocument()` with `createProductApiClient()`.
+- Public SEO/content pages use `~/api/public` and `createPublicApiClient()` when a backend request is needed. These requests strip `authorization` and `cookie` headers so they stay safe for SSR, prerender, SWR, and CDN caching.
+- Auth requests use `~/api/auth`. The adapter targets the current application API contract directly: `{ code, message, data }`; pages and stores read business payloads from `data`.
+- Workspace project requests use `~/features/workspace/api.ts` through `fetchWorkspaceProjects()`, `createWorkspaceProject()`, `fetchWorkspaceProject()`, and `deleteWorkspaceProject()` with `createProductApiClient()`. `getWorkspaceDocPath(projectId)` builds `/docs/:id` editor links from a project id.
+- Editor document requests use `~/features/editor/api.ts` through `fetchEditorDocument()` and `saveEditorDocument()` with `createProductApiClient()`.
 - Logged-in product pages mount feature modules such as `app/features/workspace` and `app/features/editor`. `/workspace` and `/workspace/templates` and `/account` use the `product` layout with sidebar navigation and `AppShellHeader`. `/docs/[id].vue` uses the `editor` layout, loads the project by route `:id`, requires a linked `documentId`, then mounts `EditorWorkspace` with `@yanivjs/yaniv-editor`, 2-second debounced autosave, and route-leave flush. These routes are CSR by default; requests may attach Bearer tokens and retry once after a single-flight refresh.
 
-Page components should call domain adapters such as `getNewsArticles()`, `fetchWorkspaceProjects()`, `createWorkspaceProject()`, `fetchWorkspaceProject()`, `deleteWorkspaceProject()`, `fetchEditorDocument()`, or `saveEditorDocument()`, not raw backend URLs. This keeps backend contract changes localized to `app/apis/*` and `app/features/workspace/api.ts`.
+Page components should call domain adapters such as `getNewsArticles()`, `fetchWorkspaceProjects()`, `createWorkspaceProject()`, `fetchWorkspaceProject()`, `deleteWorkspaceProject()`, `fetchEditorDocument()`, or `saveEditorDocument()`, not raw backend URLs. This keeps backend contract changes localized to `~/api/*` and `~/features/*/api.ts`.

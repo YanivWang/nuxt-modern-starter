@@ -6,14 +6,11 @@ export type ApiResponse<T> = {
   data: T
 }
 
-export type ApiClientKind = 'public' | 'auth' | 'editor' | 'server'
-
 export type ApiRequestOptions = Omit<FetchOptions<'json'>, 'baseURL' | 'headers'> & {
   headers?: HeadersInit
 }
 
 export type ApiClientOptions = {
-  kind?: ApiClientKind
   baseURL: string
   headers?: HeadersInit
   fetcher?: typeof $fetch

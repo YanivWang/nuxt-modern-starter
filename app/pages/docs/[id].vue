@@ -31,7 +31,7 @@
 -->
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { getApiErrorMessage } from '~/api-core/api-error'
+import { getApiErrorMessage } from '~/lib/http/error'
 import { EditorWorkspace } from '~/features/editor'
 import {
   fetchWorkspaceProject,

@@ -16,7 +16,7 @@
   - 从 UserAccountMenu 进入 → 查看账户信息 → 点击退出 → 跳转首页 /
 
   数据 / API：
-  - fetchProfileApi(accessToken) → app/apis/auth（加载 profile 详情）
+  - fetchProfileApi(accessToken) → app/api/auth（加载 profile 详情）
   - useAuth().logout()：清除 token 并退出
   - authStore.user：昵称、用户名等基础信息
 

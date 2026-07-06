@@ -19,7 +19,7 @@ vi.mock('../../app/utils/attribution-params', () => ({
   clearAttributionParams: attributionMocks.clearAttributionParams
 }))
 
-vi.mock('../../app/apis/auth', () => ({
+vi.mock('../../app/api/auth', () => ({
   ...apiMocks,
   normalizeAuthUser: (user: {
     id: string | number

@@ -14,7 +14,7 @@
   - 失败：展示 API 错误信息
 
   数据 / API：
-  - useAuth().login() → app/apis/auth（Bearer Token 鉴权）
+  - useAuth().login() → app/api/auth（Bearer Token 鉴权）
 
   表单校验：
   - username、password 均为必填
@@ -27,7 +27,7 @@
 <script setup lang="ts">
 import { message } from 'ant-design-vue'
 import { useI18n } from 'vue-i18n'
-import { getApiErrorMessage } from '../../api-core/api-error'
+import { getApiErrorMessage } from '~/lib/http/error'
 
 const route = useRoute()
 const router = useRouter()

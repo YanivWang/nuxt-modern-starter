@@ -1,7 +1,7 @@
-import type { ApiResponse } from '../../api-core/api-types'
-import { faqItems } from '../../../config/content/faq'
-import type { SupportedLocale } from '../../../config/site'
-import { createPublicApiClient } from './client'
+import type { ApiResponse } from '../lib/http/types'
+import { faqItems } from '../../config/content/faq'
+import type { SupportedLocale } from '../../config/site'
+import { createPublicApiClient } from './clients'
 
 export type LocalizedNewsArticleSummary = {
   slug: string
