@@ -11,9 +11,32 @@ import {
 import WorkspaceProjectCard from './WorkspaceProjectCard.vue'
 
 const { localePath } = useLocalePath()
-const router = useRouter()
 const { t } = useI18n()
 const deletingProjectId = ref<string | null>(null)
+const creatingProject = ref(false)
+
+const newDocPath = computed(() => localePath(getWorkspaceNewDocPath()))
+
+let editorRoutePrefetched = false
+
+const prefetchEditorRoute = () => {
+  if (editorRoutePrefetched) {
+    return
+  }
+
+  editorRoutePrefetched = true
+  void preloadRouteComponents(newDocPath.value)
+  void import('~/features/editor')
+}
+
+onMounted(() => {
+  if (typeof requestIdleCallback !== 'undefined') {
+    requestIdleCallback(() => prefetchEditorRoute())
+    return
+  }
+
+  setTimeout(prefetchEditorRoute, 200)
+})
 
 const {
   data: projects,
@@ -25,8 +48,19 @@ const {
   return response.data.projects
 })
 
-const handleCreateProject = () => {
-  void router.push(localePath(getWorkspaceNewDocPath()))
+const handleCreateProject = async () => {
+  if (creatingProject.value) {
+    return
+  }
+
+  creatingProject.value = true
+  prefetchEditorRoute()
+
+  try {
+    await navigateTo(newDocPath.value)
+  } catch {
+    creatingProject.value = false
+  }
 }
 
 const handleDeleteProject = async (projectId: string) => {
@@ -48,7 +82,14 @@ const handleDeleteProject = async (projectId: string) => {
   <section class="workspace-dashboard">
     <div class="workspace-dashboard__header">
       <h1 class="workspace-dashboard__title">{{ $t('workspace.title') }}</h1>
-      <a-button type="primary" size="large" @click="handleCreateProject">
+      <a-button
+        type="primary"
+        size="large"
+        :loading="creatingProject"
+        @mouseenter="prefetchEditorRoute"
+        @focus="prefetchEditorRoute"
+        @click="handleCreateProject"
+      >
         <PlusOutlined aria-hidden="true" />
         {{ $t('workspace.create') }}
       </a-button>

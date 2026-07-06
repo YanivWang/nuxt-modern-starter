@@ -130,6 +130,7 @@
 }
 
 .page-meta {
+  max-width: var(--page-content-max, 100%);
   margin: 0;
   color: var(--app-color-muted);
   font-size: 13px;
@@ -138,7 +139,7 @@
 }
 
 .page-note {
-  max-width: 760px;
+  max-width: var(--page-content-max, 100%);
   margin: 28px 0 0;
   color: var(--app-color-muted);
   font-size: 14px;
@@ -184,7 +185,9 @@
 }
 
 .page-content-block {
-  max-width: 760px;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: var(--page-content-max, 100%);
   margin-top: clamp(36px, 5vw, 48px);
   padding: clamp(28px, 4vw, 36px);
   border: 1px solid var(--app-color-border);
@@ -335,7 +338,9 @@
 }
 
 .page-empty-state {
-  max-width: 560px;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: var(--page-content-max, var(--app-content-max-compact));
   margin-top: clamp(24px, 4vw, 40px);
   padding: clamp(28px, 5vw, 40px);
   border: 1px solid var(--app-color-border);

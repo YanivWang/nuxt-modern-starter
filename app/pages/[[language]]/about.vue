@@ -60,7 +60,7 @@ usePageSeo({
 
     <section class="page-panel">
       <h2 class="page-panel__title">{{ $t('about.story.title') }}</h2>
-      <div class="page-content-block about-story">
+      <div class="about-story">
         <p v-for="paragraph in storyParagraphs" :key="paragraph">{{ paragraph }}</p>
       </div>
     </section>

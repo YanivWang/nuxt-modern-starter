@@ -38,7 +38,7 @@ usePageSeo({
 </script>
 
 <template>
-  <PageContainer>
+  <PageContainer layout="compact">
     <div class="page-empty-state">
       <p class="page-eyebrow">404</p>
       <h1 class="page-title">{{ $t('error.title') }}</h1>
