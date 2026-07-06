@@ -21,7 +21,10 @@
             <ArrowRightOutlined />
           </NuxtLink>
         </div>
-        <UserAccountMenu v-else />
+        <NuxtLink v-else class="app-header__workspace" :to="localePath('/workspace')">
+          <span>{{ $t('auth.header.enterWorkspace') }}</span>
+          <ArrowRightOutlined />
+        </NuxtLink>
       </div>
     </AppContainer>
   </header>
@@ -30,8 +33,6 @@
 <script setup lang="ts">
 import { ArrowRightOutlined } from '../../utils/antdIcon'
 import { NAV_ITEMS } from '../../../config/site'
-import UserAccountMenu from './UserAccountMenu.vue'
-
 const { localePath } = useLocalePath()
 const { authStore } = useAuth()
 
@@ -118,7 +119,8 @@ onUnmounted(() => {
 }
 
 .app-header__sign-in,
-.app-header__sign-up {
+.app-header__sign-up,
+.app-header__workspace {
   box-sizing: border-box;
   display: inline-flex;
   align-items: center;
@@ -149,7 +151,8 @@ onUnmounted(() => {
   }
 }
 
-.app-header__sign-up {
+.app-header__sign-up,
+.app-header__workspace {
   border: 1px solid transparent;
   background: var(--app-auth-sign-up-bg);
   color: var(--app-auth-sign-up-text);

@@ -29,13 +29,17 @@ export default {
     language: '语言',
     signOut: '退出登录'
   },
+  accountNav: {
+    settings: '账户设置'
+  },
   templates: {
     empty: '主题模版即将上线，敬请期待。'
   },
   auth: {
     header: {
       signIn: '登录',
-      signUp: '注册'
+      signUp: '注册',
+      enterWorkspace: '进入工作台'
     },
     form: {
       username: '用户名',
@@ -43,17 +47,13 @@ export default {
       confirmPassword: '确认密码'
     },
     login: {
-      eyebrow: '账户登录',
       title: '登录',
-      lead: '使用当前应用账户登录，登录后会按 redirect 参数回到原页面。',
       submit: '登录',
       success: '登录成功',
       noAccount: '还没有账户？'
     },
     register: {
-      eyebrow: '创建账户',
       title: '注册',
-      lead: '注册只创建账户，后端不会自动登录；注册成功后请继续登录。',
       submit: '注册',
       success: '注册成功，请继续登录',
       hasAccount: '已有账户？'
@@ -66,6 +66,7 @@ export default {
       eyebrow: '受保护页面',
       title: '账户',
       lead: '此页面通过命名 auth 中间件保护，展示当前登录用户和扩展资料。',
+      avatar: '头像',
       sessionTitle: '登录态',
       profileTitle: '扩展资料',
       userId: '用户 ID',
@@ -243,7 +244,11 @@ export default {
     deleteSuccess: '作品已删除',
     save: '保存',
     projectName: '作品名称',
-    backToWorkspace: '返回工作台'
+    backToWorkspace: '返回工作台',
+    browse: '浏览',
+    share: '分享',
+    download: '下载',
+    more: '更多操作'
   },
   help: {
     eyebrow: '帮助中心',

@@ -296,9 +296,9 @@
 }
 
 .auth-card {
-  width: min(100%, 460px);
+  width: min(100%, 480px);
   border: 1px solid var(--app-color-border);
-  border-radius: 24px;
+  border-radius: 20px;
   background: var(--app-color-bg);
   box-shadow: 0 24px 56px rgb(15 23 42 / 8%);
 
@@ -308,22 +308,13 @@
 }
 
 .auth-card__title {
-  margin: 0;
-  font-size: clamp(28px, 4vw, 36px);
+  margin: 0 0 24px;
+  font-size: clamp(24px, 3.5vw, 30px);
   letter-spacing: -0.03em;
 }
 
-.auth-card__lead,
 .auth-card__footer {
   color: var(--app-color-muted);
-}
-
-.auth-card__lead {
-  margin: 14px 0 28px;
-  line-height: 1.7;
-}
-
-.auth-card__footer {
   margin: 24px 0 0;
   padding-top: 20px;
   border-top: 1px solid var(--app-color-border);

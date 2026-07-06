@@ -3,7 +3,7 @@ import { useI18n } from 'vue-i18n'
 import { AccountPage } from '~/features/account'
 
 definePageMeta({
-  layout: 'product',
+  layout: 'account',
   middleware: 'auth'
 })
 

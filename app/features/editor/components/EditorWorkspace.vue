@@ -460,9 +460,8 @@ onBeforeRouteLeave(async () => {
   min-height: 0;
   overflow: hidden;
   border: 1px solid var(--app-color-border);
-  border-radius: 16px;
+  border-radius: 8px;
   background: var(--app-color-bg);
-  box-shadow: 0 8px 24px rgb(15 23 42 / 6%);
 }
 
 .editor-workspace__loading {

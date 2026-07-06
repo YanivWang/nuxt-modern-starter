@@ -7,8 +7,8 @@
   --app-color-text: #1f2937;
   --app-color-muted: #64748b;
   --app-color-border: #e5e7eb;
-  --app-container-max: 1280px;
-  --app-container-padding: clamp(20px, 5vw, 40px);
+  --app-container-max: 1300px;
+  --app-container-padding: 16px;
   --app-header-control-size: 38px;
   --app-header-icon-size: 18px;
   --app-header-nav-gap: 36px;
@@ -40,6 +40,15 @@
   --app-shadow-dropdown: 0 8px 20px rgb(15 23 42 / 12%);
   --app-radius-lg: 16px;
   --app-shadow-sm: 0 18px 45px rgb(15 23 42 / 10%);
+  --app-home-cta-bg:
+    radial-gradient(circle at 90% 10%, rgb(255 255 255 / 28%), transparent 28%), #1677ff;
+  --app-home-cta-border: 1px solid transparent;
+  --app-home-cta-text: #ffffff;
+  --app-home-cta-eyebrow: rgb(255 255 255 / 78%);
+  --app-home-cta-shadow: 0 24px 56px rgb(22 119 255 / 20%);
+  --app-home-cta-btn-bg: #ffffff;
+  --app-home-cta-btn-text: #0f172a;
+  --app-home-cta-btn-border: #ffffff;
   --app-font-sans:
     Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
@@ -64,4 +73,12 @@
   --app-header-border-scrolled: rgb(248 250 252 / 10%);
   --app-shadow-sm: 0 18px 45px rgb(0 0 0 / 30%);
   --app-shadow-dropdown: 0 8px 20px rgb(0 0 0 / 35%);
+  --app-home-cta-bg: var(--app-color-elevated);
+  --app-home-cta-border: 1px solid var(--app-color-border);
+  --app-home-cta-text: var(--app-color-text);
+  --app-home-cta-eyebrow: var(--app-color-primary);
+  --app-home-cta-shadow: none;
+  --app-home-cta-btn-bg: var(--app-color-primary);
+  --app-home-cta-btn-text: #0f172a;
+  --app-home-cta-btn-border: transparent;
 }

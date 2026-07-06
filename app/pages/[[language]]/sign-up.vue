@@ -20,7 +20,7 @@ usePageSeo({
   path: '/sign-up',
   locale: languageStore.currentLanguage,
   title: t('auth.register.title'),
-  description: t('auth.register.lead'),
+  description: t('auth.register.title'),
   noindex: true
 })
 
@@ -61,9 +61,7 @@ const handleSubmit = async () => {
   <div class="auth-page">
     <AppContainer>
       <a-card class="auth-card" :bordered="false">
-        <p class="page-eyebrow">{{ $t('auth.register.eyebrow') }}</p>
         <h1 class="auth-card__title">{{ $t('auth.register.title') }}</h1>
-        <p class="auth-card__lead">{{ $t('auth.register.lead') }}</p>
 
         <a-form :model="form" layout="vertical" @finish="handleSubmit">
           <a-form-item

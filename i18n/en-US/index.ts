@@ -30,13 +30,17 @@ export default {
     language: 'Language',
     signOut: 'Sign out'
   },
+  accountNav: {
+    settings: 'Account settings'
+  },
   templates: {
     empty: 'Theme templates are coming soon.'
   },
   auth: {
     header: {
       signIn: 'Sign in',
-      signUp: 'Sign up'
+      signUp: 'Sign up',
+      enterWorkspace: 'Enter workspace'
     },
     form: {
       username: 'Username',
@@ -44,17 +48,13 @@ export default {
       confirmPassword: 'Confirm password'
     },
     login: {
-      eyebrow: 'Account sign in',
       title: 'Log in',
-      lead: 'Sign in with your application account and return to the redirect target.',
       submit: 'Log in',
       success: 'Logged in successfully',
       noAccount: 'No account yet?'
     },
     register: {
-      eyebrow: 'Create account',
       title: 'Register',
-      lead: 'Registration only creates the account. The backend does not sign you in automatically.',
       submit: 'Register',
       success: 'Registered successfully. Please log in.',
       hasAccount: 'Already have an account?'
@@ -67,6 +67,7 @@ export default {
       eyebrow: 'Protected page',
       title: 'Account',
       lead: 'This page is protected by the named auth middleware and shows the current user profile.',
+      avatar: 'Profile photo',
       sessionTitle: 'Session',
       profileTitle: 'Extended profile',
       userId: 'User ID',
@@ -254,7 +255,11 @@ export default {
     deleteSuccess: 'Project deleted',
     save: 'Save',
     projectName: 'Project name',
-    backToWorkspace: 'Back to workspace'
+    backToWorkspace: 'Back to workspace',
+    browse: 'View',
+    share: 'Share',
+    download: 'Download',
+    more: 'More actions'
   },
   help: {
     eyebrow: 'Help center',

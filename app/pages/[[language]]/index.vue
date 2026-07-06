@@ -445,30 +445,39 @@ usePageSeo({
   gap: 24px;
   margin-top: var(--home-block-gap);
   padding: clamp(30px, 5vw, 54px);
+  border: var(--app-home-cta-border);
   border-radius: 24px;
-  background:
-    radial-gradient(circle at 90% 10%, rgb(255 255 255 / 28%), transparent 28%),
-    var(--app-color-primary);
-  color: #fff;
-  box-shadow: 0 24px 56px rgb(22 119 255 / 20%);
+  background: var(--app-home-cta-bg);
+  color: var(--app-home-cta-text);
+  box-shadow: var(--app-home-cta-shadow);
 }
 
 .home-cta .page-eyebrow {
-  color: rgb(255 255 255 / 78%);
+  color: var(--app-home-cta-eyebrow);
 }
 
 .home-cta h2 {
   max-width: 680px;
 }
 
-.home-cta__button {
+.home-cta__button,
+.home-cta__link :deep(.home-cta__button.ant-btn) {
   min-width: 160px;
   height: 44px;
   border-radius: 12px;
-  border-color: #fff;
-  background: #fff;
-  color: #0f172a;
+  border-color: var(--app-home-cta-btn-border) !important;
+  background: var(--app-home-cta-btn-bg) !important;
+  color: var(--app-home-cta-btn-text) !important;
   font-weight: 600;
+  box-shadow: none !important;
+
+  &:hover,
+  &:focus-visible {
+    border-color: var(--app-home-cta-btn-border) !important;
+    background: var(--app-home-cta-btn-bg) !important;
+    color: var(--app-home-cta-btn-text) !important;
+    opacity: 0.92;
+  }
 }
 
 @media (width <= 900px) {

@@ -21,3 +21,19 @@ export const formatPublishedDate = (isoDate: string, locale: SupportedLocale) =>
     day: 'numeric',
     timeZone: 'UTC'
   }).format(new Date(`${isoDate}T00:00:00Z`))
+
+export const formatWorkspaceDateTime = (isoDate: string, locale: SupportedLocale) => {
+  const date = new Date(isoDate)
+  if (Number.isNaN(date.getTime())) {
+    return isoDate
+  }
+
+  return new Intl.DateTimeFormat(locale, {
+    year: 'numeric',
+    month: locale === 'zh-CN' ? 'long' : 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false
+  }).format(date)
+}
