@@ -1,19 +1,5 @@
 import { AUTH_REDIRECTS, type AuthRouteMeta } from '../../config/auth'
-import { localizedPath, localizedProductPathToCanonical } from '../../config/routes'
-
-export const buildProductCanonicalRedirect = (path: string) => {
-  const canonicalPath = localizedProductPathToCanonical(path)
-
-  if (canonicalPath) {
-    return {
-      type: 'redirect',
-      path: canonicalPath,
-      redirectCode: 301
-    } as const
-  }
-
-  return null
-}
+import { localizedPath } from '../../config/routes'
 
 export const buildAuthLoginRedirect = (loginPath: string, fullPath: string) => ({
   path: loginPath,

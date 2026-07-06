@@ -299,7 +299,7 @@ Auth is implemented as an opt-in Bearer Token module for the current application
 - Backend endpoints use the `/api` prefix and return the standard `{ code, message, data }` envelope. Auth calls use `~/api/auth` through `createAuthApiClient()`, and stores/pages consume token, user, and profile payloads from `data`.
 - HTTP endpoint paths are centralized in `config/auth.ts`: `/register`, `/login`, `/refresh`, `/logout`, `/me`, and `/me/profile`. Frontend auth pages use `/sign-in` and `/sign-up`; `AUTH_REDIRECTS.login = '/sign-in'`.
 - `POST /api/register` creates an account but does not log the user in. The sign-up page redirects users to sign-in after success.
-- `POST /api/login` and `POST /api/refresh` return `token` or `accessToken`, plus `refreshToken`. Tokens are stored in JS-readable Nuxt cookies for client-side product workflows.
+- `POST /api/login` and `POST /api/refresh` return `accessToken` and `refreshToken`. Tokens are stored in JS-readable Nuxt cookies for client-side product workflows.
 - `createAuthApiClient()` and `createProductApiClient()` may attach the access token for authenticated business requests. A 401 triggers a single-flight `POST /api/refresh` and retries the failed request once; refresh failure clears the local session.
 - `app/stores/auth.ts` owns `user`, token cookies, `status`, `login`, `register`, `logout`, `fetchMe`, `refresh`, and `reset`.
 - `app/composables/useAuth.ts` exposes the store plus `ensureSession()`, `can()`, and `hasRole()` for pages and middleware.

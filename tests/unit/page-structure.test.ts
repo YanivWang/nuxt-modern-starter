@@ -15,11 +15,9 @@ describe('page directory boundaries', () => {
     expect(existsSync(resolve(projectRoot, 'app/pages/workspace/index.vue'))).toBe(true)
     expect(existsSync(resolve(projectRoot, 'app/pages/docs/[id].vue'))).toBe(true)
     expect(existsSync(resolve(projectRoot, 'app/pages/account.vue'))).toBe(true)
-    expect(existsSync(resolve(projectRoot, 'app/pages/app'))).toBe(false)
-    expect(existsSync(resolve(projectRoot, 'app/pages/[[language]]/app'))).toBe(false)
   })
 
-  it('keeps moved product page imports rooted at the app aliases', () => {
+  it('keeps product page imports rooted at the app aliases', () => {
     for (const file of productPageFiles) {
       const source = readFileSync(resolve(projectRoot, file), 'utf8')
 

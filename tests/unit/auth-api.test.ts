@@ -4,8 +4,7 @@ const sessionMocks = vi.hoisted(() => ({
   getRefreshTokenCookie: vi.fn(),
   clearAuthSession: vi.fn(),
   setAuthTokenCookies: vi.fn(),
-  tokenFromResponse: vi.fn(),
-  getAuthToken: vi.fn()
+  getAccessTokenCookie: vi.fn()
 }))
 
 const clientMocks = vi.hoisted(() => ({
@@ -32,8 +31,7 @@ describe('auth api', () => {
     vi.resetModules()
     vi.clearAllMocks()
     sessionMocks.getRefreshTokenCookie.mockReturnValue({ value: 'refresh-token' })
-    sessionMocks.tokenFromResponse.mockReturnValue('next-access-token')
-    sessionMocks.getAuthToken.mockReturnValue('access-token')
+    sessionMocks.getAccessTokenCookie.mockReturnValue({ value: 'access-token' })
   })
 
   it('deduplicates concurrent refresh requests', async () => {

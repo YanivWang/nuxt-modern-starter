@@ -53,8 +53,6 @@ export const localizedPath = (path: string, locale: SupportedLocale) => {
 export const publicLocalizedPaths = (locales: readonly SupportedLocale[] = ['zh-CN', 'en-US']) =>
   locales.flatMap((locale) => PUBLIC_PAGE_PATHS.map((path) => localizedPath(path, locale)))
 
-export const productPathPatterns = () => [...productRoutePatterns]
-
 export const prerenderRoutes = publicLocalizedPaths().filter(
   (path) =>
     path === '/' ||

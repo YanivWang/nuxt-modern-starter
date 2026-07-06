@@ -9,11 +9,7 @@ import {
   type RegisterPayload,
   type TokenResponse
 } from '~/api/auth'
-import {
-  getAccessTokenCookie,
-  getRefreshTokenCookie,
-  tokenFromResponse
-} from '../utils/auth-session'
+import { getAccessTokenCookie, getRefreshTokenCookie } from '../utils/auth-session'
 import { clearAttributionParams } from '../utils/attribution-params'
 import type { AuthUser, Permission, Role } from '../../config/auth'
 
@@ -31,12 +27,7 @@ export const useAuthStore = defineStore('auth', () => {
     Boolean(user.value?.permissions.includes(permission))
 
   const setTokens = (response: TokenResponse) => {
-    const nextAccessToken = tokenFromResponse(response.data)
-
-    if (nextAccessToken) {
-      accessToken.value = nextAccessToken
-    }
-
+    accessToken.value = response.data.accessToken
     refreshToken.value = response.data.refreshToken
   }
 

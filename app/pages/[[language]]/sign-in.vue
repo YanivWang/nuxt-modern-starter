@@ -38,7 +38,7 @@ const { localePath } = useLocalePath()
 const { login } = useAuth()
 
 const form = reactive({
-  username: '',
+  username: typeof route.query.username === 'string' ? route.query.username : '',
   password: ''
 })
 const loading = ref(false)

@@ -1,22 +1,11 @@
 import { describe, expect, it } from 'vitest'
 import {
   buildAuthLoginRedirect,
-  buildProductCanonicalRedirect,
   isAuthorized,
   resolveAuthMiddlewareDecision
 } from '../../app/middleware/auth'
 
 describe('auth middleware decisions', () => {
-  it('normalizes localized product paths through the shared canonical helper', () => {
-    expect(buildProductCanonicalRedirect('/en/workspace')).toEqual({
-      type: 'redirect',
-      path: '/workspace',
-      redirectCode: 301
-    })
-    expect(buildProductCanonicalRedirect('/workspace')).toBeNull()
-    expect(buildProductCanonicalRedirect('/en/pricing')).toBeNull()
-  })
-
   it('redirects unauthenticated users to sign-in with the original path', () => {
     expect(buildAuthLoginRedirect('/sign-in', '/account?tab=profile')).toEqual({
       path: '/sign-in',

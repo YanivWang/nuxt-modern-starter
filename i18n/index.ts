@@ -62,13 +62,6 @@ export const matchRouteLanguage = (prefix?: string) => {
   return localeFromPrefix(prefix)
 }
 
-export const matcheRouteLanguage = matchRouteLanguage
-
-export const exLanguagePrefixByPath = (path: string) => {
-  const firstSegment = path.split('/').filter(Boolean)[0]
-  return localeFromPrefix(firstSegment)
-}
-
 export const relativeLangPath = (path: string) => {
   const segments = path.split('/').filter(Boolean)
   const firstSegmentLocale = localeFromPrefix(segments[0])

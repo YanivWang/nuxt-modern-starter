@@ -1,13 +1,9 @@
 import { ACCESS_TOKEN_MAX_AGE, AUTH_COOKIE_KEYS, REFRESH_TOKEN_MAX_AGE } from '../../config/auth'
 
-export type TokenLikeResponse = {
-  token?: string
-  accessToken?: string
+export type TokenResponseData = {
+  accessToken: string
   refreshToken: string
 }
-
-export const tokenFromResponse = (response: TokenLikeResponse) =>
-  response.accessToken || response.token || null
 
 export const tokenCookieOptions = (maxAge: number) => {
   const config = useRuntimeConfig()
@@ -26,15 +22,8 @@ export const getAccessTokenCookie = () =>
 export const getRefreshTokenCookie = () =>
   useCookie<string | null>(AUTH_COOKIE_KEYS.refreshToken, tokenCookieOptions(REFRESH_TOKEN_MAX_AGE))
 
-export const getAuthToken = () => getAccessTokenCookie().value
-
-export const setAuthTokenCookies = (response: TokenLikeResponse) => {
-  const nextAccessToken = tokenFromResponse(response)
-
-  if (nextAccessToken) {
-    getAccessTokenCookie().value = nextAccessToken
-  }
-
+export const setAuthTokenCookies = (response: TokenResponseData) => {
+  getAccessTokenCookie().value = response.accessToken
   getRefreshTokenCookie().value = response.refreshToken
 }
 

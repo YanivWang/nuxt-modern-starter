@@ -149,7 +149,7 @@ describe('auth store', () => {
       code: 200,
       message: 'ok',
       data: {
-        token: 'access-token',
+        accessToken: 'access-token',
         refreshToken: 'refresh-token'
       }
     })

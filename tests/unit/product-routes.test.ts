@@ -2,13 +2,13 @@ import { describe, expect, it } from 'vitest'
 import {
   csrRouteRules,
   localizedProductPathToCanonical,
-  productPathPatterns,
+  productRoutePatterns,
   publicLocalizedPaths
 } from '../../config/routes'
 
 describe('product route boundaries', () => {
   it('keeps authenticated product routes language-neutral', () => {
-    expect(productPathPatterns()).toEqual(['/workspace/**', '/docs/**', '/account'])
+    expect(productRoutePatterns).toEqual(['/workspace/**', '/docs/**', '/account'])
     expect(csrRouteRules).toEqual(['/workspace/**', '/docs/**', '/account'])
   })
 

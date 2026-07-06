@@ -3,10 +3,9 @@ import type { ApiResponse } from '../lib/http/types'
 import { createAuthApiClient, type AuthApiClientOptions } from './clients'
 import {
   clearAuthSession,
-  getAuthToken,
+  getAccessTokenCookie,
   getRefreshTokenCookie,
-  setAuthTokenCookies,
-  tokenFromResponse
+  setAuthTokenCookies
 } from '../utils/auth-session'
 import { mergeAttributionIntoBody } from '../utils/attribution-params'
 
@@ -22,8 +21,7 @@ export type RegisterPayload = {
 export type LoginPayload = RegisterPayload
 
 export type TokenData = {
-  token?: string
-  accessToken?: string
+  accessToken: string
   refreshToken: string
   accessTokenExpiresIn?: number
   refreshTokenExpiresIn?: number
@@ -68,15 +66,8 @@ const refreshAccessToken = async () => {
 
   try {
     const response = await refreshApi(refreshToken.value)
-    const nextAccessToken = tokenFromResponse(response.data)
-
-    if (!nextAccessToken) {
-      clearAuthSession()
-      return null
-    }
-
     setAuthTokenCookies(response.data)
-    return nextAccessToken
+    return response.data.accessToken
   } catch (error) {
     clearAuthSession()
     throw error
@@ -94,7 +85,7 @@ export const refreshAccessTokenOnce = () => {
 export const createProductApiClient = (options: ProductApiClientOptions = {}) =>
   createAuthApiClient({
     ...options,
-    accessToken: options.accessToken ?? getAuthToken(),
+    accessToken: options.accessToken ?? getAccessTokenCookie().value,
     refreshAccessToken: refreshAccessTokenOnce
   })
 

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { exLanguagePrefixByPath, matchRouteLanguage } from '../../i18n'
+import { localeFromPrefix, matchRouteLanguage } from '../../i18n'
 import { resolveLocaleRouteDecision } from '../../app/middleware/locale.global'
 
 describe('locale routing decisions', () => {
@@ -10,12 +10,12 @@ describe('locale routing decisions', () => {
 
   it('returns undefined for unsupported language-like prefixes', () => {
     expect(matchRouteLanguage('fr')).toBeUndefined()
-    expect(exLanguagePrefixByPath('/fr/pricing')).toBeUndefined()
+    expect(localeFromPrefix('fr')).toBeUndefined()
   })
 
   it('extracts supported language prefixes from paths', () => {
-    expect(exLanguagePrefixByPath('/en/pricing')).toBe('en-US')
-    expect(exLanguagePrefixByPath('/pricing')).toBeUndefined()
+    expect(localeFromPrefix('en')).toBe('en-US')
+    expect(localeFromPrefix(undefined)).toBeUndefined()
   })
 
   it('redirects default prefixes and trailing slashes with 301', () => {

@@ -19,12 +19,9 @@ export const assertApiSuccess = <T>(response: ApiResponse<T>) => {
 }
 
 export const getApiErrorMessage = (error: unknown, defaultMessage: string) => {
-  const apiError = error as {
-    data?: { message?: string }
-    message?: string
-  }
+  const apiError = error as { data?: { message?: string } }
 
-  return apiError.data?.message || apiError.message || defaultMessage
+  return apiError.data?.message || defaultMessage
 }
 
 export const isUnauthorizedError = (error: unknown) => {
