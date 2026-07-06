@@ -114,7 +114,7 @@ const syncLocalTitle = () => {
 watch(
   [() => props.project?.title, () => document.value?.title],
   () => {
-    if (isEditingTitle.value) {
+    if (isEditingTitle.value || titleSaving.value) {
       return
     }
 

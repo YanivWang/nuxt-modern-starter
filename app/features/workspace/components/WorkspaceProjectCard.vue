@@ -28,10 +28,25 @@ const formattedUpdatedAt = computed(() =>
   <article class="workspace-card" :class="`workspace-card--${project.accent}`">
     <NuxtLink class="workspace-card__preview" :to="docPath">
       <div class="workspace-card__thumbnail" aria-hidden="true">
-        <div class="workspace-card__slide">
-          <span class="workspace-card__slide-bar" />
-          <span class="workspace-card__slide-line" />
-          <span class="workspace-card__slide-line workspace-card__slide-line--short" />
+        <div class="workspace-card__cover">
+          <div class="workspace-card__cover-bg" />
+          <div class="workspace-card__cover-glow workspace-card__cover-glow--left" />
+          <div class="workspace-card__cover-glow workspace-card__cover-glow--right" />
+
+          <div class="workspace-card__cover-frame">
+            <div class="workspace-card__cover-slide">
+              <span class="workspace-card__cover-accent" />
+              <span class="workspace-card__cover-line workspace-card__cover-line--wide" />
+              <span class="workspace-card__cover-line" />
+              <span class="workspace-card__cover-line workspace-card__cover-line--short" />
+              <div class="workspace-card__cover-chart">
+                <span />
+                <span />
+                <span />
+                <span />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -144,32 +159,146 @@ const formattedUpdatedAt = computed(() =>
   background: #f5f7fa;
 }
 
-.workspace-card__slide {
-  display: grid;
+.workspace-card__cover {
+  position: relative;
   height: 100%;
-  align-content: end;
-  gap: 8px;
-  padding: clamp(14px, 8%, 22px);
+  overflow: hidden;
+}
+
+.workspace-card__cover-bg {
+  position: absolute;
+  inset: 0;
   background:
-    linear-gradient(135deg, var(--project-accent-soft), transparent 58%),
-    linear-gradient(180deg, rgb(255 255 255 / 96%), rgb(248 250 252 / 92%));
+    radial-gradient(circle at 82% 18%, var(--project-accent-soft), transparent 42%),
+    radial-gradient(circle at 12% 88%, var(--project-accent-soft), transparent 36%),
+    linear-gradient(
+      145deg,
+      rgb(255 255 255 / 98%),
+      rgb(248 250 252 / 94%) 52%,
+      rgb(241 245 249 / 96%)
+    );
 }
 
-.workspace-card__slide-bar {
-  width: 42%;
-  height: 7px;
-  border-radius: 999px;
-  background: var(--project-accent);
+.workspace-card__cover-bg::after {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgb(15 23 42 / 7%) 0.6px, transparent 0.6px);
+  background-size: 14px 14px;
+  content: '';
+  mask-image: linear-gradient(180deg, rgb(0 0 0 / 55%), transparent 88%);
 }
 
-.workspace-card__slide-line {
-  width: 68%;
-  height: 5px;
+.workspace-card__cover-glow {
+  position: absolute;
   border-radius: 999px;
-  background: rgb(23 32 51 / 10%);
+  filter: blur(18px);
+  opacity: 0.75;
+  pointer-events: none;
+
+  &--left {
+    top: -18%;
+    left: -8%;
+    width: 42%;
+    height: 52%;
+    background: var(--project-accent-soft);
+  }
+
+  &--right {
+    right: -6%;
+    bottom: -22%;
+    width: 36%;
+    height: 48%;
+    background: var(--project-accent-soft);
+  }
+}
+
+.workspace-card__cover-frame {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(12px, 10%, 20px);
+}
+
+.workspace-card__cover-slide {
+  display: grid;
+  width: min(78%, 220px);
+  aspect-ratio: 4 / 3;
+  align-content: start;
+  gap: 6px;
+  padding: clamp(10px, 6%, 14px);
+  border: 1px solid rgb(255 255 255 / 88%);
+  border-radius: 10px;
+  background: rgb(255 255 255 / 94%);
+  box-shadow:
+    0 10px 28px rgb(15 23 42 / 10%),
+    0 2px 6px rgb(15 23 42 / 6%);
+  transform: rotate(-2deg);
+  transition: transform 0.25s ease;
+}
+
+.workspace-card:hover .workspace-card__cover-slide {
+  transform: rotate(0deg) translateY(-2px);
+}
+
+.workspace-card__cover-accent {
+  width: 38%;
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--project-accent), rgb(255 255 255 / 0%) 120%);
+}
+
+.workspace-card__cover-line {
+  width: 72%;
+  height: 4px;
+  border-radius: 999px;
+  background: rgb(15 23 42 / 8%);
+
+  &--wide {
+    width: 86%;
+    height: 5px;
+    margin-top: 2px;
+    background: rgb(15 23 42 / 12%);
+  }
 
   &--short {
-    width: 44%;
+    width: 48%;
+  }
+}
+
+.workspace-card__cover-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 28px;
+  margin-top: auto;
+  padding-top: 4px;
+
+  span {
+    flex: 1;
+    border-radius: 3px 3px 1px 1px;
+    background: rgb(15 23 42 / 7%);
+
+    &:nth-child(1) {
+      height: 42%;
+      background: var(--project-accent-soft);
+    }
+
+    &:nth-child(2) {
+      height: 68%;
+    }
+
+    &:nth-child(3) {
+      height: 52%;
+      background: var(--project-accent);
+      opacity: 0.72;
+    }
+
+    &:nth-child(4) {
+      height: 36%;
+    }
   }
 }
 
