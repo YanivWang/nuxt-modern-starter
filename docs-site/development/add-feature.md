@@ -100,13 +100,13 @@ import Something from '~/features/workspace/components/WorkspaceDashboard.vue'
 
 ## 完整示例：现有模块参考
 
-| 需求类型    | 参考模块                    |
-| ----------- | --------------------------- |
-| 列表 + CRUD | `workspace`                 |
-| 全屏编辑器  | `editor`                    |
-| 占位页      | `templates`                 |
-| 设置页      | `account` + `account-shell` |
-| 侧边栏壳    | `product-shell`             |
+| 需求类型    | 参考模块                     | 要点                                                           |
+| ----------- | ---------------------------- | -------------------------------------------------------------- |
+| 列表 + CRUD | `workspace`                  | 创建跳转 `/docs/new`；删除带 confirm；idle 预加载 editor chunk |
+| 全屏编辑器  | `editor` + `pages/docs/[id]` | 草稿首次保存创建项目；`cachedProject` 防闪烁；路由离开 flush   |
+| 占位页      | `templates`                  | 6 张虚线卡片 + `a-empty`，无 API                               |
+| 设置页      | `account` + `account-shell`  | `fetchProfileApi` + `useUserAvatar`                            |
+| 侧边栏壳    | `product-shell`              | `productNavItems` + footer 定价链接                            |
 
 ## 下一步
 

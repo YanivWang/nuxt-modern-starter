@@ -53,7 +53,17 @@ pnpm docker:up       # 可选 Compose 栈
 1. 后端 `pnpm docker:dev`
 2. 前端 `NUXT_PUBLIC_API_BASE=http://localhost:2026/api`
 3. 后端 CORS 包含 `http://localhost:3000`
-4. 验证：登录 → 工作台 → 编辑器 → 账户
+4. 验证：登录 → 工作台（列表/删除/创建跳转 `/docs/new`）→ 编辑器自动保存 → 账户
+
+## 产品区工作流（联调参考）
+
+| 步骤 | 路由                    | 行为                                                                         |
+| ---- | ----------------------- | ---------------------------------------------------------------------------- |
+| 1    | `/sign-up` → `/sign-in` | 注册不自动登录；登录写 cookie 并 fetchMe                                     |
+| 2    | `/workspace`            | 列表/删除项目；创建按钮跳转 `/docs/new`（预加载 editor chunk）               |
+| 3    | `/docs/new`             | 草稿模式；首次非空内容触发 `createWorkspaceProject` + replace 到 `/docs/:id` |
+| 4    | `/docs/:id`             | 加载项目 + documentId；2s debounce 自动保存；标题双写 document/project       |
+| 5    | `/account`              | `fetchProfileApi` 展示扩展资料；UserAccountMenu 退出清归因                   |
 
 ## 下一步
 

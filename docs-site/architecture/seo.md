@@ -27,6 +27,8 @@ usePageSeo({
 
 默认 OG 图：`public/og-default.png`（`config/site.ts` → `DEFAULT_SEO.ogImage`）
 
+Organization JSON-LD 使用 `config/site.ts` 中的 `SITE_ORG`（`name`、`logo`）；`url` 与 `logo` 在运行时通过 `siteUrl` 拼接为绝对地址。
+
 ## JSON-LD 可选参数
 
 | 参数                                           | 效果                        |
@@ -44,6 +46,8 @@ usePageSeo({
 | `/robots.txt`  | `server/routes/robots.txt.ts`  | Allow / + Disallow 产品/登录 |
 
 生成逻辑：`server/utils/seo.ts` + `config/routes.ts` 的 `publicLocalizedPaths()`
+
+新闻 slug 从 API 拉取（`fetchNewsSlugs`）；失败时使用 fallback：`starter-release`、`deployment-guide`、`i18n-routing`、`auth-module`。
 
 **排除项**：`/workspace`、`/docs/`、`/account`、`/sign-in`、`/sign-up`
 

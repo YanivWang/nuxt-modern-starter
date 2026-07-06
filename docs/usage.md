@@ -291,21 +291,22 @@ API boundaries:
 
 Current UI scope:
 
-- The header create button navigates to `/docs/new`. The editor creates the project on first save through `createWorkspaceProject()` with the default title from i18n (`workspace.defaultTitle`).
-- After a blank project is created, the editor replaces the route with `/docs/:id` for the new project id.
-- Project cards link to the editor through `getWorkspaceDocPath()`. Cards use decorative accent thumbnails; search and filter controls are UI-only placeholders without backend APIs.
+- The header create button navigates to `/docs/new` (does not call the API immediately). `WorkspaceDashboard` prefetches the editor route and `~/features/editor` chunk on idle or hover/focus for faster first paint.
+- The editor creates the project on first non-blank save through `createWorkspaceProject()` with the default title from i18n (`workspace.defaultTitle`), then saves initial content and replaces the route with `/docs/:id`.
+- Project cards link to the editor through `getWorkspaceDocPath()`. Cards show decorative accent thumbnails and formatted `updatedAt`. Share, download, and favorite buttons on cards are UI-only placeholders without backend APIs.
 
 Editor behavior:
 
-- `/docs/:id` and `/docs/new` use the `editor` layout and mount `EditorWorkspace` with `@yanivjs/yaniv-editor`.
-- Route param `:id` is the **project id** (or `new` for draft creation). Existing projects call `fetchWorkspaceProject(id)`, require a non-null `documentId`, then load/save the linked document through editor APIs.
-- Content autosaves after a 2-second debounce and flushes on route leave. Title edits call `updateWorkspaceProject()`.
-- The editor header includes language switching and `UserAccountMenu`; it is not a sidebar nav item.
+- `/docs/:id` and `/docs/new` use the minimal `editor` layout and mount `EditorWorkspace` with `@yanivjs/yaniv-editor` (`mode: edit`, `preset: full`, locale from `languageStore`).
+- Route param `:id` is the **project id** (or `new` via `WORKSPACE_NEW_PROJECT_ID`). The page keeps `cachedProject` to avoid loading flicker. Existing projects call `fetchWorkspaceProject(id)`, require a non-null `documentId`, then load/save the linked document through editor APIs.
+- Draft mode (`/docs/new`) skips project fetch; first non-blank content triggers `createWorkspaceProject()` + initial `saveEditorDocument()`, then `router.replace()` to `/docs/:id`.
+- Content autosaves after a 2-second debounce and flushes on route leave (`onBeforeRouteLeave`). Title edits persist through both `saveEditorDocument()` and `updateWorkspaceProject()`.
+- The editor header (`EditorWorkspaceHeader`) includes back-to-workspace, inline title editing, autosave status, language switching, and `UserAccountMenu`; it is not a sidebar nav item.
 
 Account behavior:
 
 - `/account` uses the `account` layout with `AccountShell` and mounts `AccountPage`.
-- Profile data loads through `fetchProfileApi()`. API failures show an alert with retry. Logout clears attribution params and redirects to the localized home page.
+- Profile data loads through `fetchProfileApi()`; extended profile fields render as key-value rows. API failures show an alert with retry. Logout is available on this page and via `UserAccountMenu`; both call `logout()` which clears attribution params and redirects to the localized home page.
 
 Local full-stack defaults:
 

@@ -20,9 +20,11 @@ idle → loading → authenticated
 
 - `login(payload)` — loginApi → 存 token → fetchMe
 - `register(payload)` — 仅注册，不登录
-- `logout()` — 调 API + 清归因 + reset
+- `logout()` — 调 API + `clearAttributionParams()` + reset
 - `refresh()` — refreshApi → 更新 token
 - `fetchMe()` — 拉用户信息
+
+`useAuth().ensureSession()` 恢复顺序：已认证 → 有 accessToken 则 fetchMe → 有 refreshToken 则 refresh + fetchMe → 否则 reset。
 
 ## 使用方式
 

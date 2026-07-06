@@ -35,14 +35,24 @@ routeRules: {
 
 ### runtimeConfig.public
 
-| 键                 | 环境变量                        |
-| ------------------ | ------------------------------- |
-| `appEnv`           | `NUXT_APP_ENV`                  |
-| `apiBase`          | `NUXT_PUBLIC_API_BASE`          |
-| `siteUrl`          | `NUXT_PUBLIC_SITE_URL`          |
-| `analyticsEnabled` | `NUXT_PUBLIC_ANALYTICS_ENABLED` |
+| 键                       | 环境变量                               |
+| ------------------------ | -------------------------------------- |
+| `appEnv`                 | `NUXT_APP_ENV`                         |
+| `apiBase`                | `NUXT_PUBLIC_API_BASE`                 |
+| `siteUrl`                | `NUXT_PUBLIC_SITE_URL`                 |
+| `googleSiteVerification` | `NUXT_PUBLIC_GOOGLE_SITE_VERIFICATION` |
+| `baiduSiteVerification`  | `NUXT_PUBLIC_BAIDU_SITE_VERIFICATION`  |
+| `analyticsEnabled`       | `NUXT_PUBLIC_ANALYTICS_ENABLED`        |
+| `analyticsScriptSrc`     | `NUXT_PUBLIC_ANALYTICS_SCRIPT_SRC`     |
+| `analyticsDeferMs`       | `NUXT_PUBLIC_ANALYTICS_DEFER_MS`       |
 
 客户端和服务端均可 `useRuntimeConfig().public` 访问。
+
+### 其他要点
+
+- `compatibilityDate: '2026-07-04'`
+- 全局 `/**` routeRules 注入 CSP、X-Frame-Options、nosniff 等安全响应头
+- 测试环境（`NODE_ENV=test` 或 `VITEST`）额外加载 `@nuxt/test-utils/module`
 
 ## 目录约定（Nuxt 4）
 

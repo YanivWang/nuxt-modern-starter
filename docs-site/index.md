@@ -32,6 +32,9 @@ features:
   - icon: 🚀
     title: 部署就绪
     details: Nitro node-server、Docker、Compose、Nginx 样例与完整环境变量说明。
+  - icon: 📝
+    title: 工作台与编辑器
+    details: 项目 CRUD、/docs/new 草稿创建、YanivEditor PPT 编辑器 2s 自动保存、账户中心与主题模板占位。
 ---
 
 ## 文档适合谁读？

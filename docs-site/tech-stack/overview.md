@@ -2,15 +2,15 @@
 
 ## 核心依赖
 
-| 包                                                                           | 版本  | 角色                                  |
-| ---------------------------------------------------------------------------- | ----- | ------------------------------------- |
-| [Nuxt](https://nuxt.com/)                                                    | 4.4.8 | 全栈 Vue 框架、文件路由、Nitro 服务端 |
-| [Vue](https://vuejs.org/)                                                    | 3.5.x | UI 运行时                             |
-| [TypeScript](https://www.typescriptlang.org/)                                | 5.9   | 类型安全，`strict: true`              |
-| [Pinia](https://pinia.vuejs.org/)                                            | 3.x   | 客户端状态                            |
-| [vue-i18n](https://vue-i18n.intlify.dev/)                                    | 11.x  | 国际化                                |
-| [Ant Design Vue](https://antdv.com/)                                         | 4.2.x | 组件库                                |
-| [@yanivjs/yaniv-editor](https://www.npmjs.com/package/@yanivjs/yaniv-editor) | 0.1.x | 富文本编辑器                          |
+| 包                                            | 版本  | 角色                                             |
+| --------------------------------------------- | ----- | ------------------------------------------------ |
+| [Nuxt](https://nuxt.com/)                     | 4.4.8 | 全栈 Vue 框架、文件路由、Nitro 服务端            |
+| [Vue](https://vuejs.org/)                     | 3.5.x | UI 运行时                                        |
+| [TypeScript](https://www.typescriptlang.org/) | 5.9   | 类型安全，`strict: true`                         |
+| [Pinia](https://pinia.vuejs.org/)             | 3.x   | 客户端状态                                       |
+| [vue-i18n](https://vue-i18n.intlify.dev/)     | 11.x  | 国际化                                           |
+| [Ant Design Vue](https://antdv.com/)          | 4.2.x | 组件库                                           |
+| `@yanivjs/yaniv-editor`                       | 0.1.2 | PPT/幻灯片编辑器（`mode: edit`, `preset: full`） |
 
 ## 开发工具链
 

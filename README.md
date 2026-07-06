@@ -47,9 +47,9 @@ pnpm build
 - Separate public SEO routes and logged-in product routes. Product URLs stay language-neutral; `/en/workspace`, `/en/docs/**`, and `/en/account` redirect to canonical paths without a locale prefix.
 - Feature-first product modules under `app/features/*` for workspace, editor, product shell, account shell, templates, and future SaaS workflows.
 - Opt-in Bearer Token auth module with sign-in, sign-up, logout, user menu, safe redirect handling, and protected-route examples.
-- Product workspace at `/workspace`: list, create, and delete projects via `nuxt-modern-starter-api` (`GET/POST/PATCH/DELETE /api/projects`).
-- Theme templates placeholder at `/workspace/templates` (no API yet).
-- Editor at `/docs/:id` and `/docs/new` (`:id` is the project id): resolves `documentId`, loads content with `GET /api/documents/:documentId`, autosaves with `PATCH /api/documents/:documentId`, and updates titles with `PATCH /api/projects/:projectId` through `@yanivjs/yaniv-editor`.
+- Product workspace at `/workspace`: list, create (navigate to `/docs/new`), and delete projects via `nuxt-modern-starter-api` (`GET/POST/PATCH/DELETE /api/projects`). Dashboard prefetches editor route and feature chunk on idle.
+- Theme templates placeholder at `/workspace/templates` (6 dashed cards + empty state, no API).
+- Editor at `/docs/:id` and `/docs/new` (`:id` is the project id or `new`): resolves `documentId`, loads content with `GET /api/documents/:documentId`, autosaves with `PATCH /api/documents/:documentId` (2s debounce, flush on route leave), and updates titles with `PATCH /api/projects/:projectId` through `@yanivjs/yaniv-editor` (PPT editor, `mode: edit`, `preset: full`).
 - Product account at `/account`: dedicated account layout, profile payload, and logout (via user menu).
 - Authenticated business responses use the shared `{ code, message, data }` envelope with automatic `code === 200` validation in the HTTP client.
 - Public pages for home, pricing, about, help, news list, news detail, sign-in, sign-up, and 404.

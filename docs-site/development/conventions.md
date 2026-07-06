@@ -35,12 +35,26 @@
 - 业务 payload 在 `data` 里
 - `code === 200` 才成功
 
-## 安全
+## 格式化与工具链
+
+| 工具           | 职责                                                                    |
+| -------------- | ----------------------------------------------------------------------- |
+| Prettier       | JS/TS/Vue/Markdown/JSON/CSS/SCSS 格式化（单一来源）                     |
+| ESLint         | 代码质量与 Vue 语义；`--max-warnings 0`                                 |
+| Stylelint      | SCSS/CSS/Vue style 块                                                   |
+| Husky          | pre-commit：`lint-staged` → `lint` → `stylelint` → `typecheck` → `test` |
+| `pnpm quality` | 发布门禁：上述 + `format:check` + `build`                               |
+
+提交时 staged 文件先 `prettier --write`，再 `eslint --fix --max-warnings 0`。Vue 空元素保持 Prettier 自闭合格式（`<div />`），避免与 ESLint 冲突。
+
+## 安全与无障碍
 
 - 不 log token/cookie（headers 已脱敏）
 - 登录 redirect 用 `resolveSafeRedirectPath()`
-- 归因数据只在 `logout()` 清除
-- analytics 默认关闭，启用需改 CSP
+- 归因数据只在 `logout()` 清除，不在 `reset()` 或 `clearAuthSession()` 中清除
+- analytics 默认关闭，启用需同步更新 `nuxt.config.ts` 的 CSP `script-src`
+- 第三方脚本仅在明确需求下加载；交互控件需可访问标签、可见焦点与键盘支持
+- 面向欧盟等需 consent 的地区，fork 项目需自行添加 CMP（starter 未内置）
 
 ## 格式化
 

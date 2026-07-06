@@ -63,7 +63,7 @@ Public adapters must not read token cookies or call refresh endpoints. If a publ
 
 Product routes (`/workspace/**`, `/docs/**`, `/account`) are client-rendered by default through `csrRouteRules` in `config/routes.ts`. Do not add localized product route rules such as `/en/workspace`; language choice inside the product app is UI state, not part of the authenticated product URL. If someone opens `/en/workspace`, locale and server middleware redirect to `/workspace` with 301.
 
-Product sidebar navigation belongs in `app/features/product-shell/config.ts` through `productNavItems` and `productFooterNavItems`. Account settings navigation belongs in `app/features/account-shell/config.ts` through `accountNavItems`. Account access from the product shell lives in `UserAccountMenu`, not the product sidebar. Page-level auth and noindex are declared with `definePageMeta` and `usePageSeo`.
+Product sidebar navigation belongs in `app/features/product-shell/config.ts` through `productNavItems` and `productFooterNavItems` (footer includes a localized pricing link). Account settings navigation belongs in `app/features/account-shell/config.ts` through `accountNavItems`. Account access from the product shell lives in `UserAccountMenu`, not the product sidebar. Page-level auth and noindex are declared with `definePageMeta` and `usePageSeo`.
 
 Auth redirect query values must stay on same-origin relative paths. Use `resolveSafeRedirectPath()` from `app/utils/safe-redirect.ts` instead of passing raw `route.query.redirect` to `router.push()`.
 

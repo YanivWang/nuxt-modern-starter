@@ -126,6 +126,8 @@ POST /refresh { refreshToken }
 | `updateWorkspaceProject` | PATCH  | `/projects/:id` |
 | `deleteWorkspaceProject` | DELETE | `/projects/:id` |
 
+`createWorkspaceProject` 返回 `{ project, document }`；`WORKSPACE_NEW_PROJECT_ID = 'new'` 用于 `/docs/new` 路由。
+
 ### 编辑器（`~/features/editor/api`）
 
 | 函数                  | 方法  | 路径                     |

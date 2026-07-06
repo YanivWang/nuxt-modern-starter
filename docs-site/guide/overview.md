@@ -58,18 +58,18 @@ Nuxt 页面文件（`app/pages/*`）只做：
 
 ## 预置功能清单
 
-| 模块      | 路由                     | 说明                                    |
-| --------- | ------------------------ | --------------------------------------- |
-| 首页      | `/`、`/en`               | prerender，WebPage/Organization JSON-LD |
-| 定价      | `/pricing`               | SWR，内容来自 API                       |
-| 关于      | `/about`                 | prerender，纯 i18n                      |
-| 帮助      | `/help`                  | prerender，FAQ 本地数据                 |
-| 新闻      | `/news`、`/news/:slug`   | SWR，Article JSON-LD                    |
-| 登录/注册 | `/sign-in`、`/sign-up`   | noindex                                 |
-| 工作台    | `/workspace`             | CSR，项目 CRUD                          |
-| 模板      | `/workspace/templates`   | CSR，占位 UI                            |
-| 编辑器    | `/docs/:id`、`/docs/new` | CSR，自动保存                           |
-| 账户      | `/account`               | CSR，profile + 退出                     |
+| 模块      | 路由                     | 说明                                      |
+| --------- | ------------------------ | ----------------------------------------- |
+| 首页      | `/`、`/en`               | prerender，WebPage/Organization JSON-LD   |
+| 定价      | `/pricing`               | SWR，内容来自 API                         |
+| 关于      | `/about`                 | prerender，纯 i18n                        |
+| 帮助      | `/help`                  | prerender，FAQ 本地数据                   |
+| 新闻      | `/news`、`/news/:slug`   | SWR，Article JSON-LD                      |
+| 登录/注册 | `/sign-in`、`/sign-up`   | noindex                                   |
+| 工作台    | `/workspace`             | CSR，项目 CRUD                            |
+| 模板      | `/workspace/templates`   | CSR，占位 UI                              |
+| 编辑器    | `/docs/:id`、`/docs/new` | CSR，YanivEditor PPT 编辑器 + 2s 自动保存 |
+| 账户      | `/account`               | CSR，profile + 退出                       |
 
 ## 技术栈一览
 
@@ -81,8 +81,8 @@ Nuxt 页面文件（`app/pages/*`）只做：
 | UI     | Ant Design Vue 4                        |
 | 样式   | SCSS + CSS 变量 token                   |
 | i18n   | vue-i18n（自建路由，不用 @nuxtjs/i18n） |
-| 编辑器 | @yanivjs/yaniv-editor                   |
-| 测试   | Vitest + @nuxt/test-utils               |
+| 编辑器 | @yanivjs/yaniv-editor                   | PPT/幻灯片编辑器（`mode: edit`, `preset: full`） |
+| 测试   | Vitest 4.1.9 + @nuxt/test-utils 4.0.3   | Nuxt 环境 + 单元测试（22 文件 / 81 用例）        |
 | 部署   | Nitro node-server + Docker + Nginx 样例 |
 
 详见 [技术栈总览](/tech-stack/overview)。

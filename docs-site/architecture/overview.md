@@ -66,29 +66,29 @@ flowchart TD
    - 客户端侧产品 URL canonical 301
 
 3. **`auth.ts`**（命名，产品页显式 `definePageMeta`）
-   - `ensureSession()` → 未登录跳转 `/sign-in?redirect=`
+   - `ensureSession()` → 未登录跳转本地化 `/sign-in?redirect=`
    - 可选 `meta.auth.roles` / `permissions` → 403
 
 ## Layout 与 Feature 对应
 
-| Layout    | 使用场景     | Shell 组件            |
-| --------- | ------------ | --------------------- |
-| `default` | 公开营销页   | AppHeader + AppFooter |
-| `product` | 工作台、模板 | ProductShell 侧边栏   |
-| `editor`  | 文档编辑器   | EditorWorkspaceHeader |
-| `account` | 账户设置     | AccountShell          |
-| `empty`   | 错误页等     | 最小壳                |
+| Layout    | 使用场景     | Shell 组件                                  |
+| --------- | ------------ | ------------------------------------------- |
+| `default` | 公开营销页   | AppHeader + AppFooter                       |
+| `product` | 工作台、模板 | ProductShell 侧边栏 + AppShellHeader        |
+| `editor`  | 文档编辑器   | 仅 `<slot />`（全屏；Header 在 feature 内） |
+| `account` | 账户设置     | AccountShell                                |
+| `empty`   | 错误页等     | 最小壳                                      |
 
 ## Feature 模块地图
 
-| Feature         | 职责                 | 对外导出                            |
-| --------------- | -------------------- | ----------------------------------- |
-| `product-shell` | 产品区侧边栏导航配置 | `ProductShell`, `productNavItems`   |
-| `account-shell` | 账户区壳层           | `AccountShell`, `accountNavItems`   |
-| `workspace`     | 项目列表/卡片        | `WorkspaceDashboard`, workspace API |
-| `editor`        | 富文本编辑、自动保存 | `EditorWorkspace`, editor API       |
-| `templates`     | 主题模板占位         | `ThemeTemplatesPage`                |
-| `account`       | 账户信息展示         | `AccountPage`                       |
+| Feature         | 职责                           | 对外导出                                                    |
+| --------------- | ------------------------------ | ----------------------------------------------------------- |
+| `product-shell` | 产品区侧边栏导航配置           | `ProductShell`, `productNavItems`                           |
+| `account-shell` | 账户区壳层                     | `AccountShell`, `accountNavItems`                           |
+| `workspace`     | 项目列表/卡片、路由预加载      | `WorkspaceDashboard`, `WorkspaceProjectCard`, workspace API |
+| `editor`        | PPT 编辑器、自动保存、标题编辑 | `EditorWorkspace`, `EditorWorkspaceHeader`, editor API      |
+| `templates`     | 主题模板占位                   | `ThemeTemplatesPage`                                        |
+| `account`       | 账户信息展示                   | `AccountPage`                                               |
 
 ## 插件启动链
 

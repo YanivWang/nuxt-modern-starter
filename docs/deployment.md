@@ -48,7 +48,7 @@ When pairing this frontend with `nuxt-modern-starter-api` in Docker:
 1. Start the API stack from the backend repo, for example `pnpm docker:dev`.
 2. Keep frontend `.env.dev` aligned with the API gateway: `NUXT_PUBLIC_API_BASE=http://localhost:2026/api`.
 3. Keep backend `.env.development` `CORS_ORIGINS` aligned with the Nuxt dev origin: `http://localhost:3000`.
-4. Run `pnpm dev` in this repo and verify sign-in, `/workspace` list/create/delete, `/docs/new` and `/docs/:id` editor load/autosave/title edit, `/workspace/templates` placeholder, and `/account` profile display and logout via the user menu. Route param `:id` is the project id; the page resolves `documentId` before calling editor APIs.
+4. Run `pnpm dev` in this repo and verify sign-in, `/workspace` list/create/delete, `/docs/new` and `/docs/:id` editor load/autosave/title edit, `/workspace/templates` placeholder, and `/account` profile display and logout via the user menu. Route param `:id` is the project id; the page resolves `documentId` before calling editor APIs. Creating a project from the workspace navigates to `/docs/new` first; the API call happens on first non-blank editor save.
 
 ## Local Verification
 

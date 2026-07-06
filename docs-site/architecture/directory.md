@@ -21,20 +21,20 @@ nuxt-modern-starter/
 
 ### 路由入口 `app/pages/`
 
-| 路径                            | 对应 URL               | 说明              |
-| ------------------------------- | ---------------------- | ----------------- |
-| `[[language]]/index.vue`        | `/`、`/en`             | 首页              |
-| `[[language]]/pricing.vue`      | `/pricing`             | 定价（SWR）       |
-| `[[language]]/about.vue`        | `/about`               | 关于（prerender） |
-| `[[language]]/help.vue`         | `/help`                | 帮助 + FAQ        |
-| `[[language]]/news/`            | `/news/**`             | 新闻列表/详情     |
-| `[[language]]/sign-in.vue`      | `/sign-in`             | 登录（noindex）   |
-| `[[language]]/sign-up.vue`      | `/sign-up`             | 注册（noindex）   |
-| `[[language]]/[...slug].vue`    | 未匹配                 | 404               |
-| `workspace/index.vue`           | `/workspace`           | 工作台            |
-| `workspace/templates/index.vue` | `/workspace/templates` | 模板占位          |
-| `docs/[id].vue`                 | `/docs/:id`            | 编辑器            |
-| `account.vue`                   | `/account`             | 账户设置          |
+| 路径                            | 对应 URL                 | 说明                               |
+| ------------------------------- | ------------------------ | ---------------------------------- |
+| `[[language]]/index.vue`        | `/`、`/en`               | 首页                               |
+| `[[language]]/pricing.vue`      | `/pricing`               | 定价（SWR）                        |
+| `[[language]]/about.vue`        | `/about`                 | 关于（prerender）                  |
+| `[[language]]/help.vue`         | `/help`                  | 帮助 + FAQ                         |
+| `[[language]]/news/`            | `/news/**`               | 新闻列表/详情                      |
+| `[[language]]/sign-in.vue`      | `/sign-in`               | 登录（noindex）                    |
+| `[[language]]/sign-up.vue`      | `/sign-up`               | 注册（noindex）                    |
+| `[[language]]/[...slug].vue`    | 未匹配                   | 404                                |
+| `workspace/index.vue`           | `/workspace`             | 工作台                             |
+| `workspace/templates/index.vue` | `/workspace/templates`   | 模板占位                           |
+| `docs/[id].vue`                 | `/docs/:id`、`/docs/new` | 编辑器（`:id` 为项目 id 或 `new`） |
+| `account.vue`                   | `/account`               | 账户设置                           |
 
 ::: tip 规则
 
@@ -60,14 +60,14 @@ app/features/my-feature/
 
 **现有 feature：**
 
-| 目录             | 写什么代码                    |
-| ---------------- | ----------------------------- |
-| `product-shell/` | 产品区侧边栏、导航 config     |
-| `account-shell/` | 账户区壳层、导航 config       |
-| `workspace/`     | 项目列表 UI + `/projects` API |
-| `editor/`        | 编辑器 UI + `/documents` API  |
-| `templates/`     | 模板占位页                    |
-| `account/`       | 账户设置 UI                   |
+| 目录             | 写什么代码                                                          |
+| ---------------- | ------------------------------------------------------------------- |
+| `product-shell/` | 产品区侧边栏、导航 config                                           |
+| `account-shell/` | 账户区壳层、导航 config                                             |
+| `workspace/`     | 项目列表 UI + `/projects` API；创建跳转 `/docs/new`；卡片装饰缩略图 |
+| `editor/`        | YanivEditor PPT 编辑器 UI + `/documents` API；2s 自动保存           |
+| `templates/`     | 模板占位页                                                          |
+| `account/`       | 账户设置 UI                                                         |
 
 ::: warning 跨 feature 引用
 其他模块只能 `import from '~/features/xxx'`，不要深入 `~/features/xxx/components/...`。
@@ -75,16 +75,16 @@ app/features/my-feature/
 
 ### 共享层（框架级）
 
-| 目录                     | 放什么                                   | 不放什么                |
-| ------------------------ | ---------------------------------------- | ----------------------- |
-| `app/components/base/`   | BaseButton、BasePicture 等通用组件       | 业务页面块              |
-| `app/components/layout/` | AppHeader、UserAccountMenu               | feature 专属 UI         |
-| `app/composables/`       | useAuth、usePageSeo、useLocalePath       | feature 专属 composable |
-| `app/stores/`            | auth、language、theme                    | feature 专属 store      |
-| `app/utils/`             | 小工具函数                               | 业务逻辑                |
-| `app/layouts/`           | default、product、editor、account、empty | —                       |
-| `app/middleware/`        | locale.global、auth                      | —                       |
-| `app/plugins/`           | i18n、auth、attribution、analytics       | —                       |
+| 目录                     | 放什么                                                                             | 不放什么                |
+| ------------------------ | ---------------------------------------------------------------------------------- | ----------------------- |
+| `app/components/base/`   | BaseButton、BasePicture 等通用组件                                                 | 业务页面块              |
+| `app/components/layout/` | AppHeader、UserAccountMenu                                                         | feature 专属 UI         |
+| `app/composables/`       | useAuth、usePageSeo、useLocalePath、useTheme、useLanguageSwitch、useUserAvatar     | feature 专属 composable |
+| `app/stores/`            | auth、language、theme                                                              | feature 专属 store      |
+| `app/utils/`             | auth-session、safe-redirect、attribution-params、formatDate、antdIcon、load-script | 业务逻辑                |
+| `app/layouts/`           | default、product、editor、account、empty                                           | —                       |
+| `app/middleware/`        | locale.global、auth                                                                | —                       |
+| `app/plugins/`           | i18n、auth、attribution、analytics                                                 | —                       |
 
 ### API 与 HTTP
 

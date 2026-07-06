@@ -81,7 +81,7 @@ definePageMeta({
 
 ## 登录重定向
 
-未登录访问 `/workspace` → `/sign-in?redirect=/workspace`
+未登录访问 `/workspace` → 本地化 `/sign-in?redirect=/workspace`（`auth` 中间件通过 `localizedPath(AUTH_REDIRECTS.login, currentLanguage)` 生成登录路径）
 
 sign-in 页使用 `resolveSafeRedirectPath()` 校验 redirect，拒绝 `//evil.com` 等外部 URL。
 
