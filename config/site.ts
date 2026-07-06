@@ -16,11 +16,12 @@ export const SITE_LOCALE_PREFIX_MAP: Record<SupportedLocale, string> = {
   'en-US': 'en'
 }
 
-export const PUBLIC_PAGE_PATHS = ['/', '/pricing', '/help', '/news'] as const
+export const PUBLIC_PAGE_PATHS = ['/', '/pricing', '/about', '/help', '/news'] as const
 
 export const NAV_ITEMS = [
   { labelKey: 'nav.home', path: '/' },
   { labelKey: 'nav.pricing', path: '/pricing' },
+  { labelKey: 'nav.about', path: '/about' },
   { labelKey: 'nav.help', path: '/help' },
   { labelKey: 'nav.news', path: '/news' }
 ] as const

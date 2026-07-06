@@ -2,6 +2,7 @@ export default {
   nav: {
     home: '首页',
     pricing: '价格',
+    about: '关于我们',
     help: '帮助',
     news: '新闻',
     primary: '主导航'
@@ -249,6 +250,33 @@ export default {
     share: '分享',
     download: '下载',
     more: '更多操作'
+  },
+  about: {
+    eyebrow: '关于我们',
+    title: '为公开站点与轻量 SaaS 前台而生',
+    lead: 'Nuxt Modern Starter 是一套可复用的 Nuxt 4 工程骨架，帮助团队更快搭建营销页、内容中心与可选鉴权的产品前台。',
+    mission: {
+      title: '我们的目标',
+      body: '把公开站点最常见的能力——多语言路由、SEO、内容页、登录注册与部署样例——整理成一套可直接运行、易于扩展的起点，让团队把时间花在业务差异上，而不是重复搭基础设施。'
+    },
+    values: {
+      title: '我们坚持的原则',
+      items: {
+        focus: '聚焦公开站点场景，保持目录清晰、边界明确，避免 starter 过度膨胀。',
+        quality: '默认启用 TypeScript 严格模式、Lint、测试与部署样例，让质量基线从第一天就到位。',
+        openness: '公开页与产品区分层设计，本地内容与 API 内容可平滑替换，便于逐步接入真实后端。'
+      }
+    },
+    story: {
+      title: '项目背景',
+      paragraphs: {
+        origin:
+          '项目源于团队在多个 SaaS 官网与产品前台中反复搭建的共性需求：营销首页、定价、帮助、新闻、登录注册，以及登录后的工作台与编辑器示例。',
+        practice:
+          'starter 默认以中文为主语言、英文挂载 /en 前缀，公开页支持 SSR / prerender / SWR 组合策略，产品区则保持语言中性 URL 与 CSR 渲染。',
+        next: '如果你正在评估一套 Nuxt 公开站点模板，可以从 README 快速启动，再按业务替换文案、内容与后端接口。'
+      }
+    }
   },
   help: {
     eyebrow: '帮助中心',

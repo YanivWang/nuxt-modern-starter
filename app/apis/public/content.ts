@@ -1,6 +1,44 @@
+import type { ApiResponse } from '../../api-core/api-types'
 import { faqItems } from '../../../config/content/faq'
-import { getNewsArticle, newsArticles } from '../../../config/content/news'
 import type { SupportedLocale } from '../../../config/site'
+import { createPublicApiClient } from './client'
+
+export type LocalizedNewsArticleSummary = {
+  slug: string
+  title: string
+  description: string
+  publishedAt: string
+}
+
+export type LocalizedNewsArticle = LocalizedNewsArticleSummary & {
+  body: string[]
+}
+
+export type PricingPlan = {
+  key: 'starter' | 'growth' | 'custom'
+  featured: boolean
+  ctaPath: '/sign-up' | '/help'
+  name: string
+  badge: string
+  price: string
+  period: string
+  description: string
+  cta: string
+  features: string[]
+}
+
+export type PricingPageContent = {
+  eyebrow: string
+  title: string
+  lead: string
+  note: string
+  plans: PricingPlan[]
+  includes: {
+    eyebrow: string
+    title: string
+    items: string[]
+  }
+}
 
 export const getFaqItems = (locale: SupportedLocale) =>
   faqItems.map((item) => ({
@@ -9,26 +47,25 @@ export const getFaqItems = (locale: SupportedLocale) =>
     answer: item.answer[locale]
   }))
 
-export const getNewsArticles = (locale: SupportedLocale) =>
-  newsArticles.map((article) => ({
-    slug: article.slug,
-    title: article.title[locale],
-    description: article.description[locale],
-    publishedAt: article.publishedAt
-  }))
+export const fetchNewsArticles = (locale: SupportedLocale) =>
+  createPublicApiClient({ locale }).request<
+    ApiResponse<{ articles: LocalizedNewsArticleSummary[] }>
+  >('/content/news', {
+    method: 'GET'
+  })
 
-export const getLocalizedNewsArticle = (slug: string, locale: SupportedLocale) => {
-  const article = getNewsArticle(slug)
+export const fetchLocalizedNewsArticle = (slug: string, locale: SupportedLocale) =>
+  createPublicApiClient({ locale }).request<ApiResponse<{ article: LocalizedNewsArticle }>>(
+    `/content/news/${slug}`,
+    {
+      method: 'GET'
+    }
+  )
 
-  if (!article) {
-    return undefined
-  }
-
-  return {
-    slug: article.slug,
-    title: article.title[locale],
-    description: article.description[locale],
-    body: article.body[locale],
-    publishedAt: article.publishedAt
-  }
-}
+export const fetchPricingPage = (locale: SupportedLocale) =>
+  createPublicApiClient({ locale }).request<ApiResponse<{ pricing: PricingPageContent }>>(
+    '/content/pricing',
+    {
+      method: 'GET'
+    }
+  )

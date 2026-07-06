@@ -16,68 +16,50 @@
   - Growth → CTA 跳转 /help
 
   数据 / API：
-  - 纯静态 i18n（pricing.plans.*、pricing.includes.*），无后端请求
+  - fetchPricingPage(currentLanguage) → GET /api/content/pricing（nuxt-modern-starter-api）
 
   子组件：
   - PageContainer、BaseButton、CheckOutlined 图标
 
   SEO / 边界：
-  - usePageSeo 完整 SEO 元数据
+  - usePageSeo 完整 SEO 元数据；默认 SSR，每次请求拉取最新定价
   - AppHeader 主导航、首页 secondary CTA、product-shell 底部导航均有入口
 -->
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n'
 import { CheckOutlined } from '~/utils/antdIcon'
+import { fetchPricingPage } from '../../apis/public/content'
 
 const languageStore = useLanguageStore()
 const { localePath } = useLocalePath()
-const { t } = useI18n()
+
+const { data: pricing } = await useAsyncData(
+  () => `pricing-page:${languageStore.currentLanguage}`,
+  async () => {
+    const response = await fetchPricingPage(languageStore.currentLanguage)
+    return response.data.pricing
+  },
+  {
+    watch: [() => languageStore.currentLanguage]
+  }
+)
 
 usePageSeo({
   path: '/pricing',
   locale: languageStore.currentLanguage,
-  title: t('pricing.title'),
-  description: t('pricing.lead')
+  title: pricing.value?.title,
+  description: pricing.value?.lead
 })
-
-const planKeys = ['starter', 'growth', 'custom'] as const
-
-const planFeatureKeys = {
-  starter: ['nuxt', 'pages', 'i18n', 'seo'],
-  growth: ['api', 'auth', 'deploy', 'quality'],
-  custom: ['theme', 'content', 'docs', 'support']
-} as const
-
-const plans = computed(() =>
-  planKeys.map((key) => ({
-    key,
-    name: t(`pricing.plans.${key}.name`),
-    badge: t(`pricing.plans.${key}.badge`),
-    price: t(`pricing.plans.${key}.price`),
-    period: t(`pricing.plans.${key}.period`),
-    description: t(`pricing.plans.${key}.description`),
-    cta: t(`pricing.plans.${key}.cta`),
-    featured: key === 'growth',
-    features: planFeatureKeys[key].map((featureKey) =>
-      t(`pricing.plans.${key}.features.${featureKey}`)
-    )
-  }))
-)
-
-const includeKeys = ['stack', 'routing', 'content', 'editor'] as const
-
-const includes = computed(() => includeKeys.map((key) => t(`pricing.includes.items.${key}`)))
 </script>
 
 <template>
-  <PageContainer>
-    <p class="page-eyebrow">{{ $t('pricing.eyebrow') }}</p>
-    <h1 class="page-title">{{ $t('pricing.title') }}</h1>
-    <p class="page-lead">{{ $t('pricing.lead') }}</p>
+  <PageContainer v-if="pricing">
+    <p class="page-eyebrow">{{ pricing.eyebrow }}</p>
+    <h1 class="page-title">{{ pricing.title }}</h1>
+    <p class="page-lead">{{ pricing.lead }}</p>
 
     <div class="pricing-grid">
       <a-card
-        v-for="plan in plans"
+        v-for="plan in pricing.plans"
         :key="plan.key"
         class="pricing-card"
         :class="{ 'pricing-card--featured': plan.featured }"
@@ -103,10 +85,7 @@ const includes = computed(() => includeKeys.map((key) => t(`pricing.includes.ite
         </ul>
 
         <div class="pricing-card__footer">
-          <NuxtLink
-            :to="localePath(plan.featured ? '/help' : '/sign-up')"
-            class="pricing-card__cta"
-          >
+          <NuxtLink :to="localePath(plan.ctaPath)" class="pricing-card__cta">
             <BaseButton :type="plan.featured ? 'primary' : 'default'">{{ plan.cta }}</BaseButton>
           </NuxtLink>
         </div>
@@ -114,17 +93,17 @@ const includes = computed(() => includeKeys.map((key) => t(`pricing.includes.ite
     </div>
 
     <section class="page-panel pricing-includes">
-      <p class="page-eyebrow">{{ $t('pricing.includes.eyebrow') }}</p>
-      <h2 class="pricing-includes__title">{{ $t('pricing.includes.title') }}</h2>
+      <p class="page-eyebrow">{{ pricing.includes.eyebrow }}</p>
+      <h2 class="pricing-includes__title">{{ pricing.includes.title }}</h2>
       <ul class="page-check-list page-check-list--2col pricing-includes__list">
-        <li v-for="item in includes" :key="item">
+        <li v-for="item in pricing.includes.items" :key="item">
           <CheckOutlined class="page-check-list__icon" aria-hidden="true" />
           <span>{{ item }}</span>
         </li>
       </ul>
     </section>
 
-    <p class="page-note">{{ $t('pricing.note') }}</p>
+    <p class="page-note">{{ pricing.note }}</p>
   </PageContainer>
 </template>
 

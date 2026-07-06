@@ -12,7 +12,7 @@
   - 浏览文章列表 → 点击卡片跳转 /news/:slug 详情页
 
   数据 / API：
-  - getNewsArticles(currentLanguage) → config/content/news.ts（本地静态数据）
+  - fetchNewsArticles(currentLanguage) → GET /api/content/news（nuxt-modern-starter-api）
   - formatPublishedDate() 格式化发布日期
 
   子组件：
@@ -25,13 +25,23 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { ArrowRightOutlined } from '~/utils/antdIcon'
-import { getNewsArticles } from '../../../apis/public/content'
+import { fetchNewsArticles } from '../../../apis/public/content'
 import { formatPublishedDate } from '../../../utils/formatDate'
 
 const languageStore = useLanguageStore()
 const { localePath } = useLocalePath()
 const { t } = useI18n()
-const articles = computed(() => getNewsArticles(languageStore.currentLanguage))
+
+const { data: articles } = await useAsyncData(
+  () => `news-articles:${languageStore.currentLanguage}`,
+  async () => {
+    const response = await fetchNewsArticles(languageStore.currentLanguage)
+    return response.data.articles
+  },
+  {
+    watch: [() => languageStore.currentLanguage]
+  }
+)
 
 usePageSeo({
   path: '/news',
@@ -49,7 +59,7 @@ usePageSeo({
 
     <div class="page-grid news-list">
       <a-card
-        v-for="article in articles"
+        v-for="article in articles ?? []"
         :key="article.slug"
         class="page-surface-card news-card"
         :bordered="false"

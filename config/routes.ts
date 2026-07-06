@@ -58,11 +58,12 @@ export const productPathPatterns = () => [...productRoutePatterns]
 export const prerenderRoutes = publicLocalizedPaths().filter(
   (path) =>
     path === '/' ||
-    path === '/pricing' ||
+    path === '/about' ||
     path === '/help' ||
     path === '/en' ||
-    path === '/en/pricing' ||
+    path === '/en/about' ||
     path === '/en/help'
 )
 
+// 新闻内容更新频率较低，适合 SWR；定价页走默认 SSR，每次请求拉最新 API 数据。
 export const swrRouteRules = ['/news/**', '/en/news/**'] as const

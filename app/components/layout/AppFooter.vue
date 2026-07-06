@@ -2,7 +2,10 @@
   <footer class="app-footer">
     <AppContainer class="app-footer__inner">
       <span>{{ $t('brand.tagline') }}</span>
-      <NuxtLink :to="localePath('/help')">{{ $t('nav.help') }}</NuxtLink>
+      <div class="app-footer__links">
+        <NuxtLink :to="localePath('/about')">{{ $t('nav.about') }}</NuxtLink>
+        <NuxtLink :to="localePath('/help')">{{ $t('nav.help') }}</NuxtLink>
+      </div>
     </AppContainer>
   </footer>
 </template>
@@ -23,6 +26,12 @@ const { localePath } = useLocalePath()
   justify-content: space-between;
   gap: 24px;
   padding-block: 20px;
+}
+
+.app-footer__links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
 .app-footer a {

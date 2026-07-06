@@ -1,8 +1,10 @@
 import { defineEventHandler, setHeader } from 'h3'
 import { useRuntimeConfig } from '#imports'
-import { buildSitemapXml } from '../utils/seo'
+import { buildSitemapXmlAsync } from '../utils/seo'
 
-export default defineEventHandler((event) => {
+export default defineEventHandler(async (event) => {
   setHeader(event, 'content-type', 'application/xml; charset=utf-8')
-  return buildSitemapXml(useRuntimeConfig(event).public.siteUrl)
+  const runtimeConfig = useRuntimeConfig(event)
+
+  return buildSitemapXmlAsync(runtimeConfig.public.siteUrl, runtimeConfig.public.apiBase)
 })

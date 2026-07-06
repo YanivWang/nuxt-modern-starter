@@ -14,7 +14,7 @@
   - 从列表页进入 → 阅读全文 → 返回 /news
 
   数据 / API：
-  - getLocalizedNewsArticle(slug, language) → config/content/news.ts
+  - fetchLocalizedNewsArticle(slug, language) → GET /api/content/news/:slug
   - formatPublishedDate() 格式化日期
 
   SEO / 边界：
@@ -24,16 +24,26 @@
 -->
 <script setup lang="ts">
 import { ArrowRightOutlined } from '~/utils/antdIcon'
-import { getLocalizedNewsArticle } from '../../../apis/public/content'
+import { fetchLocalizedNewsArticle } from '../../../apis/public/content'
 import { formatPublishedDate } from '../../../utils/formatDate'
 
 const route = useRoute()
 const languageStore = useLanguageStore()
 const { localePath } = useLocalePath()
 const slug = route.params.slug as string
-const article = computed(() => getLocalizedNewsArticle(slug, languageStore.currentLanguage))
 
-if (!article.value) {
+const { data: article, error } = await useAsyncData(
+  () => `news-article:${slug}:${languageStore.currentLanguage}`,
+  async () => {
+    const response = await fetchLocalizedNewsArticle(slug, languageStore.currentLanguage)
+    return response.data.article
+  },
+  {
+    watch: [() => languageStore.currentLanguage, () => slug]
+  }
+)
+
+if (error.value || !article.value) {
   throw createError({
     statusCode: 404,
     statusMessage: 'news.notFound'

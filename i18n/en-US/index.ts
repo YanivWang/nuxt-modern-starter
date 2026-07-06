@@ -2,6 +2,7 @@ export default {
   nav: {
     home: 'Home',
     pricing: 'Pricing',
+    about: 'About',
     help: 'Help',
     news: 'News',
     primary: 'Primary navigation'
@@ -260,6 +261,36 @@ export default {
     share: 'Share',
     download: 'Download',
     more: 'More actions'
+  },
+  about: {
+    eyebrow: 'About us',
+    title: 'Built for public sites and lightweight SaaS frontends',
+    lead: 'Nuxt Modern Starter is a reusable Nuxt 4 foundation for marketing pages, content hubs, and optional auth-ready product surfaces.',
+    mission: {
+      title: 'Our mission',
+      body: 'We organize the most common public-site capabilities—i18n routing, SEO, content pages, auth samples, and deployment patterns—into a runnable starting point so teams can focus on product differences instead of rebuilding infrastructure.'
+    },
+    values: {
+      title: 'What we optimize for',
+      items: {
+        focus:
+          'Stay focused on public-site scenarios with clear module boundaries instead of an oversized starter.',
+        quality:
+          'Ship with TypeScript strict mode, linting, tests, and deployment samples from day one.',
+        openness:
+          'Keep public and product layers separate so local content and API-driven content can be swapped in gradually.'
+      }
+    },
+    story: {
+      title: 'Project background',
+      paragraphs: {
+        origin:
+          'The starter comes from repeated needs across SaaS websites and product frontends: marketing home, pricing, help, news, sign-in/sign-up, plus logged-in workspace and editor examples.',
+        practice:
+          'It defaults to Chinese as the primary locale with English under /en, mixes SSR/prerender/SWR for public pages, and keeps product routes language-neutral with CSR rendering.',
+        next: 'If you are evaluating a Nuxt public-site template, start with the README quick start, then replace copy, content, and backend integrations for your product.'
+      }
+    }
   },
   help: {
     eyebrow: 'Help center',
