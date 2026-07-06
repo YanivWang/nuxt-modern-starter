@@ -20,6 +20,19 @@ export default {
     backHome: 'Back home',
     error: 'Something went wrong. Please try again.'
   },
+  productNav: {
+    workspace: 'Workspace',
+    themeTemplates: 'Theme templates',
+    pricing: 'Pricing'
+  },
+  userMenu: {
+    account: 'Account',
+    language: 'Language',
+    signOut: 'Sign out'
+  },
+  templates: {
+    empty: 'Theme templates are coming soon.'
+  },
   auth: {
     header: {
       signIn: 'Sign in',
@@ -222,6 +235,9 @@ export default {
       saving: 'Saving…',
       saved: 'Auto-saved · {time}',
       failed: 'Auto-save failed, will retry on next edit'
+    },
+    rename: {
+      failed: 'Failed to rename, please try again'
     }
   },
   workspace: {

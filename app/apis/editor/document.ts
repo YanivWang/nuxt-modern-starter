@@ -1,5 +1,5 @@
 import type { ApiResponse } from '../../api-core/api-types'
-import { createEditorApiClient } from './client'
+import { createProductApiClient } from '../product/client'
 
 export type EditorDocument = {
   id: string
@@ -17,7 +17,7 @@ export type SaveEditorDocumentPayload = {
 const editorDocumentPath = (documentId: string) => `/documents/${documentId}`
 
 export const fetchEditorDocument = (documentId: string) =>
-  createEditorApiClient().request<ApiResponse<{ document: EditorDocument }>>(
+  createProductApiClient().request<ApiResponse<{ document: EditorDocument }>>(
     editorDocumentPath(documentId),
     {
       method: 'GET'
@@ -25,7 +25,7 @@ export const fetchEditorDocument = (documentId: string) =>
   )
 
 export const saveEditorDocument = (documentId: string, payload: SaveEditorDocumentPayload) =>
-  createEditorApiClient().request<ApiResponse<{ document: EditorDocument }>>(
+  createProductApiClient().request<ApiResponse<{ document: EditorDocument }>>(
     editorDocumentPath(documentId),
     {
       method: 'PATCH',

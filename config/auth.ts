@@ -13,7 +13,7 @@ export const AUTH_COOKIE_KEYS = {
 } as const
 
 export const AUTH_REDIRECTS = {
-  login: '/login',
+  login: '/sign-in',
   logout: '/'
 } as const
 

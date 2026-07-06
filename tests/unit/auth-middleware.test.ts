@@ -7,35 +7,35 @@ import {
 } from '../../app/middleware/auth'
 
 describe('auth middleware decisions', () => {
-  it('normalizes localized product paths before auth redirects', () => {
-    expect(buildProductCanonicalRedirect('/en/app/workspace')).toEqual({
+  it('normalizes localized product paths through the shared canonical helper', () => {
+    expect(buildProductCanonicalRedirect('/en/workspace')).toEqual({
       type: 'redirect',
-      path: '/app/workspace',
+      path: '/workspace',
       redirectCode: 301
     })
-    expect(buildProductCanonicalRedirect('/app/workspace')).toBeNull()
+    expect(buildProductCanonicalRedirect('/workspace')).toBeNull()
     expect(buildProductCanonicalRedirect('/en/pricing')).toBeNull()
   })
 
-  it('redirects unauthenticated users to login with the original path', () => {
-    expect(buildAuthLoginRedirect('/login', '/app/account?tab=profile')).toEqual({
-      path: '/login',
+  it('redirects unauthenticated users to sign-in with the original path', () => {
+    expect(buildAuthLoginRedirect('/sign-in', '/account?tab=profile')).toEqual({
+      path: '/sign-in',
       query: {
-        redirect: '/app/account?tab=profile'
+        redirect: '/account?tab=profile'
       }
     })
 
     expect(
-      resolveAuthMiddlewareDecision(false, '/login', '/app/account?tab=profile', undefined, {
+      resolveAuthMiddlewareDecision(false, '/sign-in', '/account?tab=profile', undefined, {
         hasRole: () => false,
         can: () => false
       })
     ).toEqual({
       type: 'redirect',
       location: {
-        path: '/login',
+        path: '/sign-in',
         query: {
-          redirect: '/app/account?tab=profile'
+          redirect: '/account?tab=profile'
         }
       }
     })
@@ -82,8 +82,8 @@ describe('auth middleware decisions', () => {
     expect(
       resolveAuthMiddlewareDecision(
         true,
-        '/login',
-        '/app/account',
+        '/sign-in',
+        '/account',
         {
           permissions: ['account:write']
         },

@@ -18,6 +18,11 @@ export type CreateWorkspaceProjectPayload = {
   description?: string
 }
 
+export type UpdateWorkspaceProjectPayload = {
+  title?: string
+  description?: string
+}
+
 export type WorkspaceDocument = {
   id: string
   projectId: string
@@ -28,7 +33,7 @@ export type WorkspaceDocument = {
 
 export const WORKSPACE_NEW_PROJECT_ID = 'new'
 
-export const getWorkspaceDocPath = (id: string) => `/app/docs/${id}`
+export const getWorkspaceDocPath = (id: string) => `/docs/${id}`
 
 export const getWorkspaceNewDocPath = () => getWorkspaceDocPath(WORKSPACE_NEW_PROJECT_ID)
 
@@ -54,6 +59,15 @@ export const createWorkspaceProject = (payload: CreateWorkspaceProjectPayload) =
     method: 'POST',
     body: payload
   })
+
+export const updateWorkspaceProject = (projectId: string, payload: UpdateWorkspaceProjectPayload) =>
+  createProductApiClient().request<ApiResponse<{ project: WorkspaceProject }>>(
+    `/projects/${projectId}`,
+    {
+      method: 'PATCH',
+      body: payload
+    }
+  )
 
 export const deleteWorkspaceProject = (projectId: string) =>
   createProductApiClient().request<ApiResponse<null>>(`/projects/${projectId}`, {

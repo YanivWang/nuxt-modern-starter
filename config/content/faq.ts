@@ -28,9 +28,9 @@ export const faqItems: FaqItem[] = [
     },
     answer: {
       'zh-CN':
-        'Nuxt Modern Starter 面向公开站点场景：营销官网、SEO 页面、多语言内容站，以及轻量 SaaS 产品前台。它预置首页、价格、帮助、新闻、登录注册，以及 `/app/workspace`、`/app/docs/:id`、`/app/account` 等产品区联调路径，并附带 SEO、i18n、主题切换和部署样例。',
+        'Nuxt Modern Starter 面向公开站点场景：营销官网、SEO 页面、多语言内容站，以及轻量 SaaS 产品前台。它预置首页、价格、帮助、新闻、登录注册，以及 `/workspace`、`/docs/:id`、`/account` 等产品区联调路径，并附带 SEO、i18n、主题切换和部署样例。',
       'en-US':
-        'Nuxt Modern Starter targets public websites: marketing sites, SEO surfaces, multilingual content hubs, and lightweight SaaS frontends. It ships home, pricing, help, news, auth pages, and product routes such as `/app/workspace`, `/app/docs/:id`, and `/app/account`, plus SEO, i18n, theme switching, and deployment samples.'
+        'Nuxt Modern Starter targets public websites: marketing sites, SEO surfaces, multilingual content hubs, and lightweight SaaS frontends. It ships home, pricing, help, news, auth pages, and product routes such as `/workspace`, `/docs/:id`, and `/account`, plus SEO, i18n, theme switching, and deployment samples.'
     }
   },
   {
@@ -54,9 +54,9 @@ export const faqItems: FaqItem[] = [
     },
     answer: {
       'zh-CN':
-        '项目提供可选 Bearer Token 鉴权示例，包含登录、注册、退出与 `/app/account`。受保护产品路由通过命名 auth 中间件控制，支持角色与权限校验。与 nuxt-modern-starter-api 联调时，工作台走 app/features/workspace/api.ts，编辑器走 app/apis/editor/*。',
+        '项目提供可选 Bearer Token 鉴权示例，包含登录、注册、退出与 `/account`（用户菜单入口）。受保护产品路由通过命名 auth 中间件控制，支持角色与权限校验。与 nuxt-modern-starter-api 联调时，工作台走 app/features/workspace/api.ts，编辑器走 app/apis/editor/*。',
       'en-US':
-        'The starter includes optional Bearer Token auth with login, register, logout, and `/app/account`. Protected product routes use the named auth middleware with role and permission checks. When paired with nuxt-modern-starter-api, workspace flows use app/features/workspace/api.ts and editor flows use app/apis/editor/*.'
+        'The starter includes optional Bearer Token auth with sign-in, sign-up, logout, and `/account` (via the user menu). Protected product routes use the named auth middleware with role and permission checks. When paired with nuxt-modern-starter-api, workspace flows use app/features/workspace/api.ts and editor flows use app/apis/editor/*.'
     }
   },
   {
@@ -67,9 +67,9 @@ export const faqItems: FaqItem[] = [
     },
     answer: {
       'zh-CN':
-        '先启动 nuxt-modern-starter-api（推荐 pnpm docker:dev），保持前端 .env.dev 的 NUXT_PUBLIC_API_BASE=http://localhost:2026/api，后端 CORS_ORIGINS 包含 http://localhost:3000。登录后访问 /app/workspace 创建或删除项目（空白卡片或顶部按钮），再通过 /app/docs/:id（:id 为项目 id）加载并自动保存文档。搜索与筛选目前只是 UI，占位未接 API。',
+        '先启动 nuxt-modern-starter-api（推荐 pnpm docker:dev），保持前端 .env.dev 的 NUXT_PUBLIC_API_BASE=http://localhost:2026/api，后端 CORS_ORIGINS 包含 http://localhost:3000。登录后访问 /workspace 创建或删除项目（空白卡片或顶部按钮），再通过 /docs/:id（:id 为项目 id）加载并自动保存文档。搜索与筛选目前只是 UI，占位未接 API。',
       'en-US':
-        'Start nuxt-modern-starter-api first (pnpm docker:dev recommended), keep frontend .env.dev at NUXT_PUBLIC_API_BASE=http://localhost:2026/api, and include http://localhost:3000 in backend CORS_ORIGINS. After login, use /app/workspace to create or delete projects (blank card or primary button), then open /app/docs/:id (:id is the project id) to load and autosave documents. Search and filters are UI-only placeholders without backend APIs yet.'
+        'Start nuxt-modern-starter-api first (pnpm docker:dev recommended), keep frontend .env.dev at NUXT_PUBLIC_API_BASE=http://localhost:2026/api, and include http://localhost:3000 in backend CORS_ORIGINS. After sign-in, use /workspace to create or delete projects (blank card or primary button), then open /docs/:id (:id is the project id) to load and autosave documents. Search and filters are UI-only placeholders without backend APIs yet.'
     }
   },
   {
@@ -101,14 +101,14 @@ export const faqItems: FaqItem[] = [
   {
     key: 'product-routes',
     question: {
-      'zh-CN': '产品区路由为什么使用 /app/** 且不带语言前缀？',
-      'en-US': 'Why do product routes live under /app/** without a locale prefix?'
+      'zh-CN': '产品区路由为什么不带语言前缀？',
+      'en-US': 'Why do product routes stay language-neutral without a locale prefix?'
     },
     answer: {
       'zh-CN':
-        '公开 SEO 页面通过 / 与 /en 前缀区分语言，但登录后的产品区统一使用语言中性的 /app/** URL，例如 /app/workspace 与 /app/docs/:id。UI 语言仍由 language store 控制；若访问 /en/app/**，locale、auth 与 server middleware 会 301 回到 /app/**。产品路由默认 CSR，并通过 product-shell/config.ts 集中管理导航与鉴权策略。',
+        '公开 SEO 页面通过 / 与 /en 前缀区分语言，但登录后的产品区统一使用语言中性 URL，例如 /workspace 与 /docs/:id。UI 语言仍由 language store 控制；若访问 /en/workspace 等路径，locale 与 server middleware 会 301 回到无前缀 canonical。产品路由默认 CSR，sidebar 导航由 product-shell/config.ts 的 productNavItems 管理，账户入口在用户菜单。',
       'en-US':
-        'Public SEO pages use / and /en prefixes, but logged-in product routes stay language-neutral under /app/**, for example /app/workspace and /app/docs/:id. UI language still comes from the language store. If someone opens /en/app/**, locale, auth, and server middleware redirect back to /app/** with 301. Product routes are CSR by default and their nav/auth policy lives in product-shell/config.ts.'
+        'Public SEO pages use / and /en prefixes, but logged-in product routes stay language-neutral, for example /workspace and /docs/:id. UI language still comes from the language store. If someone opens /en/workspace, locale and server middleware redirect to the canonical path with 301. Product routes are CSR by default; sidebar nav lives in productNavItems, and account access lives in the user menu.'
     }
   },
   {

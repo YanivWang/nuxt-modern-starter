@@ -58,12 +58,32 @@ describe('workspace API boundary', () => {
     })
   })
 
+  it('updates projects through the authenticated product request entrypoint', async () => {
+    const { updateWorkspaceProject } = await import('../../app/features/workspace/api')
+
+    updateWorkspaceProject('project_1', {
+      title: 'Renamed deck'
+    })
+
+    expect(apiMocks.request).toHaveBeenCalledWith('/projects/project_1', {
+      method: 'PATCH',
+      body: {
+        title: 'Renamed deck'
+      }
+    })
+  })
+
   it('exposes the draft editor entry path', async () => {
-    const { getWorkspaceNewDocPath, isNewWorkspaceProjectId, WORKSPACE_NEW_PROJECT_ID } =
-      await import('../../app/features/workspace/api')
+    const {
+      getWorkspaceDocPath,
+      getWorkspaceNewDocPath,
+      isNewWorkspaceProjectId,
+      WORKSPACE_NEW_PROJECT_ID
+    } = await import('../../app/features/workspace/api')
 
     expect(WORKSPACE_NEW_PROJECT_ID).toBe('new')
-    expect(getWorkspaceNewDocPath()).toBe('/app/docs/new')
+    expect(getWorkspaceNewDocPath()).toBe('/docs/new')
+    expect(getWorkspaceDocPath('project_1')).toBe('/docs/project_1')
     expect(isNewWorkspaceProjectId('new')).toBe(true)
     expect(isNewWorkspaceProjectId('project_1')).toBe(false)
   })

@@ -17,7 +17,7 @@ const form = reactive({
 const loading = ref(false)
 
 usePageSeo({
-  path: '/login',
+  path: '/sign-in',
   locale: languageStore.currentLanguage,
   title: t('auth.login.title'),
   description: t('auth.login.lead'),
@@ -25,7 +25,7 @@ usePageSeo({
 })
 
 const redirectTarget = computed(() =>
-  typeof route.query.redirect === 'string' ? route.query.redirect : localePath('/app/account')
+  typeof route.query.redirect === 'string' ? route.query.redirect : localePath('/workspace')
 )
 
 const handleSubmit = async () => {
@@ -79,7 +79,7 @@ const handleSubmit = async () => {
 
         <p class="auth-card__footer">
           {{ $t('auth.login.noAccount') }}
-          <NuxtLink :to="localePath('/register')">{{ $t('auth.register.title') }}</NuxtLink>
+          <NuxtLink :to="localePath('/sign-up')">{{ $t('auth.register.title') }}</NuxtLink>
         </p>
       </a-card>
     </AppContainer>

@@ -6,11 +6,11 @@ Create public SEO pages directly under `app/pages/[[language]]`. Use `localePath
 
 When a page should be public, add its base path to `PUBLIC_PAGE_PATHS` in `config/site.ts`. If it needs prerendering or SWR behavior, update `config/routes.ts` so routeRules and hreflang remain synchronized.
 
-Create logged-in product pages under `app/pages/app`, and keep links, canonical paths, and route config under language-neutral `/app/**` URLs. Product pages should set the product or editor layout, opt in to auth middleware when required, set `noindex`, and mount a feature component from `app/features/*`.
+Create logged-in product pages under `app/pages/workspace`, `app/pages/docs`, or top-level `app/pages/account.vue`. Keep links, canonical paths, and route config under language-neutral product URLs (`/workspace`, `/docs/:id`, `/account`). Product pages should set the product or editor layout, opt in to auth middleware when required, set `noindex`, and mount a feature component from `app/features/*`.
 
-Do not add product pages such as account, documents, editor, templates, workspace, billing, or settings beside public marketing pages. Product routes are client-rendered by default through `csrRouteRules` in `config/routes.ts`.
+Do not add product pages beside public marketing pages under `app/pages/[[language]]`. Product routes are client-rendered by default through `csrRouteRules` in `config/routes.ts`.
 
-Register product navigation and route policy in `app/features/product-shell/config.ts` before adding sidebar links or new `/app/**` route entries. Use `ProductRouteMode` values `workspace`, `docs`, or `account`; set `nav: true` only for sidebar items. Do not create localized product links such as `/en/app/...`; locale middleware, auth middleware, and server middleware redirect those back to `/app/...`.
+Register sidebar entries in `app/features/product-shell/config.ts` through `productNavItems` and `productFooterNavItems` before adding links. Do not create localized product links such as `/en/workspace`; locale middleware and server middleware redirect those back to canonical product paths. Account access belongs in `UserAccountMenu`, not the sidebar.
 
 ## Add A Feature Module
 
@@ -37,9 +37,9 @@ Keep top-level `app/components`, `app/composables`, and `app/stores` for shared 
 Choose the request entrypoint by page and data ownership:
 
 - Public SEO, marketing, help, pricing, news, and docs data belongs in `app/apis/public/*`. Use local typed content there, or call `createPublicApiClient()` inside a domain adapter for token-free backend requests.
-- Login, register, refresh, logout, `/me`, and profile requests belong in `app/apis/auth`.
+- Sign-in, sign-up, refresh, logout, `/me`, and profile requests belong in `app/apis/auth`.
 - Workspace project requests belong in `app/features/workspace/api.ts` via `fetchWorkspaceProjects()`, `createWorkspaceProject()`, `fetchWorkspaceProject()`, and `deleteWorkspaceProject()` (paths `/projects`, `/projects/:projectId`). Use `getWorkspaceDocPath(projectId)` when linking to the editor route.
-- Editor document requests belong in `app/apis/editor/document.ts` via `fetchEditorDocument()` and `saveEditorDocument()` (paths `/documents/:documentId`).
+- Editor document requests belong in `app/apis/editor/document.ts` via `fetchEditorDocument()` and `saveEditorDocument()` (paths `/documents/:documentId`). These call `createProductApiClient()` directly.
 - Do not add a generic catch-all request composable. Add a named public, auth, product, editor, or feature client when a new request scenario appears.
 
 All request helpers use `runtimeConfig.public.apiBase` in both SSR and browser code, so `NUXT_PUBLIC_API_BASE` should point directly to the real backend API origin, for example `https://api.example.com/api`.
@@ -62,13 +62,13 @@ Use `usePageSeo({ path, title, description })`. The composable adds title, descr
 
 News details can pass the `article` field to generate Article JSON-LD. `Organization` and `WebSite` JSON-LD are recommended future additions when a real brand domain and logo are available.
 
-`server/routes/sitemap.xml.ts` and `server/routes/robots.txt.ts` are generated from public route/content configuration. Keep `/app/**`, login, and register pages out of sitemap and blocked in robots rules.
+`server/routes/sitemap.xml.ts` and `server/routes/robots.txt.ts` are generated from public route/content configuration. Keep product routes, sign-in, and sign-up pages out of sitemap and blocked in robots rules.
 
 ## Add Languages
 
 The starter ships `zh-CN` and `en-US`. To add a language, update `SUPPORTED_LOCALES` and `SITE_LOCALE_PREFIX_MAP` in `config/site.ts`, extend `SITE_LANG_MAP` and locale modules in `i18n/index.ts`, then add routing/SEO tests.
 
-Do not install `@nuxtjs/i18n` for this template. Language routing is intentionally handled by `locale.global.ts` and `useLocalePath.ts`. Public pages use URL prefixes such as `/en`; authenticated product pages stay under `/app/**` regardless of UI language.
+Do not install `@nuxtjs/i18n` for this template. Language routing is intentionally handled by `locale.global.ts` and `useLocalePath.ts`. Public pages use URL prefixes such as `/en`; authenticated product pages stay language-neutral regardless of UI language. Use `useLanguageSwitch` or `UserAccountMenu` inside the product shell to change UI locale without changing product URLs.
 
 ## Theme Customization
 
@@ -80,31 +80,32 @@ To disable dark mode, keep only light tokens, set `DEFAULT_THEME_MODE` to `light
 
 The starter ships a real product flow when paired with `nuxt-modern-starter-api`:
 
-| Route            | Layout    | Purpose                                                                                               |
-| ---------------- | --------- | ----------------------------------------------------------------------------------------------------- |
-| `/app/workspace` | `product` | Project list, loading/empty states, blank-project creation, delete, and navigation into the editor    |
-| `/app/docs/:id`  | `editor`  | Load project by `:id` (project id), resolve `documentId`, then load/save editor content with autosave |
-| `/app/account`   | `product` | Session details, profile payload, and logout                                                          |
+| Route                  | Layout    | Purpose                                                                                               |
+| ---------------------- | --------- | ----------------------------------------------------------------------------------------------------- |
+| `/workspace`           | `product` | Project list, loading/empty states, blank-project creation, delete, and navigation into the editor    |
+| `/workspace/templates` | `product` | Theme templates placeholder (no API)                                                                  |
+| `/docs/:id`            | `editor`  | Load project by `:id` (project id), resolve `documentId`, then load/save editor content with autosave |
+| `/account`             | `product` | Session details, profile payload, and logout (via user menu)                                          |
 
 API boundaries:
 
-- Workspace adapters in `app/features/workspace/api.ts`: `fetchWorkspaceProjects()`, `createWorkspaceProject()`, `fetchWorkspaceProject()`, and `deleteWorkspaceProject()` via `createProductApiClient()`. `getWorkspaceDocPath(projectId)` returns `/app/docs/:id`.
-- Editor adapters in `app/apis/editor/document.ts`: `fetchEditorDocument()` and `saveEditorDocument()` via `createEditorApiClient()` (which delegates to the product client).
+- Workspace adapters in `app/features/workspace/api.ts`: `fetchWorkspaceProjects()`, `createWorkspaceProject()`, `fetchWorkspaceProject()`, and `deleteWorkspaceProject()` via `createProductApiClient()`. `getWorkspaceDocPath(projectId)` returns `/docs/:id`.
+- Editor adapters in `app/apis/editor/document.ts`: `fetchEditorDocument()` and `saveEditorDocument()` via `createProductApiClient()`.
 - Relative request paths are `/projects` and `/documents/:documentId`; `runtimeConfig.public.apiBase` already includes the `/api` prefix.
 - Both use the backend envelope `{ code, message, data }` and retry once after a single-flight refresh on 401.
 
 Current UI scope:
 
 - The header create button calls `POST /api/projects` with the default title from i18n (`workspace.defaultTitle`).
-- Creating a blank project refreshes the list and navigates directly to `/app/docs/:id`.
+- Creating a blank project refreshes the list and navigates directly to `/docs/:id`.
 - Project cards link to the editor through `getWorkspaceDocPath()`. `slideCount` currently comes from project metadata and is not recalculated from document content.
 
 Editor behavior:
 
-- `/app/docs/:id` uses the `editor` layout and mounts `EditorWorkspace` with `@yanivjs/yaniv-editor`.
+- `/docs/:id` uses the `editor` layout and mounts `EditorWorkspace` with `@yanivjs/yaniv-editor`.
 - Route param `:id` is the **project id**. The page calls `fetchWorkspaceProject(id)`, requires a non-null `documentId`, then loads/saves the linked document through editor APIs.
 - Content autosaves after a 2-second debounce and flushes on route leave.
-- Register the route in `product-shell/config.ts` with `mode: 'docs'`; it is not a sidebar nav item.
+- The editor header includes language switching and `UserAccountMenu`; it is not a sidebar nav item.
 
 Local full-stack defaults:
 
@@ -119,10 +120,10 @@ For Docker and Nginx deployment validation, see `docs/deployment.md`.
 Auth is implemented as an opt-in Bearer Token module for the current application API.
 
 - Backend endpoints use the `/api` prefix and return the standard `{ code, message, data }` envelope. Auth calls use `app/apis/auth/index.ts` through `createAuthApiClient()`, and stores/pages consume token, user, and profile payloads from `data`.
-- Endpoint paths are centralized in `config/auth.ts`: `/register`, `/login`, `/refresh`, `/logout`, `/me`, and `/me/profile`.
-- `POST /api/register` creates an account but does not log the user in. The register page redirects users to login after success.
+- HTTP endpoint paths are centralized in `config/auth.ts`: `/register`, `/login`, `/refresh`, `/logout`, `/me`, and `/me/profile`. Frontend auth pages use `/sign-in` and `/sign-up`; `AUTH_REDIRECTS.login = '/sign-in'`.
+- `POST /api/register` creates an account but does not log the user in. The sign-up page redirects users to sign-in after success.
 - `POST /api/login` and `POST /api/refresh` return `token` or `accessToken`, plus `refreshToken`. Tokens are stored in JS-readable Nuxt cookies for client-side product workflows.
-- `createAuthApiClient()` and `createProductApiClient()` may attach the access token for authenticated business requests. `createEditorApiClient()` delegates to the product client. A 401 triggers a single-flight `POST /api/refresh` and retries the failed request once; refresh failure clears the local session.
+- `createAuthApiClient()` and `createProductApiClient()` may attach the access token for authenticated business requests. A 401 triggers a single-flight `POST /api/refresh` and retries the failed request once; refresh failure clears the local session.
 - `app/stores/auth.ts` owns `user`, token cookies, `status`, `login`, `register`, `logout`, `fetchMe`, `refresh`, and `reset`.
 - `app/composables/useAuth.ts` exposes the store plus `ensureSession()`, `can()`, and `hasRole()` for pages and middleware.
 - `app/plugins/auth.ts` hydrates `/api/me` on startup when token cookies are present.

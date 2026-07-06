@@ -4,14 +4,18 @@ import { describe, expect, it } from 'vitest'
 
 const projectRoot = resolve(__dirname, '../..')
 const productPageFiles = [
-  'app/pages/app/account.vue',
-  'app/pages/app/docs/[id].vue',
-  'app/pages/app/workspace/index.vue'
+  'app/pages/account.vue',
+  'app/pages/docs/[id].vue',
+  'app/pages/workspace/index.vue',
+  'app/pages/workspace/templates/index.vue'
 ]
 
 describe('page directory boundaries', () => {
   it('keeps product pages outside localized public page routes', () => {
-    expect(existsSync(resolve(projectRoot, 'app/pages/app/workspace/index.vue'))).toBe(true)
+    expect(existsSync(resolve(projectRoot, 'app/pages/workspace/index.vue'))).toBe(true)
+    expect(existsSync(resolve(projectRoot, 'app/pages/docs/[id].vue'))).toBe(true)
+    expect(existsSync(resolve(projectRoot, 'app/pages/account.vue'))).toBe(true)
+    expect(existsSync(resolve(projectRoot, 'app/pages/app'))).toBe(false)
     expect(existsSync(resolve(projectRoot, 'app/pages/[[language]]/app'))).toBe(false)
   })
 

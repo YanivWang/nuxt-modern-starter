@@ -19,6 +19,19 @@ export default {
     backHome: '返回首页',
     error: '操作失败，请稍后重试'
   },
+  productNav: {
+    workspace: '工作台',
+    themeTemplates: '主题模版',
+    pricing: '定价'
+  },
+  userMenu: {
+    account: '账户',
+    language: '语言',
+    signOut: '退出登录'
+  },
+  templates: {
+    empty: '主题模版即将上线，敬请期待。'
+  },
   auth: {
     header: {
       signIn: '登录',
@@ -211,6 +224,9 @@ export default {
       saving: '保存中…',
       saved: '已自动保存 · {time}',
       failed: '自动保存失败，将继续重试'
+    },
+    rename: {
+      failed: '重命名失败，请重试'
     }
   },
   workspace: {

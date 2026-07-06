@@ -7,9 +7,10 @@ import { fetchEditorDocument, saveEditorDocument } from '../../../apis/editor'
 import {
   createWorkspaceProject,
   getWorkspaceDocPath,
+  updateWorkspaceProject,
   type WorkspaceProject
 } from '../../workspace/api'
-import { ArrowLeftOutlined } from '~/utils/antdIcon'
+import EditorWorkspaceHeader from './EditorWorkspaceHeader.vue'
 
 type EditorProjectContext = Pick<WorkspaceProject, 'id' | 'title'>
 
@@ -20,6 +21,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   'project-created': [project: WorkspaceProject]
+  'project-updated': [project: Pick<WorkspaceProject, 'id' | 'title'>]
 }>()
 
 const AUTOSAVE_DEBOUNCE_MS = 2000
@@ -37,6 +39,12 @@ const dirty = ref(false)
 const lastSavedAt = ref<number | null>(null)
 const initialSnapshot = ref('')
 const draftDocumentId = ref<string | null>(null)
+const localTitle = ref('')
+const isEditingTitle = ref(false)
+const editableTitle = ref('')
+const titleInputRef = ref<HTMLInputElement | null>(null)
+const headerRef = ref<InstanceType<typeof EditorWorkspaceHeader> | null>(null)
+const titleSaving = ref(false)
 
 const EDITOR_MODE = 'edit' as const
 const EDITOR_PRESET = 'full' as const
@@ -97,21 +105,104 @@ watch(
   { immediate: true }
 )
 
-const displayTitle = computed(() => {
-  if (props.project?.title) {
-    return props.project.title
+const defaultTitleText = computed(() => t('workspace.defaultTitle'))
+
+const syncLocalTitle = () => {
+  localTitle.value = props.project?.title ?? document.value?.title ?? defaultTitleText.value
+}
+
+watch(
+  [() => props.project?.title, () => document.value?.title],
+  () => {
+    if (isEditingTitle.value) {
+      return
+    }
+
+    syncLocalTitle()
+  },
+  { immediate: true }
+)
+
+const startTitleEdit = async () => {
+  editableTitle.value = localTitle.value
+  isEditingTitle.value = true
+
+  await nextTick()
+  titleInputRef.value = headerRef.value?.titleInputRef ?? null
+  titleInputRef.value?.focus()
+  titleInputRef.value?.select()
+}
+
+const persistTitle = async (nextTitle: string) => {
+  const trimmed = nextTitle.trim() || defaultTitleText.value
+
+  if (trimmed === localTitle.value) {
+    return
   }
 
-  if (document.value?.title) {
-    return document.value.title
+  const previousTitle = localTitle.value
+  localTitle.value = trimmed
+  titleSaving.value = true
+
+  try {
+    const documentId = effectiveDocumentId.value
+
+    if (documentId) {
+      const response = await saveEditorDocument(documentId, {
+        title: trimmed,
+        content: getEditorContentHtml() || document.value?.content || '<p></p>'
+      })
+      document.value = response.data.document
+      lastSavedAt.value = Date.now()
+    }
+
+    if (props.project?.id) {
+      try {
+        const response = await updateWorkspaceProject(props.project.id, { title: trimmed })
+        emit('project-updated', {
+          id: response.data.project.id,
+          title: response.data.project.title
+        })
+      } catch {
+        emit('project-updated', {
+          id: props.project.id,
+          title: trimmed
+        })
+      }
+    }
+  } catch {
+    localTitle.value = previousTitle
+    message.error(t('editor.rename.failed'))
+  } finally {
+    titleSaving.value = false
+  }
+}
+
+const commitTitleEdit = async () => {
+  if (!isEditingTitle.value) {
+    return
   }
 
-  if (isDraftMode.value) {
-    return t('workspace.defaultTitle')
+  isEditingTitle.value = false
+  await persistTitle(editableTitle.value)
+}
+
+const cancelTitleEdit = () => {
+  isEditingTitle.value = false
+  editableTitle.value = localTitle.value
+}
+
+const onTitleKeydown = (event: KeyboardEvent) => {
+  if (event.key === 'Enter') {
+    event.preventDefault()
+    void commitTitleEdit()
   }
 
-  return t('editor.title')
-})
+  if (event.key === 'Escape') {
+    event.preventDefault()
+    cancelTitleEdit()
+  }
+}
 
 const autosaveHintText = computed(() => {
   if (saving.value) {
@@ -173,12 +264,12 @@ const ensureDraftProject = async (): Promise<string | null> => {
   }
 
   const response = await createWorkspaceProject({
-    title: t('workspace.defaultTitle')
+    title: localTitle.value || defaultTitleText.value
   })
   const { project, document: createdDocument } = response.data
 
   await saveEditorDocument(createdDocument.id, {
-    title: t('workspace.defaultTitle'),
+    title: localTitle.value || defaultTitleText.value,
     content: contentToSave
   })
 
@@ -238,7 +329,7 @@ const persistDocument = async () => {
 
     const contentToSave = getEditorContentHtml()
     const response = await saveEditorDocument(documentId, {
-      title: document.value?.title,
+      title: localTitle.value || defaultTitleText.value,
       content: contentToSave
     })
     document.value = response.data.document
@@ -291,6 +382,8 @@ onBeforeUnmount(() => {
   }
 })
 
+const showAutosave = computed(() => Boolean(effectiveDocumentId.value || !isDraftMode.value))
+
 onBeforeRouteLeave(async () => {
   if (saving.value) {
     return true
@@ -303,50 +396,46 @@ onBeforeRouteLeave(async () => {
 
 <template>
   <div class="editor-workspace">
-    <header class="editor-workspace__header">
-      <div class="editor-workspace__header-start">
-        <NuxtLink class="editor-workspace__back" :to="localePath('/app/workspace')">
-          <ArrowLeftOutlined aria-hidden="true" />
-          <span>{{ $t('workspace.backToWorkspace') }}</span>
-        </NuxtLink>
-        <div>
-          <p class="editor-workspace__eyebrow">{{ $t('editor.eyebrow') }}</p>
-          <h1 class="editor-workspace__title">{{ displayTitle }}</h1>
+    <EditorWorkspaceHeader
+      ref="headerRef"
+      :local-title="localTitle"
+      :editable-title="editableTitle"
+      :is-editing-title="isEditingTitle"
+      :title-saving="titleSaving"
+      :autosave-hint-text="autosaveHintText"
+      :saving="saving"
+      :save-failed="saveFailed"
+      :show-autosave="showAutosave"
+      @start-title-edit="startTitleEdit"
+      @commit-title-edit="commitTitleEdit"
+      @cancel-title-edit="cancelTitleEdit"
+      @title-keydown="onTitleKeydown"
+      @update:editable-title="editableTitle = $event"
+    />
+
+    <main class="editor-workspace__body">
+      <div class="editor-workspace__surface">
+        <div v-if="pending && !editorReady" class="editor-workspace__loading">
+          <a-spin />
         </div>
+        <ClientOnly v-if="!pending || editorReady">
+          <YanivEditor
+            ref="editorRef"
+            :mode="EDITOR_MODE"
+            :preset="EDITOR_PRESET"
+            :locale="languageStore.currentLanguage"
+            :initial-content="editorInitialContent"
+            @update="onEditorUpdate"
+            @update:content="onEditorUpdate"
+          />
+          <template #fallback>
+            <div class="editor-workspace__loading">
+              <a-spin />
+            </div>
+          </template>
+        </ClientOnly>
       </div>
-
-      <div v-if="effectiveDocumentId || !isDraftMode" class="editor-workspace__actions">
-        <p
-          v-if="autosaveHintText"
-          class="editor-workspace__autosave"
-          :class="{ 'is-error': saveFailed, 'is-saving': saving }"
-        >
-          {{ autosaveHintText }}
-        </p>
-      </div>
-    </header>
-
-    <div class="editor-workspace__surface">
-      <div v-if="pending && !editorReady" class="editor-workspace__loading">
-        <a-spin />
-      </div>
-      <ClientOnly v-if="!pending || editorReady">
-        <YanivEditor
-          ref="editorRef"
-          :mode="EDITOR_MODE"
-          :preset="EDITOR_PRESET"
-          :locale="languageStore.currentLanguage"
-          :initial-content="editorInitialContent"
-          @update="onEditorUpdate"
-          @update:content="onEditorUpdate"
-        />
-        <template #fallback>
-          <div class="editor-workspace__loading">
-            <a-spin />
-          </div>
-        </template>
-      </ClientOnly>
-    </div>
+    </main>
   </div>
 </template>
 
@@ -355,93 +444,25 @@ onBeforeRouteLeave(async () => {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  padding: clamp(16px, 3vw, 24px);
-  background:
-    radial-gradient(circle at 18% 18%, rgb(22 119 255 / 10%), transparent 34%), var(--app-color-bg);
+  background: var(--app-color-elevated);
 }
 
-.editor-workspace__header {
+.editor-workspace__body {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
-  flex-shrink: 0;
-  margin-bottom: 20px;
-}
-
-.editor-workspace__header-start {
-  display: flex;
-  align-items: flex-start;
-  gap: 18px;
-  min-width: 0;
-}
-
-.editor-workspace__back {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-  margin-top: 4px;
-  padding: 8px 12px;
-  border-radius: 10px;
-  color: var(--app-color-muted);
-  font-size: 13px;
-  font-weight: 600;
-  text-decoration: none;
-  transition: background 0.2s ease;
-
-  &:hover {
-    background: rgb(15 23 42 / 4%);
-    color: var(--app-color-text);
-  }
-}
-
-.editor-workspace__actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-}
-
-.editor-workspace__autosave {
-  margin: 0;
-  color: var(--app-color-muted);
-  font-size: 12px;
-  white-space: nowrap;
-
-  &.is-saving {
-    color: var(--app-color-primary);
-  }
-
-  &.is-error {
-    color: #cf1322;
-  }
-}
-
-.editor-workspace__eyebrow {
-  margin: 0 0 8px;
-  color: var(--app-color-primary);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.editor-workspace__title {
-  margin: 0;
-  font-size: clamp(22px, 3vw, 28px);
-  letter-spacing: -0.03em;
+  flex: 1;
+  min-height: 0;
+  padding: clamp(12px, 2vw, 20px) clamp(16px, 3vw, 24px) clamp(16px, 3vw, 24px);
 }
 
 .editor-workspace__surface {
   display: flex;
   flex: 1;
   min-height: 0;
-  padding: clamp(16px, 3vw, 24px);
+  overflow: hidden;
   border: 1px solid var(--app-color-border);
-  border-radius: 24px;
+  border-radius: 16px;
   background: var(--app-color-bg);
-  box-shadow: 0 12px 32px rgb(15 23 42 / 5%);
+  box-shadow: 0 8px 24px rgb(15 23 42 / 6%);
 }
 
 .editor-workspace__loading {
@@ -449,15 +470,5 @@ onBeforeRouteLeave(async () => {
   flex: 1;
   align-items: center;
   justify-content: center;
-}
-
-@media (width <= 720px) {
-  .editor-workspace__header {
-    flex-direction: column;
-  }
-
-  .editor-workspace__back span {
-    display: none;
-  }
 }
 </style>

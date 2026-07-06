@@ -43,15 +43,16 @@ pnpm build
 - Nuxt 4, TypeScript, pnpm, Pinia, Ant Design Vue, SCSS, and `vue-i18n`.
 - Default-language routes without a prefix and English routes under `/en`.
 - Shared `useLocalePath`, `usePageSeo`, `useTheme`, and scenario-specific API clients.
-- Hybrid rendering: SSR for public pages, prerender for selected marketing routes, SWR for news, and CSR for `/app/**` product routes.
-- Separate public SEO routes and logged-in `/app/**` product routes. Product URLs stay language-neutral; `/en/app/**` redirects to `/app/**`.
-- Feature-first product modules under `app/features/*` for workspace, editor, product shell, and future SaaS workflows.
-- Opt-in Bearer Token auth module with login, register, logout, product account, and protected-route examples.
-- Product workspace at `/app/workspace`: list, create, and delete projects via `nuxt-modern-starter-api` (`GET/POST/DELETE /api/projects`).
-- Editor at `/app/docs/:id` (`:id` is the project id): resolves `documentId`, loads content with `GET /api/documents/:documentId`, and autosaves with `PATCH /api/documents/:documentId` through `@yanivjs/yaniv-editor`.
-- Product account at `/app/account`: session details, profile payload, and logout.
+- Hybrid rendering: SSR for public pages, prerender for selected marketing routes, SWR for news, and CSR for product routes (`/workspace/**`, `/docs/**`, `/account`).
+- Separate public SEO routes and logged-in product routes. Product URLs stay language-neutral; `/en/workspace`, `/en/docs/**`, and `/en/account` redirect to canonical paths without a locale prefix.
+- Feature-first product modules under `app/features/*` for workspace, editor, product shell, templates, and future SaaS workflows.
+- Opt-in Bearer Token auth module with sign-in, sign-up, logout, user menu, and protected-route examples.
+- Product workspace at `/workspace`: list, create, and delete projects via `nuxt-modern-starter-api` (`GET/POST/DELETE /api/projects`).
+- Theme templates placeholder at `/workspace/templates` (no API yet).
+- Editor at `/docs/:id` (`:id` is the project id): resolves `documentId`, loads content with `GET /api/documents/:documentId`, and autosaves with `PATCH /api/documents/:documentId` through `@yanivjs/yaniv-editor`.
+- Product account at `/account`: session details, profile payload, and logout (via user menu).
 - Authenticated business responses use the shared `{ code, message, data }` envelope.
-- Public pages for home, pricing, help, news list, news detail, login, register, and 404.
+- Public pages for home, pricing, help, news list, news detail, sign-in, sign-up, and 404.
 - Canonical, hreflang, OG metadata, noindex handling, and Article JSON-LD.
 - Docker image, Compose samples, and Nginx reverse-proxy sample for Nitro node-server.
 

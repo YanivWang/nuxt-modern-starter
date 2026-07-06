@@ -4,14 +4,14 @@ const apiMocks = vi.hoisted(() => ({
   request: vi.fn()
 }))
 
-vi.mock('../../app/apis/editor/client', () => ({
-  createEditorApiClient: () => ({
+vi.mock('../../app/apis/product/client', () => ({
+  createProductApiClient: () => ({
     request: apiMocks.request
   })
 }))
 
 describe('editor API boundary', () => {
-  it('reads editor documents through the authenticated editor request entrypoint', async () => {
+  it('reads editor documents through the authenticated product request entrypoint', async () => {
     const { fetchEditorDocument } = await import('../../app/apis/editor/document')
 
     fetchEditorDocument('doc_1')
@@ -21,7 +21,7 @@ describe('editor API boundary', () => {
     })
   })
 
-  it('saves editor documents through the authenticated editor request entrypoint', async () => {
+  it('saves editor documents through the authenticated product request entrypoint', async () => {
     const { saveEditorDocument } = await import('../../app/apis/editor/document')
 
     saveEditorDocument('doc_1', {

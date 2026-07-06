@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { WorkspaceDashboard } from '~/features/workspace'
+import { AccountPage } from '~/features/account'
 
 definePageMeta({
   layout: 'product',
@@ -11,14 +11,14 @@ const languageStore = useLanguageStore()
 const { t } = useI18n()
 
 usePageSeo({
-  path: '/app/workspace',
+  path: '/account',
   locale: languageStore.currentLanguage,
-  title: t('workspace.nav'),
-  description: t('workspace.title'),
+  title: t('auth.account.title'),
+  description: t('auth.account.lead'),
   noindex: true
 })
 </script>
 
 <template>
-  <WorkspaceDashboard />
+  <AccountPage />
 </template>

@@ -7,22 +7,33 @@ import {
 
 export type PublicPagePath = (typeof PUBLIC_PAGE_PATHS)[number]
 
-export const isProductPath = (path: string) => {
-  const normalizedPath = path.startsWith('/') ? path : `/${path}`
+/** 用于 nuxt.config routeRules（CSR）与测试断言 */
+export const productRoutePatterns = ['/workspace/**', '/docs/**', '/account'] as const
 
-  return normalizedPath === '/app' || normalizedPath.startsWith('/app/')
+export const csrRouteRules = [...productRoutePatterns]
+
+export const isProductPath = (path: string): boolean => {
+  const p = path.startsWith('/') ? path : `/${path}`
+
+  if (p === '/account') return true
+  if (p === '/workspace' || p.startsWith('/workspace/')) return true
+  if (p === '/docs' || p.startsWith('/docs/')) return true
+
+  return false
 }
 
-export const localizedProductPathToCanonical = (path: string) => {
+export const localizedProductPathToCanonical = (path: string): string | null => {
   const segments = path.split('/').filter(Boolean)
-  const [firstSegment, secondSegment] = segments
+  const [firstSegment, ...rest] = segments
   const localePrefixes = Object.values(SITE_LOCALE_PREFIX_MAP)
 
-  if (firstSegment && localePrefixes.includes(firstSegment) && secondSegment === 'app') {
-    return `/${segments.slice(1).join('/')}`
+  if (!firstSegment || !localePrefixes.includes(firstSegment)) {
+    return null
   }
 
-  return null
+  const pathWithoutLocale = rest.length ? `/${rest.join('/')}` : '/'
+
+  return isProductPath(pathWithoutLocale) ? pathWithoutLocale : null
 }
 
 export const localizedPath = (path: string, locale: SupportedLocale) => {
@@ -42,8 +53,6 @@ export const localizedPath = (path: string, locale: SupportedLocale) => {
 export const publicLocalizedPaths = (locales: readonly SupportedLocale[] = ['zh-CN', 'en-US']) =>
   locales.flatMap((locale) => PUBLIC_PAGE_PATHS.map((path) => localizedPath(path, locale)))
 
-export const productRoutePatterns = ['/app/**'] as const
-
 export const productPathPatterns = () => [...productRoutePatterns]
 
 export const prerenderRoutes = publicLocalizedPaths().filter(
@@ -57,5 +66,3 @@ export const prerenderRoutes = publicLocalizedPaths().filter(
 )
 
 export const swrRouteRules = ['/news/**', '/en/news/**'] as const
-
-export const csrRouteRules = productPathPatterns()

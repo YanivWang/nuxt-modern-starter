@@ -77,7 +77,7 @@ const includes = computed(() => includeKeys.map((key) => t(`pricing.includes.ite
 
         <div class="pricing-card__footer">
           <NuxtLink
-            :to="localePath(plan.featured ? '/help' : '/register')"
+            :to="localePath(plan.featured ? '/help' : '/sign-up')"
             class="pricing-card__cta"
           >
             <BaseButton :type="plan.featured ? 'primary' : 'default'">{{ plan.cta }}</BaseButton>

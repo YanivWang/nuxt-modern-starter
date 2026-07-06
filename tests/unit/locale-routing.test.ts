@@ -32,14 +32,19 @@ describe('locale routing decisions', () => {
   })
 
   it('redirects localized product URLs to language-neutral product URLs', () => {
-    expect(resolveLocaleRouteDecision('/en/app/workspace')).toEqual({
+    expect(resolveLocaleRouteDecision('/en/workspace')).toEqual({
       type: 'redirect',
-      path: '/app/workspace',
+      path: '/workspace',
       redirectCode: 301
     })
-    expect(resolveLocaleRouteDecision('/en/app/docs/deck-1')).toEqual({
+    expect(resolveLocaleRouteDecision('/en/docs/deck-1')).toEqual({
       type: 'redirect',
-      path: '/app/docs/deck-1',
+      path: '/docs/deck-1',
+      redirectCode: 301
+    })
+    expect(resolveLocaleRouteDecision('/en/account')).toEqual({
+      type: 'redirect',
+      path: '/account',
       redirectCode: 301
     })
   })

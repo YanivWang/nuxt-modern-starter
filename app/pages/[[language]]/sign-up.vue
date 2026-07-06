@@ -17,7 +17,7 @@ const form = reactive({
 const loading = ref(false)
 
 usePageSeo({
-  path: '/register',
+  path: '/sign-up',
   locale: languageStore.currentLanguage,
   title: t('auth.register.title'),
   description: t('auth.register.lead'),
@@ -46,7 +46,7 @@ const handleSubmit = async () => {
     })
     message.success(t('auth.register.success'))
     await router.push({
-      path: localePath('/login'),
+      path: localePath('/sign-in'),
       query: { username: form.username }
     })
   } catch (error) {
@@ -108,7 +108,7 @@ const handleSubmit = async () => {
 
         <p class="auth-card__footer">
           {{ $t('auth.register.hasAccount') }}
-          <NuxtLink :to="localePath('/login')">{{ $t('auth.login.title') }}</NuxtLink>
+          <NuxtLink :to="localePath('/sign-in')">{{ $t('auth.login.title') }}</NuxtLink>
         </p>
       </a-card>
     </AppContainer>

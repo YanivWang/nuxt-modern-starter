@@ -14,8 +14,9 @@ describe('locale path utilities', () => {
   })
 
   it('does not add language prefixes to authenticated product paths', () => {
-    expect(localizedPath('/app/workspace', 'en-US')).toBe('/app/workspace')
-    expect(localizedPath('/app/docs/deck-1', 'en-US')).toBe('/app/docs/deck-1')
+    expect(localizedPath('/workspace', 'en-US')).toBe('/workspace')
+    expect(localizedPath('/docs/deck-1', 'en-US')).toBe('/docs/deck-1')
+    expect(localizedPath('/account', 'en-US')).toBe('/account')
   })
 
   it('keeps relative path when switching language', () => {
@@ -24,7 +25,7 @@ describe('locale path utilities', () => {
       '/pricing?plan=growth#faq'
     )
     expect(getSwitchLanguageUrl('/pricing', 'en-US')).toBe('/en/pricing')
-    expect(getSwitchLanguageUrl('/app/workspace', 'en-US')).toBe('/app/workspace')
-    expect(getSwitchLanguageUrl('/en/app/workspace', 'zh-CN')).toBe('/app/workspace')
+    expect(getSwitchLanguageUrl('/workspace', 'en-US')).toBe('/workspace')
+    expect(getSwitchLanguageUrl('/en/workspace', 'zh-CN')).toBe('/workspace')
   })
 })

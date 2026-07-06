@@ -78,6 +78,15 @@ const onProjectCreated = (createdProject: WorkspaceProject) => {
   cachedProject.value = createdProject
 }
 
+const onProjectUpdated = (patch: Pick<WorkspaceProject, 'id' | 'title'>) => {
+  if (cachedProject.value?.id === patch.id) {
+    cachedProject.value = {
+      ...cachedProject.value,
+      title: patch.title
+    }
+  }
+}
+
 usePageSeo({
   path: isNewDraft.value ? getWorkspaceNewDocPath() : getWorkspaceDocPath(routeId.value),
   locale: languageStore.currentLanguage,
@@ -98,6 +107,7 @@ usePageSeo({
     :document-id="editorDocumentId"
     :project="resolvedProject"
     @project-created="onProjectCreated"
+    @project-updated="onProjectUpdated"
   />
 </template>
 

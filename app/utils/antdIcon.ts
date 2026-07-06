@@ -4,13 +4,16 @@ import ArrowLeftOutlinedSvg from '@ant-design/icons-svg/es/asn/ArrowLeftOutlined
 import ArrowRightOutlinedSvg from '@ant-design/icons-svg/es/asn/ArrowRightOutlined'
 import CheckOutlinedSvg from '@ant-design/icons-svg/es/asn/CheckOutlined'
 import DeleteOutlinedSvg from '@ant-design/icons-svg/es/asn/DeleteOutlined'
+import FolderOutlinedSvg from '@ant-design/icons-svg/es/asn/FolderOutlined'
 import GlobalOutlinedSvg from '@ant-design/icons-svg/es/asn/GlobalOutlined'
+import LayoutOutlinedSvg from '@ant-design/icons-svg/es/asn/LayoutOutlined'
 import MoonOutlinedSvg from '@ant-design/icons-svg/es/asn/MoonOutlined'
 import PlusOutlinedSvg from '@ant-design/icons-svg/es/asn/PlusOutlined'
 import ReadOutlinedSvg from '@ant-design/icons-svg/es/asn/ReadOutlined'
 import RocketOutlinedSvg from '@ant-design/icons-svg/es/asn/RocketOutlined'
 import SearchOutlinedSvg from '@ant-design/icons-svg/es/asn/SearchOutlined'
 import SunOutlinedSvg from '@ant-design/icons-svg/es/asn/SunOutlined'
+import TagOutlinedSvg from '@ant-design/icons-svg/es/asn/TagOutlined'
 import TranslationOutlinedSvg from '@ant-design/icons-svg/es/asn/TranslationOutlined'
 import UserOutlinedSvg from '@ant-design/icons-svg/es/asn/UserOutlined'
 import type { IconDefinition } from '@ant-design/icons-svg/es/types'
@@ -30,12 +33,15 @@ export const ArrowLeftOutlined = createAntdIcon('ArrowLeftOutlined', ArrowLeftOu
 export const ArrowRightOutlined = createAntdIcon('ArrowRightOutlined', ArrowRightOutlinedSvg)
 export const CheckOutlined = createAntdIcon('CheckOutlined', CheckOutlinedSvg)
 export const DeleteOutlined = createAntdIcon('DeleteOutlined', DeleteOutlinedSvg)
+export const FolderOutlined = createAntdIcon('FolderOutlined', FolderOutlinedSvg)
 export const GlobalOutlined = createAntdIcon('GlobalOutlined', GlobalOutlinedSvg)
+export const LayoutOutlined = createAntdIcon('LayoutOutlined', LayoutOutlinedSvg)
 export const MoonOutlined = createAntdIcon('MoonOutlined', MoonOutlinedSvg)
 export const PlusOutlined = createAntdIcon('PlusOutlined', PlusOutlinedSvg)
 export const ReadOutlined = createAntdIcon('ReadOutlined', ReadOutlinedSvg)
 export const RocketOutlined = createAntdIcon('RocketOutlined', RocketOutlinedSvg)
 export const SearchOutlined = createAntdIcon('SearchOutlined', SearchOutlinedSvg)
 export const SunOutlined = createAntdIcon('SunOutlined', SunOutlinedSvg)
+export const TagOutlined = createAntdIcon('TagOutlined', TagOutlinedSvg)
 export const TranslationOutlined = createAntdIcon('TranslationOutlined', TranslationOutlinedSvg)
 export const UserOutlined = createAntdIcon('UserOutlined', UserOutlinedSvg)

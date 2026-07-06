@@ -18,7 +18,7 @@ Use PascalCase for Vue components, `use*` for composables, and typed named expor
 
 ## Page And Feature Boundaries
 
-Public SEO routes live directly under `app/pages/[[language]]`. Logged-in product route entries live under `app/pages/app`; do not add new product pages such as editor, account, documents, templates, billing, or settings at the same level as public marketing pages.
+Public SEO routes live directly under `app/pages/[[language]]`. Logged-in product route entries live under `app/pages/workspace`, `app/pages/docs`, and top-level `app/pages/account.vue`. Do not nest product pages under `app/pages/[[language]]` or reintroduce an `/app/**` prefix.
 
 Nuxt page files are route entries only. Keep them focused on `definePageMeta`, layout selection, auth middleware, SEO/noindex, route params, and mounting a feature component.
 
@@ -45,21 +45,20 @@ Requests are split by responsibility:
 - `app/api-core` owns common request types, header helpers, error normalization, log redaction, and typed `$fetch` client creation.
 - `createPublicApiClient()` is the default for public SEO/content data. It strips `authorization` and `cookie` headers, does not refresh sessions, and is safe for SSR/prerender/SWR paths.
 - `createAuthApiClient()` is the default for login, register, refresh, logout, `/me`, and profile requests.
-- `createProductApiClient()` is the default factory for authenticated workspace/project workflows. Feature adapters such as `fetchWorkspaceProjects()`, `createWorkspaceProject()`, `fetchWorkspaceProject()`, and `deleteWorkspaceProject()` should call it instead of pages calling raw URLs. Use `getWorkspaceDocPath(projectId)` for editor links.
-- `createEditorApiClient()` is the default factory for authenticated editor document workflows. It delegates to the shared product client so refresh behavior stays consistent. Document adapters live in `app/apis/editor/document.ts`.
+- `createProductApiClient()` is the default factory for authenticated workspace/project and editor document workflows. Feature adapters such as `fetchWorkspaceProjects()`, `createWorkspaceProject()`, `fetchWorkspaceProject()`, and `deleteWorkspaceProject()` should call it instead of pages calling raw URLs. Editor document adapters in `app/apis/editor/document.ts` also call `createProductApiClient()` directly. Use `getWorkspaceDocPath(projectId)` for editor links.
 - `app/apis/public`, `app/apis/auth`, `app/apis/product`, and `app/apis/editor` expose business functions or client factories. Pages should not scatter raw backend URLs.
 
 Scenario clients decide their own headers. Public clients only keep request metadata such as `accept-language` and `x-request-id`; authenticated clients add Bearer tokens explicitly. Logs redact `authorization` and `cookie`.
 
 Public adapters must not read token cookies or call refresh endpoints. If a public page needs personalized data, put that personalized request behind a client-only authenticated component so the SEO HTML remains cache-safe.
 
-Product routes under `/app/**` are client-rendered by default through `csrRouteRules` in `config/routes.ts`. Do not add `/en/app/**` or other localized product route rules; language choice inside the product app is UI state, not part of the authenticated product URL.
+Product routes (`/workspace/**`, `/docs/**`, `/account`) are client-rendered by default through `csrRouteRules` in `config/routes.ts`. Do not add localized product route rules such as `/en/workspace`; language choice inside the product app is UI state, not part of the authenticated product URL. If someone opens `/en/workspace`, locale and server middleware redirect to `/workspace` with 301.
 
-Product navigation and route policy belong in `app/features/product-shell/config.ts`. Register new routes in `productRouteConfigs` with a `ProductRouteMode` (`workspace`, `docs`, or `account`), set `nav: true` only for sidebar entries, and wire links in the product UI after the route policy exists.
+Product sidebar navigation belongs in `app/features/product-shell/config.ts` through `productNavItems` and `productFooterNavItems`. Account access belongs in `UserAccountMenu`, not the sidebar. Page-level auth and noindex are declared with `definePageMeta` and `usePageSeo`.
 
 ## SEO Server Routes
 
-`server/routes/sitemap.xml.ts` and `server/routes/robots.txt.ts` are the canonical crawler entrypoints. Sitemap output should include public localized pages and public content details only. Product routes, login, and register pages stay `noindex` and must remain out of sitemap.
+`server/routes/sitemap.xml.ts` and `server/routes/robots.txt.ts` are the canonical crawler entrypoints. Sitemap output should include public localized pages and public content details only. Product routes, sign-in, and sign-up pages stay `noindex` and must remain out of sitemap.
 
 ## Tests
 

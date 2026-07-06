@@ -20,11 +20,11 @@ describe('page seo links', () => {
   it('does not generate alternate language links for noindex product pages', () => {
     const links = buildPageSeoLinks({
       siteUrl: 'https://example.com',
-      path: '/app/workspace',
+      path: '/workspace',
       locale: 'en-US',
       noindex: true
     })
 
-    expect(links).toEqual([{ rel: 'canonical', href: 'https://example.com/app/workspace' }])
+    expect(links).toEqual([{ rel: 'canonical', href: 'https://example.com/workspace' }])
   })
 })

@@ -13,31 +13,15 @@
           <ThemeSwitch />
         </div>
         <div v-if="!authStore.isAuthenticated" class="app-header__auth">
-          <NuxtLink class="app-header__sign-in" :to="localePath('/login')">
+          <NuxtLink class="app-header__sign-in" :to="localePath('/sign-in')">
             {{ $t('auth.header.signIn') }}
           </NuxtLink>
-          <NuxtLink class="app-header__sign-up" :to="localePath('/register')">
+          <NuxtLink class="app-header__sign-up" :to="localePath('/sign-up')">
             <span>{{ $t('auth.header.signUp') }}</span>
             <ArrowRightOutlined />
           </NuxtLink>
         </div>
-        <a-dropdown v-else>
-          <a-button type="text" class="app-header__account">
-            {{ authStore.user?.nickname || authStore.user?.username }}
-          </a-button>
-          <template #overlay>
-            <a-menu>
-              <a-menu-item key="account">
-                <NuxtLink :to="localePath('/app/account')">{{ $t('auth.account.title') }}</NuxtLink>
-              </a-menu-item>
-              <a-menu-item key="logout">
-                <button class="app-header__menu-button" type="button" @click="handleLogout">
-                  {{ $t('auth.logout.submit') }}
-                </button>
-              </a-menu-item>
-            </a-menu>
-          </template>
-        </a-dropdown>
+        <UserAccountMenu v-else />
       </div>
     </AppContainer>
   </header>
@@ -46,10 +30,10 @@
 <script setup lang="ts">
 import { ArrowRightOutlined } from '../../utils/antdIcon'
 import { NAV_ITEMS } from '../../../config/site'
+import UserAccountMenu from './UserAccountMenu.vue'
 
-const router = useRouter()
 const { localePath } = useLocalePath()
-const { authStore, logout } = useAuth()
+const { authStore } = useAuth()
 
 const isScrolled = ref(false)
 
@@ -65,11 +49,6 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('scroll', updateScrollState)
 })
-
-const handleLogout = async () => {
-  await logout()
-  await router.push(localePath('/'))
-}
 </script>
 
 <style scoped lang="scss">
@@ -184,28 +163,6 @@ const handleLogout = async () => {
   &:hover {
     background: var(--app-auth-sign-up-bg-hover);
   }
-}
-
-.app-header__account {
-  height: auto;
-  min-height: var(--app-header-control-size);
-  padding-inline: 8px;
-  color: var(--app-color-primary);
-  font-size: 15px;
-  font-weight: 600;
-  line-height: var(--app-header-control-size);
-  text-decoration: none;
-}
-
-.app-header__menu-button {
-  width: 100%;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: inherit;
-  cursor: pointer;
-  font: inherit;
-  text-align: left;
 }
 
 .app-nav a.router-link-active {

@@ -84,7 +84,7 @@ usePageSeo({
           <h1 class="hero__title">{{ $t('home.title') }}</h1>
           <p class="hero__lead">{{ $t('home.lead') }}</p>
           <div class="hero__actions">
-            <NuxtLink :to="localePath('/register')" class="hero__primary-link">
+            <NuxtLink :to="localePath('/sign-up')" class="hero__primary-link">
               <BaseButton>{{ $t('home.primaryCta') }}</BaseButton>
             </NuxtLink>
             <NuxtLink class="hero__secondary-link" :to="localePath('/pricing')">
@@ -170,7 +170,7 @@ usePageSeo({
           <p class="page-eyebrow">{{ $t('home.ctaEyebrow') }}</p>
           <h2>{{ $t('home.ctaTitle') }}</h2>
         </div>
-        <NuxtLink :to="localePath('/register')" class="home-cta__link">
+        <NuxtLink :to="localePath('/sign-up')" class="home-cta__link">
           <BaseButton class="home-cta__button">{{ $t('home.primaryCta') }}</BaseButton>
         </NuxtLink>
       </div>
