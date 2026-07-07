@@ -1,3 +1,24 @@
+/*
+  【文件职责】
+    UI 语言 Pinia store：currentLanguage 状态、chooseLanguage 加载 i18n 文案、localStorage 持久化。
+    产品区 UI 语言与 URL 解耦，由 languageStore 独立控制。
+
+  【架构位置】
+    共享层 — app/stores，被 locale.global middleware、useLanguageSwitch、useLocalePath 消费。
+
+  【主要导出 / 路由】
+    useLanguageStore — currentLanguage、chooseLanguage、toggleLanguage、pathPrefix、languages
+
+  【依赖关系】
+    - 依赖：config/site.ts、i18n/index.ts（loadLocaleMessages、SITE_LANG_MAP）
+    - 被引用：app/middleware/locale.global.ts、LanguageSwitcher、UserAccountMenu
+
+  【渲染 / 数据】
+    SSR 与 CSR；chooseLanguage 触发 loadLocaleMessages；client 写 STORAGE_KEY_LANGUAGE。
+
+  【边界与注意】
+    产品 URL 语言中性；切换 UI 语言在产品区不改变 path（见 useLanguageSwitch / getSwitchLanguageUrl）。
+*/
 import {
   DEFAULT_LOCALE,
   SITE_LOCALE_PREFIX_MAP,

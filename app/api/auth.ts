@@ -1,3 +1,27 @@
+/*
+  【文件职责】
+    鉴权 API adapter 与 Product client 定义：login / register / refresh / me / profile。
+    refreshAccessTokenOnce 实现 401 单飞 refresh；createProductApiClient 供 feature adapter 使用。
+
+  【架构位置】
+    共享层 — app/api，被 auth store、各 feature api adapter 消费。
+
+  【主要导出 / 路由】
+    createProductApiClient、refreshAccessTokenOnce、loginApi、registerApi、logoutApi、
+    fetchMeApi、fetchProfileApi、updateProfileApi、normalizeAuthUser
+
+  【依赖关系】
+    - 依赖：config/auth.ts、app/api/clients.ts、app/utils/auth-session.ts、app/utils/attribution-params.ts
+    - 被引用：app/stores/auth.ts、app/features/workspace/api.ts、app/features/editor/api.ts
+
+  【渲染 / 数据】
+    adapter 相对路径：/login、/register、/refresh、/me 等（base 已含 /api）。
+    register 合并归因参数；Product client 默认从 cookie 读 accessToken。
+
+  【边界与注意】
+    createProductApiClient 定义在此文件，不在 app/api/clients.ts。
+    refresh 失败时 clearAuthSession；并发 401 共享同一 refreshPromise。
+*/
 import { AUTH_API_ENDPOINTS, type AuthUser, type Permission, type Role } from '../../config/auth'
 import type { ApiResponse } from '../lib/http/types'
 import { createAuthApiClient, type AuthApiClientOptions } from './clients'
@@ -75,6 +99,7 @@ const refreshAccessToken = async () => {
 }
 
 export const refreshAccessTokenOnce = () => {
+  // 401 单飞：并发请求共享同一 refresh Promise，避免 token 风暴
   refreshPromise ||= refreshAccessToken().finally(() => {
     refreshPromise = null
   })

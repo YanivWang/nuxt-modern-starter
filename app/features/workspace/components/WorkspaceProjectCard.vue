@@ -1,3 +1,24 @@
+<!--
+  【文件职责】
+    单个 workspace 项目卡片：缩略图装饰、标题链到编辑器、删除菜单。
+    share / download / favorite 按钮为 UI 占位，无后端逻辑。
+
+  【架构位置】
+    登录产品区 — app/features/workspace 内部组件，WorkspaceDashboard 网格项。
+
+  【主要导出 / 路由】
+    WorkspaceProjectCard；docPath prop → /docs/:id
+
+  【依赖关系】
+    - 依赖：../api WorkspaceProject、formatWorkspaceDateTime
+    - 被引用：WorkspaceDashboard
+
+  【渲染 / 数据】
+    无 API 调用；delete 事件由父组件调用 deleteWorkspaceProject。
+
+  【边界与注意】
+    favorite / share / download / preview-actions 均为 @click.prevent 占位，待产品实现。
+-->
 <script setup lang="ts">
 import {
   DownloadOutlined,
@@ -57,10 +78,12 @@ const formattedUpdatedAt = computed(() =>
         tabindex="-1"
         @click.prevent
       >
+        <!-- UI 占位：收藏功能未实现 -->
         <StarOutlined aria-hidden="true" />
       </button>
 
       <div class="workspace-card__preview-actions">
+        <!-- share / download / more 为 UI 占位，无 API -->
         <button
           type="button"
           class="workspace-card__preview-action"

@@ -1,3 +1,23 @@
+<!--
+  【文件职责】
+    主题模板占位页：虚线卡片网格 + a-empty，无选择与 API 交互。
+
+  【架构位置】
+    登录产品区 — app/features/templates，product layout 下渲染。
+
+  【主要导出 / 路由】
+    ThemeTemplatesPage
+
+  【依赖关系】
+    - 依赖：i18n templates.empty、productNav.themeTemplates
+    - 被引用：app/pages/workspace/templates/index.vue
+
+  【渲染 / 数据】
+    CSR 占位；装饰 grid aria-hidden。
+
+  【边界与注意】
+    product-shell config 侧栏有入口；实现真实模板时替换本组件即可。
+-->
 <template>
   <section class="theme-templates-page">
     <header class="theme-templates-page__header">

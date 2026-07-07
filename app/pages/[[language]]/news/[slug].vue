@@ -1,6 +1,12 @@
 <!--
   【新闻详情页】
 
+  【文件职责】
+    单篇新闻正文页：按 slug + locale 拉取文章，输出 Article JSON-LD。
+
+  【架构位置】
+    公开 SEO 区 — app/pages/[[language]]/news，default layout，SWR。
+
   路由：/news/:slug、/en/news/:slug（如 /news/starter-release）
   Layout：default
 
@@ -13,14 +19,17 @@
   用户流程：
   - 从列表页进入 → 阅读全文 → 返回 /news
 
-  数据 / API：
-  - fetchLocalizedNewsArticle(slug, language) → GET /api/content/news/:slug
-  - formatPublishedDate() 格式化日期
+  【依赖关系】
+  - 依赖：~/api/public fetchLocalizedNewsArticle、formatPublishedDate、usePageSeo
+  - 被引用：新闻列表页链接、sitemap 按 slug 收录
 
-  SEO / 边界：
-  - slug 不存在 → createError 404（news.notFound）
-  - usePageSeo 传入 article 参数，生成 Article JSON-LD 结构化数据
-  - SSR + SWR，水合复用 payload；sitemap 按 slug 逐篇收录
+  【渲染 / 数据】
+    SSR + SWR；fetchLocalizedNewsArticle → adapter /content/news/:slug（网关 GET /api/content/news/:slug）。
+    useAsyncData 水合复用 payload。
+
+  【边界与注意】
+    slug 不存在 → createError 404（news.notFound）。
+    usePageSeo article 参数生成 Article JSON-LD，og:type=article。
 -->
 <script setup lang="ts">
 import { ArrowRightOutlined } from '~/utils/antdIcon'

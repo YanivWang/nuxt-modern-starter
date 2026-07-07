@@ -1,3 +1,23 @@
+/*
+  【文件职责】
+    单测：localizedPath、getSwitchLanguageUrl 公开页前缀与产品 path 语言中性。
+
+  【架构位置】
+    tests/unit — config/routes + i18n helper。
+
+  【主要导出 / 路由】
+    describe locale path utilities
+
+  【依赖关系】
+    - 依赖：config/routes.ts、i18n/index.ts
+    - mock：无
+
+  【渲染 / 数据】
+    无
+
+  【边界与注意】
+    不覆盖 useLocalePath composable；不测 middleware 301。
+*/
 import { describe, expect, it } from 'vitest'
 import { localizedPath } from '../../config/routes'
 import { getSwitchLanguageUrl, relativeLangPath } from '../../i18n'

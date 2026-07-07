@@ -1,3 +1,21 @@
+# 【文件职责】
+#   生产 Docker 镜像：多阶段 pnpm install + Nuxt build，runtime 仅 .output 与非 root node 用户。
+#
+# 【架构位置】
+#   docker/ — 与 docker-compose.base.yaml build 目标配合。
+#
+# 【主要导出 / 路由】
+#   镜像 CMD node .output/server/index.mjs，PORT 3000
+#
+# 【依赖关系】
+#   - 依赖：package.json、pnpm-lock、BUILD_ENV build arg
+#   - 被引用：docker-compose.base.yaml、pnpm docker:build
+#
+# 【渲染 / 数据】
+#   NODE_ENV=production；不在镜像内复制真实 .env，运行时 env_file 注入。
+#
+# 【边界与注意】
+#   HUSKY=0 禁用 git hooks；BUILD_ENV 默认 prod 对应 pnpm run build:prod。
 # 文件职责：生产镜像构建。
 # 多阶段安装依赖、编译 Nuxt，并在运行阶段只保留 .output 与非 root 用户。
 ARG PNPM_VERSION=11.5.2

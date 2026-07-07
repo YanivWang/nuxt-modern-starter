@@ -1,3 +1,23 @@
+/*
+  【文件职责】
+    单测：formatDateOnly、formatPublishedDate 按 locale 格式化。
+
+  【架构位置】
+    tests/unit — app/utils/formatDate.ts。
+
+  【主要导出 / 路由】
+    describe formatDateOnly / formatPublishedDate
+
+  【依赖关系】
+    - 依赖：app/utils/formatDate.ts
+    - mock：无
+
+  【渲染 / 数据】
+    无
+
+  【边界与注意】
+    不覆盖 formatWorkspaceDateTime；非法 ISO 边界不测全时区。
+*/
 import { describe, expect, it } from 'vitest'
 import { formatDateOnly, formatPublishedDate } from '../../app/utils/formatDate'
 

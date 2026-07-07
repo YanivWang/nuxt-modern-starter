@@ -1,6 +1,12 @@
 <!--
   【注册页】
 
+  【文件职责】
+    公开注册页：提交用户名密码创建账号，成功后跳转登录页预填用户名。
+
+  【架构位置】
+    公开区（非 PUBLIC_PAGE_PATHS）— app/pages/[[language]]，default layout，SSR + noindex。
+
   路由：/sign-up、/en/sign-up
   Layout：default
 
@@ -13,17 +19,21 @@
   - 成功：message 提示 → 跳转 /sign-in?username=xxx（预填用户名）
   - 失败：展示 API 错误信息
 
-  数据 / API：
-  - useAuth().register() → app/api/auth
+  【依赖关系】
+  - 依赖：useAuth().register → app/api/auth registerApi（adapter /register，含归因参数）
+  - 被引用：首页 / 定价 CTA、AppHeader sign-up 链接
+
+  【渲染 / 数据】
+    SSR；registerApi → POST /register；注册不自动登录（不 setTokens / fetchMe）。
 
   表单校验：
   - username 必填
   - password 必填且最少 6 位
   - confirmPassword 必填且须与 password 一致（自定义 validator）
 
-  SEO / 边界：
-  - noindex
-  - 首页 Hero/CTA、定价页 Starter/Custom 方案、AppHeader 均有入口
+  【边界与注意】
+    noindex；不在 PUBLIC_PAGE_PATHS / sitemap。
+    注册成功后须用户手动登录，与 auth store register action 行为一致。
 -->
 <script setup lang="ts">
 import { message } from 'ant-design-vue'

@@ -1,3 +1,23 @@
+/*
+  【文件职责】
+    单测：app/api/auth refreshAccessTokenOnce 单飞、register 归因合并。
+
+  【架构位置】
+    tests/unit — mock auth-session、clients、attribution。
+
+  【主要导出 / 路由】
+    describe auth api（refresh / register 等）
+
+  【依赖关系】
+    - 依赖：app/api/auth.ts
+    - mock：getRefreshTokenCookie、createAuthApiClient、mergeAttributionIntoBody
+
+  【渲染 / 数据】
+    无
+
+  【边界与注意】
+    不覆盖完整 login 页面流；并发 refresh 单飞行为必测。
+*/
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 const sessionMocks = vi.hoisted(() => ({

@@ -1,3 +1,24 @@
+/*
+  【文件职责】
+    全局样式入口：引入 tokens 与 page-patterns，定义 body、app-shell、app-container 基线。
+    nuxt.config css 数组挂载本文件。
+
+  【架构位置】
+    共享层 — app/assets/styles 根入口。
+
+  【主要导出 / 路由】
+    全局 .app-shell、.app-main、.app-container、.app-header__icon-button、.page-* 标题类
+
+  【依赖关系】
+    - 依赖：tokens.scss、page-patterns.scss
+    - 被引用：nuxt.config.ts css、全站 Vue 组件
+
+  【渲染 / 数据】
+    无 — 全局 CSS。
+
+  【边界与注意】
+    产品 feature 私有样式放 feature 目录；公开页复用 .page-eyebrow / .page-title 等于此或 page-patterns。
+*/
 @use './tokens';
 @use './page-patterns';
 

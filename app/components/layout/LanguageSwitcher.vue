@@ -1,3 +1,24 @@
+<!--
+  【文件职责】
+    公开 header 语言切换下拉：hover / click 打开面板，选择后 chooseLanguage + router.push。
+    桌面 hover 打开，触控设备 click 切换。
+
+  【架构位置】
+    公开 SEO 区 — app/components/layout，AppHeader utilities 区使用。
+
+  【主要导出 / 路由】
+    LanguageSwitcher
+
+  【依赖关系】
+    - 依赖：useLanguageStore、useLocalePath（switchLocalePath）
+    - 被引用：AppHeader
+
+  【渲染 / 数据】
+    公开页切换会改 URL（/ ↔ /en）；产品区语言切换见 UserAccountMenu。
+
+  【边界与注意】
+    与 UserAccountMenu 内嵌语言面板逻辑类似，但用于公开 header 场景。
+-->
 <template>
   <div class="language-switcher" @mouseenter="openPanel" @mouseleave="closePanel">
     <button

@@ -1,3 +1,23 @@
+/*
+  【文件职责】
+    单测：authStore hasRole / hasPermission helper（归一化 user 字段）。
+
+  【架构位置】
+    tests/unit — Pinia，无 API mock。
+
+  【主要导出 / 路由】
+    describe auth permission helpers
+
+  【依赖关系】
+    - 依赖：app/stores/auth.ts
+    - mock：无（直接赋值 user）
+
+  【渲染 / 数据】
+    无
+
+  【边界与注意】
+    不覆盖 app/middleware/auth.ts isAuthorized 组合逻辑。
+*/
 import { createPinia, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it } from 'vitest'
 import { useAuthStore } from '../../app/stores/auth'

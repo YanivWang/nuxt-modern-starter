@@ -1,3 +1,24 @@
+<!--
+  【文件职责】
+    产品区用户菜单：头像、语言子面板、账户链接、退出登录。
+    退出时 await logout() 后 router.push 回首页（store logout 本身不跳转）。
+
+  【架构位置】
+    登录产品区 — app/components/layout，AppShellHeader 默认 actions-after。
+
+  【主要导出 / 路由】
+    UserAccountMenu → /account、logout → localePath('/')
+
+  【依赖关系】
+    - 依赖：useAuth、useUserAvatar、useLanguageSwitch、useLocalePath
+    - 被引用：AppShellHeader、ProductShell
+
+  【渲染 / 数据】
+    CSR；产品区语言切换不改变 URL path，仅换 UI locale。
+
+  【边界与注意】
+    handleSignOut：先 closeMenu，再 logout，再 router.push — 与 auth store 职责分离。
+-->
 <template>
   <div ref="rootRef" class="user-account-menu">
     <button
@@ -246,6 +267,7 @@ const handleLanguageSelect = async (locale: SupportedLocale) => {
 const handleSignOut = async () => {
   closeMenu()
   await logout()
+  // store logout 不跳转；UI 层 push 回公开首页
   await router.push(localePath('/'))
 }
 </script>

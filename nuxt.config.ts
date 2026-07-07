@@ -1,3 +1,24 @@
+/*
+  【文件职责】
+    Nuxt 主配置：modules、runtimeConfig.public、routeRules（prerender/SWR/CSR）、CSP headers。
+    routeRules 数据来自 config/routes.ts 单一来源。
+
+  【架构位置】
+    根配置 — 构建与 SSR/CSR 策略入口。
+
+  【主要导出 / 路由】
+    defineNuxtConfig default export
+
+  【依赖关系】
+    - 依赖：config/routes.ts（prerenderRoutes、swrRouteRules、csrRouteRules）
+    - 被引用：Nuxt CLI、Docker build、tests/nuxt/smoke
+
+  【渲染 / 数据】
+    prerender / SWR 3600s / 产品区 ssr:false；/** CSP 含 script-src（启用 analytics 需放宽）。
+
+  【边界与注意】
+    测试环境追加 @nuxt/test-utils/module；修改 routeRules 须同步 config/routes 与单测。
+*/
 import { defineNuxtConfig } from 'nuxt/config'
 import { csrRouteRules, prerenderRoutes, swrRouteRules } from './config/routes'
 

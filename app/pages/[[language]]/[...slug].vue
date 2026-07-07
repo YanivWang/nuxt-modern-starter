@@ -1,6 +1,12 @@
 <!--
   【公开区 404 兜底页】
 
+  【文件职责】
+    catch-all 友好 404：未匹配的公开路径展示错误文案与回首页链接。
+
+  【架构位置】
+    公开 SEO 区 — app/pages/[[language]]/[...slug].vue，default layout。
+
   路由：任意未匹配的公开路径（如 /foo、/en/unknown-page）
   Layout：default
 
@@ -11,13 +17,16 @@
   用户流程：
   - 访问不存在的公开 URL → 展示友好 404 页 → 可回首页
 
-  数据 / API：
-  - 无；纯 i18n 文案（error.*）
+  【依赖关系】
+  - 依赖：i18n error.*、usePageSeo（noindex）、setResponseStatus
+  - 被引用：Nuxt 文件路由 catch-all
 
-  SEO / 边界：
-  - setResponseStatus(404) 返回 HTTP 404 状态码
-  - noindex 避免未知路径被搜索引擎收录
-  - Nuxt catch-all 路由兜底；不支持的语言前缀由 locale middleware 单独处理
+  【渲染 / 数据】
+    SSR；无 API；HTTP 404 + noindex。
+
+  【边界与注意】
+    不支持的语言前缀（如 /fr/*）由 app/middleware/locale.global.ts 单独 404，不走本页。
+    usePageSeo noindex 不输出 hreflang alternate。
 -->
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'

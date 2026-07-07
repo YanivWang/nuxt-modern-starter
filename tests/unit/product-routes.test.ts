@@ -1,3 +1,23 @@
+/*
+  【文件职责】
+    单测：产品路由 CSR 规则、localizedProductPathToCanonical、公开 SEO 列表隔离。
+
+  【架构位置】
+    tests/unit — config/routes.ts。
+
+  【主要导出 / 路由】
+    describe product route boundaries
+
+  【依赖关系】
+    - 依赖：config/routes.ts
+    - mock：无
+
+  【渲染 / 数据】
+    无
+
+  【边界与注意】
+    不覆盖 nuxt.config routeRules 集成；修改 csrRouteRules 须同步。
+*/
 import { describe, expect, it } from 'vitest'
 import {
   csrRouteRules,

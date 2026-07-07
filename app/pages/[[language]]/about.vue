@@ -1,6 +1,12 @@
 <!--
   【关于我们】
 
+  【文件职责】
+    公开介绍页：使命、价值观与项目背景，纯静态 i18n 内容。
+
+  【架构位置】
+    公开 SEO 区 — app/pages/[[language]]，default layout，PUBLIC_PAGE_PATHS + prerender。
+
   路由：/about、/en/about
   Layout：default
 
@@ -10,11 +16,15 @@
   - Values：三项原则清单
   - Story：项目背景段落
 
-  数据 / API：
-  - 纯静态 i18n（about.*），无后端请求
+  【依赖关系】
+  - 依赖：i18n about.*、usePageSeo、PageContainer
+  - 被引用：AppHeader / AppFooter 导航
 
-  SEO / 边界：
-  - usePageSeo 完整 SEO；prerenderRoutes 构建时静态化
+  【渲染 / 数据】
+    prerender 静态 HTML；无后端 API。
+
+  【边界与注意】
+    usePageSeo 完整 canonical / hreflang。
 -->
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'

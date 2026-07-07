@@ -1,3 +1,24 @@
+/*
+  【文件职责】
+    Design tokens CSS 变量：light / dark 色板、header 尺寸、auth 按钮、阴影等。
+    与 config/theme.ts themeTokens 数值对齐，供 SCSS 与组件 var() 引用。
+
+  【架构位置】
+    共享层 — app/assets/styles，由 main.scss @use 引入。
+
+  【主要导出 / 路由】
+    :root / :root[data-theme='light'|'dark'] CSS 自定义属性
+
+  【依赖关系】
+    - 依赖：useTheme 设置 html dataset.theme 切换 dark 块
+    - 被引用：main.scss、各组件 scoped 样式
+
+  【渲染 / 数据】
+    无 — 静态 token；Ant Design token 由 config/theme getAntdThemeToken 单独映射。
+
+  【边界与注意】
+    修改色值时建议同步 config/theme.ts 保持 Ant Design 与 CSS 变量一致。
+*/
 :root,
 :root[data-theme='light'] {
   color-scheme: light;

@@ -1,3 +1,24 @@
+/*
+  【文件职责】
+    主题 composable：读取 / 持久化 theme mode、解析 system 偏好、应用 document dataset 与 Ant Design token。
+    onMounted 恢复 localStorage 偏好并监听 prefers-color-scheme 变化。
+
+  【架构位置】
+    共享层 — app/composables，被 app/app.vue ConfigProvider、ThemeSwitcher 消费。
+
+  【主要导出 / 路由】
+    useTheme — mode、resolvedMode、antdTheme、setThemeMode、toggleTheme
+
+  【依赖关系】
+    - 依赖：config/theme.ts、useThemeStore
+    - 被引用：app/app.vue、ThemeSwitcher 组件
+
+  【渲染 / 数据】
+    SSR 默认 light；client onMounted 读 THEME_STORAGE_KEY 并应用 dataset.theme。
+
+  【边界与注意】
+    mode === 'system' 时随 OS 深色模式自动切换 resolvedMode。
+*/
 import {
   getAntdThemeToken,
   THEME_STORAGE_KEY,

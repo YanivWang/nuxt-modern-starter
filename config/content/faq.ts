@@ -1,3 +1,24 @@
+/*
+  【文件职责】
+    帮助页 FAQ 静态内容单一来源：多语言 question / answer 对，按 locale 过滤后返回。
+    后续可替换为 CMS 或后台 API，页面通过 app/api/public.ts 消费，组件无需大改。
+
+  【架构位置】
+    config/content — 公开 SEO 区静态内容；独立于 i18n 文案包（独立内容域）。
+
+  【主要导出 / 路由】
+    FaqItem、faqItems
+
+  【依赖关系】
+    - 依赖：config/site.ts（SupportedLocale 类型）
+    - 被引用：app/api/public.ts（getFaqItems）、app/pages/[[language]]/help.vue
+
+  【渲染 / 数据】
+    帮助页 SSR；getFaqItems(currentLanguage) 本地读取，不经远程 API。
+
+  【边界与注意】
+    新增 FAQ 条目只需扩展 faqItems；每条须同时提供 zh-CN 与 en-US 字段。
+*/
 import type { SupportedLocale } from '../site'
 
 export type FaqItem = {

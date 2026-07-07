@@ -1,3 +1,25 @@
+/*
+  【文件职责】
+    公开内容 API adapter：新闻、定价远程拉取；FAQ 本地 config 读取。
+    全部经 createPublicApiClient，按 locale 注入 accept-language。
+
+  【架构位置】
+    共享层 — app/api，供公开 SEO 页面（pricing、news、help）消费。
+
+  【主要导出 / 路由】
+    getFaqItems、fetchNewsArticles、fetchLocalizedNewsArticle、fetchPricingPage
+
+  【依赖关系】
+    - 依赖：app/api/clients.ts、config/content/faq.ts、config/site.ts
+    - 被引用：app/pages/[[language]]/pricing.vue、news/*、help.vue
+
+  【渲染 / 数据】
+    adapter 相对路径：/content/news、/content/news/:slug、/content/pricing。
+    页面注释可写完整路径 GET /api/content/pricing（便于联调）。
+
+  【边界与注意】
+    FAQ 不经远程 API；新闻 / 定价走 Public client，SSR / SWR 安全。
+*/
 import type { ApiResponse } from '../lib/http/types'
 import { faqItems } from '../../config/content/faq'
 import type { SupportedLocale } from '../../config/site'

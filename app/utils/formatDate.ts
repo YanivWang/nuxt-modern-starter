@@ -1,3 +1,24 @@
+/*
+  【文件职责】
+    日期格式化 helper：ISO 日期截断、按 locale 的发布日期与工作台日期时间展示。
+    formatPublishedDate 固定 UTC；formatWorkspaceDateTime 用本地时区。
+
+  【架构位置】
+    共享层 — app/utils，被新闻页、工作台组件消费。
+
+  【主要导出 / 路由】
+    formatDateOnly、formatPublishedDate、formatWorkspaceDateTime
+
+  【依赖关系】
+    - 依赖：config/site.ts（SupportedLocale）
+    - 被引用：news 页面、WorkspaceProjectCard 等
+
+  【渲染 / 数据】
+    无 — 纯展示函数。
+
+  【边界与注意】
+    非法 ISO 字符串原样返回，避免 UI 崩溃。
+*/
 import type { SupportedLocale } from '../../config/site'
 
 export const formatDateOnly = (isoDate: string) => {

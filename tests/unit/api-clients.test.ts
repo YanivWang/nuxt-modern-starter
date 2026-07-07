@@ -1,3 +1,23 @@
+/*
+  【文件职责】
+    单测：createPublicApiClient / createAuthApiClient 请求头与 baseURL 行为。
+
+  【架构位置】
+    tests/unit — Nuxt test env（useRuntimeConfig）。
+
+  【主要导出 / 路由】
+    describe api clients
+
+  【依赖关系】
+    - 依赖：app/api/clients.ts
+    - mock：$fetch fetcher vi.fn
+
+  【渲染 / 数据】
+    无
+
+  【边界与注意】
+    不覆盖 createProductApiClient（在 app/api/auth.ts）；不测 401 refresh 重试链。
+*/
 import { describe, expect, it, vi } from 'vitest'
 import { createAuthApiClient, createPublicApiClient } from '../../app/api/clients'
 

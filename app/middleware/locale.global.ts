@@ -1,3 +1,28 @@
+/*
+  【文件职责】
+    全局路由中间件：每次导航前规范化 URL 并解析 UI locale。
+    resolveLocaleRouteDecision 集中处理尾斜杠、默认语言前缀 /zh、本地化产品 URL 301、
+    不支持语言前缀 404；通过后同步 languageStore 与 i18n 文案。
+
+  【架构位置】
+    共享层 — app/middleware，全局注册，在命名 auth 中间件之前执行。
+    与 server/middleware/product-canonical.ts 构成双层产品 URL canonical（SSR 首请求 + 客户端导航）。
+
+  【主要导出 / 路由】
+    resolveLocaleRouteDecision、LocaleRouteDecision；作用于全部路由（公开 SEO 区 + 产品 CSR 区）。
+
+  【依赖关系】
+    - 依赖：config/site.ts、config/routes.ts（localizedProductPathToCanonical）、i18n（loadLocaleMessages、localeFromPrefix）
+    - 被引用：Nuxt 全局 middleware 自动注册；tests/unit/locale-routing.test.ts 直接测决策函数
+
+  【渲染 / 数据】
+    全局 middleware，SSR 与 CSR 导航均执行；不拉 API，仅解析 path 并加载 i18n messages。
+
+  【边界与注意】
+    产品 URL 语言中性（/workspace、/docs/**、/account）；/en/workspace 等 301 到 canonical。
+    /sign-in、/sign-up 不在 PUBLIC_PAGE_PATHS，但仍走 locale 解析（默认 zh-CN 或 /en 前缀）。
+    不支持的语言前缀（如 /fr/*）返回 404（error.unsupportedLanguage）。
+*/
 import {
   DEFAULT_LOCALE,
   SITE_LOCALE_PREFIX_MAP,
@@ -32,6 +57,7 @@ export type LocaleRouteDecision =
     }
 
 export const resolveLocaleRouteDecision = (path: string): LocaleRouteDecision => {
+  // 尾斜杠统一 301 去除（根路径 / 除外）
   if (hasTrailingSlash(path)) {
     return {
       type: 'redirect',
@@ -44,6 +70,7 @@ export const resolveLocaleRouteDecision = (path: string): LocaleRouteDecision =>
   const [firstSegment] = segments
   const productCanonicalPath = localizedProductPathToCanonical(path)
 
+  // 默认语言（zh-CN）URL 不带前缀；/zh/* 301 到无前缀 canonical
   if (firstSegment === DEFAULT_PREFIX) {
     const segmentsWithoutDefaultPrefix = segments.slice(1)
     const pathWithoutDefaultPrefix = segmentsWithoutDefaultPrefix.length
@@ -57,6 +84,7 @@ export const resolveLocaleRouteDecision = (path: string): LocaleRouteDecision =>
     }
   }
 
+  // 产品区 URL 语言中性：/en/workspace → /workspace（与 server/middleware/product-canonical.ts 同规则）
   if (productCanonicalPath) {
     return {
       type: 'redirect',
@@ -67,6 +95,7 @@ export const resolveLocaleRouteDecision = (path: string): LocaleRouteDecision =>
 
   const locale = firstSegment ? localeFromPrefix(firstSegment) : DEFAULT_LOCALE
 
+  // 形如 /fr/pricing 的两字母前缀但不在 SUPPORTED_LOCALES → 404
   if (!locale && isLocaleLikePrefix(firstSegment)) {
     return {
       type: 'error',

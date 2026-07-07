@@ -1,3 +1,24 @@
+<!--
+  【文件职责】
+    产品 shell 顶栏骨架：actions-before / actions-after 插槽，默认右侧 UserAccountMenu。
+    由 ProductShell 挂载，编辑器 layout 不使用。
+
+  【架构位置】
+    登录产品区 — app/components/layout，product-shell feature 消费。
+
+  【主要导出 / 路由】
+    AppShellHeader
+
+  【依赖关系】
+    - 依赖：UserAccountMenu（默认 slot）
+    - 被引用：app/features/product-shell/components/ProductShell.vue
+
+  【渲染 / 数据】
+    CSR 产品区 sticky header。
+
+  【边界与注意】
+    与公开 AppHeader 分离；账户 layout 使用 AccountShell 自有 header。
+-->
 <template>
   <header class="app-shell-header">
     <div class="app-shell-header__inner">

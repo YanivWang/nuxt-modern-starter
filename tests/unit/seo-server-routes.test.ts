@@ -1,3 +1,23 @@
+/*
+  【文件职责】
+    单测：server/utils/seo sitemap / robots 生成与公开页边界。
+
+  【架构位置】
+    tests/unit — server 层纯函数，无 Nitro 请求。
+
+  【主要导出 / 路由】
+    describe SEO server route helpers
+
+  【依赖关系】
+    - 依赖：server/utils/seo.ts
+    - mock：无（news slug 用 fallback）
+
+  【渲染 / 数据】
+    无
+
+  【边界与注意】
+    不覆盖 GET /sitemap.xml handler；断言不含 workspace/docs/sign-in。
+*/
 import { describe, expect, it } from 'vitest'
 import {
   buildRobotsTxt,

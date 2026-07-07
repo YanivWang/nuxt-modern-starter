@@ -1,3 +1,21 @@
+# 【文件职责】
+#   开发 Docker 镜像：仅 Node + pnpm，源码由 compose dev 卷挂载，CMD pnpm dev。
+#
+# 【架构位置】
+#   docker/ — docker-compose.dev.yaml 使用本 Dockerfile。
+#
+# 【主要导出 / 路由】
+#   暴露 3000、24678（HMR）
+#
+# 【依赖关系】
+#   - 依赖：corepack pnpm
+#   - 被引用：docker-compose.dev.yaml
+#
+# 【渲染 / 数据】
+#   NODE_ENV=development；实际依赖 install 在 compose command 中执行。
+#
+# 【边界与注意】
+#   不包含生产 build；与 Dockerfile 多阶段分离。
 # 文件职责：开发镜像。
 # 提供 Node 与 pnpm，实际源码通过 docker-compose.dev.yaml 绑定挂载。
 ARG PNPM_VERSION=11.5.2

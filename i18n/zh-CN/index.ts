@@ -1,3 +1,24 @@
+/*
+  【文件职责】
+    简体中文 UI 文案包：nav、brand、auth、home、editor、workspace、about、help、news、error 等域。
+    与 i18n/en-US/index.ts 结构镜像，由 i18n/index.ts 按需加载。
+
+  【架构位置】
+    i18n 层 — 默认 locale 文案，构建时同步打入 bundle。
+
+  【主要导出 / 路由】
+    default export（vue-i18n messages 对象）
+
+  【依赖关系】
+    - 依赖：无
+    - 被引用：i18n/index.ts（LOCALE_LANGUAGE_MODULES['zh-CN']）
+
+  【渲染 / 数据】
+    无 — 纯静态文案；禁止逐 key 行内注释。
+
+  【边界与注意】
+    新增文案域时须同步 en-US/index.ts；key 命名与页面 / feature 模块对齐。
+*/
 export default {
   nav: {
     home: '首页',

@@ -1,3 +1,26 @@
+/*
+  【文件职责】
+    vue-i18n 实例与语言路由 helper 单一入口：按需加载 locale 文案、URL 前缀解析、语言切换 URL 生成。
+    getSwitchLanguageUrl 对产品 path 保持 URL 不变，仅切换 UI locale。
+
+  【架构位置】
+    i18n 层 — 被 app/middleware/locale.global.ts、language store、useLocalePath、plugins/i18n.ts 消费。
+
+  【主要导出 / 路由】
+    i18n、loadLocaleMessages、localeFromPrefix、matchRouteLanguage、getSwitchLanguageUrl、
+    relativeLangPath、t、STORAGE_KEY_LANGUAGE、SITE_LANG_MAP
+
+  【依赖关系】
+    - 依赖：config/site.ts、config/routes.ts（isProductPath）、i18n/zh-CN、i18n/en-US
+    - 被引用：locale.global middleware、language store、useLocalePath、LanguageSwitcher
+
+  【渲染 / 数据】
+    默认 locale（zh-CN）同步加载；en-US 异步 import；middleware 导航时调用 loadLocaleMessages。
+
+  【边界与注意】
+    不使用 @nuxtjs/i18n 模块；公开页 URL 带 /en 前缀，产品页语言切换不改变 path。
+    修改 LOCALE_LANGUAGE_MODULES 需同步 tests/unit/locale-routing.test.ts、tests/unit/locale-path.test.ts。
+*/
 import { createI18n } from 'vue-i18n'
 import type { Ref } from 'vue'
 import zhCN from './zh-CN'
@@ -80,6 +103,7 @@ export const getSwitchLanguageUrl = (
 ) => {
   const relativePath = relativeLangPath(fullPath)
 
+  // 产品 URL 语言中性：切换 UI 语言时不改 path
   if (isProductPath(relativePath)) {
     return `${relativePath}${queryAndHash}`
   }

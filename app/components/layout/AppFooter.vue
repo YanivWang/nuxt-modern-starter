@@ -1,3 +1,24 @@
+<!--
+  【文件职责】
+    公开站页脚：品牌 tagline 与 about / help 次要链接。
+    与 AppHeader 配对构成 default layout 底部。
+
+  【架构位置】
+    公开 SEO 区 — app/components/layout，由 default layout 引用。
+
+  【主要导出 / 路由】
+    AppFooter
+
+  【依赖关系】
+    - 依赖：useLocalePath
+    - 被引用：app/layouts/default.vue
+
+  【渲染 / 数据】
+    无
+
+  【边界与注意】
+    tagline 来自 i18n brand.tagline。
+-->
 <template>
   <footer class="app-footer">
     <AppContainer class="app-footer__inner">

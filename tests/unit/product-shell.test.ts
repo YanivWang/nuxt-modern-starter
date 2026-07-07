@@ -1,3 +1,23 @@
+/*
+  【文件职责】
+    单测：product-shell config 侧栏 path 与 labelKey 约定。
+
+  【架构位置】
+    tests/unit — feature config 静态断言。
+
+  【主要导出 / 路由】
+    describe product shell configuration
+
+  【依赖关系】
+    - 依赖：app/features/product-shell/config.ts
+    - mock：无
+
+  【渲染 / 数据】
+    无
+
+  【边界与注意】
+    不覆盖 ProductShell 组件渲染；修改 productNavItems 须同步。
+*/
 import { describe, expect, it } from 'vitest'
 import { productFooterNavItems, productNavItems } from '../../app/features/product-shell'
 

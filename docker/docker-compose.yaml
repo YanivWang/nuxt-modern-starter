@@ -1,3 +1,21 @@
+# 【文件职责】
+#   生产 Compose 覆盖：Nginx gateway 对外 :3000，nuxt 读 .env.prod。
+#
+# 【架构位置】
+#   docker/ — pnpm docker:run 生产栈。
+#
+# 【主要导出 / 路由】
+#   gateway:3000 → nuxt:3000
+#
+# 【依赖关系】
+#   - 依赖：docker-compose.base.yaml、nginx/gateway.docker.conf、../.env.prod
+#   - 被引用：部署文档、pnpm docker:run
+#
+# 【渲染 / 数据】
+#   NODE_ENV=production，NUXT_APP_ENV=production。
+#
+# 【边界与注意】
+#   真实密钥运行时 env_file 注入，不打进镜像。
 # 文件职责：生产环境 Compose 覆盖配置。
 # 通过 Nginx 网关暴露唯一外部入口，Nuxt 服务只在 Compose 网络内监听。
 name: nuxt-modern-starter-prod

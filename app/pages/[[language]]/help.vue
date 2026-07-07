@@ -1,6 +1,12 @@
 <!--
   【帮助中心】
 
+  【文件职责】
+    公开帮助页：快速上手步骤、文档资源清单与 FAQ 折叠面板。
+
+  【架构位置】
+    公开 SEO 区 — app/pages/[[language]]，default layout，PUBLIC_PAGE_PATHS + prerender。
+
   路由：/help、/en/help
   Layout：default
 
@@ -13,15 +19,18 @@
   用户流程：
   - 访客查阅上手步骤与 FAQ；定价页 Growth 方案 CTA 也会跳转至此
 
-  数据 / API：
-  - FAQ：getFaqItems() → config/content/faq.ts（按当前语言过滤）
-  - 快速开始与资源文案：i18n help.* 键
+  【依赖关系】
+  - 依赖：getFaqItems → config/content/faq.ts、i18n help.*、usePageSeo
+  - 被引用：AppHeader、AppFooter、pricing Growth CTA
+
+  【渲染 / 数据】
+    prerender；FAQ 本地 config 按 locale 过滤，不经远程 API。
 
   子组件：
   - PageContainer、CheckOutlined 图标
 
-  SEO / 边界：
-  - usePageSeo 完整 SEO；AppHeader 与 AppFooter 均有入口
+  【边界与注意】
+    usePageSeo 完整 hreflang；FAQ 可后续替换为 CMS 而不改页面结构。
 -->
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'

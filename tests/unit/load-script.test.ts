@@ -1,3 +1,23 @@
+/*
+  【文件职责】
+    单测：loadExternalScript defer、去重、onerror reject（happy-dom）。
+
+  【架构位置】
+    tests/unit — @vitest-environment happy-dom，fake timers。
+
+  【主要导出 / 路由】
+    describe loadExternalScript
+
+  【依赖关系】
+    - 依赖：app/utils/load-script.ts
+    - mock：document.head.appendChild、vi.useFakeTimers
+
+  【渲染 / 数据】
+    happy-dom
+
+  【边界与注意】
+    不覆盖 analytics.client plugin env 守卫；SSR import.meta.server 分支不测。
+*/
 // @vitest-environment happy-dom
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { loadExternalScript } from '../../app/utils/load-script'

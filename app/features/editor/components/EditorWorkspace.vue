@@ -1,3 +1,24 @@
+<!--
+  【文件职责】
+    全屏编辑器容器：YanivEditor + 自动保存、draft 首次非空创建项目、标题双写、路由离开 flush。
+    /docs/new 时 isDraftMode，首次有内容保存触发 createWorkspaceProject 并 replace 到 /docs/:id。
+
+  【架构位置】
+    登录产品区 — app/features/editor，由 app/pages/docs/[id].vue 挂载（editor layout）。
+
+  【主要导出 / 路由】
+    EditorWorkspace；emit project-created / project-updated
+
+  【依赖关系】
+    - 依赖：../api、~/features/workspace、EditorWorkspaceHeader、@yanivjs/yaniv-editor
+    - 被引用：app/pages/docs/[id].vue
+
+  【渲染 / 数据】
+    CSR；AUTOSAVE_DEBOUNCE_MS 防抖 PATCH /documents/:id；draft 空白内容不创建项目。
+
+  【边界与注意】
+    onBeforeRouteLeave 调用 flushAutosave；标题修改同时 saveEditorDocument + updateWorkspaceProject。
+-->
 <script setup lang="ts">
 import { message } from 'ant-design-vue'
 import { useI18n } from 'vue-i18n'
@@ -24,7 +45,7 @@ const emit = defineEmits<{
   'project-updated': [project: Pick<WorkspaceProject, 'id' | 'title'>]
 }>()
 
-const AUTOSAVE_DEBOUNCE_MS = 2000
+const AUTOSAVE_DEBOUNCE_MS = 2000 // 内容变更 debounce 后触发 persistDocument
 
 const { t } = useI18n()
 const languageStore = useLanguageStore()
@@ -259,6 +280,7 @@ const ensureDraftProject = async (): Promise<string | null> => {
   }
 
   const contentToSave = getEditorContentHtml()
+  // draft 首次非空保存：createWorkspaceProject → saveEditorDocument → replace /docs/:id
   if (isBlankEditorContent(contentToSave)) {
     return null
   }
@@ -389,6 +411,7 @@ onBeforeRouteLeave(async () => {
     return true
   }
 
+  // 离开路由前 flush 待写入内容，避免 debounce 窗口内丢失编辑
   await flushAutosave()
   return true
 })

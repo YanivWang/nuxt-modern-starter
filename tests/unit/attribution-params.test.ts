@@ -1,3 +1,23 @@
+/*
+  【文件职责】
+    单测：归因参数 last-touch 按 key 合并、localStorage 读写、mergeAttributionIntoBody。
+
+  【架构位置】
+    tests/unit — @vitest-environment happy-dom，mock localStorage。
+
+  【主要导出 / 路由】
+    describe attribution params
+
+  【依赖关系】
+    - 依赖：app/utils/attribution-params.ts
+    - mock：global localStorage Map
+
+  【渲染 / 数据】
+    happy-dom
+
+  【边界与注意】
+    不覆盖 attribution.client plugin 路由监听；SSR 分支为 no-op 不测浏览器。
+*/
 // @vitest-environment happy-dom
 import { afterEach, describe, expect, it } from 'vitest'
 import {

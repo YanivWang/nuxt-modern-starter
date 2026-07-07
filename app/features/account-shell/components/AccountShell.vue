@@ -1,3 +1,24 @@
+<!--
+  【文件职责】
+    账户 layout shell：顶栏 Logo + UserAccountMenu，左侧 accountNav 侧栏 + 主内容 slot。
+    与 ProductShell 视觉分离，专用于 /account 设置流。
+
+  【架构位置】
+    登录产品区 — app/features/account-shell，由 app/layouts/account.vue 挂载。
+
+  【主要导出 / 路由】
+    AccountShell；侧栏 /account
+
+  【依赖关系】
+    - 依赖：config accountNavItems、BaseLogo、UserAccountMenu、AppContainer
+    - 被引用：app/layouts/account.vue
+
+  【渲染 / 数据】
+    CSR；localePath 对产品 path /account 保持语言中性。
+
+  【边界与注意】
+    不含 product-shell 工作台导航；logout 在 UserAccountMenu / AccountPage 处理。
+-->
 <script setup lang="ts">
 import UserAccountMenu from '~/components/layout/UserAccountMenu.vue'
 import { UserOutlined } from '~/utils/antdIcon'

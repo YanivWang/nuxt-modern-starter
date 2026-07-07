@@ -1,8 +1,14 @@
 <!--
   【营销首页】
 
+  【文件职责】
+    公开营销落地页：Hero / Stats / Features / Workflow / CTA，引导注册与定价。
+
+  【架构位置】
+    公开 SEO 区 — app/pages/[[language]]，default layout，在 PUBLIC_PAGE_PATHS 内。
+
   路由：/、/en（可选语言前缀 [[language]]）
-  Layout：default（公开页默认布局）
+  Layout：default
 
   UI 区块：
   - Hero：标题、副文案、主 CTA（注册）与次 CTA（定价）、右侧装饰性 preview 卡片
@@ -14,15 +20,19 @@
   用户流程：
   - 访客浏览产品介绍 → 点击注册跳转 /sign-up，或点击定价跳转 /pricing
 
-  数据 / API：
-  - 纯静态 i18n 文案（home.*），无后端请求
+  【依赖关系】
+  - 依赖：i18n home.*、usePageSeo、useLocalePath、PageContainer / BaseButton（auto-import）
+  - 被引用：AppHeader NAV_ITEMS 首页入口、sitemap / hreflang
+
+  【渲染 / 数据】
+    prerender 静态 HTML；纯 i18n 文案，无后端 API。
 
   子组件：
   - AppContainer、PageContainer、BaseButton（页面内直接组合，无 feature 子组件）
 
-  SEO / 边界：
-  - usePageSeo 设置 title/description/canonical/hreflang
-  - nuxt.config 预渲染此页
+  【边界与注意】
+    usePageSeo 含 webPage + Organization JSON-LD；不在 sign-in / sign-up 集合内。
+    /zh 前缀由 app/middleware/locale.global.ts 301 到 /。
 -->
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'

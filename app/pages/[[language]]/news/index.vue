@@ -1,6 +1,12 @@
 <!--
   【新闻列表页】
 
+  【文件职责】
+    公开新闻索引：按 locale 拉取文章摘要列表，链到详情页。
+
+  【架构位置】
+    公开 SEO 区 — app/pages/[[language]]/news，default layout，PUBLIC_PAGE_PATHS + SWR。
+
   路由：/news、/en/news
   Layout：default
 
@@ -11,16 +17,19 @@
   用户流程：
   - 浏览文章列表 → 点击卡片跳转 /news/:slug 详情页
 
-  数据 / API：
-  - fetchNewsArticles(currentLanguage) → GET /api/content/news（nuxt-modern-starter-api）
-  - formatPublishedDate() 格式化发布日期
+  【依赖关系】
+  - 依赖：~/api/public fetchNewsArticles、formatPublishedDate、usePageSeo
+  - 被引用：AppHeader、sitemap（server/utils/seo 动态 slug）
+
+  【渲染 / 数据】
+    SSR + SWR 1h；fetchNewsArticles → adapter /content/news（网关 GET /api/content/news）。
+    useAsyncData 水合复用 payload。
 
   子组件：
   - PageContainer、ArrowRightOutlined 图标
 
-  SEO / 边界：
-  - usePageSeo 完整 SEO；SSR + SWR，动态内容经 API 按 locale 拉取，水合复用 payload
-  - sitemap 收录；AppHeader 主导航有入口
+  【边界与注意】
+    usePageSeo 完整 hreflang；列表页 slug 详情由 [slug].vue 承接。
 -->
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'

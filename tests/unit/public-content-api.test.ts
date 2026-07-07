@@ -1,3 +1,23 @@
+/*
+  【文件职责】
+    单测：app/api/public FAQ 本地读取与 news/pricing Public client 调用。
+
+  【架构位置】
+    tests/unit — mock createPublicApiClient。
+
+  【主要导出 / 路由】
+    describe public content api
+
+  【依赖关系】
+    - 依赖：app/api/public.ts、config/content/faq.ts
+    - mock：createPublicApiClient
+
+  【渲染 / 数据】
+    无
+
+  【边界与注意】
+    不覆盖 SSR useAsyncData 水合；FAQ 不测远程 CMS。
+*/
 import { describe, expect, it, vi } from 'vitest'
 import { fetchNewsArticles, fetchPricingPage, getFaqItems } from '../../app/api/public'
 import { createPublicApiClient } from '../../app/api/clients'

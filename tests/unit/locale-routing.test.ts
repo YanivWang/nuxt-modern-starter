@@ -1,3 +1,24 @@
+/*
+  【文件职责】
+    单测：app/middleware/locale.global.ts 路由决策与 i18n 前缀解析。
+    覆盖 /zh 301、尾斜杠、产品 URL canonical、不支持语言 404。
+
+  【架构位置】
+    tests/unit — 纯函数，无 Nuxt 运行时 mock。
+
+  【主要导出 / 路由】
+    describe locale routing decisions
+
+  【依赖关系】
+    - 依赖：i18n/index.ts、app/middleware/locale.global.ts
+    - mock：无
+
+  【渲染 / 数据】
+    无
+
+  【边界与注意】
+    不覆盖 middleware 内 loadLocaleMessages / navigateTo；修改决策树须同步本文件。
+*/
 import { describe, expect, it } from 'vitest'
 import { localeFromPrefix, matchRouteLanguage } from '../../i18n'
 import { resolveLocaleRouteDecision } from '../../app/middleware/locale.global'

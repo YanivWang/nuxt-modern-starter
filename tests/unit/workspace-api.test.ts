@@ -1,3 +1,23 @@
+/*
+  【文件职责】
+    单测：workspace api adapter 相对路径与 HTTP method（/projects CRUD）。
+
+  【架构位置】
+    tests/unit — mock createProductApiClient。
+
+  【主要导出 / 路由】
+    describe workspace api
+
+  【依赖关系】
+    - 依赖：app/features/workspace/api.ts
+    - mock：createProductApiClient → { request }
+
+  【渲染 / 数据】
+    无
+
+  【边界与注意】
+    不覆盖 401 refresh；不测响应 envelope 解析。
+*/
 import { describe, expect, it, vi } from 'vitest'
 
 const request = vi.fn()

@@ -1,3 +1,23 @@
+/*
+  【文件职责】
+    单测：app/lib/http 信封校验、401 判定、Bearer header、401 重试一次、header 脱敏。
+
+  【架构位置】
+    tests/unit — 纯 lib，mock fetcher。
+
+  【主要导出 / 路由】
+    describe lib/http
+
+  【依赖关系】
+    - 依赖：app/lib/http/*
+    - mock：fetcher vi.fn、onUnauthorized
+
+  【渲染 / 数据】
+    无
+
+  【边界与注意】
+    不覆盖真实网络；401 重试仅断言调用一次 refresh 回调。
+*/
 import { describe, expect, it, vi } from 'vitest'
 import {
   createApiFailure,

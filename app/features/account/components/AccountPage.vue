@@ -1,3 +1,24 @@
+<!--
+  【文件职责】
+    账户设置页 UI：展示 authStore 用户信息与 fetchProfileApi 扩展字段，提供退出按钮。
+    handleLogout：await logout() 清 session 后 router.push 回首页。
+
+  【架构位置】
+    登录产品区 — app/features/account，account layout + /account 薄页挂载。
+
+  【主要导出 / 路由】
+    AccountPage
+
+  【依赖关系】
+    - 依赖：~/api/auth fetchProfileApi、useAuth、useUserAvatar
+    - 被引用：app/pages/account.vue、UserAccountMenu 入口
+
+  【渲染 / 数据】
+    CSR；GET adapter /me/profile（retryOnUnauthorized）。
+
+  【边界与注意】
+    authStore.logout() 不跳转；本组件负责 router.push(localePath('/'))。
+-->
 <script setup lang="ts">
 import { message } from 'ant-design-vue'
 import { useI18n } from 'vue-i18n'
@@ -28,6 +49,7 @@ const profileEntries = computed(() => Object.entries(profile.value || {}))
 const handleLogout = async () => {
   await logout()
   message.success(t('auth.logout.success'))
+  // store 清 session；UI 层跳转公开首页
   await router.push(localePath('/'))
 }
 </script>

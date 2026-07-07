@@ -1,3 +1,23 @@
+/*
+  【文件职责】
+    单测：auth store 登录 / 注册 / logout / refresh 与 cookie 绑定行为。
+
+  【架构位置】
+    tests/unit — Pinia + vi.mock app/api/auth、attribution-params。
+
+  【主要导出 / 路由】
+    describe auth store（多 it 块）
+
+  【依赖关系】
+    - 依赖：app/stores/auth.ts、auth-session cookies
+    - mock：loginApi、logoutApi、fetchMeApi、refreshApi、registerApi、clearAttributionParams
+
+  【渲染 / 数据】
+    无
+
+  【边界与注意】
+    不覆盖 UI router.push；register 断言不自动 fetchMe；修改 store action 须同步。
+*/
 import { createPinia, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { useAuthStore } from '../../app/stores/auth'

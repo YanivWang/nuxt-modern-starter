@@ -1,3 +1,26 @@
+/*
+  【文件职责】
+    sitemap.xml 与 robots.txt 生成逻辑：公开多语言路径展开、新闻 slug 动态拉取、XML 转义。
+    robots 显式 Disallow 产品区、鉴权页及 /en 变体；sitemap 仅含 PUBLIC_PAGE_PATHS 展开路径。
+
+  【架构位置】
+    server 层 — 被 server/routes/sitemap.xml.ts、server/routes/robots.txt.ts 调用。
+
+  【主要导出 / 路由】
+    buildSitemapXml、buildSitemapXmlAsync、buildRobotsTxt、getSitemapEntries、
+    fetchNewsSlugs、normalizeSiteUrl
+
+  【依赖关系】
+    - 依赖：config/site.ts、config/routes.ts、runtimeConfig.public.apiBase（新闻 slug）
+    - 被引用：server/routes/sitemap.xml.ts、server/routes/robots.txt.ts、tests/unit/seo-server-routes.test.ts
+
+  【渲染 / 数据】
+    Nitro 路由 GET /sitemap.xml、GET /robots.txt；新闻 slug API 失败时 fallback 到 FALLBACK_NEWS_SLUGS。
+
+  【边界与注意】
+    sitemap 不含 /workspace、/docs/**、/sign-in、/sign-up；与 usePageSeo hreflang 公开页集合一致。
+    siteUrl 来自 runtimeConfig.public.siteUrl，空值 fallback DEFAULT_SITE_URL。
+*/
 import type { ApiResponse } from '../../app/lib/http/types'
 import { DEFAULT_SITE_URL, SUPPORTED_LOCALES } from '../../config/site'
 import { localizedPath, publicLocalizedPaths } from '../../config/routes'
@@ -42,6 +65,7 @@ export const fetchNewsSlugs = async (apiBase: string) => {
 
     return response.data.articles.map((article) => article.slug)
   } catch {
+    // API 不可用时用静态 fallback，保证 sitemap 仍可生成
     return [...FALLBACK_NEWS_SLUGS]
   }
 }
@@ -73,6 +97,7 @@ export const buildSitemapXmlAsync = async (siteUrl?: string, apiBase?: string) =
 export const buildRobotsTxt = (siteUrl?: string) => {
   const normalizedSiteUrl = normalizeSiteUrl(siteUrl)
 
+  // 产品区、鉴权页 noindex；同时 block /en 变体以防爬虫收录带前缀 URL
   return [
     'User-agent: *',
     'Allow: /',

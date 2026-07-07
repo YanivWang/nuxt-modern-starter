@@ -1,3 +1,28 @@
+/*
+  【文件职责】
+    路由分区与渲染策略单一来源：产品路径判定、多语言路径展开、prerender / SWR / CSR 规则列表。
+    publicLocalizedPaths 从 PUBLIC_PAGE_PATHS 展开 zh-CN / en-US 变体，供 sitemap 与 hreflang 使用。
+
+  【架构位置】
+    config 层 — 被 nuxt.config.ts routeRules、locale middleware、useLocalePath、server SEO 工具消费。
+
+  【主要导出 / 路由】
+    productRoutePatterns、csrRouteRules、prerenderRoutes、swrRouteRules、
+    isProductPath、localizedProductPathToCanonical、localizedPath、publicLocalizedPaths
+
+  【依赖关系】
+    - 依赖：config/site.ts（PUBLIC_PAGE_PATHS、SITE_LOCALE_PREFIX_MAP、DEFAULT_LOCALE）
+    - 被引用：nuxt.config.ts、app/middleware/locale.global.ts、server/middleware/product-canonical.ts、
+      useLocalePath、server/utils/seo.ts
+
+  【渲染 / 数据】
+    prerender：/、/about、/help 及 /en 变体；SWR：/news/**、/pricing 及 /en 变体；
+    CSR（ssr: false）：/workspace/**、/docs/**、/account。
+
+  【边界与注意】
+    产品 URL 永不由 localizedPath 加语言前缀；localizedProductPathToCanonical 仅对产品 path 返回 canonical。
+    修改 prerender / SWR / CSR 列表需同步 tests/unit/product-routes.test.ts、tests/unit/seo-routes.test.ts。
+*/
 import {
   DEFAULT_LOCALE,
   PUBLIC_PAGE_PATHS,

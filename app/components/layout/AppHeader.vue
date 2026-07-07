@@ -1,3 +1,24 @@
+<!--
+  【文件职责】
+    公开站 sticky 顶栏：NAV_ITEMS 主导航、语言 / 主题切换、登录注册或进入工作台 CTA。
+    滚动时添加半透明背景与 blur。
+
+  【架构位置】
+    公开 SEO 区 — app/components/layout，由 default layout 引用。
+
+  【主要导出 / 路由】
+    AppHeader
+
+  【依赖关系】
+    - 依赖：config/site.ts（NAV_ITEMS）、BaseLogo、LanguageSwitcher、ThemeSwitch、useAuth
+    - 被引用：app/layouts/default.vue
+
+  【渲染 / 数据】
+    未登录显示 sign-in / sign-up；已登录显示 enterWorkspace → /workspace（localePath）。
+
+  【边界与注意】
+    产品 layout 不使用 AppHeader；内部链接须 localePath。
+-->
 <template>
   <header class="app-header" :class="{ 'app-header--scrolled': isScrolled }">
     <AppContainer class="app-header__inner">

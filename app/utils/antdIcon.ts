@@ -1,3 +1,24 @@
+/*
+  【文件职责】
+    Ant Design 图标按需导出：从 @ant-design/icons-svg 逐图标 tree-shake，避免全量注册。
+    createAntdIcon 包装为 Vue 组件，供页面与 feature 组件直接使用。
+
+  【架构位置】
+    共享层 — app/utils，替代全局 icons 注册。
+
+  【主要导出 / 路由】
+    createAntdIcon、AppstoreOutlined、CheckOutlined、PlusOutlined 等具名图标组件
+
+  【依赖关系】
+    - 依赖：@ant-design/icons-vue、@ant-design/icons-svg
+    - 被引用：app/pages/*、app/features/*、app/components/*
+
+  【渲染 / 数据】
+    无 — 纯 UI 组件工厂。
+
+  【边界与注意】
+    新增图标须在此文件显式 import + export，保持 tree-shaking。
+*/
 import AntdIcon from '@ant-design/icons-vue/es/components/AntdIcon'
 import AppstoreOutlinedSvg from '@ant-design/icons-svg/es/asn/AppstoreOutlined'
 import ArrowLeftOutlinedSvg from '@ant-design/icons-svg/es/asn/ArrowLeftOutlined'

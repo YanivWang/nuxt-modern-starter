@@ -1,3 +1,24 @@
+<!--
+  【文件职责】
+    响应式 picture 组件：可选 webp source + fallback img，支持 lazy / fetchpriority。
+    用于首页等需要 LCP 优化的图片展示。
+
+  【架构位置】
+    通用 — app/components/base，auto-import 为 BasePicture。
+
+  【主要导出 / 路由】
+    BasePicture
+
+  【依赖关系】
+    - 依赖：无
+    - 被引用：公开页插图（若有）
+
+  【渲染 / 数据】
+    无 — 默认 loading=lazy。
+
+  【边界与注意】
+    须提供有意义 alt；webpSrc 可选。
+-->
 <script setup lang="ts">
 type BasePictureProps = {
   src: string

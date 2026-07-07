@@ -1,6 +1,12 @@
 <!--
   【定价页】
 
+  【文件职责】
+    公开展示三档定价方案与能力清单，CTA 导向注册或帮助页。
+
+  【架构位置】
+    公开 SEO 区 — app/pages/[[language]]，default layout，PUBLIC_PAGE_PATHS + SWR。
+
   路由：/pricing、/en/pricing
   Layout：default
 
@@ -15,15 +21,19 @@
   - Starter、Custom → CTA 跳转 /sign-up
   - Growth → CTA 跳转 /help
 
-  数据 / API：
-  - fetchPricingPage(currentLanguage) → GET /api/content/pricing（nuxt-modern-starter-api）
+  【依赖关系】
+  - 依赖：~/api/public fetchPricingPage、usePageSeo、PageContainer / BaseButton
+  - 被引用：AppHeader、首页 CTA、product-shell 底部定价链接
+
+  【渲染 / 数据】
+    SSR + SWR 1h；fetchPricingPage → adapter /content/pricing（网关 GET /api/content/pricing，base 已含 /api）。
+    useAsyncData 水合复用 payload。
 
   子组件：
   - PageContainer、BaseButton、CheckOutlined 图标
 
-  SEO / 边界：
-  - usePageSeo 完整 SEO 元数据；SSR + SWR，动态内容经 API 按 locale 拉取，水合复用 payload
-  - AppHeader 主导航、首页 secondary CTA、product-shell 底部导航均有入口
+  【边界与注意】
+    usePageSeo 完整 hreflang；动态 title/description 来自 API 响应。
 -->
 <script setup lang="ts">
 import { CheckOutlined } from '~/utils/antdIcon'

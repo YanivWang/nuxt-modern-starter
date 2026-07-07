@@ -1,3 +1,25 @@
+<!--
+  【文件职责】
+    工作台主 UI：项目列表、创建按钮跳转 /docs/new、删除确认与列表刷新。
+    idle 预加载 editor route 与 feature chunk 以加速进入编辑器。
+
+  【架构位置】
+    登录产品区 — app/features/workspace，由 app/pages/workspace/index.vue 挂载。
+
+  【主要导出 / 路由】
+    WorkspaceDashboard；创建 → /docs/new，卡片 → /docs/:id
+
+  【依赖关系】
+    - 依赖：../api、WorkspaceProjectCard、useLocalePath
+    - 被引用：app/pages/workspace/index.vue
+
+  【渲染 / 数据】
+    CSR；useAsyncData workspace-projects 拉取 GET /projects。
+    handleCreateProject 仅 navigateTo，不在此创建 API 项目（由 editor 首次保存触发）。
+
+  【边界与注意】
+    仅顶部「创建项目」按钮创建；无空白卡片入口。
+-->
 <script setup lang="ts">
 import { message } from 'ant-design-vue'
 import { useI18n } from 'vue-i18n'

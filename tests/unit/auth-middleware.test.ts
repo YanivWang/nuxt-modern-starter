@@ -1,3 +1,23 @@
+/*
+  【文件职责】
+    单测：app/middleware/auth.ts 登录 redirect 与 RBAC 决策树纯函数。
+
+  【架构位置】
+    tests/unit — 无 Pinia / API mock。
+
+  【主要导出 / 路由】
+    describe auth middleware decisions
+
+  【依赖关系】
+    - 依赖：app/middleware/auth.ts
+    - mock：无（hasRole/can 由测试注入 stub）
+
+  【渲染 / 数据】
+    无
+
+  【边界与注意】
+    不覆盖 ensureSession 与 navigateTo；不测 sign-in 页 resolveSafeRedirectPath。
+*/
 import { describe, expect, it } from 'vitest'
 import {
   buildAuthLoginRedirect,

@@ -1,3 +1,25 @@
+/*
+  【文件职责】
+    页面 SEO composable：canonical、hreflang、OG / Twitter meta、JSON-LD（Article / WebPage / Organization）。
+    buildPageSeoLinks 在 noindex 时仅输出 canonical，不生成 alternate hreflang。
+
+  【架构位置】
+    公开 SEO 区 — app/composables，被 [[language]] 公开页与产品页 noindex 场景消费。
+
+  【主要导出 / 路由】
+    usePageSeo、buildPageSeoLinks、buildPageSeoMeta、buildPageSeoScripts
+
+  【依赖关系】
+    - 依赖：config/site.ts、config/routes.ts（localizedPath）、i18n、useLanguageStore
+    - 被引用：pricing、news、home 等公开页；workspace / account 等 noindex 页
+
+  【渲染 / 数据】
+    SSR / prerender / SWR 公开页完整 SEO；产品页 usePageSeo({ noindex: true })。
+
+  【边界与注意】
+    og:title 与 twitter:title 共用 resolved title（含站点名后缀）。
+    修改 hreflang 逻辑需同步 tests/unit/page-seo.test.ts。
+*/
 import {
   DEFAULT_LOCALE,
   DEFAULT_SEO,
@@ -76,6 +98,7 @@ export const buildPageSeoLinks = (input: PageSeoLinkInput) => {
   const canonical = absoluteUrl(input.siteUrl, localizedPath(input.path, locale))
   const canonicalLink = { rel: 'canonical', href: canonical }
 
+  // noindex 页（产品区、404 等）不输出 hreflang alternate
   if (input.noindex) {
     return [canonicalLink]
   }

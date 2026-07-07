@@ -1,6 +1,12 @@
 <!--
   【登录页】
 
+  【文件职责】
+    公开鉴权页：用户名密码登录，成功后跳转 redirect 或默认 /workspace。
+
+  【架构位置】
+    公开区（非 PUBLIC_PAGE_PATHS）— app/pages/[[language]]，default layout，SSR + noindex。
+
   路由：/sign-in、/en/sign-in
   Layout：default
 
@@ -13,16 +19,20 @@
   - 成功：message 提示 → 跳转 ?redirect= 指定路径，或默认 /workspace
   - 失败：展示 API 错误信息
 
-  数据 / API：
-  - useAuth().login() → app/api/auth（Bearer Token 鉴权）
+  【依赖关系】
+  - 依赖：useAuth().login → app/api/auth（adapter /login）、resolveSafeRedirectPath
+  - 被引用：app/middleware/auth.ts 未登录 redirect、AppHeader sign-in 链接
+
+  【渲染 / 数据】
+    SSR；loginApi → POST /login（base 已含 /api）；登录后 setTokens + fetchMe。
 
   表单校验：
   - username、password 均为必填
 
-  SEO / 边界：
-  - noindex（不被搜索引擎收录）
-  - auth 中间件拦截未登录访问产品区时，会重定向至此页并附带 redirect query
-  - 注册成功后可能携带 ?username= 预填（由注册页跳转）
+  【边界与注意】
+    noindex；不在 PUBLIC_PAGE_PATHS / sitemap。
+    app/middleware/auth.ts redirect 附带 fullPath；sign-in 用 resolveSafeRedirectPath 防开放重定向。
+    注册页可携带 ?username= 预填。
 -->
 <script setup lang="ts">
 import { message } from 'ant-design-vue'

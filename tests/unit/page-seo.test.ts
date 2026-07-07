@@ -1,3 +1,23 @@
+/*
+  【文件职责】
+    单测：usePageSeo 纯函数 buildPageSeoLinks/Meta/Scripts（hreflang、noindex、JSON-LD）。
+
+  【架构位置】
+    tests/unit — 不 mount 组件、不调用 useHead。
+
+  【主要导出 / 路由】
+    describe page seo links / meta / scripts
+
+  【依赖关系】
+    - 依赖：app/composables/usePageSeo.ts、config/site.ts
+    - mock：无
+
+  【渲染 / 数据】
+    无
+
+  【边界与注意】
+    不覆盖 usePageSeo composable 与 useLanguageStore 集成；noindex 无 hreflang 必测。
+*/
 import { describe, expect, it } from 'vitest'
 import {
   buildPageSeoLinks,

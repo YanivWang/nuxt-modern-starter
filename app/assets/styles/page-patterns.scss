@@ -1,3 +1,24 @@
+/*
+  【文件职责】
+    公开页 UI 模式类：panel、grid、stat-card、faq、auth-card、error-page 等可复用块。
+    与 PageContainer layout 变体配合构成营销 / 内容页视觉语言。
+
+  【架构位置】
+    公开 SEO 区 — app/assets/styles，由 main.scss @use 引入。
+
+  【主要导出 / 路由】
+    .page-panel、.page-grid、.page-faq、.auth-page、.error-page 等
+
+  【依赖关系】
+    - 依赖：tokens.scss CSS 变量
+    - 被引用：[[language]] 公开页 template class
+
+  【渲染 / 数据】
+    无
+
+  【边界与注意】
+    Ant Design 组件样式覆盖（如 .page-faq .ant-collapse）集中在此，避免散落页面 scoped。
+*/
 .page-badge {
   display: inline-flex;
   align-self: flex-start;

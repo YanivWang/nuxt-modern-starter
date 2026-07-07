@@ -1,3 +1,22 @@
+# 【文件职责】
+#   Compose 基础服务：nuxt 构建/运行、健康检查、graceful stop。
+#   dev 与 prod compose 文件通过 extends/include 复用本定义。
+#
+# 【架构位置】
+#   docker/ — Compose 栈核心。
+#
+# 【主要导出 / 路由】
+#   service nuxt → 内部 http://nuxt:3000
+#
+# 【依赖关系】
+#   - 依赖：docker/Dockerfile、.. 构建 context
+#   - 被引用：docker-compose.yaml、docker-compose.dev.yaml
+#
+# 【渲染 / 数据】
+#   healthcheck GET /；BUILD_ENV 默认 prod。
+#
+# 【边界与注意】
+#   外部流量须经 gateway nginx；nuxt 不直接映射 host port（prod）。
 # 文件职责：Compose 公共服务定义。
 # 开发和生产 Compose 都复用这里的 Nuxt 构建、运行环境和健康检查。
 services:

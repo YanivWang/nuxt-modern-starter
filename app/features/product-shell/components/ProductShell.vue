@@ -1,3 +1,24 @@
+<!--
+  【文件职责】
+    产品区 shell：左侧 sidebar（Logo + 主导航 + footer 定价链接）+ AppShellHeader + 主内容 slot。
+    包裹 workspace / templates 等产品页，editor layout 不使用本 shell。
+
+  【架构位置】
+    登录产品区 — app/features/product-shell，由 app/layouts/product.vue 挂载。
+
+  【主要导出 / 路由】
+    ProductShell；侧栏链到 /workspace、/workspace/templates、/pricing
+
+  【依赖关系】
+    - 依赖：config productNavItems / productFooterNavItems、BaseLogo、AppShellHeader、useLocalePath
+    - 被引用：app/layouts/product.vue
+
+  【渲染 / 数据】
+    CSR 产品 layout；localePath 对产品 path 保持语言中性，定价 footer 链到公开页。
+
+  【边界与注意】
+    navIconMap 须与 config icon 字段同步；账户入口仅在 AppShellHeader UserAccountMenu。
+-->
 <script setup lang="ts">
 import { FolderOutlined, LayoutOutlined, TagOutlined } from '~/utils/antdIcon'
 import { productFooterNavItems, productNavItems } from '../config'
