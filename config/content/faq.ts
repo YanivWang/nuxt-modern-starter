@@ -67,9 +67,9 @@ export const faqItems: FaqItem[] = [
     },
     answer: {
       'zh-CN':
-        '先启动 nuxt-modern-starter-api（推荐 pnpm docker:dev），保持前端 .env.dev 的 NUXT_PUBLIC_API_BASE=http://localhost:2026/api，后端 CORS_ORIGINS 包含 http://localhost:3000。登录后访问 /workspace 创建或删除项目（空白卡片或顶部按钮），再通过 /docs/:id（:id 为项目 id）加载并自动保存文档。搜索与筛选目前只是 UI，占位未接 API。',
+        '先在 nuxt-modern-starter-api 后端仓库启动 Docker 栈（常见命令 pnpm docker:dev），保持前端 .env.dev 的 NUXT_PUBLIC_API_BASE=http://localhost:2026/api，后端 CORS_ORIGINS 包含 http://localhost:3000。登录后访问 /workspace，通过顶部「创建项目」按钮进入 /docs/new，或点击已有项目卡片打开 /docs/:id 并自动保存文档；也可删除项目刷新列表。',
       'en-US':
-        'Start nuxt-modern-starter-api first (pnpm docker:dev recommended), keep frontend .env.dev at NUXT_PUBLIC_API_BASE=http://localhost:2026/api, and include http://localhost:3000 in backend CORS_ORIGINS. After sign-in, use /workspace to create or delete projects (blank card or primary button), then open /docs/:id (:id is the project id) to load and autosave documents. Search and filters are UI-only placeholders without backend APIs yet.'
+        'Start the nuxt-modern-starter-api backend stack first (commonly pnpm docker:dev in that repo), keep frontend .env.dev at NUXT_PUBLIC_API_BASE=http://localhost:2026/api, and include http://localhost:3000 in backend CORS_ORIGINS. After sign-in, open /workspace, use the primary Create button to enter /docs/new, or open an existing project card at /docs/:id for autosave; you can also delete projects from the list.'
     }
   },
   {

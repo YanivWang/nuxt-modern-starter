@@ -10,7 +10,7 @@ pnpm install
 pnpm dev
 ```
 
-When pairing with `nuxt-modern-starter-api`, start the backend Docker stack first and keep `.env.dev` pointed at `http://localhost:2026/api`.
+When pairing with `nuxt-modern-starter-api`, start the backend Docker stack from that repo first (commonly `pnpm docker:dev` there; this frontend uses `pnpm docker:up:dev` for its own Compose stack) and keep `.env.dev` pointed at `http://localhost:2026/api`. Adapter paths such as `/projects` are relative to that base URL, which already includes the `/api` prefix.
 
 The quick-start target is `pnpm install && pnpm dev`: a new project should be able to run locally within 30 minutes after cloning, excluding full quality gates and Docker/Nginx validation.
 

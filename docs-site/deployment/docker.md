@@ -30,7 +30,7 @@ pnpm docker:down:dev
 - 构建：`pnpm build:${BUILD_ENV}`
 - 启动：`node .output/server/index.mjs`
 - 端口：3000
-- 健康检查：内置 HTTP probe
+- 健康检查：由 `docker-compose.base.yaml` 的 `healthcheck` 定义（HTTP probe 访问 `http://127.0.0.1:3000/`），非 Dockerfile 内置
 
 ## Compose 生产栈
 

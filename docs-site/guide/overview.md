@@ -75,7 +75,7 @@ Nuxt 页面文件（`app/pages/*`）只做：
 
 | 类别   | 选型                                    |
 | ------ | --------------------------------------- |
-| 框架   | Nuxt 4.4 + Vue 3.5 + TypeScript         |
+| 框架   | Nuxt 4.4.8 + Vue 3.5 + TypeScript       |
 | 包管理 | pnpm 11                                 |
 | 状态   | Pinia                                   |
 | UI     | Ant Design Vue 4                        |

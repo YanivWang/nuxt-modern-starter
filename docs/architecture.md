@@ -25,8 +25,8 @@
 - `app/features/editor/api.ts`: authenticated editor document adapters.
 - `app/utils`: small shared runtime utilities such as `antdIcon.ts` for on-demand Ant Design SVG icons, `auth-session.ts` for token cookie helpers, `attribution-params.ts` for marketing attribution persistence, `safe-redirect.ts` for login redirect validation, and `load-script.ts` for deferred external script injection.
 - `app/stores`: Pinia stores for language state, theme state, and opt-in auth state. Feature-specific stores belong under `app/features/<feature>/stores`.
-- `app/components/base`: reusable low-level examples such as `BaseLogo`, `BaseButton`, `BasePicture`, and `PageContainer`.
-- `app/components/layout`: shell components including `AppHeader`, `AppShellHeader`, and `UserAccountMenu`.
+- `app/components/base`: reusable low-level examples such as `AppContainer`, `PageContainer`, `BaseLogo`, `BaseButton`, and `BasePicture`.
+- `app/components/layout`: shell components including `AppHeader`, `AppFooter`, `AppShellHeader`, `LanguageSwitcher`, `ThemeSwitch`, and `UserAccountMenu`.
 - `app/layouts`: route-level shells. `default` for public pages, `product` for sidebar-backed workspace routes, `editor` for full-screen editor routes, `account` for account settings, and `empty` for minimal pages.
 - `app/middleware/locale.global.ts`: global locale normalization before page rendering, including product canonical 301 redirects via `localizedProductPathToCanonical`.
 - `app/middleware/auth.ts`: named auth middleware for protected product routes (session, login redirect, RBAC). Does not handle product canonical redirects.
@@ -58,7 +58,7 @@ This keeps SEO pages cache-friendly while product pages stay session-aware and i
 
 `auth.ts` runs on protected product pages. It ensures session, redirects unauthenticated users to localized `/sign-in?redirect=` (via `localizedPath(AUTH_REDIRECTS.login, currentLanguage)`), and enforces optional role/permission meta. Product canonical redirects are handled only by locale middleware and server middleware.
 
-Pages call `usePageSeo` for canonical, alternate, OG, and noindex behavior. Public page paths are centralized in `config/routes.ts` so `routeRules`, sitemap generation, and hreflang generation stay aligned. Product route patterns are also centralized there; `/workspace/**`, `/docs/**`, and `/account` are CSR-only because logged-in product routes are not localized in the URL.
+Pages call `usePageSeo` for canonical, alternate, OG, and noindex behavior. Public page paths are centralized in `config/site.ts` through `PUBLIC_PAGE_PATHS`; `config/routes.ts` expands them for `routeRules`, sitemap generation, and hreflang generation. Product route patterns are centralized in `config/routes.ts`; `/workspace/**`, `/docs/**`, and `/account` are CSR-only because logged-in product routes are not localized in the URL.
 
 Business requests use the app-level `{ code, message, data }` contract through scenario-specific API entrypoints:
 

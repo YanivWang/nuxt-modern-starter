@@ -33,7 +33,7 @@ pnpm dev
 
 若配合 `nuxt-modern-starter-api` 使用：
 
-1. 先启动后端 Docker 栈（推荐 `pnpm docker:dev`）
+1. 在 **`nuxt-modern-starter-api` 后端仓库** 启动 Docker 栈（该仓库命令，常见为 `pnpm docker:dev`；与本前端 `pnpm docker:up:dev` 不同）
 2. 保持前端 `.env.dev`：
 
 ```bash

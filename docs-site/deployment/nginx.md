@@ -21,14 +21,14 @@ Cache-Control: public, max-age=31536000, immutable
 
 因此前后端分离部署时，必须在 **后端或 API 网关** 配置 CORS。
 
-## 生产增强（需自行添加）
+## 样例已包含 vs 需自行添加
 
-样例 **不包含** 以下生产必备项，fork 时请补充：
+样例 **已启用** 基础 `gzip`（见 `gateway.docker.conf` 的 `gzip on`），但 **不包含** 以下生产增强项，fork 时请按需补充：
 
 - TLS/HTTPS 终止
-- gzip/brotli 压缩
-- 访问日志与监控
-- upstream 健康检查
+- brotli 压缩（或更完整的 gzip 策略调优）
+- 结构化访问日志与监控
+- Nginx upstream 主动健康检查（Compose 侧 Nuxt 服务另有 healthcheck）
 - rate limiting
 
 ## 验证

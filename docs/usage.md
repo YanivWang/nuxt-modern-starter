@@ -8,7 +8,7 @@ Before tagging, deploying, or running `pnpm docker:up`, run the full local quali
 pnpm quality
 ```
 
-`pnpm quality` runs `lint`, `format:check`, `stylelint`, `typecheck`, `test`, and `build`. Husky pre-commit still runs the faster subset (`lint`, `stylelint`, `typecheck`, `test`) on every commit and intentionally skips `format:check` and `build` to keep day-to-day commits fast.
+`pnpm quality` runs `lint`, `format:check`, `stylelint`, `typecheck`, `test`, and `build`. Husky pre-commit still runs the faster subset (`lint-staged`, then `lint`, `stylelint`, `typecheck`, `test`) on every commit and intentionally skips `format:check` and `build` to keep day-to-day commits fast.
 
 Typical release flow:
 
@@ -274,13 +274,13 @@ See `docs/deployment.md` for deployment-specific notes and full-stack pairing de
 
 The starter ships a real product flow when paired with `nuxt-modern-starter-api`:
 
-| Route                  | Layout    | Purpose                                                                                               |
-| ---------------------- | --------- | ----------------------------------------------------------------------------------------------------- |
-| `/workspace`           | `product` | Project list, loading/empty states, blank-project creation, delete, and navigation into the editor    |
-| `/workspace/templates` | `product` | Theme templates placeholder (no API)                                                                  |
-| `/docs/:id`            | `editor`  | Load project by `:id` (project id), resolve `documentId`, then load/save editor content with autosave |
-| `/docs/new`            | `editor`  | Draft editor route; creates project and document on first save, then replaces route with `/docs/:id`  |
-| `/account`             | `account` | Profile payload, avatar, extended profile fields, and logout (via user menu)                          |
+| Route                  | Layout    | Purpose                                                                                                  |
+| ---------------------- | --------- | -------------------------------------------------------------------------------------------------------- |
+| `/workspace`           | `product` | Project list, loading/empty states, create button to `/docs/new`, delete, and navigation into the editor |
+| `/workspace/templates` | `product` | Theme templates placeholder (no API)                                                                     |
+| `/docs/:id`            | `editor`  | Load project by `:id` (project id), resolve `documentId`, then load/save editor content with autosave    |
+| `/docs/new`            | `editor`  | Draft editor route; creates project and document on first save, then replaces route with `/docs/:id`     |
+| `/account`             | `account` | Profile payload, avatar, extended profile fields, and logout (via user menu)                             |
 
 API boundaries:
 
@@ -306,7 +306,7 @@ Editor behavior:
 Account behavior:
 
 - `/account` uses the `account` layout with `AccountShell` and mounts `AccountPage`.
-- Profile data loads through `fetchProfileApi()`; extended profile fields render as key-value rows. API failures show an alert with retry. Logout is available on this page and via `UserAccountMenu`; both call `logout()` which clears attribution params and redirects to the localized home page.
+- Profile data loads through `fetchProfileApi()`; extended profile fields render as key-value rows. API failures show an alert with retry. Logout is available on this page and via `UserAccountMenu`; both call `authStore.logout()` to clear attribution params and session state, then `router.push(localePath('/'))` to return to the localized home page.
 
 Local full-stack defaults:
 

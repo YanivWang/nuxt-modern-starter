@@ -81,14 +81,14 @@ flowchart TD
 
 ## Feature 模块地图
 
-| Feature         | 职责                           | 对外导出                                                    |
-| --------------- | ------------------------------ | ----------------------------------------------------------- |
-| `product-shell` | 产品区侧边栏导航配置           | `ProductShell`, `productNavItems`                           |
-| `account-shell` | 账户区壳层                     | `AccountShell`, `accountNavItems`                           |
-| `workspace`     | 项目列表/卡片、路由预加载      | `WorkspaceDashboard`, `WorkspaceProjectCard`, workspace API |
-| `editor`        | PPT 编辑器、自动保存、标题编辑 | `EditorWorkspace`, `EditorWorkspaceHeader`, editor API      |
-| `templates`     | 主题模板占位                   | `ThemeTemplatesPage`                                        |
-| `account`       | 账户信息展示                   | `AccountPage`                                               |
+| Feature         | 职责                           | `index.ts` 对外导出                  | 内部组件 / 配置（勿跨 feature 直接引用）     |
+| --------------- | ------------------------------ | ------------------------------------ | -------------------------------------------- |
+| `product-shell` | 产品区侧边栏导航配置           | `ProductShell`, `productNavItems`, … | `productFooterNavItems` 等同目录 config 导出 |
+| `account-shell` | 账户区壳层                     | `AccountShell`                       | `accountNavItems`（`config.ts`，壳层内部用） |
+| `workspace`     | 项目列表/卡片、路由预加载      | `WorkspaceDashboard`, workspace API  | `WorkspaceProjectCard`                       |
+| `editor`        | PPT 编辑器、自动保存、标题编辑 | `EditorWorkspace`, editor API        | `EditorWorkspaceHeader`                      |
+| `templates`     | 主题模板占位                   | `ThemeTemplatesPage`                 | —                                            |
+| `account`       | 账户信息展示                   | `AccountPage`                        | —                                            |
 
 ## 插件启动链
 

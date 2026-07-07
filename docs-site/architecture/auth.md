@@ -92,12 +92,13 @@ sign-in 页使用 `resolveSafeRedirectPath()` 校验 redirect，拒绝 `//evil.c
 
 ## 登出
 
-`logout()` 流程：
+`authStore.logout()` 流程：
 
 1. `POST /logout`（带 refreshToken）
 2. `clearAttributionParams()` — **仅 logout 清归因**，不在 `reset()` 里清
-3. `clearAuthSession()` — 清 cookie + store reset
-4. 跳转首页
+3. `reset()` — 清 user 状态，并将 access/refresh cookie 置空
+
+`logout()` **不负责路由跳转**。`AccountPage`、`UserAccountMenu` 等在 `await logout()` 后调用 `router.push(localePath('/'))` 回到首页。
 
 ## Session 恢复
 

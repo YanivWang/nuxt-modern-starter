@@ -75,16 +75,16 @@ app/features/my-feature/
 
 ### 共享层（框架级）
 
-| 目录                     | 放什么                                                                             | 不放什么                |
-| ------------------------ | ---------------------------------------------------------------------------------- | ----------------------- |
-| `app/components/base/`   | BaseButton、BasePicture 等通用组件                                                 | 业务页面块              |
-| `app/components/layout/` | AppHeader、UserAccountMenu                                                         | feature 专属 UI         |
-| `app/composables/`       | useAuth、usePageSeo、useLocalePath、useTheme、useLanguageSwitch、useUserAvatar     | feature 专属 composable |
-| `app/stores/`            | auth、language、theme                                                              | feature 专属 store      |
-| `app/utils/`             | auth-session、safe-redirect、attribution-params、formatDate、antdIcon、load-script | 业务逻辑                |
-| `app/layouts/`           | default、product、editor、account、empty                                           | —                       |
-| `app/middleware/`        | locale.global、auth                                                                | —                       |
-| `app/plugins/`           | i18n、auth、attribution、analytics                                                 | —                       |
+| 目录                     | 放什么                                                                               | 不放什么                |
+| ------------------------ | ------------------------------------------------------------------------------------ | ----------------------- |
+| `app/components/base/`   | AppContainer、PageContainer、BaseButton、BaseLogo、BasePicture 等通用组件            | 业务页面块              |
+| `app/components/layout/` | AppHeader、AppFooter、AppShellHeader、LanguageSwitcher、ThemeSwitch、UserAccountMenu | feature 专属 UI         |
+| `app/composables/`       | useAuth、usePageSeo、useLocalePath、useTheme、useLanguageSwitch、useUserAvatar       | feature 专属 composable |
+| `app/stores/`            | auth、language、theme                                                                | feature 专属 store      |
+| `app/utils/`             | auth-session、safe-redirect、attribution-params、formatDate、antdIcon、load-script   | 业务逻辑                |
+| `app/layouts/`           | default、product、editor、account、empty                                             | —                       |
+| `app/middleware/`        | locale.global、auth                                                                  | —                       |
+| `app/plugins/`           | i18n、auth、attribution、analytics                                                   | —                       |
 
 ### API 与 HTTP
 

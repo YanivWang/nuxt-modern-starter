@@ -50,7 +50,7 @@ pnpm docker:up       # 可选 Compose 栈
 
 配合 `nuxt-modern-starter-api`：
 
-1. 后端 `pnpm docker:dev`
+1. 在 **`nuxt-modern-starter-api` 后端仓库** 启动栈（常见命令 `pnpm docker:dev`；前端 Compose 用 `pnpm docker:up:dev`）
 2. 前端 `NUXT_PUBLIC_API_BASE=http://localhost:2026/api`
 3. 后端 CORS 包含 `http://localhost:3000`
 4. 验证：登录 → 工作台（列表/删除/创建跳转 `/docs/new`）→ 编辑器自动保存 → 账户

@@ -45,7 +45,7 @@ Production auth cookies are marked `secure` when `NUXT_APP_ENV=production`, so r
 
 When pairing this frontend with `nuxt-modern-starter-api` in Docker:
 
-1. Start the API stack from the backend repo, for example `pnpm docker:dev`.
+1. Start the API stack from the **`nuxt-modern-starter-api` backend repo** (commonly `pnpm docker:dev` there; this frontend uses `pnpm docker:up:dev` for its own Compose stack).
 2. Keep frontend `.env.dev` aligned with the API gateway: `NUXT_PUBLIC_API_BASE=http://localhost:2026/api`.
 3. Keep backend `.env.development` `CORS_ORIGINS` aligned with the Nuxt dev origin: `http://localhost:3000`.
 4. Run `pnpm dev` in this repo and verify sign-in, `/workspace` list/create/delete, `/docs/new` and `/docs/:id` editor load/autosave/title edit, `/workspace/templates` placeholder, and `/account` profile display and logout via the user menu. Route param `:id` is the project id; the page resolves `documentId` before calling editor APIs. Creating a project from the workspace navigates to `/docs/new` first; the API call happens on first non-blank editor save.
@@ -90,4 +90,4 @@ Production Compose exposes the Nginx gateway on `GATEWAY_HOST_PORT` or `3000` by
 Cache-Control: public, max-age=31536000, immutable
 ```
 
-Use this file as a deployment sample, not as a universal production config. Real deployments should add TLS, compression, logging, health checks, and platform-specific upstream configuration.
+Use this file as a deployment sample, not as a universal production config. The sample already enables basic `gzip` in `gateway.docker.conf`; real deployments should still add TLS, brotli or tuned compression, structured logging, upstream health checks, and platform-specific upstream configuration.
