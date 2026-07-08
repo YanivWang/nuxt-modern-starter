@@ -19,6 +19,7 @@
     不覆盖 useLocalePath composable；不测 middleware 301。
 */
 import { describe, expect, it } from 'vitest'
+import { createSwitchLocalePath } from '../../app/composables/useLocalePath'
 import { localizedPath } from '../../config/routes'
 import { getSwitchLanguageUrl, relativeLangPath } from '../../i18n'
 
@@ -50,5 +51,11 @@ describe('locale path utilities', () => {
     expect(getSwitchLanguageUrl('/pricing', 'en-US')).toBe('/en/pricing')
     expect(getSwitchLanguageUrl('/workspace', 'en-US')).toBe('/workspace')
     expect(getSwitchLanguageUrl('/en/workspace', 'zh-CN')).toBe('/workspace')
+  })
+
+  it('preserves the route fullPath query string and hash when switching language', () => {
+    expect(createSwitchLocalePath('/en/pricing?tag=a&tag=b&empty=&flag#faq', 'zh-CN')).toBe(
+      '/pricing?tag=a&tag=b&empty=&flag#faq'
+    )
   })
 })

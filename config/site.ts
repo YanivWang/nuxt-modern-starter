@@ -9,7 +9,8 @@
 
   【主要导出 / 路由】
     SITE_NAME、SITE_DESCRIPTION、DEFAULT_SITE_URL、DEFAULT_LOCALE、SUPPORTED_LOCALES、
-    SITE_LOCALE_PREFIX_MAP、SITE_HREFLANG_MAP、PUBLIC_PAGE_PATHS、NAV_ITEMS、DEFAULT_SEO、SITE_ORG、SupportedLocale
+    SITE_LOCALE_PREFIX_MAP、SITE_HREFLANG_MAP、SITE_LOCALE_OPTIONS、PUBLIC_PAGE_PATHS、NAV_ITEMS、
+    DEFAULT_SEO、SITE_ORG、SupportedLocale
 
   【依赖关系】
     - 依赖：无（纯常量）
@@ -89,6 +90,70 @@ export const SITE_HREFLANG_MAP: Record<SupportedLocale, string> = {
   'ru-RU': 'ru',
   'zh-HK': 'zh-HK',
   'pt-BR': 'pt-BR'
+}
+
+/** 语言选择器与后端语言 id 元数据；URL 前缀只来自 SITE_LOCALE_PREFIX_MAP */
+export const SITE_LOCALE_OPTIONS: Record<SupportedLocale, { id: string; label: string }> = {
+  'zh-CN': {
+    id: 'zh',
+    label: '简体中文'
+  },
+  'en-US': {
+    id: 'en',
+    label: 'English'
+  },
+  'pt-PT': {
+    id: 'pt',
+    label: 'Português'
+  },
+  'es-ES': {
+    id: 'es',
+    label: 'Español'
+  },
+  'ko-KR': {
+    id: 'ko',
+    label: '한국어'
+  },
+  'th-TH': {
+    id: 'th',
+    label: 'ไทย'
+  },
+  'ms-MY': {
+    id: 'ms',
+    label: 'Bahasa Melayu'
+  },
+  'id-ID': {
+    id: 'id',
+    label: 'Bahasa Indonesia'
+  },
+  'ph-PH': {
+    id: 'tl',
+    label: 'Filipino'
+  },
+  'ja-JP': {
+    id: 'ja',
+    label: '日本語'
+  },
+  'de-DE': {
+    id: 'de',
+    label: 'Deutsch'
+  },
+  'fr-FR': {
+    id: 'fr',
+    label: 'Français'
+  },
+  'ru-RU': {
+    id: 'ru',
+    label: 'Русский'
+  },
+  'zh-HK': {
+    id: 'zh-HK',
+    label: '繁體中文（香港）'
+  },
+  'pt-BR': {
+    id: 'pt-BR',
+    label: 'Português (Brasil)'
+  }
 }
 
 export const PUBLIC_PAGE_PATHS = ['/', '/pricing', '/about', '/help', '/news'] as const

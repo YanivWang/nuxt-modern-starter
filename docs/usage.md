@@ -77,7 +77,7 @@ Public adapters must stay free of token cookies and refresh behavior. This keeps
 
 ## Add SEO
 
-Use `usePageSeo({ path, title, description })`. The composable adds title, description, canonical, Open Graph metadata, Twitter Card metadata, and alternate links for public `zh-CN` and `en-US` pages.
+Use `usePageSeo({ path, title, description })`. The composable adds title, description, canonical, Open Graph metadata, Twitter Card metadata, and alternate links for every locale in `SUPPORTED_LOCALES`.
 
 Automatic enhancements (no extra page props required):
 
@@ -243,7 +243,7 @@ Provide `width`, `height`, and `sizes` on LCP-critical images. The starter keeps
 
 ## Add Languages
 
-The starter ships `zh-CN` and `en-US`. To add a language, update `SUPPORTED_LOCALES` and `SITE_LOCALE_PREFIX_MAP` in `config/site.ts`, extend `SITE_LANG_MAP` and locale modules in `i18n/index.ts`, then add routing/SEO tests.
+The starter ships all locales listed in `SUPPORTED_LOCALES`. To add a language, update `SUPPORTED_LOCALES`, `SITE_LOCALE_PREFIX_MAP`, `SITE_HREFLANG_MAP`, and `SITE_LOCALE_OPTIONS` in `config/site.ts`, register its resolver in `i18n/index.ts`, add `i18n/<locale>/modules/*.json`, then run the locale checks and routing/SEO tests.
 
 Do not install `@nuxtjs/i18n` for this template. Language routing is intentionally handled by `locale.global.ts` and `useLocalePath.ts`. Public pages use URL prefixes such as `/en`; authenticated product pages stay language-neutral regardless of UI language. Use `useLanguageSwitch` or `UserAccountMenu` inside the product shell to change UI locale without changing product URLs.
 

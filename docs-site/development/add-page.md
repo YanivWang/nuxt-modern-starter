@@ -31,7 +31,7 @@ usePageSeo({
 </template>
 ```
 
-访问路径：`/my-page`（中文）、`/en/my-page`（英文）。
+访问路径：`/my-page`（默认中文）、`/<locale-prefix>/my-page`（非默认语言）。
 
 ### 2. 注册公开路径
 
@@ -61,7 +61,7 @@ export const swrRouteRules = ['/my-page', '/en/my-page', /* 现有项 */] as con
 
 ### 4. 补充 i18n
 
-`i18n/zh-CN/index.ts` 和 `i18n/en-US/index.ts` 添加 `myPage.*` 键。
+在每个 `i18n/<locale>/modules/marketing.json` 中添加 `myPage.*` 键，并确认对应 `index.ts` 已聚合该模块。
 
 ### 5. 内部链接
 

@@ -27,17 +27,12 @@
       "success": "Abgemeldet"
     },
     "account": {
-      "eyebrow": "Geschützte Seite",
       "title": "Konto",
       "lead": "Diese Seite ist durch die benannte Auth-Middleware geschützt und zeigt das aktuelle Benutzerprofil.",
       "avatar": "Profilfoto",
       "sessionTitle": "Sitzung",
       "profileTitle": "Erweitertes Profil",
-      "userId": "Benutzer-ID",
       "nickname": "Spitzname",
-      "roles": "Rollen",
-      "permissions": "Berechtigungen",
-      "none": "Keine",
       "emptyProfile": "Noch kein erweitertes Profil"
     },
     "validation": {
@@ -49,15 +44,10 @@
     },
     "errors": {
       "loginFailed": "Anmeldung fehlgeschlagen. Benutzername oder Passwort prüfen.",
-      "registerFailed": "Registrierung fehlgeschlagen. Bitte später erneut versuchen.",
-      "unauthorized": "Fehlende oder ungültige Anmeldedaten"
+      "registerFailed": "Registrierung fehlgeschlagen. Bitte später erneut versuchen."
     }
   },
   "editor": {
-    "eyebrow": "Yaniv Editor",
-    "title": "Content-Editor",
-    "placeholder": "Beginnen Sie mit dem Schreiben...",
-    "metaTitle": "Editor",
     "autosave": {
       "saving": "Speichern…",
       "saved": "Automatisch gespeichert · {time}",
@@ -68,7 +58,6 @@
     }
   },
   "workspace": {
-    "nav": "Arbeitsbereich",
     "title": "Verwalten Sie Ihre PPT-Projekte",
     "defaultTitle": "Unbenanntes Projekt",
     "empty": "Noch keine Projekte. Nutzen Sie die Schaltfläche oben, um eines zu erstellen.",
@@ -79,7 +68,6 @@
     "deleteCancel": "Abbrechen",
     "deleteConfirm": "„{title}“ löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
     "deleteSuccess": "Projekt gelöscht",
-    "save": "Speichern",
     "projectName": "Projektname",
     "backToWorkspace": "Zurück zum Arbeitsbereich",
     "browse": "Ansehen",

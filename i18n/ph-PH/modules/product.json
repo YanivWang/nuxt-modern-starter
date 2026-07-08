@@ -27,17 +27,12 @@
       "success": "Naka-log out na"
     },
     "account": {
-      "eyebrow": "Protected page",
       "title": "Account",
       "lead": "Protektado ng named auth middleware ang page na ito at ipinapakita ang kasalukuyang user profile.",
       "avatar": "Profile photo",
       "sessionTitle": "Session",
       "profileTitle": "Extended profile",
-      "userId": "User ID",
       "nickname": "Nickname",
-      "roles": "Role",
-      "permissions": "Permission",
-      "none": "Wala",
       "emptyProfile": "Wala pang extended profile"
     },
     "validation": {
@@ -49,15 +44,10 @@
     },
     "errors": {
       "loginFailed": "Hindi makapag-log in. Suriin ang username o password.",
-      "registerFailed": "Hindi makapag-register. Subukang muli mamaya.",
-      "unauthorized": "Walang o invalid na login credential"
+      "registerFailed": "Hindi makapag-register. Subukang muli mamaya."
     }
   },
   "editor": {
-    "eyebrow": "Yaniv Editor",
-    "title": "Content editor",
-    "placeholder": "Simulang magsulat ng content...",
-    "metaTitle": "Editor",
     "autosave": {
       "saving": "Sine-save…",
       "saved": "Auto-saved · {time}",
@@ -68,7 +58,6 @@
     }
   },
   "workspace": {
-    "nav": "Workspace",
     "title": "Pamahalaan ang iyong PPT project",
     "defaultTitle": "Walang pamagat na project",
     "empty": "Wala pang project. Gamitin ang button sa itaas para gumawa.",
@@ -79,7 +68,6 @@
     "deleteCancel": "Kanselahin",
     "deleteConfirm": "Burahin ang \"{title}\"? Hindi na ito mababawi.",
     "deleteSuccess": "Nabura na ang project",
-    "save": "I-save",
     "projectName": "Pangalan ng project",
     "backToWorkspace": "Bumalik sa workspace",
     "browse": "Tingnan",

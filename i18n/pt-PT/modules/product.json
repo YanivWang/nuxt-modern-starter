@@ -27,17 +27,12 @@
       "success": "Sessão terminada"
     },
     "account": {
-      "eyebrow": "Página protegida",
       "title": "Conta",
       "lead": "Esta página é protegida pelo middleware auth nomeado e mostra o perfil do utilizador atual.",
       "avatar": "Foto de perfil",
       "sessionTitle": "Sessão",
       "profileTitle": "Perfil alargado",
-      "userId": "ID do utilizador",
       "nickname": "Alcunha",
-      "roles": "Papéis",
-      "permissions": "Permissões",
-      "none": "Nenhum",
       "emptyProfile": "Sem perfil alargado ainda"
     },
     "validation": {
@@ -49,15 +44,10 @@
     },
     "errors": {
       "loginFailed": "Falha no início de sessão. Verifique utilizador ou palavra-passe.",
-      "registerFailed": "Falha no registo. Tente novamente mais tarde.",
-      "unauthorized": "Credenciais de início de sessão em falta ou inválidas"
+      "registerFailed": "Falha no registo. Tente novamente mais tarde."
     }
   },
   "editor": {
-    "eyebrow": "Yaniv Editor",
-    "title": "Editor de conteúdo",
-    "placeholder": "Comece a escrever o seu conteúdo...",
-    "metaTitle": "Editor",
     "autosave": {
       "saving": "A guardar…",
       "saved": "Guardado automaticamente · {time}",
@@ -68,7 +58,6 @@
     }
   },
   "workspace": {
-    "nav": "Área de trabalho",
     "title": "Gerir os seus projetos PPT",
     "defaultTitle": "Projeto sem título",
     "empty": "Ainda não há projetos. Utilize o botão acima para criar um.",
@@ -79,7 +68,6 @@
     "deleteCancel": "Cancelar",
     "deleteConfirm": "Eliminar «{title}»? Esta ação não pode ser anulada.",
     "deleteSuccess": "Projeto eliminado",
-    "save": "Guardar",
     "projectName": "Nome do projeto",
     "backToWorkspace": "Voltar à área de trabalho",
     "browse": "Ver",

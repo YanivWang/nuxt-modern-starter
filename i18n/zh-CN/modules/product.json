@@ -27,17 +27,12 @@
       "success": "已退出登录"
     },
     "account": {
-      "eyebrow": "受保护页面",
       "title": "账户",
       "lead": "此页面通过命名 auth 中间件保护，展示当前登录用户和扩展资料。",
       "avatar": "头像",
       "sessionTitle": "登录态",
       "profileTitle": "扩展资料",
-      "userId": "用户 ID",
       "nickname": "昵称",
-      "roles": "角色",
-      "permissions": "权限",
-      "none": "暂无",
       "emptyProfile": "暂无扩展资料"
     },
     "validation": {
@@ -49,15 +44,10 @@
     },
     "errors": {
       "loginFailed": "登录失败，请检查用户名或密码",
-      "registerFailed": "注册失败，请稍后重试",
-      "unauthorized": "未登录或无效登录凭证"
+      "registerFailed": "注册失败，请稍后重试"
     }
   },
   "editor": {
-    "eyebrow": "Yaniv Editor",
-    "title": "内容编辑器",
-    "placeholder": "开始撰写你的内容...",
-    "metaTitle": "编辑器",
     "autosave": {
       "saving": "保存中…",
       "saved": "已自动保存 · {time}",
@@ -68,7 +58,6 @@
     }
   },
   "workspace": {
-    "nav": "工作台",
     "title": "管理你的 PPT 作品",
     "defaultTitle": "未命名作品",
     "empty": "暂无作品，点击右上角按钮创建。",
@@ -79,7 +68,6 @@
     "deleteCancel": "取消",
     "deleteConfirm": "确定删除「{title}」吗？此操作不可恢复。",
     "deleteSuccess": "作品已删除",
-    "save": "保存",
     "projectName": "作品名称",
     "backToWorkspace": "返回工作台",
     "browse": "浏览",

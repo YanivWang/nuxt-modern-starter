@@ -126,11 +126,11 @@ app/
 
 ## `i18n/` — 国际化
 
-| 文件             | 作用                          |
-| ---------------- | ----------------------------- |
-| `index.ts`       | 语言模块加载、URL 切换 helper |
-| `zh-CN/index.ts` | 简体中文文案                  |
-| `en-US/index.ts` | 英文文案                      |
+| 文件                      | 作用                                         |
+| ------------------------- | -------------------------------------------- |
+| `index.ts`                | 语言模块加载、URL 切换 helper                |
+| `<locale>/index.ts`       | 聚合该 locale 的 `modules/*.json` 文案       |
+| `<locale>/modules/*.json` | 按 global / marketing / product 分域维护文案 |
 
 ## `tests/` — 测试
 

@@ -10,7 +10,7 @@
     useLanguageStore — currentLanguage、chooseLanguage、toggleLanguage、pathPrefix、languages
 
   【依赖关系】
-    - 依赖：config/site.ts、i18n/index.ts（loadLocaleMessages、SITE_LANG_MAP）
+    - 依赖：config/site.ts、i18n/index.ts（loadLocaleMessages）
     - 被引用：app/middleware/locale.global.ts、LanguageSwitcher、UserAccountMenu
 
   【渲染 / 数据】
@@ -21,6 +21,7 @@
 */
 import {
   DEFAULT_LOCALE,
+  SITE_LOCALE_OPTIONS,
   SITE_LOCALE_PREFIX_MAP,
   SUPPORTED_LOCALES,
   type SupportedLocale
@@ -29,7 +30,6 @@ import {
   LANGUAGE_COOKIE_MAX_AGE,
   loadLocaleMessages,
   resolveStoredLocale,
-  SITE_LANG_MAP,
   STORAGE_KEY_LANGUAGE
 } from '../../i18n'
 
@@ -43,10 +43,11 @@ export const useLanguageStore = defineStore('language', () => {
   const currentLanguage = ref<SupportedLocale>(
     resolveStoredLocale(languageCookie.value) || DEFAULT_LOCALE
   )
-  const currentLanguageId = computed(() => SITE_LANG_MAP[currentLanguage.value].id)
+  const currentLanguageId = computed(() => SITE_LOCALE_OPTIONS[currentLanguage.value].id)
   const languages = SUPPORTED_LOCALES.map((locale) => ({
     locale,
-    ...SITE_LANG_MAP[locale]
+    ...SITE_LOCALE_OPTIONS[locale],
+    pathPrefix: SITE_LOCALE_PREFIX_MAP[locale]
   }))
 
   const chooseLanguage = async (locale: SupportedLocale) => {

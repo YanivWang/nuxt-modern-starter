@@ -27,17 +27,12 @@
       "success": "Telah keluar"
     },
     "account": {
-      "eyebrow": "Halaman terlindungi",
       "title": "Akun",
       "lead": "Halaman ini dilindungi middleware auth bernama dan menampilkan profil pengguna saat ini.",
       "avatar": "Foto profil",
       "sessionTitle": "Sesi",
       "profileTitle": "Profil lanjutan",
-      "userId": "ID pengguna",
       "nickname": "Nama panggilan",
-      "roles": "Peran",
-      "permissions": "Izin",
-      "none": "Tidak ada",
       "emptyProfile": "Belum ada profil lanjutan"
     },
     "validation": {
@@ -49,15 +44,10 @@
     },
     "errors": {
       "loginFailed": "Gagal masuk. Periksa nama pengguna atau kata sandi.",
-      "registerFailed": "Registrasi gagal. Coba lagi nanti.",
-      "unauthorized": "Kredensial login tidak ada atau tidak valid"
+      "registerFailed": "Registrasi gagal. Coba lagi nanti."
     }
   },
   "editor": {
-    "eyebrow": "Yaniv Editor",
-    "title": "Editor konten",
-    "placeholder": "Mulai menulis konten Anda...",
-    "metaTitle": "Editor",
     "autosave": {
       "saving": "Menyimpan…",
       "saved": "Tersimpan otomatis · {time}",
@@ -68,7 +58,6 @@
     }
   },
   "workspace": {
-    "nav": "Ruang kerja",
     "title": "Kelola proyek PPT Anda",
     "defaultTitle": "Proyek tanpa judul",
     "empty": "Belum ada proyek. Gunakan tombol di atas untuk membuat.",
@@ -79,7 +68,6 @@
     "deleteCancel": "Batal",
     "deleteConfirm": "Hapus \"{title}\"? Tindakan ini tidak dapat dibatalkan.",
     "deleteSuccess": "Proyek dihapus",
-    "save": "Simpan",
     "projectName": "Nama proyek",
     "backToWorkspace": "Kembali ke ruang kerja",
     "browse": "Lihat",

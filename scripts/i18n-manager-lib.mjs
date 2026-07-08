@@ -130,11 +130,45 @@ function findDeclarationIndex(source, exportName) {
   return match?.index ?? -1
 }
 
+function findInitializerIndex(source, declarationIndex) {
+  let quote = ''
+  let escaped = false
+
+  for (let index = declarationIndex; index < source.length; index += 1) {
+    const char = source[index]
+
+    if (quote) {
+      if (escaped) {
+        escaped = false
+      } else if (char === '\\') {
+        escaped = true
+      } else if (char === quote) {
+        quote = ''
+      }
+      continue
+    }
+
+    if (char === '"' || char === "'" || char === '`') {
+      quote = char
+      continue
+    }
+
+    if (char === '=' && source[index + 1] !== '>') {
+      return index + 1
+    }
+  }
+
+  return -1
+}
+
 export function extractArrayExport(source, exportName) {
   const exportIndex = findDeclarationIndex(source, exportName)
   if (exportIndex === -1) return []
 
-  const openIndex = source.indexOf('[', exportIndex)
+  const initializerIndex = findInitializerIndex(source, exportIndex)
+  if (initializerIndex === -1) return []
+
+  const openIndex = source.indexOf('[', initializerIndex)
   const closeIndex = source.indexOf(']', openIndex)
   if (openIndex === -1 || closeIndex === -1) return []
 
@@ -147,7 +181,10 @@ export function extractTopLevelObjectKeys(source, exportName) {
   const exportIndex = findDeclarationIndex(source, exportName)
   if (exportIndex === -1) return []
 
-  const openIndex = source.indexOf('{', exportIndex)
+  const initializerIndex = findInitializerIndex(source, exportIndex)
+  if (initializerIndex === -1) return []
+
+  const openIndex = source.indexOf('{', initializerIndex)
   if (openIndex === -1) return []
 
   const body = readBalancedBlock(source, openIndex)
@@ -419,7 +456,7 @@ export function checkLocaleHealth(rootDir) {
     .sort()
   const prefixLocales = extractTopLevelObjectKeys(siteSource, 'SITE_LOCALE_PREFIX_MAP').sort()
   const hreflangLocales = extractTopLevelObjectKeys(siteSource, 'SITE_HREFLANG_MAP').sort()
-  const langMapLocales = extractTopLevelObjectKeys(i18nSource, 'SITE_LANG_MAP').sort()
+  const optionLocales = extractTopLevelObjectKeys(siteSource, 'SITE_LOCALE_OPTIONS').sort()
   const resolverLocales = extractTopLevelObjectKeys(i18nSource, 'LOCALE_MESSAGE_RESOLVERS').sort()
 
   arrayDiff(supportedLocales, localeDirs).forEach((locale) =>
@@ -431,14 +468,26 @@ export function checkLocaleHealth(rootDir) {
   arrayDiff(supportedLocales, prefixLocales).forEach((locale) =>
     errors.push(`Missing SITE_LOCALE_PREFIX_MAP entry: ${locale}`)
   )
+  arrayDiff(prefixLocales, supportedLocales).forEach((locale) =>
+    errors.push(`Unexpected SITE_LOCALE_PREFIX_MAP entry: ${locale}`)
+  )
   arrayDiff(supportedLocales, hreflangLocales).forEach((locale) =>
     errors.push(`Missing SITE_HREFLANG_MAP entry: ${locale}`)
   )
-  arrayDiff(supportedLocales, langMapLocales).forEach((locale) =>
-    errors.push(`Missing SITE_LANG_MAP entry: ${locale}`)
+  arrayDiff(hreflangLocales, supportedLocales).forEach((locale) =>
+    errors.push(`Unexpected SITE_HREFLANG_MAP entry: ${locale}`)
+  )
+  arrayDiff(supportedLocales, optionLocales).forEach((locale) =>
+    errors.push(`Missing SITE_LOCALE_OPTIONS entry: ${locale}`)
+  )
+  arrayDiff(optionLocales, supportedLocales).forEach((locale) =>
+    errors.push(`Unexpected SITE_LOCALE_OPTIONS entry: ${locale}`)
   )
   arrayDiff(supportedLocales, resolverLocales).forEach((locale) =>
     errors.push(`Missing LOCALE_MESSAGE_RESOLVERS entry: ${locale}`)
+  )
+  arrayDiff(resolverLocales, supportedLocales).forEach((locale) =>
+    errors.push(`Unexpected LOCALE_MESSAGE_RESOLVERS entry: ${locale}`)
   )
 
   localeDirs.forEach((locale) => {

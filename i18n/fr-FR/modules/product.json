@@ -27,17 +27,12 @@
       "success": "Déconnecté"
     },
     "account": {
-      "eyebrow": "Page protégée",
       "title": "Compte",
       "lead": "Cette page est protégée par le middleware auth nommé et affiche le profil utilisateur actuel.",
       "avatar": "Photo de profil",
       "sessionTitle": "Session",
       "profileTitle": "Profil étendu",
-      "userId": "ID utilisateur",
       "nickname": "Surnom",
-      "roles": "Rôles",
-      "permissions": "Permissions",
-      "none": "Aucun",
       "emptyProfile": "Pas encore de profil étendu"
     },
     "validation": {
@@ -49,15 +44,10 @@
     },
     "errors": {
       "loginFailed": "Échec de connexion. Vérifiez identifiant ou mot de passe.",
-      "registerFailed": "Échec de l'inscription. Réessayez plus tard.",
-      "unauthorized": "Identifiants de connexion manquants ou invalides"
+      "registerFailed": "Échec de l'inscription. Réessayez plus tard."
     }
   },
   "editor": {
-    "eyebrow": "Yaniv Editor",
-    "title": "Éditeur de contenu",
-    "placeholder": "Commencez à rédiger votre contenu...",
-    "metaTitle": "Éditeur",
     "autosave": {
       "saving": "Enregistrement…",
       "saved": "Enregistré automatiquement · {time}",
@@ -68,7 +58,6 @@
     }
   },
   "workspace": {
-    "nav": "Espace de travail",
     "title": "Gérez vos projets PPT",
     "defaultTitle": "Projet sans titre",
     "empty": "Aucun projet pour l’instant. Utilisez le bouton ci-dessus pour en créer un.",
@@ -79,7 +68,6 @@
     "deleteCancel": "Annuler",
     "deleteConfirm": "Supprimer « {title} » ? Cette action est irréversible.",
     "deleteSuccess": "Projet supprimé",
-    "save": "Enregistrer",
     "projectName": "Nom du projet",
     "backToWorkspace": "Retour à l'espace de travail",
     "browse": "Voir",

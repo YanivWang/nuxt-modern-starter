@@ -8,7 +8,7 @@
 
   【主要导出 / 路由】
     i18n、loadLocaleMessages、localeFromPrefix、resolvePreferredLocale、getSwitchLanguageUrl、
-    relativeLangPath、t、STORAGE_KEY_LANGUAGE、SITE_LANG_MAP
+    relativeLangPath、t、STORAGE_KEY_LANGUAGE、LOCALE_LANGUAGE_MODULES
 
   【依赖关系】
     - 依赖：config/site.ts、config/routes.ts（isProductPath）、i18n/zh-CN、i18n/en-US 及各 locale 包
@@ -19,13 +19,14 @@
 
   【边界与注意】
     不使用 @nuxtjs/i18n 模块；公开页 URL 带语言前缀，产品页语言切换不改变 path。
-    修改 LOCALE_LANGUAGE_MODULES 需同步 tests/unit/locale-routing.test.ts、tests/unit/locale-path.test.ts。
+    新增语言需同步 config/site.ts、LOCALE_MESSAGE_RESOLVERS、i18n/<locale>/modules 与 locale 相关单测。
 */
 import { createI18n } from 'vue-i18n'
 import type { Ref } from 'vue'
 import zhCN from './zh-CN'
 import {
   DEFAULT_LOCALE,
+  SITE_LOCALE_OPTIONS,
   SITE_LOCALE_PREFIX_MAP,
   SUPPORTED_LOCALES,
   type SupportedLocale
@@ -37,84 +38,6 @@ export const LANGUAGE_COOKIE_MAX_AGE = 60 * 60 * 24 * 365
 type LocaleMessages = typeof zhCN
 
 export type LocaleLangType = SupportedLocale
-
-export const SITE_LANG_MAP = {
-  'zh-CN': {
-    id: 'zh',
-    pathPrefix: 'zh',
-    label: '简体中文'
-  },
-  'en-US': {
-    id: 'en',
-    pathPrefix: 'en',
-    label: 'English'
-  },
-  'pt-PT': {
-    id: 'pt',
-    pathPrefix: 'pt',
-    label: 'Português'
-  },
-  'es-ES': {
-    id: 'es',
-    pathPrefix: 'es',
-    label: 'Español'
-  },
-  'ko-KR': {
-    id: 'ko',
-    pathPrefix: 'kr',
-    label: '한국어'
-  },
-  'th-TH': {
-    id: 'th',
-    pathPrefix: 'th',
-    label: 'ไทย'
-  },
-  'ms-MY': {
-    id: 'ms',
-    pathPrefix: 'my',
-    label: 'Bahasa Melayu'
-  },
-  'id-ID': {
-    id: 'id',
-    pathPrefix: 'id',
-    label: 'Bahasa Indonesia'
-  },
-  'ph-PH': {
-    id: 'tl',
-    pathPrefix: 'ph',
-    label: 'Filipino'
-  },
-  'ja-JP': {
-    id: 'ja',
-    pathPrefix: 'jp',
-    label: '日本語'
-  },
-  'de-DE': {
-    id: 'de',
-    pathPrefix: 'de',
-    label: 'Deutsch'
-  },
-  'fr-FR': {
-    id: 'fr',
-    pathPrefix: 'fr',
-    label: 'Français'
-  },
-  'ru-RU': {
-    id: 'ru',
-    pathPrefix: 'ru',
-    label: 'Русский'
-  },
-  'zh-HK': {
-    id: 'zh-HK',
-    pathPrefix: 'zh-hk',
-    label: '繁體中文（香港）'
-  },
-  'pt-BR': {
-    id: 'pt-BR',
-    pathPrefix: 'pt-br',
-    label: 'Português (Brasil)'
-  }
-} as const satisfies Record<SupportedLocale, { id: string; pathPrefix: string; label: string }>
 
 const LOCALE_MESSAGE_RESOLVERS = {
   'zh-CN': async () => zhCN,
@@ -134,29 +57,23 @@ const LOCALE_MESSAGE_RESOLVERS = {
   'pt-BR': () => import('./pt-BR/index').then((module) => module.default)
 } as const satisfies Record<SupportedLocale, () => Promise<LocaleMessages>>
 
-export const LOCALE_LANGUAGE_MODULES = {
-  'zh-CN': {
-    ...SITE_LANG_MAP['zh-CN'],
-    resolve: LOCALE_MESSAGE_RESOLVERS['zh-CN']
+type LocaleLanguageModule = (typeof SITE_LOCALE_OPTIONS)[SupportedLocale] & {
+  pathPrefix: string
+  resolve: () => Promise<LocaleMessages>
+}
+
+export const LOCALE_LANGUAGE_MODULES = SUPPORTED_LOCALES.reduce(
+  (modules, locale) => {
+    modules[locale] = {
+      ...SITE_LOCALE_OPTIONS[locale],
+      pathPrefix: SITE_LOCALE_PREFIX_MAP[locale],
+      resolve: LOCALE_MESSAGE_RESOLVERS[locale]
+    }
+
+    return modules
   },
-  'en-US': {
-    ...SITE_LANG_MAP['en-US'],
-    resolve: LOCALE_MESSAGE_RESOLVERS['en-US']
-  },
-  'pt-PT': { ...SITE_LANG_MAP['pt-PT'], resolve: LOCALE_MESSAGE_RESOLVERS['pt-PT'] },
-  'es-ES': { ...SITE_LANG_MAP['es-ES'], resolve: LOCALE_MESSAGE_RESOLVERS['es-ES'] },
-  'ko-KR': { ...SITE_LANG_MAP['ko-KR'], resolve: LOCALE_MESSAGE_RESOLVERS['ko-KR'] },
-  'th-TH': { ...SITE_LANG_MAP['th-TH'], resolve: LOCALE_MESSAGE_RESOLVERS['th-TH'] },
-  'ms-MY': { ...SITE_LANG_MAP['ms-MY'], resolve: LOCALE_MESSAGE_RESOLVERS['ms-MY'] },
-  'id-ID': { ...SITE_LANG_MAP['id-ID'], resolve: LOCALE_MESSAGE_RESOLVERS['id-ID'] },
-  'ph-PH': { ...SITE_LANG_MAP['ph-PH'], resolve: LOCALE_MESSAGE_RESOLVERS['ph-PH'] },
-  'ja-JP': { ...SITE_LANG_MAP['ja-JP'], resolve: LOCALE_MESSAGE_RESOLVERS['ja-JP'] },
-  'de-DE': { ...SITE_LANG_MAP['de-DE'], resolve: LOCALE_MESSAGE_RESOLVERS['de-DE'] },
-  'fr-FR': { ...SITE_LANG_MAP['fr-FR'], resolve: LOCALE_MESSAGE_RESOLVERS['fr-FR'] },
-  'ru-RU': { ...SITE_LANG_MAP['ru-RU'], resolve: LOCALE_MESSAGE_RESOLVERS['ru-RU'] },
-  'zh-HK': { ...SITE_LANG_MAP['zh-HK'], resolve: LOCALE_MESSAGE_RESOLVERS['zh-HK'] },
-  'pt-BR': { ...SITE_LANG_MAP['pt-BR'], resolve: LOCALE_MESSAGE_RESOLVERS['pt-BR'] }
-} as const
+  {} as Record<SupportedLocale, LocaleLanguageModule>
+)
 
 export const i18n = createI18n({
   legacy: false,

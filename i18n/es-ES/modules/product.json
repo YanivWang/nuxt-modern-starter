@@ -27,17 +27,12 @@
       "success": "Sesión cerrada"
     },
     "account": {
-      "eyebrow": "Página protegida",
       "title": "Cuenta",
       "lead": "Esta página está protegida por el middleware auth nombrado y muestra el perfil del usuario actual.",
       "avatar": "Foto de perfil",
       "sessionTitle": "Sesión",
       "profileTitle": "Perfil extendido",
-      "userId": "ID de usuario",
       "nickname": "Apodo",
-      "roles": "Roles",
-      "permissions": "Permisos",
-      "none": "Ninguno",
       "emptyProfile": "Sin perfil extendido aún"
     },
     "validation": {
@@ -49,15 +44,10 @@
     },
     "errors": {
       "loginFailed": "Error al iniciar sesión. Comprueba usuario o contraseña.",
-      "registerFailed": "Error al registrarse. Inténtalo más tarde.",
-      "unauthorized": "Credenciales de inicio de sesión ausentes o inválidas"
+      "registerFailed": "Error al registrarse. Inténtalo más tarde."
     }
   },
   "editor": {
-    "eyebrow": "Yaniv Editor",
-    "title": "Editor de contenido",
-    "placeholder": "Empieza a escribir tu contenido...",
-    "metaTitle": "Editor",
     "autosave": {
       "saving": "Guardando…",
       "saved": "Guardado automáticamente · {time}",
@@ -68,7 +58,6 @@
     }
   },
   "workspace": {
-    "nav": "Espacio de trabajo",
     "title": "Gestiona tus proyectos PPT",
     "defaultTitle": "Proyecto sin título",
     "empty": "Aún no hay proyectos. Usa el botón de arriba para crear uno.",
@@ -79,7 +68,6 @@
     "deleteCancel": "Cancelar",
     "deleteConfirm": "¿Eliminar «{title}»? Esta acción no se puede deshacer.",
     "deleteSuccess": "Proyecto eliminado",
-    "save": "Guardar",
     "projectName": "Nombre del proyecto",
     "backToWorkspace": "Volver al espacio de trabajo",
     "browse": "Ver",

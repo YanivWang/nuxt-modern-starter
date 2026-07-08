@@ -39,7 +39,7 @@
 - `server/middleware/product-canonical.ts`: early server-side 301 redirect for localized product URLs, for example `/en/workspace` to `/workspace`.
 - `server/routes/robots.txt.ts` and `server/routes/sitemap.xml.ts`: SEO server routes. They include public localized pages and content detail pages while excluding sign-in, sign-up, and product routes.
 - `server/api/revalidate.post.ts` and `server/utils/revalidate.ts`: protected on-demand SWR cache invalidation. The backend webhook calls `POST /api/revalidate` with `x-revalidate-secret` after news changes; `slug` expands to localized news list/detail paths.
-- `i18n`: `vue-i18n` setup, `SITE_LANG_MAP`, locale message modules, and language-switch URL helpers.
+- `i18n`: `vue-i18n` setup, locale message resolvers, and language-switch URL helpers. Locale metadata lives in `config/site.ts`.
 - `docker`: Dockerfiles, Compose layers, and the Nginx gateway sample for the default Node server path.
 
 ## Rendering Strategy

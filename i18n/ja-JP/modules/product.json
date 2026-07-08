@@ -27,17 +27,12 @@
       "success": "ログアウトしました"
     },
     "account": {
-      "eyebrow": "保護されたページ",
       "title": "アカウント",
       "lead": "このページは named auth ミドルウェアで保護され、現在のユーザープロフィールを表示します。",
       "avatar": "プロフィール写真",
       "sessionTitle": "セッション",
       "profileTitle": "拡張プロフィール",
-      "userId": "ユーザー ID",
       "nickname": "ニックネーム",
-      "roles": "ロール",
-      "permissions": "権限",
-      "none": "なし",
       "emptyProfile": "拡張プロフィールはまだありません"
     },
     "validation": {
@@ -49,15 +44,10 @@
     },
     "errors": {
       "loginFailed": "ログインに失敗しました。ユーザー名またはパスワードを確認してください。",
-      "registerFailed": "登録に失敗しました。後でもう一度お試しください。",
-      "unauthorized": "ログイン情報が無効または未入力です"
+      "registerFailed": "登録に失敗しました。後でもう一度お試しください。"
     }
   },
   "editor": {
-    "eyebrow": "Yaniv Editor",
-    "title": "コンテンツエディター",
-    "placeholder": "コンテンツの作成を開始...",
-    "metaTitle": "エディター",
     "autosave": {
       "saving": "保存中…",
       "saved": "自動保存済み · {time}",
@@ -68,7 +58,6 @@
     }
   },
   "workspace": {
-    "nav": "ワークスペース",
     "title": "PPT プロジェクトを管理",
     "defaultTitle": "無題のプロジェクト",
     "empty": "プロジェクトはまだありません。右上のボタンで作成してください。",
@@ -79,7 +68,6 @@
     "deleteCancel": "キャンセル",
     "deleteConfirm": "「{title}」を削除しますか？この操作は元に戻せません。",
     "deleteSuccess": "プロジェクトを削除しました",
-    "save": "保存",
     "projectName": "プロジェクト名",
     "backToWorkspace": "ワークスペースに戻る",
     "browse": "表示",

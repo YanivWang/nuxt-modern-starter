@@ -37,10 +37,23 @@ describe('i18n manager helpers', () => {
     expect(
       extractTopLevelObjectKeys(
         [
-          '/* SITE_LANG_MAP appears in file comments with { braces } */',
-          "export const SITE_LANG_MAP = { 'en-US': { label: 'English' } } as const"
+          '/* SITE_LOCALE_OPTIONS appears in file comments with { braces } */',
+          "export const SITE_LOCALE_OPTIONS = { 'en-US': { label: 'English' } } as const"
         ].join('\n'),
-        'SITE_LANG_MAP'
+        'SITE_LOCALE_OPTIONS'
+      )
+    ).toEqual(['en-US'])
+  })
+
+  it('extracts object keys from typed declarations after the assignment', () => {
+    expect(
+      extractTopLevelObjectKeys(
+        [
+          'export const SITE_LOCALE_OPTIONS: Record<SupportedLocale, { id: string; label: string }> = {',
+          "  'en-US': { id: 'en', label: 'English' }",
+          '}'
+        ].join('\n'),
+        'SITE_LOCALE_OPTIONS'
       )
     ).toEqual(['en-US'])
   })
@@ -126,13 +139,13 @@ describe('i18n manager helpers', () => {
       [
         "export const SUPPORTED_LOCALES = ['en-US'] as const",
         "export const SITE_LOCALE_PREFIX_MAP = { 'en-US': 'en' }",
-        "export const SITE_HREFLANG_MAP = { 'en-US': 'en' }"
+        "export const SITE_HREFLANG_MAP = { 'en-US': 'en' }",
+        "export const SITE_LOCALE_OPTIONS = { 'en-US': { id: 'en', label: 'English' } }"
       ].join('\n')
     )
     fs.writeFileSync(
       path.join(root, 'i18n', 'index.ts'),
       [
-        "export const SITE_LANG_MAP = { 'en-US': { id: 'en', pathPrefix: 'en', label: 'English' } }",
         "const LOCALE_MESSAGE_RESOLVERS = { 'en-US': () => import('./en-US/index').then((module) => module.default) }"
       ].join('\n')
     )
@@ -164,5 +177,50 @@ describe('i18n manager helpers', () => {
     expect(result.ok).toBe(false)
     expect(result.errors).toContain('Unexpected i18n locale directory: fr-FR')
     expect(result.errors).toContain('Locale fr-FR module global.json is not imported by index.ts')
+  })
+
+  it('rejects stale locale metadata that is not backed by supported locales', () => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'i18n-metadata-check-'))
+    tempDirs.push(root)
+
+    fs.mkdirSync(path.join(root, 'config'), { recursive: true })
+    fs.mkdirSync(path.join(root, 'i18n', 'en-US', 'modules'), { recursive: true })
+    fs.mkdirSync(path.join(root, 'scripts'), { recursive: true })
+    fs.writeFileSync(
+      path.join(root, 'config', 'site.ts'),
+      [
+        "export const SUPPORTED_LOCALES = ['en-US'] as const",
+        "export const SITE_LOCALE_PREFIX_MAP = { 'en-US': 'en', 'fr-FR': 'fr' }",
+        "export const SITE_HREFLANG_MAP = { 'en-US': 'en' }",
+        "export const SITE_LOCALE_OPTIONS = { 'en-US': { id: 'en', label: 'English' }, 'fr-FR': { id: 'fr', label: 'Français' } }"
+      ].join('\n')
+    )
+    fs.writeFileSync(
+      path.join(root, 'i18n', 'index.ts'),
+      [
+        "const LOCALE_MESSAGE_RESOLVERS = { 'en-US': () => import('./en-US/index').then((module) => module.default), 'fr-FR': () => import('./fr-FR/index').then((module) => module.default) }"
+      ].join('\n')
+    )
+    fs.writeFileSync(
+      path.join(root, 'i18n', 'en-US', 'modules', 'global.json'),
+      JSON.stringify({ nav: { home: 'Home' } })
+    )
+    fs.writeFileSync(
+      path.join(root, 'i18n', 'en-US', 'index.ts'),
+      ["import global from './modules/global.json'", 'export default {', '  ...global', '}'].join(
+        '\n'
+      )
+    )
+    fs.writeFileSync(
+      path.join(root, 'scripts', 'i18n-diff.json'),
+      `${JSON.stringify(buildLocaleDiff(path.join(root, 'i18n')), null, 2)}\n`
+    )
+
+    const result = checkLocaleHealth(root)
+
+    expect(result.ok).toBe(false)
+    expect(result.errors).toContain('Unexpected SITE_LOCALE_PREFIX_MAP entry: fr-FR')
+    expect(result.errors).toContain('Unexpected SITE_LOCALE_OPTIONS entry: fr-FR')
+    expect(result.errors).toContain('Unexpected LOCALE_MESSAGE_RESOLVERS entry: fr-FR')
   })
 })

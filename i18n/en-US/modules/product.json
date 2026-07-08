@@ -27,17 +27,12 @@
       "success": "Logged out"
     },
     "account": {
-      "eyebrow": "Protected page",
       "title": "Account",
       "lead": "This page is protected by the named auth middleware and shows the current user profile.",
       "avatar": "Profile photo",
       "sessionTitle": "Session",
       "profileTitle": "Extended profile",
-      "userId": "User ID",
       "nickname": "Nickname",
-      "roles": "Roles",
-      "permissions": "Permissions",
-      "none": "None",
       "emptyProfile": "No extended profile yet"
     },
     "validation": {
@@ -49,15 +44,10 @@
     },
     "errors": {
       "loginFailed": "Login failed. Check the username or password.",
-      "registerFailed": "Registration failed. Please try again later.",
-      "unauthorized": "Missing or invalid login credentials"
+      "registerFailed": "Registration failed. Please try again later."
     }
   },
   "editor": {
-    "eyebrow": "Yaniv Editor",
-    "title": "Content editor",
-    "placeholder": "Start writing your content...",
-    "metaTitle": "Editor",
     "autosave": {
       "saving": "Saving…",
       "saved": "Auto-saved · {time}",
@@ -68,7 +58,6 @@
     }
   },
   "workspace": {
-    "nav": "Workspace",
     "title": "Manage your PPT projects",
     "defaultTitle": "Untitled project",
     "empty": "No projects yet. Use the button above to create one.",
@@ -79,7 +68,6 @@
     "deleteCancel": "Cancel",
     "deleteConfirm": "Delete \"{title}\"? This action cannot be undone.",
     "deleteSuccess": "Project deleted",
-    "save": "Save",
     "projectName": "Project name",
     "backToWorkspace": "Back to workspace",
     "browse": "View",

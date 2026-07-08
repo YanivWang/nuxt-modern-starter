@@ -27,17 +27,12 @@
       "success": "로그아웃되었습니다"
     },
     "account": {
-      "eyebrow": "보호된 페이지",
       "title": "계정",
       "lead": "이 페이지는 named auth 미들웨어로 보호되며 현재 사용자 프로필을 표시합니다.",
       "avatar": "프로필 사진",
       "sessionTitle": "세션",
       "profileTitle": "확장 프로필",
-      "userId": "사용자 ID",
       "nickname": "닉네임",
-      "roles": "역할",
-      "permissions": "권한",
-      "none": "없음",
       "emptyProfile": "확장 프로필 없음"
     },
     "validation": {
@@ -49,15 +44,10 @@
     },
     "errors": {
       "loginFailed": "로그인 실패. 사용자 이름 또는 비밀번호를 확인하세요.",
-      "registerFailed": "가입 실패. 나중에 다시 시도하세요.",
-      "unauthorized": "로그인 정보가 없거나 유효하지 않습니다"
+      "registerFailed": "가입 실패. 나중에 다시 시도하세요."
     }
   },
   "editor": {
-    "eyebrow": "Yaniv Editor",
-    "title": "콘텐츠 에디터",
-    "placeholder": "콘텐츠 작성을 시작하세요...",
-    "metaTitle": "에디터",
     "autosave": {
       "saving": "저장 중…",
       "saved": "자동 저장됨 · {time}",
@@ -68,7 +58,6 @@
     }
   },
   "workspace": {
-    "nav": "워크스페이스",
     "title": "PPT 프로젝트 관리",
     "defaultTitle": "제목 없는 프로젝트",
     "empty": "프로젝트가 없습니다. 위 버튼으로 생성하세요.",
@@ -79,7 +68,6 @@
     "deleteCancel": "취소",
     "deleteConfirm": "「{title}」을(를) 삭제할까요? 이 작업은 되돌릴 수 없습니다.",
     "deleteSuccess": "프로젝트가 삭제되었습니다",
-    "save": "저장",
     "projectName": "프로젝트 이름",
     "backToWorkspace": "워크스페이스로",
     "browse": "보기",

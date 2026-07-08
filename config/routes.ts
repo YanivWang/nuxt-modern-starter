@@ -1,7 +1,7 @@
 /*
   【文件职责】
     路由分区与渲染策略单一来源：产品路径判定、多语言路径展开、prerender / SWR / CSR 规则列表。
-    publicLocalizedPaths 从 PUBLIC_PAGE_PATHS 展开 zh-CN / en-US 变体，供 sitemap 与 hreflang 使用。
+    publicLocalizedPaths 从 PUBLIC_PAGE_PATHS 展开全部 SUPPORTED_LOCALES 变体，供 sitemap 与 hreflang 使用。
 
   【架构位置】
     config 层 — 被 nuxt.config.ts routeRules、locale middleware、useLocalePath、server SEO 工具消费。
