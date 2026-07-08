@@ -114,5 +114,5 @@ flowchart TD
 ## 下一步
 
 - [目录结构](/architecture/directory) — 逐目录说明
-- [路由与渲染](/architecture/routing) — SSR/prerender/SWR/CSR 详解
+- [路由与渲染](/architecture/routing) — SSR/prerender/SWR/CSR 详解与各页面亮点
 - [请求与数据流](/architecture/data-flow) — HTTP 层与 API 适配器

@@ -17,7 +17,7 @@ pnpm quality         # 发布全量门禁
 lint → format:check → stylelint → typecheck → test → build
 ```
 
-Husky pre-commit 跑子集（不含 format:check 和 build，加快日常提交）。
+Husky pre-commit 跑较快子集：`lint-staged`，再跑 `lint`、`stylelint`、`typecheck`、`test`（不含 `format:check` 和 `build`）。
 
 ## 测试分类
 

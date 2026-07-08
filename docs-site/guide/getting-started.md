@@ -58,7 +58,7 @@ pnpm docs:dev     # 预览本文档站
 
 1. **跑起来** — `pnpm install && pnpm dev`，浏览首页、价格、关于、帮助、新闻
 2. **看架构** — 阅读 [项目概览](/guide/overview) 与 [架构总览](/architecture/overview)
-3. **走一遍产品流** — 注册 → 登录 → 工作台创建项目 → 编辑器自动保存
+3. **走一遍产品流** — 注册 → 登录 → 从工作台进入 `/docs/new` → 编辑器首次保存创建项目
 4. **接一个小需求** — 按 [添加公开页面](/development/add-page) 或 [添加功能模块](/development/add-feature) 动手
 
 ## 下一步
