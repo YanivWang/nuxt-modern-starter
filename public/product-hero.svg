@@ -1,0 +1,194 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="720" viewBox="0 0 1120 720" role="img" aria-labelledby="title desc">
+  <title id="title">Nuxt Modern Starter platform preview</title>
+  <desc id="desc">A polished SaaS dashboard mockup showing multilingual routes, SEO metrics, deployment status, and public site modules.</desc>
+  <defs>
+    <linearGradient id="canvas" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#f8fafc"/>
+      <stop offset="1" stop-color="#eef2ff"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#0f172a"/>
+      <stop offset="1" stop-color="#1677ff"/>
+    </linearGradient>
+    <linearGradient id="chart" x1="0" x2="1" y1="1" y2="0">
+      <stop offset="0" stop-color="#1677ff" stop-opacity="0.08"/>
+      <stop offset="1" stop-color="#1677ff" stop-opacity="0.42"/>
+    </linearGradient>
+    <linearGradient id="bar1" x1="0" x2="0" y1="1" y2="0">
+      <stop offset="0" stop-color="#cbd5e1"/>
+      <stop offset="1" stop-color="#94a3b8"/>
+    </linearGradient>
+    <linearGradient id="bar2" x1="0" x2="0" y1="1" y2="0">
+      <stop offset="0" stop-color="#93c5fd"/>
+      <stop offset="1" stop-color="#1677ff"/>
+    </linearGradient>
+    <filter id="shadow" x="-8%" y="-10%" width="116%" height="124%">
+      <feDropShadow dx="0" dy="24" stdDeviation="28" flood-color="#0f172a" flood-opacity="0.14"/>
+    </filter>
+    <filter id="softGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="24"/>
+    </filter>
+    <clipPath id="windowClip">
+      <rect x="72" y="88" width="976" height="584" rx="24"/>
+    </clipPath>
+  </defs>
+
+  <rect width="1120" height="720" rx="28" fill="url(#canvas)"/>
+  <circle cx="980" cy="96" r="120" fill="#1677ff" opacity="0.08" filter="url(#softGlow)"/>
+  <circle cx="140" cy="620" r="150" fill="#0f172a" opacity="0.05" filter="url(#softGlow)"/>
+
+  <g filter="url(#shadow)">
+    <rect x="72" y="88" width="976" height="584" rx="24" fill="#ffffff" stroke="#e2e8f0"/>
+    <rect x="72" y="88" width="976" height="52" rx="24" fill="#f8fafc"/>
+    <rect x="72" y="116" width="976" height="24" fill="#f8fafc"/>
+    <line x1="72" y1="140" x2="1048" y2="140" stroke="#e2e8f0"/>
+
+    <circle cx="104" cy="114" r="6" fill="#f87171"/>
+    <circle cx="126" cy="114" r="6" fill="#fbbf24"/>
+    <circle cx="148" cy="114" r="6" fill="#34d399"/>
+
+    <rect x="430" y="102" width="260" height="24" rx="12" fill="#ffffff" stroke="#e2e8f0"/>
+    <rect x="446" y="112" width="10" height="10" rx="5" fill="#94a3b8" opacity="0.45"/>
+    <text x="466" y="118" fill="#64748b" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="600">nuxt-modern-starter.app</text>
+
+    <rect x="196" y="140" width="220" height="532" fill="#f8fafc"/>
+    <line x1="416" y1="140" x2="416" y2="672" stroke="#e2e8f0"/>
+
+    <g transform="translate(216 168)">
+      <rect width="28" height="28" rx="8" fill="url(#accent)"/>
+      <text x="8" y="20" fill="#ffffff" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="14" font-weight="800">N</text>
+      <text x="40" y="12" fill="#0f172a" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="12" font-weight="700">Nuxt Starter</text>
+      <text x="40" y="26" fill="#64748b" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="500">Public site workspace</text>
+    </g>
+
+    <g transform="translate(216 228)">
+      <rect width="176" height="34" rx="10" fill="#0f172a"/>
+      <rect x="14" y="12" width="12" height="12" rx="3" fill="#ffffff" opacity="0.9"/>
+      <text x="34" y="22" fill="#ffffff" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="700">Overview</text>
+
+      <g transform="translate(0 46)">
+        <rect x="14" y="8" width="12" height="12" rx="3" fill="#cbd5e1"/>
+        <text x="34" y="18" fill="#475569" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="600">Marketing pages</text>
+      </g>
+      <g transform="translate(0 78)">
+        <rect x="14" y="8" width="12" height="12" rx="3" fill="#cbd5e1"/>
+        <text x="34" y="18" fill="#475569" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="600">Content hub</text>
+      </g>
+      <g transform="translate(0 110)">
+        <rect x="14" y="8" width="12" height="12" rx="3" fill="#cbd5e1"/>
+        <text x="34" y="18" fill="#475569" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="600">Auth flows</text>
+      </g>
+      <g transform="translate(0 142)">
+        <rect x="14" y="8" width="12" height="12" rx="3" fill="#cbd5e1"/>
+        <text x="34" y="18" fill="#475569" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="600">Deployment</text>
+      </g>
+    </g>
+
+    <g transform="translate(216 470)">
+      <text x="0" y="0" fill="#94a3b8" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="700" letter-spacing="0.08em">LOCALES</text>
+      <g transform="translate(0 14)">
+        <rect width="48" height="22" rx="11" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="14" y="15" fill="#0f172a" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="700">zh</text>
+        <rect x="56" width="48" height="22" rx="11" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="70" y="15" fill="#1677ff" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="700">en</text>
+        <rect x="112" width="48" height="22" rx="11" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="124" y="15" fill="#64748b" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="600">+14</text>
+      </g>
+    </g>
+
+    <g clip-path="url(#windowClip)">
+      <g transform="translate(444 168)">
+        <text x="0" y="0" fill="#0f172a" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="24" font-weight="800" letter-spacing="-0.04em">Launch readiness</text>
+        <text x="0" y="28" fill="#64748b" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="13" font-weight="500">Public routes, SEO, i18n, and deployment health in one view.</text>
+
+        <g transform="translate(0 58)">
+          <rect width="176" height="96" rx="16" fill="#ffffff" stroke="#e2e8f0"/>
+          <text x="18" y="30" fill="#64748b" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="600">Indexed pages</text>
+          <text x="18" y="62" fill="#0f172a" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="30" font-weight="800" letter-spacing="-0.05em">12+</text>
+          <rect x="18" y="74" width="72" height="6" rx="3" fill="#e2e8f0"/>
+          <rect x="18" y="74" width="58" height="6" rx="3" fill="#1677ff"/>
+
+          <rect x="196" width="176" height="96" rx="16" fill="#ffffff" stroke="#e2e8f0"/>
+          <text x="214" y="30" fill="#64748b" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="600">Core modules</text>
+          <text x="214" y="62" fill="#0f172a" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="30" font-weight="800" letter-spacing="-0.05em">6</text>
+          <circle cx="340" cy="34" r="10" fill="#ecfdf5"/>
+          <circle cx="340" cy="34" r="4" fill="#10b981"/>
+
+          <rect x="392" width="176" height="96" rx="16" fill="#0f172a"/>
+          <text x="410" y="30" fill="#94a3b8" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="600">Deploy status</text>
+          <text x="410" y="62" fill="#ffffff" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="22" font-weight="800">Production</text>
+          <rect x="410" y="74" width="88" height="22" rx="11" fill="#ffffff" opacity="0.12"/>
+          <text x="424" y="89" fill="#dbeafe" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="700">Docker + Nginx</text>
+        </g>
+
+        <g transform="translate(0 178)">
+          <rect width="372" height="250" rx="18" fill="#ffffff" stroke="#e2e8f0"/>
+          <text x="20" y="34" fill="#0f172a" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="14" font-weight="700">Route coverage</text>
+          <text x="20" y="54" fill="#64748b" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="500">SSR, prerender, and SWR by public path</text>
+
+          <path d="M36 210 L84 176 L132 188 L180 142 L228 156 L276 118 L324 132" fill="none" stroke="#1677ff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M36 210 L84 176 L132 188 L180 142 L228 156 L276 118 L324 132 L324 220 L36 220 Z" fill="url(#chart)"/>
+
+          <g transform="translate(36 228)">
+            <rect width="42" height="8" rx="4" fill="url(#bar1)"/>
+            <rect x="52" width="42" height="14" rx="4" fill="url(#bar2)"/>
+            <rect x="104" width="42" height="10" rx="4" fill="url(#bar1)"/>
+            <rect x="156" width="42" height="18" rx="4" fill="url(#bar2)"/>
+            <rect x="208" width="42" height="12" rx="4" fill="url(#bar1)"/>
+            <rect x="260" width="42" height="22" rx="4" fill="url(#bar2)"/>
+          </g>
+
+          <g transform="translate(20 78)">
+            <rect width="332" height="42" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+            <text x="16" y="18" fill="#64748b" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="600">/</text>
+            <rect x="34" y="10" width="54" height="22" rx="11" fill="#eff6ff" stroke="#bfdbfe"/>
+            <text x="46" y="25" fill="#1677ff" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="700">SSR</text>
+            <text x="98" y="18" fill="#94a3b8" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="500">Marketing home</text>
+
+            <rect y="52" width="332" height="42" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+            <text x="16" y="70" fill="#64748b" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="600">/en</text>
+            <rect x="46" y="62" width="72" height="22" rx="11" fill="#ffffff" stroke="#e2e8f0"/>
+            <text x="58" y="77" fill="#475569" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="700">prerender</text>
+            <text x="128" y="70" fill="#94a3b8" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="500">Localized pages</text>
+          </g>
+
+          <rect x="392" y="0" width="176" height="250" rx="18" fill="#f8fafc" stroke="#e2e8f0"/>
+          <text x="412" y="34" fill="#0f172a" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="14" font-weight="700">SEO checklist</text>
+
+          <g transform="translate(412 58)">
+            <circle cx="8" cy="8" r="8" fill="#ecfdf5"/>
+            <path d="M5 8 L7 10 L12 5" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <text x="26" y="12" fill="#334155" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="600">Meta + JSON-LD</text>
+
+            <g transform="translate(0 30)">
+              <circle cx="8" cy="8" r="8" fill="#ecfdf5"/>
+              <path d="M5 8 L7 10 L12 5" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <text x="26" y="12" fill="#334155" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="600">hreflang routes</text>
+            </g>
+
+            <g transform="translate(0 60)">
+              <circle cx="8" cy="8" r="8" fill="#ecfdf5"/>
+              <path d="M5 8 L7 10 L12 5" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <text x="26" y="12" fill="#334155" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="600">Sitemap ready</text>
+            </g>
+
+            <g transform="translate(0 90)">
+              <circle cx="8" cy="8" r="8" fill="#eff6ff"/>
+              <rect x="5" y="6" width="6" height="6" rx="1.5" fill="#1677ff"/>
+              <text x="26" y="12" fill="#334155" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="600">Security headers</text>
+            </g>
+
+            <g transform="translate(0 120)">
+              <circle cx="8" cy="8" r="8" fill="#eff6ff"/>
+              <rect x="5" y="6" width="6" height="6" rx="1.5" fill="#1677ff"/>
+              <text x="26" y="12" fill="#334155" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="600">SWR cache rules</text>
+            </g>
+          </g>
+
+          <rect x="412" y="206" width="136" height="28" rx="14" fill="#0f172a"/>
+          <text x="428" y="225" fill="#ffffff" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="700">Ready to ship</text>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

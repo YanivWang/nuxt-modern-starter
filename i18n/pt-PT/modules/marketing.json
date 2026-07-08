@@ -1,14 +1,9 @@
 {
   "home": {
-    "eyebrow": "Nuxt 4 · TypeScript · Ant Design Vue",
     "title": "Starter Nuxt moderno para sites públicos",
     "lead": "O Nuxt Modern Starter reúne páginas de marketing, fluxos de autenticação, conteúdo multilingue, rotas SEO e predefinições de implementação Docker/Nginx numa base limpa. Utilize-o para lançar um site SaaS, frontend de produto ou hub de conteúdo e substitua conteúdo e integrações backend à medida que o produto cresce.",
     "primaryCta": "Começar a construir",
     "secondaryCta": "Ver exemplo de preços",
-    "preview": {
-      "metricLabel": "Cobertura de modelos",
-      "metricValue": "12+ páginas"
-    },
     "stats": {
       "pages": {
         "value": "12+",
@@ -23,7 +18,6 @@
         "label": "Estratégias de renderização híbrida por rota"
       }
     },
-    "featuresEyebrow": "Com tecnologia Nuxt 4",
     "featuresTitle": "Os blocos habituais de sites públicos, já organizados",
     "featuresLead": "Inspirado na hierarquia do Nuxt SaaS Template, a página inicial oferece cartões de funcionalidades mais sólidos para um aspeto pronto para produção.",
     "features": {
@@ -53,7 +47,6 @@
       }
     },
     "workflow": {
-      "eyebrow": "Tudo o que precisa para publicar",
       "title": "Um caminho mais curto do starter ao lançamento",
       "lead": "Mantém o starter leve enquanto adiciona capacidade, conversão e estrutura de conteúdo que um frontend SaaS precisa.",
       "steps": {
@@ -62,11 +55,9 @@
         "auth": "Ligue o seu sistema de contas backend quando estiver pronto para sessões, papéis e app de produto."
       }
     },
-    "ctaEyebrow": "Pronto para construir",
     "ctaTitle": "Utilize esta base Nuxt para lançar um frontend de produto polido mais rapidamente."
   },
   "about": {
-    "eyebrow": "Sobre nós",
     "title": "Criado para sites públicos e frontends SaaS leves",
     "lead": "Nuxt Modern Starter é uma base reutilizável de Nuxt 4 para páginas de marketing, hubs de conteúdo e superfícies de produto opcionais com autenticação.",
     "mission": {
@@ -91,7 +82,6 @@
     }
   },
   "help": {
-    "eyebrow": "Centro de ajuda",
     "title": "Aprenda a utilizar o Nuxt Modern Starter",
     "lead": "Esta página reúne perguntas frequentes sobre configuração, i18n, auth, SEO e implementação. Passos de arranque rápido e recursos vêm do i18n; FAQ de config local, migrável depois para CMS ou API backend.",
     "faqTitle": "Perguntas frequentes",
@@ -113,7 +103,6 @@
     }
   },
   "news": {
-    "eyebrow": "Atualizações do projeto",
     "title": "Lançamentos e notas do Nuxt Modern Starter",
     "lead": "Acompanhe lançamentos do starter, práticas de implementação e orientações de extensão. Estas páginas também demonstram listagem/detalhe de notícias, Article JSON-LD e regras de cache SWR.",
     "notFound": "Esta notícia não foi encontrada"

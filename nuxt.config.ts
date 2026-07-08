@@ -35,6 +35,15 @@ export default defineNuxtConfig({
   ],
   components: [{ path: '~/components', pathPrefix: false }],
   css: ['~/assets/styles/main.scss'],
+  vite: {
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: '@use "~/assets/styles/tokens/variables" as *;'
+        }
+      }
+    }
+  },
   runtimeConfig: {
     revalidateSecret: process.env.NUXT_REVALIDATE_SECRET || '',
     public: {

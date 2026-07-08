@@ -10,7 +10,7 @@
     useLanguageStore — currentLanguage、chooseLanguage、toggleLanguage、pathPrefix、languages
 
   【依赖关系】
-    - 依赖：config/site.ts、i18n/index.ts（loadLocaleMessages）
+    - 依赖：config/site.ts、i18n/index.ts（cookie 常量与 locale 校验）
     - 被引用：app/middleware/locale.global.ts、LanguageSwitcher、UserAccountMenu
 
   【渲染 / 数据】
@@ -26,12 +26,7 @@ import {
   SUPPORTED_LOCALES,
   type SupportedLocale
 } from '../../config/site'
-import {
-  LANGUAGE_COOKIE_MAX_AGE,
-  loadLocaleMessages,
-  resolveStoredLocale,
-  STORAGE_KEY_LANGUAGE
-} from '../../i18n'
+import { LANGUAGE_COOKIE_MAX_AGE, resolveStoredLocale, STORAGE_KEY_LANGUAGE } from '../../i18n'
 
 export const useLanguageStore = defineStore('language', () => {
   const languageCookie = useCookie<SupportedLocale | undefined>(STORAGE_KEY_LANGUAGE, {
@@ -51,10 +46,12 @@ export const useLanguageStore = defineStore('language', () => {
   }))
 
   const chooseLanguage = async (locale: SupportedLocale) => {
+    const { $i18nContext } = useNuxtApp()
+
     currentLanguage.value = locale
     languageCookie.value = locale
 
-    await loadLocaleMessages(locale)
+    await $i18nContext.loadLocaleMessages(locale)
   }
 
   const toggleLanguage = async () => {

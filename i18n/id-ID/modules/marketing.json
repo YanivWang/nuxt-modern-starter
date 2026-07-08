@@ -1,14 +1,9 @@
 {
   "home": {
-    "eyebrow": "Nuxt 4 · TypeScript · Ant Design Vue",
     "title": "Starter Nuxt modern untuk situs publik",
     "lead": "Nuxt Modern Starter menggabungkan halaman marketing, alur autentikasi, konten multibahasa, rute SEO, dan default deployment Docker/Nginx dalam satu fondasi yang rapi. Gunakan untuk meluncurkan situs SaaS, frontend produk, atau hub konten, lalu ganti konten dan integrasi backend seiring pertumbuhan produk.",
     "primaryCta": "Mulai membangun",
     "secondaryCta": "Lihat contoh harga",
-    "preview": {
-      "metricLabel": "Cakupan template",
-      "metricValue": "12+ halaman"
-    },
     "stats": {
       "pages": {
         "value": "12+",
@@ -23,7 +18,6 @@
         "label": "Strategi rendering hibrida per rute"
       }
     },
-    "featuresEyebrow": "Didukung Nuxt 4",
     "featuresTitle": "Blok bangunan situs publik yang biasa, sudah terorganisir",
     "featuresLead": "Terinspirasi hierarki Nuxt SaaS Template, halaman beranda memberi tindak lanjut hero yang lebih kuat dengan kartu fitur siap produksi.",
     "features": {
@@ -53,7 +47,6 @@
       }
     },
     "workflow": {
-      "eyebrow": "Semua yang Anda butuhkan untuk rilis",
       "title": "Jalur lebih pendek dari starter ke peluncuran",
       "lead": "Tetap ringan sambil menambahkan kemampuan, konversi, dan struktur konten yang dibutuhkan frontend SaaS.",
       "steps": {
@@ -62,11 +55,9 @@
         "auth": "Hubungkan sistem akun backend saat siap mengelola sesi, peran, dan aplikasi produk."
       }
     },
-    "ctaEyebrow": "Siap membangun",
     "ctaTitle": "Gunakan fondasi Nuxt ini untuk meluncurkan frontend produk yang lebih cepat."
   },
   "about": {
-    "eyebrow": "Tentang kami",
     "title": "Dibangun untuk situs publik dan frontend SaaS ringan",
     "lead": "Nuxt Modern Starter adalah fondasi Nuxt 4 yang dapat digunakan ulang untuk halaman marketing, hub konten, dan permukaan produk opsional dengan autentikasi.",
     "mission": {
@@ -91,7 +82,6 @@
     }
   },
   "help": {
-    "eyebrow": "Pusat bantuan",
     "title": "Pelajari cara menggunakan Nuxt Modern Starter",
     "lead": "Halaman ini mengumpulkan pertanyaan umum tentang setup, i18n, auth, SEO, dan deployment. Langkah quick start dan daftar sumber dari i18n; FAQ dari config lokal, dapat dipindah ke CMS atau API backend nanti.",
     "faqTitle": "FAQ",
@@ -113,7 +103,6 @@
     }
   },
   "news": {
-    "eyebrow": "Pembaruan proyek",
     "title": "Rilis dan catatan Nuxt Modern Starter",
     "lead": "Lacak rilis starter, praktik deployment, dan panduan ekstensi. Halaman ini juga mendemonstrasikan daftar/detail berita, Article JSON-LD, dan aturan cache SWR.",
     "notFound": "Artikel berita ini tidak ditemukan"

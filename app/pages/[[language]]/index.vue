@@ -11,7 +11,7 @@
   Layout：default
 
   UI 区块：
-  - Hero：标题、副文案、主 CTA（注册）与次 CTA（定价）、右侧装饰性 preview 卡片
+  - Hero：标题、副文案、主 CTA（注册）与次 CTA（定价）、右侧产品预览大图
   - Stats：3 项数据统计（页面数 / 模块数 / 混合渲染策略）
   - Features：6 张功能卡片（设计系统、i18n、SEO、鉴权、内容、部署）
   - Workflow：3 步上手流程说明
@@ -21,14 +21,14 @@
   - 访客浏览产品介绍 → 点击注册跳转 /sign-up，或点击定价跳转 /pricing
 
   【依赖关系】
-  - 依赖：i18n home.*、usePageSeo、useLocalePath、PageContainer / BaseButton（auto-import）
+  - 依赖：i18n home.*、usePageSeo、useLocalePath、PageContainer / BaseButton / BasePicture（auto-import）
   - 被引用：AppHeader NAV_ITEMS 首页入口、sitemap / hreflang
 
   【渲染 / 数据】
     prerender 静态 HTML；纯 i18n 文案，无后端 API。
 
   子组件：
-  - AppContainer、PageContainer、BaseButton（页面内直接组合，无 feature 子组件）
+  - AppContainer、PageContainer、BaseButton、BasePicture（页面内直接组合，无 feature 子组件）
 
   【边界与注意】
     usePageSeo 含 webPage + Organization JSON-LD；不在 sign-in / sign-up 集合内。
@@ -124,7 +124,6 @@ usePageSeo({
     <section class="hero">
       <AppContainer class="hero__content">
         <div class="hero__copy">
-          <p class="hero__eyebrow">{{ $t('home.eyebrow') }}</p>
           <h1 class="hero__title">{{ $t('home.title') }}</h1>
           <p class="hero__lead">{{ $t('home.lead') }}</p>
           <div class="hero__actions">
@@ -138,31 +137,16 @@ usePageSeo({
         </div>
 
         <div class="hero__preview" aria-hidden="true">
-          <div class="preview-card">
-            <div class="preview-card__header">
-              <span />
-              <span />
-              <span />
-            </div>
-            <div class="preview-card__body">
-              <div class="preview-card__metric">
-                <small>{{ $t('home.preview.metricLabel') }}</small>
-                <strong>{{ $t('home.preview.metricValue') }}</strong>
-              </div>
-              <div class="preview-card__chart">
-                <span style="height: 42%" />
-                <span style="height: 68%" />
-                <span style="height: 52%" />
-                <span style="height: 82%" />
-                <span style="height: 60%" />
-              </div>
-              <div class="preview-card__list">
-                <span />
-                <span />
-                <span />
-              </div>
-            </div>
-          </div>
+          <BasePicture
+            class="hero__product-picture"
+            src="/product-hero.svg"
+            :alt="$t('home.title')"
+            width="1120"
+            height="720"
+            loading="eager"
+            fetchpriority="high"
+            sizes="(min-width: 1200px) 560px, (min-width: 900px) 48vw, 100vw"
+          />
         </div>
       </AppContainer>
     </section>
@@ -176,7 +160,6 @@ usePageSeo({
 
     <PageContainer class="home-section">
       <div class="home-section__header">
-        <p class="page-eyebrow">{{ $t('home.featuresEyebrow') }}</p>
         <h2>{{ $t('home.featuresTitle') }}</h2>
         <p>{{ $t('home.featuresLead') }}</p>
       </div>
@@ -200,7 +183,6 @@ usePageSeo({
     <PageContainer class="home-closing-section">
       <div class="page-panel workflow-panel">
         <div>
-          <p class="page-eyebrow">{{ $t('home.workflow.eyebrow') }}</p>
           <h2>{{ $t('home.workflow.title') }}</h2>
           <p>{{ $t('home.workflow.lead') }}</p>
         </div>
@@ -211,7 +193,6 @@ usePageSeo({
 
       <div class="home-cta">
         <div>
-          <p class="page-eyebrow">{{ $t('home.ctaEyebrow') }}</p>
           <h2>{{ $t('home.ctaTitle') }}</h2>
         </div>
         <NuxtLink :to="localePath('/sign-up')" class="home-cta__link">
@@ -224,27 +205,44 @@ usePageSeo({
 
 <style scoped lang="scss">
 .home-page {
-  --home-block-gap: clamp(64px, 9vw, 104px);
+  --home-block-gap: clamp(72px, 9vw, 116px);
 
+  background: var(--app-gradient-home-page);
   overflow: hidden;
 }
 
 .hero {
   position: relative;
-  padding-block: clamp(72px, 10vw, 132px) var(--home-block-gap);
-  background:
-    radial-gradient(circle at 18% 18%, rgb(22 119 255 / 14%), transparent 34%),
-    linear-gradient(180deg, rgb(22 119 255 / 7%), transparent 72%);
+  isolation: isolate;
+  padding-block: clamp(78px, 8vw, 118px) clamp(86px, 9vw, 126px);
+  background: var(--app-gradient-hero-glow);
+  color: var(--app-color-text);
+}
+
+.hero::before,
+.hero::after {
+  position: absolute;
+  content: '';
+  pointer-events: none;
+}
+
+.hero::before {
+  inset: 0;
+  z-index: -2;
+  background-image:
+    linear-gradient(var(--app-color-brand-a5) 1px, transparent 1px),
+    linear-gradient(90deg, var(--app-color-brand-a5) 1px, transparent 1px);
+  background-position: center top;
+  background-size: 80px 80px;
+  mask-image: linear-gradient(180deg, #000 0%, transparent 70%);
 }
 
 .hero::after {
-  position: absolute;
-  inset: auto -20% -45% 52%;
-  height: 420px;
-  border-radius: 999px;
-  background: rgb(22 119 255 / 10%);
-  content: '';
-  filter: blur(80px);
+  inset: auto -10% -1px;
+  z-index: -1;
+  height: clamp(88px, 12vw, 156px);
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  background: var(--app-color-bg);
 }
 
 .hero__content {
@@ -252,48 +250,37 @@ usePageSeo({
   z-index: 1;
   display: grid;
   align-items: center;
-  grid-template-columns: minmax(0, 1.06fr) minmax(320px, 0.94fr);
-  gap: clamp(40px, 7vw, 88px);
+  grid-template-columns: minmax(0, 0.84fr) minmax(520px, 1fr);
+  gap: clamp(34px, 4.8vw, 58px);
 }
 
 .hero__copy {
-  max-width: 720px;
-}
-
-.hero__eyebrow {
-  display: inline-flex;
-  margin: 0 0 18px;
-  padding: 8px 12px;
-  border: 1px solid rgb(22 119 255 / 18%);
-  border-radius: 999px;
-  background: rgb(22 119 255 / 9%);
-  color: var(--app-color-primary);
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  max-width: 620px;
 }
 
 .hero__title {
   margin: 0;
-  font-size: clamp(42px, 6.2vw, 76px);
-  line-height: 0.98;
-  letter-spacing: -0.06em;
+  color: var(--app-color-text-strong);
+  font-size: clamp(40px, 4.7vw, 64px);
+  line-height: 1.02;
+  letter-spacing: -0.052em;
+  text-wrap: balance;
+  word-break: keep-all;
 }
 
 .hero__lead {
-  max-width: 640px;
+  max-width: 560px;
   margin: 24px 0 0;
-  color: var(--app-color-muted);
-  font-size: clamp(17px, 2vw, 21px);
-  line-height: 1.75;
+  color: var(--app-color-subtle);
+  font-size: clamp(16px, 1.55vw, 18px);
+  line-height: 1.72;
 }
 
 .hero__actions {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 18px;
+  gap: 14px;
   margin-top: 34px;
 }
 
@@ -304,96 +291,89 @@ usePageSeo({
 }
 
 .hero__secondary-link {
-  color: var(--app-color-text);
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  padding-inline: 18px;
+  border: 1px solid var(--app-color-brand-a12);
+  border-radius: 12px;
+  background: var(--app-color-overlay);
+  color: var(--app-color-text-strong);
   font-weight: 700;
+  box-shadow: 0 10px 24px var(--app-color-brand-a6);
+  backdrop-filter: blur(12px);
+}
+
+.hero__primary-link :deep(.ant-btn) {
+  min-width: 168px;
+  height: 48px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--app-color-brand);
+  color: var(--app-color-brand-contrast);
+  font-weight: 800;
+  box-shadow: var(--app-shadow-brand);
 }
 
 .hero__preview {
+  position: relative;
   display: flex;
-  justify-content: flex-end;
-}
-
-.preview-card {
-  width: min(100%, 430px);
-  padding: 12px;
-  border: 1px solid rgb(22 119 255 / 16%);
-  border-radius: 28px;
-  background: rgb(255 255 255 / 70%);
-  box-shadow: var(--app-shadow-sm);
+  width: min(100%, 760px);
+  justify-content: center;
+  justify-self: end;
+  padding: clamp(8px, 1.2vw, 14px);
+  border: 1px solid var(--app-color-brand-a9);
+  border-radius: clamp(24px, 3vw, 34px);
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--app-color-surface) 86%, transparent),
+      var(--app-color-overlay)
+    ),
+    var(--app-color-overlay);
+  box-shadow:
+    0 34px 90px var(--app-color-brand-a16),
+    inset 0 1px 0 color-mix(in srgb, var(--app-color-surface) 70%, transparent);
   backdrop-filter: blur(20px);
 }
 
-.preview-card__header {
-  display: flex;
-  gap: 8px;
-  padding: 12px;
-}
-
-.preview-card__header span {
+.hero__preview::before,
+.hero__preview::after {
+  position: absolute;
+  z-index: -1;
   display: block;
-  width: 10px;
-  height: 10px;
   border-radius: 999px;
-  background: var(--app-color-primary);
+  content: '';
+  filter: blur(20px);
 }
 
-.preview-card__body {
-  padding: 22px;
-  border-radius: 22px;
-  background: var(--app-color-bg);
+.hero__preview::before {
+  top: 12%;
+  left: -8%;
+  width: 120px;
+  height: 120px;
+  background: var(--app-color-primary-a13);
 }
 
-.preview-card__metric {
-  display: grid;
-  gap: 8px;
+.hero__preview::after {
+  right: -4%;
+  bottom: 10%;
+  width: 150px;
+  height: 150px;
+  background: var(--app-color-primary-a10);
 }
 
-.preview-card__metric small {
-  color: var(--app-color-muted);
-  font-weight: 700;
-  text-transform: uppercase;
+.hero__product-picture {
+  display: block;
+  width: 100%;
 }
 
-.preview-card__metric strong {
-  font-size: 42px;
-  letter-spacing: -0.05em;
-}
-
-.preview-card__chart {
-  display: flex;
-  height: 160px;
-  align-items: end;
-  gap: 14px;
-  margin-top: 28px;
-  padding: 18px;
-  border-radius: 18px;
-  background: var(--app-color-elevated);
-}
-
-.preview-card__chart span {
-  flex: 1;
-  border-radius: 999px 999px 8px 8px;
-  background: linear-gradient(180deg, var(--app-color-primary), rgb(22 119 255 / 22%));
-}
-
-.preview-card__list {
-  display: grid;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.preview-card__list span {
-  height: 12px;
-  border-radius: 999px;
-  background: var(--app-color-elevated);
-}
-
-.preview-card__list span:nth-child(2) {
-  width: 78%;
-}
-
-.preview-card__list span:nth-child(3) {
-  width: 56%;
+.hero__product-picture :deep(img) {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: clamp(18px, 2.4vw, 26px);
+  box-shadow: 0 22px 52px var(--app-color-brand-a14);
 }
 
 .home-stats,
@@ -403,9 +383,25 @@ usePageSeo({
 }
 
 .home-stats {
+  position: relative;
+  z-index: 2;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: clamp(16px, 2.5vw, 24px);
+  margin-top: clamp(-34px, -3vw, -18px);
+}
+
+.home-stats :deep(.page-stat-card),
+.page-stat-card {
+  border: 1px solid var(--app-color-brand-a7);
+  border-radius: 20px;
+  background: var(--app-gradient-surface-card), var(--app-color-bg);
+  box-shadow: 0 16px 44px var(--app-color-brand-a8);
+  backdrop-filter: blur(14px);
+}
+
+:global(:root[data-theme='dark']) .page-stat-card {
+  background: var(--app-gradient-surface-card), var(--app-color-bg);
 }
 
 .home-section {
@@ -418,7 +414,7 @@ usePageSeo({
 }
 
 .home-section__header {
-  max-width: 720px;
+  max-width: 780px;
   margin-inline: auto;
   text-align: center;
 }
@@ -427,13 +423,14 @@ usePageSeo({
 .workflow-panel h2,
 .home-cta h2 {
   margin: 0;
-  font-size: clamp(32px, 4vw, 48px);
+  font-size: clamp(34px, 4.2vw, 54px);
   line-height: 1.08;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.038em;
+  text-wrap: balance;
 }
 
-.home-section__header p:not(.page-eyebrow),
-.workflow-panel p:not(.page-eyebrow) {
+.home-section__header p,
+.workflow-panel p {
   margin: 18px 0 0;
   color: var(--app-color-muted);
   font-size: 18px;
@@ -441,21 +438,46 @@ usePageSeo({
 }
 
 .feature-grid {
-  margin-top: 42px;
+  margin-top: clamp(42px, 5vw, 58px);
 }
 
 .feature-card__icon {
   display: inline-flex;
-  width: 34px;
-  height: 34px;
+  width: 42px;
+  height: 42px;
   align-items: center;
   justify-content: center;
-  margin-bottom: 22px;
-  border-radius: 10px;
+  margin-bottom: 24px;
+  border-radius: 14px;
   background:
-    linear-gradient(135deg, rgb(255 255 255 / 55%), transparent), var(--app-color-primary);
-  color: #fff;
-  font-size: 16px;
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--app-color-surface) 52%, transparent),
+      transparent
+    ),
+    var(--app-gradient-brand-accent);
+  color: var(--app-color-brand-contrast);
+  font-size: 18px;
+  box-shadow: 0 12px 28px var(--app-color-brand-a16);
+}
+
+.feature-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.feature-card::before {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background: var(--app-gradient-accent-line);
+  content: '';
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.feature-card:hover::before {
+  opacity: 1;
 }
 
 .feature-card h3 {
@@ -476,6 +498,11 @@ usePageSeo({
   grid-template-columns: minmax(0, 0.95fr) minmax(280px, 0.75fr);
   gap: clamp(32px, 6vw, 72px);
   margin-top: 0;
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 14% 14%, var(--app-color-primary-a8), transparent 34%),
+    linear-gradient(135deg, var(--app-color-elevated), var(--app-color-bg));
+  box-shadow: var(--app-shadow-surface);
 }
 
 .workflow-list {
@@ -490,14 +517,10 @@ usePageSeo({
   margin-top: var(--home-block-gap);
   padding: clamp(30px, 5vw, 54px);
   border: var(--app-home-cta-border);
-  border-radius: 24px;
+  border-radius: 28px;
   background: var(--app-home-cta-bg);
   color: var(--app-home-cta-text);
   box-shadow: var(--app-home-cta-shadow);
-}
-
-.home-cta .page-eyebrow {
-  color: var(--app-home-cta-eyebrow);
 }
 
 .home-cta h2 {
@@ -533,11 +556,21 @@ usePageSeo({
 
   .hero__preview {
     justify-content: center;
+    justify-self: center;
   }
 
   .hero__copy,
   .home-section__header {
     max-width: none;
+    text-align: center;
+  }
+
+  .hero__lead {
+    margin-inline: auto;
+  }
+
+  .hero__actions {
+    justify-content: center;
   }
 
   .home-stats {
@@ -552,15 +585,22 @@ usePageSeo({
 
 @media (width <= 560px) {
   .hero {
-    padding-top: 56px;
+    padding-top: 58px;
   }
 
   .hero__title {
-    font-size: 40px;
+    font-size: 32px;
+    letter-spacing: -0.04em;
+    word-break: normal;
   }
 
-  .preview-card__metric strong {
-    font-size: 34px;
+  .hero__lead {
+    font-size: 16px;
+    line-height: 1.65;
+  }
+
+  .hero__product-picture {
+    transform: none;
   }
 }
 </style>

@@ -1,14 +1,9 @@
 {
   "home": {
-    "eyebrow": "Nuxt 4 · TypeScript · Ant Design Vue",
     "title": "Modernong Nuxt starter para sa pampublikong website",
     "lead": "Pinagsasama ng Nuxt Modern Starter ang marketing page, auth flow, multilingual content, SEO route, at Docker/Nginx deployment default sa isang malinis na pundasyon. Gamitin ito para mag-launch ng SaaS website, product frontend, o content hub, at palitan ang content at backend integration habang lumalaki ang produkto.",
     "primaryCta": "Magsimulang magtayo",
     "secondaryCta": "Tingnan ang halimbawa ng presyo",
-    "preview": {
-      "metricLabel": "Saklaw ng template",
-      "metricValue": "12+ page"
-    },
     "stats": {
       "pages": {
         "value": "12+",
@@ -23,7 +18,6 @@
         "label": "Hybrid rendering strategy ayon sa route"
       }
     },
-    "featuresEyebrow": "Pinapagana ng Nuxt 4",
     "featuresTitle": "Karaniwang building block ng public site, nakaayos na",
     "featuresLead": "Inspired sa hierarchy ng Nuxt SaaS Template, mas malakas ang follow-through ng homepage gamit ang product-ready feature card.",
     "features": {
@@ -53,7 +47,6 @@
       }
     },
     "workflow": {
-      "eyebrow": "Lahat ng kailangan para mag-ship",
       "title": "Mas maikling daan mula starter hanggang launch",
       "lead": "Nanatiling lightweight habang dinadagdagan ang kakayahan, conversion, at content structure na kailangan ng SaaS frontend.",
       "steps": {
@@ -62,11 +55,9 @@
         "auth": "Ikonekta ang backend account system kapag handa nang i-wire ang session, role, at product app."
       }
     },
-    "ctaEyebrow": "Handa nang magtayo",
     "ctaTitle": "Gamitin ang Nuxt foundation na ito para mas mabilis mag-launch ng polished product frontend."
   },
   "about": {
-    "eyebrow": "Tungkol sa amin",
     "title": "Ginawa para sa public site at lightweight SaaS frontend",
     "lead": "Ang Nuxt Modern Starter ay reusable na Nuxt 4 foundation para sa marketing page, content hub, at optional auth-ready product surface.",
     "mission": {
@@ -91,7 +82,6 @@
     }
   },
   "help": {
-    "eyebrow": "Help center",
     "title": "Alamin kung paano gamitin ang Nuxt Modern Starter",
     "lead": "Kinokolekta ng page na ito ang common question tungkol sa project setup, i18n, auth, SEO, at deployment. Galing sa i18n ang quick-start step at resource list; galing sa local config ang FAQ at puwedeng ilipat sa CMS o backend API.",
     "faqTitle": "FAQ",
@@ -113,7 +103,6 @@
     }
   },
   "news": {
-    "eyebrow": "Project update",
     "title": "Nuxt Modern Starter release at note",
     "lead": "Subaybayan ang starter release, deployment practice, at extension guidance. Ipinapakita rin ng page na ito ang news list/detail, Article JSON-LD, at SWR cache rule.",
     "notFound": "Hindi mahanap ang artikulong ito"

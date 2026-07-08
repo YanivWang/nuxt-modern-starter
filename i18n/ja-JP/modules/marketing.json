@@ -1,14 +1,9 @@
 {
   "home": {
-    "eyebrow": "Nuxt 4 · TypeScript · Ant Design Vue",
     "title": "公開サイト向けのモダン Nuxt スターター",
     "lead": "Nuxt Modern Starter は、マーケティングページ、認証フロー、多言語コンテンツ、SEO ルート、Docker/Nginx デプロイ設定を 1 つのクリーンな基盤にまとめます。SaaS サイト、プロダクトフロントエンド、コンテンツハブの立ち上げに使い、成長に合わせてコンテンツとバックエンド連携を置き換えられます。",
     "primaryCta": "構築を始める",
     "secondaryCta": "料金例を見る",
-    "preview": {
-      "metricLabel": "テンプレートカバレッジ",
-      "metricValue": "12+ ページ"
-    },
     "stats": {
       "pages": {
         "value": "12+",
@@ -23,7 +18,6 @@
         "label": "ルート別ハイブリッドレンダリング戦略"
       }
     },
-    "featuresEyebrow": "Nuxt 4 搭載",
     "featuresTitle": "公開サイトに必要な要素をすでに整理",
     "featuresLead": "Nuxt SaaS Template の情報階層を参考に、ヒーロー以降も本番向けの機能カードでつなげます。",
     "features": {
@@ -53,7 +47,6 @@
       }
     },
     "workflow": {
-      "eyebrow": "公開に必要なものを一式",
       "title": "スターターから公開までの距離を短縮",
       "lead": "軽量さを保ちつつ、SaaS フロントエンドに必要な機能、コンバージョン、コンテンツ構造を補完。",
       "steps": {
@@ -62,11 +55,9 @@
         "auth": "準備ができたらバックエンドアカウント体系を接続し、セッション、権限、プロダクトアプリを連携。"
       }
     },
-    "ctaEyebrow": "構築の準備完了",
     "ctaTitle": "この Nuxt 基盤で、より早く洗練されたプロダクトフロントエンドを公開。"
   },
   "about": {
-    "eyebrow": "会社概要",
     "title": "公開サイトと軽量 SaaS フロントエンドのために",
     "lead": "Nuxt Modern Starter は、マーケティングページ、コンテンツハブ、任意の認証対応プロダクト面を素早く構築する再利用可能な Nuxt 4 基盤です。",
     "mission": {
@@ -91,7 +82,6 @@
     }
   },
   "help": {
-    "eyebrow": "ヘルプセンター",
     "title": "Nuxt Modern Starter の使い方",
     "lead": "セットアップ、i18n、認証、SEO、デプロイに関する FAQ をまとめています。クイックスタートとリソース一覧は i18n 由来、FAQ はローカル config 由来で、後から CMS やバックエンド API に移行可能です。",
     "faqTitle": "よくある質問",
@@ -113,7 +103,6 @@
     }
   },
   "news": {
-    "eyebrow": "プロジェクト更新",
     "title": "Nuxt Modern Starter のリリースとノート",
     "lead": "スターターのリリース、デプロイ実践、拡張ガイドを追跡。ニュース一覧/詳細、Article JSON-LD、SWR キャッシュルールのデモも兼ねています。",
     "notFound": "このニュース記事は見つかりませんでした"

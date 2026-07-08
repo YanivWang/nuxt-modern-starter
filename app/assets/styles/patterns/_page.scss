@@ -4,13 +4,13 @@
     与 PageContainer layout 变体配合构成营销 / 内容页视觉语言。
 
   【架构位置】
-    公开 SEO 区 — app/assets/styles，由 main.scss @use 引入。
+    公开 SEO 区 — app/assets/styles/patterns，由 main.scss @use 引入。
 
   【主要导出 / 路由】
     .page-panel、.page-grid、.page-faq、.auth-page、.error-page 等
 
   【依赖关系】
-    - 依赖：tokens.scss CSS 变量
+    - 依赖：tokens/ CSS 变量（--app-*）
     - 被引用：[[language]] 公开页 template class
 
   【渲染 / 数据】
@@ -24,9 +24,9 @@
   align-self: flex-start;
   margin: 0;
   padding: 5px 10px;
-  border: 1px solid rgb(22 119 255 / 16%);
+  border: 1px solid var(--app-color-primary-a16);
   border-radius: 999px;
-  background: rgb(22 119 255 / 7%);
+  background: var(--app-color-primary-a7);
   color: var(--app-color-primary);
   font-size: 11px;
   font-weight: 700;
@@ -37,19 +37,15 @@
   margin-top: clamp(36px, 5vw, 48px);
   padding: clamp(28px, 5vw, 40px);
   border: 1px solid var(--app-color-border);
-  border-radius: 24px;
-  background: var(--app-color-elevated);
+  border-radius: 28px;
+  background: var(--app-gradient-panel);
+  box-shadow: var(--app-shadow-surface);
 }
 
 .page-panel__title {
   margin: 0;
   font-size: clamp(22px, 3vw, 28px);
   letter-spacing: -0.03em;
-}
-
-.page-panel .page-eyebrow + .page-panel__title,
-.page-panel .page-eyebrow + h2 {
-  margin-top: 12px;
 }
 
 .page-section-title {
@@ -59,19 +55,21 @@
 }
 
 .page-surface-card {
+  position: relative;
+  overflow: hidden;
   height: 100%;
   border: 1px solid var(--app-color-border);
-  border-radius: 24px;
-  background: var(--app-color-bg);
-  box-shadow: 0 12px 32px rgb(15 23 42 / 5%);
+  border-radius: 26px;
+  background: var(--app-gradient-surface-card), var(--app-color-bg);
+  box-shadow: var(--app-shadow-surface);
   transition:
     transform 0.25s ease,
     box-shadow 0.25s ease,
     border-color 0.25s ease;
 
   &:hover {
-    border-color: rgb(22 119 255 / 22%);
-    box-shadow: 0 18px 40px rgb(15 23 42 / 9%);
+    border-color: var(--app-color-primary-a22);
+    box-shadow: var(--app-shadow-surface-hover);
     transform: translateY(-2px);
   }
 
@@ -94,6 +92,7 @@
     display: flex;
     align-items: flex-start;
     gap: 10px;
+    padding: 2px 0;
     color: var(--app-color-muted);
     font-size: 15px;
     line-height: 1.65;
@@ -114,7 +113,7 @@
 
 .page-step-list {
   display: grid;
-  gap: 14px;
+  gap: 16px;
   margin: 0;
   padding: 0;
   counter-reset: page-step;
@@ -122,10 +121,10 @@
 
   li {
     position: relative;
-    padding: 16px 18px 16px 64px;
+    padding: 18px 20px 18px 66px;
     border: 1px solid var(--app-color-border);
-    border-radius: 16px;
-    background: var(--app-color-bg);
+    border-radius: 18px;
+    background: var(--app-gradient-surface-card), var(--app-color-bg);
     color: var(--app-color-muted);
     font-size: 15px;
     line-height: 1.65;
@@ -139,7 +138,7 @@
     width: 30px;
     height: 30px;
     border-radius: 999px;
-    background: rgb(22 119 255 / 12%);
+    background: var(--app-color-primary-subtle);
     color: var(--app-color-primary);
     content: counter(page-step);
     counter-increment: page-step;
@@ -184,7 +183,7 @@
     color 0.2s ease;
 
   &:hover {
-    border-color: rgb(22 119 255 / 22%);
+    border-color: var(--app-color-primary-a22);
     background: var(--app-color-elevated);
     color: var(--app-color-primary);
   }
@@ -212,9 +211,9 @@
   margin-top: clamp(36px, 5vw, 48px);
   padding: clamp(28px, 4vw, 36px);
   border: 1px solid var(--app-color-border);
-  border-radius: 24px;
-  background: var(--app-color-bg);
-  box-shadow: 0 12px 32px rgb(15 23 42 / 5%);
+  border-radius: 26px;
+  background: var(--app-gradient-surface-card), var(--app-color-bg);
+  box-shadow: var(--app-shadow-surface);
   color: var(--app-color-text);
   font-size: 17px;
   line-height: 1.8;
@@ -230,8 +229,8 @@
 
 .page-grid {
   display: grid;
-  gap: clamp(16px, 2.5vw, 24px);
-  margin-top: clamp(36px, 5vw, 52px);
+  gap: clamp(18px, 2.6vw, 28px);
+  margin-top: clamp(42px, 5.4vw, 60px);
 }
 
 .page-grid--2 {
@@ -245,17 +244,17 @@
 .page-stat-card {
   padding: clamp(22px, 3vw, 28px);
   border: 1px solid var(--app-color-border);
-  border-radius: 24px;
-  background: var(--app-color-bg);
-  box-shadow: 0 12px 32px rgb(15 23 42 / 5%);
+  border-radius: 26px;
+  background: var(--app-gradient-surface-card), var(--app-color-bg);
+  box-shadow: var(--app-shadow-surface);
   transition:
     transform 0.25s ease,
     box-shadow 0.25s ease,
     border-color 0.25s ease;
 
   &:hover {
-    border-color: rgb(22 119 255 / 22%);
-    box-shadow: 0 18px 40px rgb(15 23 42 / 9%);
+    border-color: var(--app-color-primary-a22);
+    box-shadow: var(--app-shadow-surface-hover);
     transform: translateY(-2px);
   }
 
@@ -303,6 +302,20 @@
   }
 }
 
+:root[data-theme='dark'] {
+  .page-panel {
+    background: var(--app-gradient-panel);
+    box-shadow: var(--app-shadow-surface);
+  }
+
+  .page-surface-card,
+  .page-content-block,
+  .page-stat-card,
+  .page-step-list li {
+    background: var(--app-gradient-surface-card), var(--app-color-bg);
+  }
+}
+
 .auth-page {
   flex: 1;
   display: flex;
@@ -310,8 +323,8 @@
   justify-content: center;
   padding-block: clamp(32px, 6vw, 64px);
   background:
-    radial-gradient(circle at 18% 18%, rgb(22 119 255 / 12%), transparent 34%),
-    linear-gradient(180deg, rgb(22 119 255 / 5%), transparent 72%);
+    radial-gradient(circle at 18% 18%, var(--app-color-primary-a13), transparent 34%),
+    linear-gradient(180deg, var(--app-color-primary-a7), transparent 72%);
 
   .app-container {
     display: flex;
@@ -324,7 +337,7 @@
   border: 1px solid var(--app-color-border);
   border-radius: 20px;
   background: var(--app-color-bg);
-  box-shadow: 0 24px 56px rgb(15 23 42 / 8%);
+  box-shadow: var(--app-shadow-surface);
 
   &.ant-card .ant-card-body {
     padding: clamp(28px, 4vw, 36px);
@@ -367,7 +380,7 @@
   border: 1px solid var(--app-color-border);
   border-radius: 24px;
   background: var(--app-color-elevated);
-  box-shadow: 0 12px 32px rgb(15 23 42 / 5%);
+  box-shadow: 0 12px 32px var(--app-color-brand-a5);
 }
 
 .error-page {
@@ -377,7 +390,8 @@
   justify-content: center;
   padding: clamp(72px, 12vw, 140px) var(--app-container-padding);
   background:
-    radial-gradient(circle at 18% 18%, rgb(22 119 255 / 10%), transparent 34%), var(--app-color-bg);
+    radial-gradient(circle at 18% 18%, var(--app-color-primary-a10), transparent 34%),
+    var(--app-color-bg);
 }
 
 @media (width <= 900px) {

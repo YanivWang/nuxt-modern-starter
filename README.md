@@ -56,7 +56,7 @@ pnpm build
 - Public pages for home, pricing, about, help, news list, news detail, sign-in, sign-up, and 404.
 - Canonical, hreflang, OG metadata, Twitter Card metadata, noindex handling, Article JSON-LD, and home-page WebPage / Organization JSON-LD opt-ins.
 - Channel attribution persistence, registration body merge, and deferred analytics plugin slot.
-- `BasePicture` component for responsive image examples.
+- `BasePicture` renders the home hero product preview with responsive image attributes.
 - Docker image, Compose samples, and Nginx reverse-proxy sample for Nitro node-server.
 
 ## Documentation

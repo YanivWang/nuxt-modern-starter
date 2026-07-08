@@ -11,7 +11,7 @@
   Layout：default
 
   UI 区块：
-  - 页头：eyebrow、标题、导语
+  - 页头：标题、导语
   - 文章列表：卡片网格，每项含发布日期、标题、摘要、「阅读更多」链接
 
   用户流程：
@@ -63,7 +63,6 @@ usePageSeo({
 
 <template>
   <PageContainer>
-    <p class="page-eyebrow">{{ $t('news.eyebrow') }}</p>
     <h1 class="page-title">{{ $t('news.title') }}</h1>
     <p class="page-lead">{{ $t('news.lead') }}</p>
 

@@ -11,7 +11,7 @@
   Layout：default
 
   UI 区块：
-  - 页头：eyebrow、标题、导语
+  - 页头：标题、导语
   - Quick Start：4 步有序指引（install → dev → explore → extend）
   - Resources：4 项文档资源清单（architecture / usage / conventions / deployment）
   - FAQ：a-collapse 折叠面板，逐项展示问答
@@ -61,7 +61,6 @@ usePageSeo({
 
 <template>
   <PageContainer>
-    <p class="page-eyebrow">{{ $t('help.eyebrow') }}</p>
     <h1 class="page-title">{{ $t('help.title') }}</h1>
     <p class="page-lead">{{ $t('help.lead') }}</p>
 

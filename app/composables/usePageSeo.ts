@@ -10,7 +10,7 @@
     usePageSeo、buildPageSeoLinks、buildPageSeoMeta、buildPageSeoScripts
 
   【依赖关系】
-    - 依赖：config/site.ts、config/routes.ts（localizedPath）、i18n、useLanguageStore
+    - 依赖：config/site.ts、config/routes.ts（localizedPath）、Nuxt app i18n context、useLanguageStore
     - 被引用：pricing、news、home 等公开页；workspace / account 等 noindex 页
 
   【渲染 / 数据】
@@ -29,7 +29,6 @@ import {
   SUPPORTED_LOCALES,
   type SupportedLocale
 } from '../../config/site'
-import { i18n } from '../../i18n'
 import { localizedPath } from '../../config/routes'
 
 /**
@@ -144,13 +143,14 @@ const absoluteUrl = (siteUrl: string, path: string) =>
  * 中间节点非 object 或叶子非 string 时返回 undefined，触发下一级 fallback。
  */
 const getLocaleMessage = (locale: SupportedLocale, key: string) => {
+  const { $i18nContext } = useNuxtApp()
   const value = key.split('.').reduce<unknown>((acc, part) => {
     if (acc && typeof acc === 'object' && part in acc) {
       return (acc as Record<string, unknown>)[part]
     }
 
     return undefined
-  }, i18n.global.getLocaleMessage(locale))
+  }, $i18nContext.i18n.global.getLocaleMessage(locale))
 
   return typeof value === 'string' ? value : undefined
 }

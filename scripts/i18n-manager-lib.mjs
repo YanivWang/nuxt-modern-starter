@@ -20,15 +20,11 @@ export function flattenMessages(messages, prefix = '') {
   })
 }
 
-export function parseReExportTarget(source) {
-  return source.match(/export\s*\{\s*default\s*\}\s*from\s*['"](.+?)['"]/)?.[1] || null
-}
-
 export function readJsonModules(localeDir) {
   const modulesDir = path.join(localeDir, 'modules')
 
   if (!fs.existsSync(modulesDir)) {
-    return null
+    throw new Error(`Missing locale modules directory: ${modulesDir}`)
   }
 
   return fs
@@ -224,42 +220,31 @@ export function extractTopLevelObjectKeys(source, exportName) {
   return keys
 }
 
-export function readLocaleMessages(localeDir, seen = new Set()) {
-  const normalizedDir = path.resolve(localeDir)
-
-  if (seen.has(normalizedDir)) {
-    throw new Error(`Circular locale reference detected: ${normalizedDir}`)
-  }
-
-  seen.add(normalizedDir)
-
-  const jsonModules = readJsonModules(normalizedDir)
-  if (jsonModules) {
-    return jsonModules
-  }
-
-  const indexPath = path.join(normalizedDir, 'index.ts')
-  if (!fs.existsSync(indexPath)) {
-    throw new Error(`Missing locale entry: ${indexPath}`)
-  }
-
-  const source = fs.readFileSync(indexPath, 'utf8')
-  const reExportTarget = parseReExportTarget(source)
-
-  if (reExportTarget) {
-    return readLocaleMessages(path.resolve(normalizedDir, reExportTarget), seen)
-  }
-
-  const exportBody = source.match(/export\s+default\s+({[\s\S]*})\s*$/)?.[1]
-  if (!exportBody) {
-    throw new Error(`Unsupported locale entry format: ${indexPath}`)
-  }
-
-  return { index: Function(`return (${exportBody})`)() }
+export function readLocaleMessages(localeDir) {
+  return readJsonModules(path.resolve(localeDir))
 }
 
 export function normalizeLocaleMessages(messagesByModule) {
   return Object.values(messagesByModule).reduce((acc, messages) => ({ ...acc, ...messages }), {})
+}
+
+export function findDuplicateLocaleKeys(localeDir) {
+  const messagesByModule = readJsonModules(localeDir)
+  if (!messagesByModule) return []
+
+  const keyModules = new Map()
+
+  Object.entries(messagesByModule).forEach(([moduleName, messages]) => {
+    flattenMessages(messages).forEach(([key]) => {
+      const modules = keyModules.get(key) || []
+      modules.push(moduleName)
+      keyModules.set(key, modules)
+    })
+  })
+
+  return [...keyModules.entries()]
+    .filter(([, modules]) => modules.length > 1)
+    .map(([key, modules]) => ({ key, modules }))
 }
 
 export function buildLocaleDiff(i18nRoot) {
@@ -384,14 +369,21 @@ export function scanUnusedDiffRows(diffRows, rootDir, includeDirs = DEFAULT_INCL
   return diffRows.filter((row) => !usedKeys.has(row.key))
 }
 
-export const scanDiffUsage = scanUsedDiffRows
-
 function arrayDiff(left, right) {
   return left.filter((item) => !right.includes(item))
 }
 
 function readIfExists(filePath) {
   return fs.existsSync(filePath) ? fs.readFileSync(filePath, 'utf8') : ''
+}
+
+function assertJsonSnapshotSync(rootDir, snapshotPath, expectedRows, errors, command) {
+  if (!fs.existsSync(snapshotPath)) return
+
+  const committedRows = JSON.parse(fs.readFileSync(snapshotPath, 'utf8'))
+  if (JSON.stringify(committedRows) !== JSON.stringify(expectedRows)) {
+    errors.push(`${path.relative(rootDir, snapshotPath)} is out of sync; run ${command}`)
+  }
 }
 
 function validateLocaleEntrypoint(localeDir, locale) {
@@ -458,6 +450,11 @@ export function checkLocaleHealth(rootDir) {
   const hreflangLocales = extractTopLevelObjectKeys(siteSource, 'SITE_HREFLANG_MAP').sort()
   const optionLocales = extractTopLevelObjectKeys(siteSource, 'SITE_LOCALE_OPTIONS').sort()
   const resolverLocales = extractTopLevelObjectKeys(i18nSource, 'LOCALE_MESSAGE_RESOLVERS').sort()
+  const antdLocalePath = path.join(rootDir, 'config', 'antd-locale.ts')
+  const antdSource = readIfExists(antdLocalePath)
+  const antdLocales = antdSource
+    ? extractTopLevelObjectKeys(antdSource, 'ANTD_LOCALE_LOADERS').sort()
+    : []
 
   arrayDiff(supportedLocales, localeDirs).forEach((locale) =>
     errors.push(`Missing i18n locale directory: ${locale}`)
@@ -489,12 +486,27 @@ export function checkLocaleHealth(rootDir) {
   arrayDiff(resolverLocales, supportedLocales).forEach((locale) =>
     errors.push(`Unexpected LOCALE_MESSAGE_RESOLVERS entry: ${locale}`)
   )
+  if (!antdSource) {
+    errors.push('Missing config/antd-locale.ts')
+  } else {
+    arrayDiff(supportedLocales, antdLocales).forEach((locale) =>
+      errors.push(`Missing ANTD_LOCALE_LOADERS entry: ${locale}`)
+    )
+    arrayDiff(antdLocales, supportedLocales).forEach((locale) =>
+      errors.push(`Unexpected ANTD_LOCALE_LOADERS entry: ${locale}`)
+    )
+  }
 
   localeDirs.forEach((locale) => {
     errors.push(...validateLocaleEntrypoint(path.join(i18nRoot, locale), locale))
+    findDuplicateLocaleKeys(path.join(i18nRoot, locale)).forEach(({ key, modules }) => {
+      errors.push(`Duplicate locale key in ${locale}: ${key} (${modules.join(', ')})`)
+    })
   })
 
   const diffRows = buildLocaleDiff(i18nRoot)
+  const usedRows = scanUsedDiffRows(diffRows, rootDir)
+  const unusedRows = scanUnusedDiffRows(diffRows, rootDir)
   diffRows.forEach((row) => {
     supportedLocales.forEach((locale) => {
       if (!(locale in row) || row[locale] === '') {
@@ -503,13 +515,27 @@ export function checkLocaleHealth(rootDir) {
     })
   })
 
-  const diffPath = path.join(rootDir, 'scripts', 'i18n-diff.json')
-  if (fs.existsSync(diffPath)) {
-    const committedDiff = JSON.parse(fs.readFileSync(diffPath, 'utf8'))
-    if (JSON.stringify(committedDiff) !== JSON.stringify(diffRows)) {
-      errors.push('scripts/i18n-diff.json is out of sync; run pnpm i18n:diff')
-    }
-  }
+  assertJsonSnapshotSync(
+    rootDir,
+    path.join(rootDir, 'scripts', 'i18n-diff.json'),
+    diffRows,
+    errors,
+    'pnpm i18n:diff'
+  )
+  assertJsonSnapshotSync(
+    rootDir,
+    path.join(rootDir, 'scripts', 'i18n-used.json'),
+    usedRows,
+    errors,
+    'pnpm i18n:scan'
+  )
+  assertJsonSnapshotSync(
+    rootDir,
+    path.join(rootDir, 'scripts', 'i18n-unused.json'),
+    unusedRows,
+    errors,
+    'pnpm i18n:unused'
+  )
 
   const enRows = diffRows.filter((row) => row['en-US'])
   const placeholderRatios = {}
@@ -532,8 +558,8 @@ export function checkLocaleHealth(rootDir) {
     stats: {
       locales: supportedLocales,
       totalKeys: diffRows.length,
-      usedKeys: scanUsedDiffRows(diffRows, rootDir).length,
-      unusedKeys: scanUnusedDiffRows(diffRows, rootDir).length,
+      usedKeys: usedRows.length,
+      unusedKeys: unusedRows.length,
       placeholderRatios
     }
   }

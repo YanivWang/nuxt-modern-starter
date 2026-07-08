@@ -1,0 +1,88 @@
+// 暗黑模式 — 业务层 token 覆盖（不含 Ant Design Vue 组件 token）
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --app-color-primary: #69b1ff;
+  --app-color-primary-hover: #91caff;
+  --app-color-primary-active: #4096ff;
+  --app-color-primary-subtle: rgb(105 177 255 / 12%);
+  --app-color-primary-border: rgb(105 177 255 / 24%);
+
+  --app-color-brand: #f8fafc;
+  --app-color-brand-hover: #e2e8f0;
+  --app-color-brand-contrast: #0f172a;
+
+  --app-color-bg: #0f172a;
+  --app-color-elevated: #111c33;
+  --app-color-surface: #111c33;
+  --app-color-overlay: rgb(17 28 51 / 72%);
+
+  --app-color-text: #f8fafc;
+  --app-color-text-strong: #ffffff;
+  --app-color-muted: #94a3b8;
+  --app-color-subtle: #64748b;
+
+  --app-color-border: #26344d;
+  --app-color-border-strong: #334155;
+
+  --app-color-success: #34d399;
+  --app-color-success-subtle: rgb(52 211 153 / 12%);
+  --app-color-warning: #fbbf24;
+  --app-color-warning-subtle: rgb(251 191 36 / 12%);
+  --app-color-danger: #f87171;
+  --app-color-danger-subtle: rgb(248 113 113 / 12%);
+
+  --app-gradient-hero: linear-gradient(
+    180deg,
+    var(--app-color-elevated) 0%,
+    color-mix(in srgb, var(--app-color-primary) 10%, var(--app-color-bg)) 58%,
+    var(--app-color-bg) 100%
+  );
+  --app-gradient-page-header:
+    radial-gradient(circle at 16% 18%, var(--app-color-primary-a8), transparent 30%),
+    radial-gradient(circle at 84% 8%, var(--app-color-primary-a10), transparent 28%),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--app-color-elevated) 58%, transparent),
+      transparent 82%
+    );
+  --app-gradient-panel:
+    radial-gradient(circle at 12% 0%, var(--app-color-primary-a10), transparent 34%),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--app-color-elevated) 88%, transparent),
+      var(--app-color-bg)
+    ),
+    var(--app-color-elevated);
+  --app-gradient-surface-card: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--app-color-elevated) 88%, transparent),
+    var(--app-color-bg)
+  );
+
+  --app-shadow-brand: 0 18px 36px rgb(0 0 0 / 28%);
+  --app-shadow-primary: 0 24px 56px var(--app-color-primary-a18);
+  --app-shadow-surface: 0 16px 42px rgb(0 0 0 / 24%);
+  --app-shadow-surface-hover: 0 24px 54px rgb(0 0 0 / 30%);
+
+  --app-auth-sign-in-bg: transparent;
+  --app-auth-sign-in-bg-hover: rgb(248 250 252 / 6%);
+  --app-auth-sign-in-border: var(--app-color-border-strong);
+  --app-auth-sign-in-border-hover: var(--app-color-subtle);
+  --app-auth-sign-in-text: var(--app-color-text);
+  --app-auth-sign-up-bg: var(--app-color-brand);
+  --app-auth-sign-up-bg-hover: var(--app-color-brand-hover);
+  --app-auth-sign-up-text: var(--app-color-brand-contrast);
+  --app-header-bg-scrolled: rgb(15 23 42 / 80%);
+  --app-header-border-scrolled: rgb(248 250 252 / 10%);
+  --app-shadow-sm: var(--app-shadow-surface-hover);
+  --app-shadow-dropdown: 0 8px 20px rgb(0 0 0 / 35%);
+  --app-home-cta-bg: var(--app-color-elevated);
+  --app-home-cta-border: 1px solid var(--app-color-border);
+  --app-home-cta-text: var(--app-color-text);
+  --app-home-cta-shadow: none;
+  --app-home-cta-btn-bg: var(--app-color-primary);
+  --app-home-cta-btn-text: var(--app-color-brand-contrast);
+  --app-home-cta-btn-border: transparent;
+}

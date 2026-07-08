@@ -1,0 +1,5 @@
+// Design tokens — 应用入口一次性引入
+
+@forward './variables';
+@use './root';
+@use './dark';

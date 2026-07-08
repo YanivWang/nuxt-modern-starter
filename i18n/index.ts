@@ -1,21 +1,21 @@
 /*
   【文件职责】
-    vue-i18n 实例与语言路由 helper 单一入口：按需加载 locale 文案、URL 前缀解析、语言切换 URL 生成。
+    vue-i18n 配置与语言路由 helper 单一入口：按需创建 app 级 i18n 实例、URL 前缀解析、语言切换 URL 生成。
     getSwitchLanguageUrl 对产品 path 保持 URL 不变，仅切换 UI locale。
 
   【架构位置】
     i18n 层 — 被 app/middleware/locale.global.ts、language store、useLocalePath、plugins/i18n.ts 消费。
 
   【主要导出 / 路由】
-    i18n、loadLocaleMessages、localeFromPrefix、resolvePreferredLocale、getSwitchLanguageUrl、
-    relativeLangPath、t、STORAGE_KEY_LANGUAGE、LOCALE_LANGUAGE_MODULES
+    createAppI18n、localeFromPrefix、resolvePreferredLocale、getSwitchLanguageUrl、
+    relativeLangPath、STORAGE_KEY_LANGUAGE
 
   【依赖关系】
     - 依赖：config/site.ts、config/routes.ts（isProductPath）、i18n/zh-CN、i18n/en-US 及各 locale 包
     - 被引用：locale.global middleware、language store、useLocalePath、LanguageSwitcher
 
   【渲染 / 数据】
-    默认 locale（zh-CN）同步加载；其余 locale 异步 import；cookie 持久化产品区语言。
+    默认 locale（zh-CN）同步加载；其余 locale 在每个 Nuxt app/request 内异步 import；cookie 持久化产品区语言。
 
   【边界与注意】
     不使用 @nuxtjs/i18n 模块；公开页 URL 带语言前缀，产品页语言切换不改变 path。
@@ -23,6 +23,7 @@
 */
 import { createI18n } from 'vue-i18n'
 import type { Ref } from 'vue'
+import type { I18n } from 'vue-i18n'
 import zhCN from './zh-CN'
 import {
   DEFAULT_LOCALE,
@@ -36,8 +37,18 @@ import { isProductPath } from '../config/routes'
 export const STORAGE_KEY_LANGUAGE = 'nuxt-modern-starter-language'
 export const LANGUAGE_COOKIE_MAX_AGE = 60 * 60 * 24 * 365
 type LocaleMessages = typeof zhCN
+type AppI18n = I18n<
+  Record<string, unknown>,
+  Record<string, unknown>,
+  Record<string, unknown>,
+  string,
+  false
+>
 
-export type LocaleLangType = SupportedLocale
+export type AppI18nContext = {
+  i18n: AppI18n
+  loadLocaleMessages: (locale: SupportedLocale) => Promise<void>
+}
 
 const LOCALE_MESSAGE_RESOLVERS = {
   'zh-CN': async () => zhCN,
@@ -62,7 +73,7 @@ type LocaleLanguageModule = (typeof SITE_LOCALE_OPTIONS)[SupportedLocale] & {
   resolve: () => Promise<LocaleMessages>
 }
 
-export const LOCALE_LANGUAGE_MODULES = SUPPORTED_LOCALES.reduce(
+const localeLanguageModules = SUPPORTED_LOCALES.reduce(
   (modules, locale) => {
     modules[locale] = {
       ...SITE_LOCALE_OPTIONS[locale],
@@ -74,17 +85,6 @@ export const LOCALE_LANGUAGE_MODULES = SUPPORTED_LOCALES.reduce(
   },
   {} as Record<SupportedLocale, LocaleLanguageModule>
 )
-
-export const i18n = createI18n({
-  legacy: false,
-  locale: DEFAULT_LOCALE,
-  fallbackLocale: DEFAULT_LOCALE,
-  messages: {
-    [DEFAULT_LOCALE]: zhCN
-  }
-})
-
-const loadedLocales = new Set<SupportedLocale>([DEFAULT_LOCALE])
 
 export const isSupportedLocale = (locale: string): locale is SupportedLocale =>
   SUPPORTED_LOCALES.includes(locale as SupportedLocale)
@@ -165,15 +165,30 @@ export const getSwitchLanguageUrl = (
   return `${path}${suffix}`
 }
 
-export const loadLocaleMessages = async (locale: SupportedLocale) => {
-  if (!loadedLocales.has(locale)) {
-    const messages = await LOCALE_LANGUAGE_MODULES[locale].resolve()
-    i18n.global.setLocaleMessage(locale, messages)
-    loadedLocales.add(locale)
+export const createAppI18n = (): AppI18nContext => {
+  const i18n = createI18n({
+    legacy: false,
+    locale: DEFAULT_LOCALE,
+    fallbackLocale: DEFAULT_LOCALE,
+    messages: {
+      [DEFAULT_LOCALE]: zhCN
+    }
+  }) as AppI18n
+  const loadedLocales = new Set<SupportedLocale>([DEFAULT_LOCALE])
+
+  const loadLocaleMessages = async (locale: SupportedLocale) => {
+    if (!loadedLocales.has(locale)) {
+      const messages = await localeLanguageModules[locale].resolve()
+      i18n.global.setLocaleMessage(locale, messages)
+      loadedLocales.add(locale)
+    }
+
+    const currentLocale = i18n.global.locale as unknown as Ref<SupportedLocale>
+    currentLocale.value = locale
   }
 
-  const currentLocale = i18n.global.locale as unknown as Ref<SupportedLocale>
-  currentLocale.value = locale
+  return {
+    i18n,
+    loadLocaleMessages
+  }
 }
-
-export const t = i18n.global.t

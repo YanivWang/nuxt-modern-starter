@@ -19,3 +19,11 @@
     新增非标准资源扩展名时在此补充 declare module。
 */
 declare module '*.css'
+
+declare module '#app' {
+  interface NuxtApp {
+    $i18nContext: import('../i18n').AppI18nContext
+  }
+}
+
+export {}

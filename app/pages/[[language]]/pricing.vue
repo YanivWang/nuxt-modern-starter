@@ -11,7 +11,7 @@
   Layout：default
 
   UI 区块：
-  - 页头：eyebrow、标题、导语
+  - 页头：标题、导语
   - Plans：三档方案卡片（Starter / Growth / Custom），含价格、描述、功能清单、CTA 按钮
   - Growth 方案 featured 高亮（ribbon 徽章 + primary 按钮）
   - Includes：starter 通用能力说明（stack / routing / content / editor，双列清单）
@@ -64,7 +64,6 @@ usePageSeo({
 
 <template>
   <PageContainer v-if="pricing">
-    <p class="page-eyebrow">{{ pricing.eyebrow }}</p>
     <h1 class="page-title">{{ pricing.title }}</h1>
     <p class="page-lead">{{ pricing.lead }}</p>
 
@@ -104,7 +103,6 @@ usePageSeo({
     </div>
 
     <section class="page-panel pricing-includes">
-      <p class="page-eyebrow">{{ pricing.includes.eyebrow }}</p>
       <h2 class="pricing-includes__title">{{ pricing.includes.title }}</h2>
       <ul class="page-check-list page-check-list--2col pricing-includes__list">
         <li v-for="item in pricing.includes.items" :key="item">
@@ -134,15 +132,15 @@ usePageSeo({
   border: 1px solid var(--app-color-border);
   border-radius: 24px;
   background: var(--app-color-bg);
-  box-shadow: 0 12px 32px rgb(15 23 42 / 5%);
+  box-shadow: 0 12px 32px var(--app-color-brand-a5);
   transition:
     transform 0.25s ease,
     box-shadow 0.25s ease,
     border-color 0.25s ease;
 
   &:hover:not(.pricing-card--featured) {
-    border-color: rgb(22 119 255 / 22%);
-    box-shadow: 0 18px 40px rgb(15 23 42 / 9%);
+    border-color: var(--app-color-primary-a22);
+    box-shadow: var(--app-shadow-surface-hover);
     transform: translateY(-2px);
   }
 
@@ -155,16 +153,16 @@ usePageSeo({
 }
 
 .pricing-card--featured {
-  border: 2px solid rgb(22 119 255 / 32%);
+  border: 2px solid var(--app-color-primary-a32);
   background:
-    linear-gradient(180deg, rgb(22 119 255 / 7%) 0%, transparent 42%), var(--app-color-bg);
-  box-shadow: 0 28px 60px rgb(22 119 255 / 14%);
+    linear-gradient(180deg, var(--app-color-primary-a7) 0%, transparent 42%), var(--app-color-bg);
+  box-shadow: 0 28px 60px var(--app-color-primary-a16);
 
   &::before {
     position: absolute;
     inset: 0 0 auto;
     height: 3px;
-    background: linear-gradient(90deg, var(--app-color-primary), rgb(22 119 255 / 35%));
+    background: var(--app-gradient-accent-line);
     content: '';
   }
 }
@@ -176,7 +174,7 @@ usePageSeo({
   padding: 6px 12px;
   border-radius: 999px;
   background: var(--app-color-primary);
-  color: #fff;
+  color: var(--app-color-brand-contrast);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -258,7 +256,7 @@ usePageSeo({
 }
 
 .pricing-includes__title {
-  margin: 12px 0 0;
+  margin: 0;
   font-size: clamp(24px, 3vw, 32px);
   letter-spacing: -0.03em;
 }

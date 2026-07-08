@@ -398,7 +398,7 @@ const formattedUpdatedAt = computed(() =>
 .workspace-card__title {
   display: block;
   overflow: hidden;
-  color: #1f2937;
+  color: var(--app-color-text);
   font-size: 15px;
   font-weight: 600;
   line-height: 1.4;
@@ -485,8 +485,8 @@ const formattedUpdatedAt = computed(() =>
 }
 
 .workspace-card--blue {
-  --project-accent: #1677ff;
-  --project-accent-soft: rgb(22 119 255 / 18%);
+  --project-accent: var(--app-color-primary);
+  --project-accent-soft: var(--app-color-primary-a18);
 }
 
 .workspace-card--green {

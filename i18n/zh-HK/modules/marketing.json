@@ -1,14 +1,9 @@
 {
   "home": {
-    "eyebrow": "Nuxt 4 · TypeScript · Ant Design Vue",
     "title": "面向公開網站的現代 Nuxt 基礎骨架",
     "lead": "Nuxt Modern Starter 把營銷首頁、登入註冊、多語言內容、SEO 路由和 Docker/Nginx 部署配置整合進同一套清爽起點。無論你是搭建 SaaS 官網、產品前台還是內容型公開站，都可以從這裡快速起步，再按業務逐步替換內容與後端能力。",
     "primaryCta": "開始搭建",
     "secondaryCta": "查看價格示例",
-    "preview": {
-      "metricLabel": "模板覆蓋",
-      "metricValue": "12+ 頁面"
-    },
     "stats": {
       "pages": {
         "value": "12+",
@@ -23,7 +18,6 @@
         "label": "按路由分層的混合渲染策略"
       }
     },
-    "featuresEyebrow": "Nuxt 4 強力驅動",
     "featuresTitle": "把公開網站常見能力一次整理好",
     "featuresLead": "參考 Nuxt SaaS Template 的資訊層級，用更完整的功能卡片承接首屏，讓頁面從「示例」更像可直接發佈的產品站。",
     "features": {
@@ -53,7 +47,6 @@
       }
     },
     "workflow": {
-      "eyebrow": "上線所需，一應俱全",
       "title": "從模板到上線，路徑更短",
       "lead": "保留 starter 的輕量感，同時補齊 SaaS 官網最需要展示的能力、轉化入口和內容結構。",
       "steps": {
@@ -62,11 +55,9 @@
         "auth": "最後接入後端帳號體系，把登入態、權限和業務工作台串起來。"
       }
     },
-    "ctaEyebrow": "準備開始搭建",
     "ctaTitle": "用這套 Nuxt 基礎骨架，更快搭出一個像樣的產品前台。"
   },
   "about": {
-    "eyebrow": "關於我們",
     "title": "為公開網站與輕量 SaaS 前台而生",
     "lead": "Nuxt Modern Starter 是一套可重用的 Nuxt 4 工程骨架，幫助團隊更快搭建營銷頁、內容中心與可選鑑權的產品前台。",
     "mission": {
@@ -91,7 +82,6 @@
     }
   },
   "help": {
-    "eyebrow": "幫助中心",
     "title": "快速了解 Nuxt Modern Starter 的使用方式",
     "lead": "這裡匯總了項目啟動、多語言擴展、鑑權接入、SEO 配置與部署驗證等常見問題。上手步驟與資源清單來自 i18n，FAQ 來自本地 config，後續可替換為 CMS 或後台接口。",
     "faqTitle": "常見問題",
@@ -113,7 +103,6 @@
     }
   },
   "news": {
-    "eyebrow": "項目動態",
     "title": "Nuxt Modern Starter 更新與實踐筆記",
     "lead": "這裡記錄 starter 的版本發佈、部署實踐與擴展建議，也演示新聞列表、詳情頁 SEO 與 SWR 緩存策略。",
     "notFound": "未找到這篇新聞"

@@ -11,7 +11,7 @@
   Layout：default
 
   UI 区块：
-  - 页头：eyebrow、标题、导语
+  - 页头：标题、导语
   - Mission：目标说明
   - Values：三项原则清单
   - Story：项目背景段落
@@ -49,7 +49,6 @@ usePageSeo({
 
 <template>
   <PageContainer>
-    <p class="page-eyebrow">{{ $t('about.eyebrow') }}</p>
     <h1 class="page-title">{{ $t('about.title') }}</h1>
     <p class="page-lead">{{ $t('about.lead') }}</p>
 

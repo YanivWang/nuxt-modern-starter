@@ -1,6 +1,6 @@
 <!--
   【文件职责】
-    公开页内容区容器：统一 padding 与 max-width，支持 default / prose / compact 三种宽度模式。
+    公开页内容区容器：统一 padding、max-width 与轻量背景，支持 default / prose / compact 三种宽度模式。
     compact 用于 404 等窄内容；prose 用于长文阅读。
 
   【架构位置】
@@ -43,7 +43,30 @@ withDefaults(
 .page-container {
   --page-content-max: 100%;
 
-  padding-block: clamp(56px, 10vw, 112px);
+  position: relative;
+  isolation: isolate;
+  padding-block: clamp(64px, 9vw, 112px);
+
+  &::before {
+    position: absolute;
+    inset: 0 max(calc((100vw - var(--app-container-max)) / -2), -24px) auto;
+    z-index: -1;
+    height: clamp(220px, 32vw, 420px);
+    background: var(--app-gradient-page-header);
+    content: '';
+    pointer-events: none;
+  }
+
+  :deep(.page-title),
+  :deep(.page-lead) {
+    width: 100%;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  :global(:root[data-theme='dark']) &::before {
+    background: var(--app-gradient-page-header);
+  }
 
   &--prose {
     --page-content-max: min(var(--app-content-max-prose), 100%);

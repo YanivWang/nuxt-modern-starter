@@ -1,14 +1,9 @@
 {
   "home": {
-    "eyebrow": "Nuxt 4 · TypeScript · Ant Design Vue",
     "title": "Nuxt starter สมัยใหม่สำหรับเว็บไซต์สาธารณะ",
     "lead": "Nuxt Modern Starter รวมหน้าการตลาด auth flow เนื้อหาหลายภาษา SEO route และค่าเริ่มต้นการ deploy Docker/Nginx ไว้ในฐานที่เรียบง่าย ใช้เปิดตัวเว็บ SaaS frontend ผลิตภัณฑ์ หรือ content hub แล้วค่อย ๆ แทนที่เนื้อหาและการเชื่อมต่อ backend ตามการเติบโตของผลิตภัณฑ์",
     "primaryCta": "เริ่มสร้าง",
     "secondaryCta": "ดูตัวอย่างราคา",
-    "preview": {
-      "metricLabel": "ความครอบคลุมเทมเพลต",
-      "metricValue": "12+ หน้า"
-    },
     "stats": {
       "pages": {
         "value": "12+",
@@ -23,7 +18,6 @@
         "label": "กลยุทธ์ hybrid rendering ตาม route"
       }
     },
-    "featuresEyebrow": "ขับเคลื่อนด้วย Nuxt 4",
     "featuresTitle": "บล็อกสร้างเว็บสาธารณะทั่วไป จัดระเบียบไว้แล้ว",
     "featuresLead": "อิงลำดับชั้นของ Nuxt SaaS Template หน้าแรกต่อเนื่องจาก hero ด้วยการ์ดฟีเจอร์ที่พร้อมใช้งานจริง",
     "features": {
@@ -53,7 +47,6 @@
       }
     },
     "workflow": {
-      "eyebrow": "ครบทุกอย่างที่ต้องใช้ปล่อย",
       "title": "เส้นทางสั้นลงจาก starter สู่ launch",
       "lead": "ยังคงเบา แต่เพิ่มความสามารถ conversion และโครงสร้างเนื้อหาที่ frontend SaaS ต้องการ",
       "steps": {
@@ -62,11 +55,9 @@
         "auth": "เชื่อมระบบบัญชี backend เมื่อพร้อมจัดการ session บทบาท และแอปผลิตภัณฑ์"
       }
     },
-    "ctaEyebrow": "พร้อมสร้าง",
     "ctaTitle": "ใช้ฐาน Nuxt นี้เปิดตัว frontend ผลิตภัณฑ์ที่สมบูรณ์ได้เร็วขึ้น"
   },
   "about": {
-    "eyebrow": "เกี่ยวกับเรา",
     "title": "สร้างมาเพื่อเว็บสาธารณะและ frontend SaaS แบบเบา",
     "lead": "Nuxt Modern Starter เป็นฐาน Nuxt 4 ที่ใช้ซ้ำได้สำหรับหน้าการตลาด content hub และพื้นที่ผลิตภัณฑ์ที่รองรับ auth แบบเลือกได้",
     "mission": {
@@ -91,7 +82,6 @@
     }
   },
   "help": {
-    "eyebrow": "ศูนย์ช่วยเหลือ",
     "title": "เรียนรู้การใช้ Nuxt Modern Starter",
     "lead": "หน้านี้รวมคำถามทั่วไปเกี่ยวกับ setup i18n auth SEO และ deploy ขั้นตอน quick start และรายการทรัพยากรมาจาก i18n FAQ มาจาก local config ย้ายไป CMS หรือ backend API ได้ภายหลัง",
     "faqTitle": "คำถามที่พบบ่อย",
@@ -113,7 +103,6 @@
     }
   },
   "news": {
-    "eyebrow": "อัปเดตโปรเจกต์",
     "title": "รีลีสและบันทึก Nuxt Modern Starter",
     "lead": "ติดตามรีลีส starter แนวทาง deploy และคำแนะนำการขยาย หน้าเหล่านี้ยังสาธิตรายการ/รายละเอียดข่าว Article JSON-LD และกฎ cache SWR",
     "notFound": "ไม่พบบทความข่าวนี้"

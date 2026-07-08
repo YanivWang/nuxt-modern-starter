@@ -222,25 +222,6 @@ Single-file GA4 scripts such as `https://www.googletagmanager.com/gtag/js?id=...
 
 Load failures caused by CSP or network errors are caught and logged with `console.warn`; they do not throw uncaught client errors.
 
-## BasePicture
-
-Use `BasePicture` for responsive hero or content images with optional WebP fallback:
-
-```vue
-<BasePicture
-  src="/demo-hero.png"
-  webp-src="/demo-hero.webp"
-  alt="Product preview"
-  width="960"
-  height="540"
-  loading="eager"
-  fetchpriority="high"
-  sizes="(min-width: 900px) 960px, 100vw"
-/>
-```
-
-Provide `width`, `height`, and `sizes` on LCP-critical images. The starter keeps the home hero as CSS decoration and documents `BasePicture` instead of forcing a home-page UI change.
-
 ## Add Languages
 
 The starter ships all locales listed in `SUPPORTED_LOCALES`. To add a language, update `SUPPORTED_LOCALES`, `SITE_LOCALE_PREFIX_MAP`, `SITE_HREFLANG_MAP`, and `SITE_LOCALE_OPTIONS` in `config/site.ts`, register its resolver in `i18n/index.ts`, add `i18n/<locale>/modules/*.json`, then run the locale checks and routing/SEO tests.

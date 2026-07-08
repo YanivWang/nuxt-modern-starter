@@ -1,0 +1,180 @@
+// Design Token — :root CSS 自定义属性（--app-* 命名，避免与 Ant Design 冲突）
+
+@use './variables' as *;
+
+:root,
+:root[data-theme='light'] {
+  color-scheme: light;
+
+  /* Brand — interactive */
+  --app-color-primary: #{$color-primary};
+  --app-color-primary-hover: #{$color-primary-hover};
+  --app-color-primary-active: #{$color-primary-active};
+  --app-color-primary-subtle: #{$color-primary-subtle};
+  --app-color-primary-border: #{$color-primary-border};
+
+  /* Brand — identity */
+  --app-color-brand: #{$color-brand};
+  --app-color-brand-hover: #{$color-brand-hover};
+  --app-color-brand-contrast: #{$color-brand-contrast};
+
+  /* Surfaces */
+  --app-color-bg: #{$color-bg};
+  --app-color-elevated: #{$color-elevated};
+  --app-color-surface: #{$color-surface};
+  --app-color-overlay: #{$color-overlay};
+
+  /* Text */
+  --app-color-text: #{$color-text};
+  --app-color-text-strong: #{$color-text-strong};
+  --app-color-muted: #{$color-muted};
+  --app-color-subtle: #{$color-subtle};
+
+  /* Borders */
+  --app-color-border: #{$color-border};
+  --app-color-border-strong: #{$color-border-strong};
+
+  /* Semantic */
+  --app-color-success: #{$color-success};
+  --app-color-success-subtle: #{$color-success-subtle};
+  --app-color-warning: #{$color-warning};
+  --app-color-warning-subtle: #{$color-warning-subtle};
+  --app-color-danger: #{$color-danger};
+  --app-color-danger-subtle: #{$color-danger-subtle};
+
+  /* Alpha helpers */
+  --app-color-brand-a5: color-mix(in srgb, var(--app-color-brand) 5%, transparent);
+  --app-color-brand-a6: color-mix(in srgb, var(--app-color-brand) 6%, transparent);
+  --app-color-brand-a7: color-mix(in srgb, var(--app-color-brand) 7%, transparent);
+  --app-color-brand-a8: color-mix(in srgb, var(--app-color-brand) 8%, transparent);
+  --app-color-brand-a9: color-mix(in srgb, var(--app-color-brand) 9%, transparent);
+  --app-color-brand-a12: color-mix(in srgb, var(--app-color-brand) 12%, transparent);
+  --app-color-brand-a14: color-mix(in srgb, var(--app-color-brand) 14%, transparent);
+  --app-color-brand-a16: color-mix(in srgb, var(--app-color-brand) 16%, transparent);
+  --app-color-brand-a18: color-mix(in srgb, var(--app-color-brand) 18%, transparent);
+  --app-color-primary-a7: color-mix(in srgb, var(--app-color-primary) 7%, transparent);
+  --app-color-primary-a8: color-mix(in srgb, var(--app-color-primary) 8%, transparent);
+  --app-color-primary-a10: color-mix(in srgb, var(--app-color-primary) 10%, transparent);
+  --app-color-primary-a13: color-mix(in srgb, var(--app-color-primary) 13%, transparent);
+  --app-color-primary-a16: color-mix(in srgb, var(--app-color-primary) 16%, transparent);
+  --app-color-primary-a20: color-mix(in srgb, var(--app-color-primary) 20%, transparent);
+  --app-color-primary-a22: color-mix(in srgb, var(--app-color-primary) 22%, transparent);
+  --app-color-primary-a32: color-mix(in srgb, var(--app-color-primary) 32%, transparent);
+
+  /* Gradients */
+  --app-gradient-brand-accent: linear-gradient(
+    135deg,
+    var(--app-color-brand),
+    var(--app-color-primary)
+  );
+  --app-gradient-accent-line: linear-gradient(
+    90deg,
+    var(--app-color-brand),
+    var(--app-color-primary)
+  );
+  --app-gradient-hero: linear-gradient(
+    180deg,
+    var(--app-color-elevated) 0%,
+    var(--app-color-primary-subtle) 58%,
+    var(--app-color-bg) 100%
+  );
+  --app-gradient-home-page:
+    radial-gradient(circle at 82% 6%, var(--app-color-primary-a10), transparent 28%),
+    radial-gradient(circle at 12% 28%, var(--app-color-brand-a5), transparent 26%),
+    linear-gradient(180deg, var(--app-color-elevated) 0%, var(--app-color-bg) 38%);
+  --app-gradient-hero-glow:
+    radial-gradient(circle at 78% 20%, var(--app-color-primary-a13), transparent 30%),
+    radial-gradient(circle at 18% 18%, var(--app-color-primary-a10), transparent 28%),
+    var(--app-gradient-hero);
+  --app-gradient-page-header:
+    radial-gradient(circle at 16% 18%, var(--app-color-primary-a10), transparent 30%),
+    radial-gradient(circle at 84% 8%, var(--app-color-primary-a8), transparent 28%),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--app-color-elevated) 72%, transparent),
+      transparent 82%
+    );
+  --app-gradient-panel:
+    radial-gradient(circle at 12% 0%, var(--app-color-primary-a7), transparent 34%),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--app-color-surface) 68%, transparent),
+      var(--app-color-surface)
+    ),
+    var(--app-color-elevated);
+  --app-gradient-surface-card: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--app-color-surface) 72%, transparent),
+    var(--app-color-surface)
+  );
+
+  /* Shadows */
+  --app-shadow-brand: 0 18px 36px var(--app-color-brand-a18);
+  --app-shadow-primary: 0 24px 56px var(--app-color-primary-a20);
+  --app-shadow-surface: 0 16px 42px var(--app-color-brand-a6);
+  --app-shadow-surface-hover: 0 24px 54px var(--app-color-brand-a10);
+
+  /* Layout */
+  --app-container-max: #{$container-max};
+  --app-container-padding: #{$container-padding};
+  --app-content-max-prose: #{$content-max-prose};
+  --app-content-max-compact: #{$content-max-compact};
+  --app-header-control-size: #{$header-control-size};
+  --app-header-icon-size: #{$header-icon-size};
+  --app-header-nav-gap: #{$header-nav-gap};
+  --app-header-utility-gap: #{$header-utility-gap};
+  --app-header-actions-gap: #{$header-actions-gap};
+  --app-header-auth-gap: #{$header-auth-gap};
+  --app-auth-btn-radius: #{$auth-btn-radius};
+  --app-auth-btn-padding-inline: #{$auth-btn-padding-inline};
+  --app-auth-sign-in-bg: var(--app-color-surface);
+  --app-auth-sign-in-bg-hover: var(--app-color-elevated);
+  --app-auth-sign-in-border: var(--app-color-border-strong);
+  --app-auth-sign-in-border-hover: #{$auth-sign-in-border-hover};
+  --app-auth-sign-in-text: var(--app-color-brand);
+  --app-auth-sign-up-bg: var(--app-color-brand);
+  --app-auth-sign-up-bg-hover: var(--app-color-brand-hover);
+  --app-auth-sign-up-text: var(--app-color-brand-contrast);
+  --app-header-blur: #{$header-blur};
+  --app-header-bg-scrolled: #{$header-bg-scrolled};
+  --app-header-border-scrolled: var(--app-color-brand-a8);
+  --app-theme-switch-width: #{$theme-switch-width};
+  --app-theme-switch-height: #{$theme-switch-height};
+  --app-theme-switch-padding: #{$theme-switch-padding};
+  --app-theme-switch-thumb-size: #{$theme-switch-thumb-size};
+  --app-theme-switch-icon-size: #{$theme-switch-icon-size};
+  --app-lang-panel-min-width: #{$lang-panel-min-width};
+  --app-lang-panel-padding: #{$lang-panel-padding};
+  --app-lang-item-height: #{$lang-item-height};
+  --app-lang-item-font-size: #{$lang-item-font-size};
+  --app-shadow-dropdown: 0 8px 20px var(--app-color-brand-a12);
+  --app-radius-lg: #{$radius-lg};
+  --app-shadow-sm: var(--app-shadow-surface-hover);
+  --app-home-cta-bg:
+    radial-gradient(circle at 90% 10%, rgb(255 255 255 / 28%), transparent 28%),
+    var(--app-color-primary);
+  --app-home-cta-border: 1px solid transparent;
+  --app-home-cta-text: var(--app-color-brand-contrast);
+  --app-home-cta-shadow: var(--app-shadow-primary);
+  --app-home-cta-btn-bg: var(--app-color-surface);
+  --app-home-cta-btn-text: var(--app-color-brand);
+  --app-home-cta-btn-border: var(--app-color-surface);
+  --app-font-sans: #{$font-sans};
+
+  /* Spacing / radius / z-index（运行时 API，与 Sass $ 对齐） */
+  --app-spacing-xs: #{$spacing-xs};
+  --app-spacing-sm: #{$spacing-sm};
+  --app-spacing-md: #{$spacing-md};
+  --app-spacing-lg: #{$spacing-lg};
+  --app-spacing-xl: #{$spacing-xl};
+  --app-radius-base: #{$radius-base};
+  --app-radius-medium: #{$radius-medium};
+  --app-radius-large: #{$radius-large};
+  --app-z-index-base: #{$z-index-base};
+  --app-z-index-dropdown: #{$z-index-dropdown};
+  --app-z-index-sticky: #{$z-index-sticky};
+  --app-z-index-fixed: #{$z-index-fixed};
+  --app-z-index-modal: #{$z-index-modal};
+  --app-z-index-popover: #{$z-index-popover};
+  --app-z-index-tooltip: #{$z-index-tooltip};
+}
