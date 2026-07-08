@@ -23,8 +23,10 @@ import { i18n, loadLocaleMessages, matchRouteLanguage } from '../../i18n'
 
 export default defineNuxtPlugin(async (nuxtApp) => {
   const route = useRoute()
+  // [[language]] 动态段的 path 前缀（如 en）；产品页无此参数时 matchRouteLanguage 回退 DEFAULT_LOCALE
   const locale = matchRouteLanguage(route.params.language as string | undefined)
 
+  // localeFromPrefix 对不支持前缀返回 undefined，兜底 zh-CN 保证首屏有可加载文案
   await loadLocaleMessages(locale || 'zh-CN')
   nuxtApp.vueApp.use(i18n)
 })

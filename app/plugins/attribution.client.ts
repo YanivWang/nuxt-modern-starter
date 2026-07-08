@@ -21,10 +21,13 @@
 */
 import { saveAttributionParams } from '../utils/attribution-params'
 
+/** 从 route.query 提取 utm_* / gclid 等渠道参数并按 key last-touch 写入 localStorage */
 const captureFromQuery = (query: Record<string, unknown>) => saveAttributionParams(query)
 
 export default defineNuxtPlugin(() => {
   const router = useRouter()
+  // 首屏捕获当前 URL 渠道参数
   captureFromQuery(router.currentRoute.value.query)
+  // 每次客户端导航后再次捕获（SPA 内跳转带新 query 时更新归因）
   router.afterEach((to) => captureFromQuery(to.query))
 })

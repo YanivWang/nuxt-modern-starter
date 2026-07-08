@@ -22,10 +22,12 @@
 export const useUserAvatar = () => {
   const { authStore } = useAuth()
 
+  // nickname 优先于 username；未登录或两者皆无时为空字符串
   const displayName = computed(() => authStore.user?.nickname || authStore.user?.username || '')
 
   const avatarUrl = computed(() => authStore.user?.avatar || null)
 
+  // 无头像 URL 时 UI 回退显示首字母；无 displayName 时显示 ?
   const initials = computed(() => {
     const name = displayName.value.trim()
     if (!name) {

@@ -24,6 +24,7 @@ import type { ApiClientOptions, ApiRequestOptions, ApiResponse } from './types'
 import { createHeaders } from './headers'
 import { assertApiSuccess, isUnauthorizedError } from './error'
 
+/** 判断响应是否为 { code: number, ... } 业务信封；非信封 JSON 跳过 assertApiSuccess */
 const isApiEnvelope = (result: unknown): result is ApiResponse<unknown> =>
   Boolean(
     result &&
@@ -34,6 +35,7 @@ const isApiEnvelope = (result: unknown): result is ApiResponse<unknown> =>
 
 type FetchRequest = Parameters<typeof $fetch>[0]
 
+/** 将内部 fetchOptions 断言为 $fetch 第二参数类型（ofetch FetchOptions 结构兼容） */
 const toFetchOptions = (options: ApiRequestOptions & { baseURL: string; headers: Headers }) =>
   options as NonNullable<Parameters<typeof $fetch>[1]>
 
@@ -44,6 +46,7 @@ export const createApiClient = ({
   onUnauthorized
 }: ApiClientOptions) => {
   const request = async <T>(path: FetchRequest, options: ApiRequestOptions = {}) => {
+    // 合并 client 级 baseHeaders 与单次请求 headers，后者覆盖同名 key
     const headers = createHeaders(baseHeaders)
     const requestHeaders = createHeaders(options.headers)
 
@@ -61,18 +64,21 @@ export const createApiClient = ({
     try {
       const result = await fetcher<T>(path, toFetchOptions(fetchOptions))
 
+      // 仅信封响应校验 code === 200；裸 JSON / 非 JSON 原样返回
       if (isApiEnvelope(result)) {
         assertApiSuccess(result)
       }
 
       return result
     } catch (error) {
+      // 无 onUnauthorized 或非 401 错误直接抛出，不重试
       if (!onUnauthorized || !isUnauthorizedError(error)) {
         throw error
       }
 
       const nextHeaders = await onUnauthorized()
 
+      // refresh 失败（返回 null/undefined）时放弃重试，向上抛出原始 401
       if (!nextHeaders) {
         throw error
       }

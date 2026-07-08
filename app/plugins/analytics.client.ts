@@ -24,7 +24,7 @@ import { loadExternalScript } from '../utils/load-script'
 export default defineNuxtPlugin(() => {
   const runtimeConfig = useRuntimeConfig()
 
-  // 默认关闭；仅显式 env 开启时才加载第三方脚本
+  // nuxt.config 将 env 解析为 boolean；非严格 true 时不加载（默认关闭）
   if (runtimeConfig.public.analyticsEnabled !== true) {
     return
   }
@@ -34,6 +34,7 @@ export default defineNuxtPlugin(() => {
     return
   }
 
+  // deferMs 后向 head 注入 async script；失败仅 warn，不阻断应用启动
   loadExternalScript(scriptSrc, runtimeConfig.public.analyticsDeferMs).catch((error) => {
     console.warn('[analytics] Failed to load script:', error)
   })

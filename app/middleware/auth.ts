@@ -25,6 +25,7 @@
 import { AUTH_REDIRECTS, type AuthRouteMeta } from '../../config/auth'
 import { localizedPath } from '../../config/routes'
 
+/** 未登录时构造登录页跳转；redirect 保留原 fullPath（含 query / hash）供 sign-in 页回跳 */
 export const buildAuthLoginRedirect = (loginPath: string, fullPath: string) => ({
   path: loginPath,
   query: {
@@ -39,6 +40,7 @@ export const isAuthorized = (
     can: (permission: string) => boolean
   }
 ) => {
+  // roles 任一命中即可；未配置 roles 时默认放行
   const roleAllowed = authMeta?.roles?.length
     ? authMeta.roles.some((role) => helpers.hasRole(role))
     : true
@@ -64,6 +66,7 @@ export type AuthMiddlewareDecision =
       type: 'allow'
     }
 
+/** 纯函数决策树：未登录 → redirect；已登录但 RBAC 不通过 → 403；否则放行 */
 export const resolveAuthMiddlewareDecision = (
   hasSession: boolean,
   loginPath: string,
@@ -99,6 +102,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
   const languageStore = useLanguageStore()
   // ensureSession：有 token 则 fetchMe，401 时尝试 refresh 后再 fetchMe
   const hasSession = await ensureSession()
+  // definePageMeta({ auth: { roles, permissions } }) 才参与 RBAC；非 object 视为无要求
   const authMeta = typeof to.meta.auth === 'object' ? (to.meta.auth as AuthRouteMeta) : undefined
   const decision = resolveAuthMiddlewareDecision(
     hasSession,
@@ -115,6 +119,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
     return navigateTo(decision.location)
   }
 
+  // 403 由 Nuxt error 页渲染；redirect query 安全校验在 sign-in 页 resolveSafeRedirectPath
   if (decision.type === 'error') {
     throw createError({
       statusCode: decision.statusCode,

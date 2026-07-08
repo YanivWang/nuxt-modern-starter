@@ -26,11 +26,13 @@ export type ApiFailure = {
   message: string
 }
 
+/** 构造可抛出的 API 失败对象；未传字段时使用 statusCode=500、message='Request failed' */
 export const createApiFailure = (input: Partial<ApiFailure> = {}): ApiFailure => ({
   statusCode: input.statusCode || 500,
   message: input.message || 'Request failed'
 })
 
+/** 业务信封 code !== 200 时抛出 ApiFailure，statusCode 取业务 code 而非 HTTP 状态码 */
 export const assertApiSuccess = <T>(response: ApiResponse<T>) => {
   if (response.code !== 200) {
     throw createApiFailure({ statusCode: response.code, message: response.message })
@@ -39,12 +41,14 @@ export const assertApiSuccess = <T>(response: ApiResponse<T>) => {
   return response
 }
 
+/** 从 ofetch 错误体的 data.message 提取用户可读文案；无则回退 defaultMessage */
 export const getApiErrorMessage = (error: unknown, defaultMessage: string) => {
   const apiError = error as { data?: { message?: string } }
 
   return apiError.data?.message || defaultMessage
 }
 
+/** 判定 401：兼容 ofetch 的 response.status 与顶层 statusCode 两种错误形状 */
 export const isUnauthorizedError = (error: unknown) => {
   const fetchError = error as { response?: { status?: number }; statusCode?: number }
   return fetchError.response?.status === 401 || fetchError.statusCode === 401

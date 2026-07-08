@@ -24,6 +24,7 @@ import { DEFAULT_LOCALE, SITE_LOCALE_PREFIX_MAP, type SupportedLocale } from '..
 import { isProductPath } from '../../config/routes'
 import { getSwitchLanguageUrl, relativeLangPath } from '../../i18n'
 
+/** 将 query / hash 规范化为 ?key=val#anchor 后缀，供 getSwitchLanguageUrl 拼接到目标 path */
 const withQueryAndHash = (path: string, query?: string, hash?: string) => {
   const normalizedQuery = query ? `?${query.replace(/^\?/, '')}` : ''
   const normalizedHash = hash ? `#${hash.replace(/^#/, '')}` : ''
@@ -35,6 +36,10 @@ export const useLocalePath = () => {
   const route = useRoute()
   const languageStore = useLanguageStore()
 
+  /**
+   * 为公开页 path 加语言前缀；默认语言（zh-CN）无前缀。
+   * 产品 path（/workspace、/docs/**、/account）语言中性，原样返回。
+   */
   const localePath = (path: string, locale = languageStore.currentLanguage) => {
     const relativePath = relativeLangPath(path)
 
@@ -50,6 +55,7 @@ export const useLocalePath = () => {
     return `/${prefix}${relativePath === '/' ? '' : relativePath}`
   }
 
+  /** 生成语言切换目标 URL；保留当前 route 的 query 与 hash */
   const switchLocalePath = (targetLocale: SupportedLocale) => {
     const query = new URLSearchParams(route.query as Record<string, string>).toString()
     return getSwitchLanguageUrl(route.path, targetLocale, withQueryAndHash('', query, route.hash))

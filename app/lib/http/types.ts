@@ -21,12 +21,14 @@
 */
 import type { FetchOptions } from 'ofetch'
 
+/** 后端统一响应信封；code === 200 表示业务成功，由 assertApiSuccess 校验 */
 export type ApiResponse<T> = {
   code: number
   message: string
   data: T
 }
 
+/** 单次请求选项；baseURL / headers 由 createApiClient 工厂层管理 */
 export type ApiRequestOptions = Omit<FetchOptions<'json'>, 'baseURL' | 'headers'> & {
   headers?: HeadersInit
 }
@@ -35,5 +37,6 @@ export type ApiClientOptions = {
   baseURL: string
   headers?: HeadersInit
   fetcher?: typeof $fetch
+  /** 401 时由调用方 refresh token；返回新 Headers 后 client 仅重试原请求一次 */
   onUnauthorized?: () => Promise<HeadersInit | null | undefined>
 }

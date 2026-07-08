@@ -26,6 +26,7 @@ import {
   type ThemeMode
 } from '../../config/theme'
 
+/** SSR 无 window，system 模式在服务端固定解析为 light */
 const resolveSystemMode = (): ResolvedThemeMode => {
   if (!import.meta.client) {
     return 'light'
@@ -34,6 +35,7 @@ const resolveSystemMode = (): ResolvedThemeMode => {
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
 }
 
+/** 将 resolved 主题写入 <html data-theme>，供全局 SCSS 变量切换 */
 const applyDocumentTheme = (mode: ResolvedThemeMode) => {
   if (import.meta.client) {
     document.documentElement.dataset.theme = mode
@@ -48,6 +50,7 @@ export const useTheme = () => {
     token: getAntdThemeToken(resolvedMode.value)
   }))
 
+  // system 模式解析为 OS 偏好，light/dark 直接使用字面量
   const resolveMode = (mode: ThemeMode) => (mode === 'system' ? resolveSystemMode() : mode)
 
   const setThemeMode = (mode: ThemeMode) => {
@@ -62,15 +65,18 @@ export const useTheme = () => {
     applyDocumentTheme(nextResolvedMode)
   }
 
+  // 按当前 resolved 色板切换，写入显式 light/dark（不再保持 system）
   const toggleTheme = () => {
     setThemeMode(resolvedMode.value === 'dark' ? 'light' : 'dark')
   }
 
   onMounted(() => {
+    // client 首屏从 localStorage 恢复用户偏好，覆盖 store 初始值
     const savedMode = localStorage.getItem(THEME_STORAGE_KEY) as ThemeMode | null
     const initialMode = savedMode || store.mode
     setThemeMode(initialMode)
 
+    // mode === 'system' 时监听 OS 深色偏好变化，仅更新 resolvedMode 与 DOM
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
     const handleSystemChange = () => {
       if (store.mode === 'system') {
@@ -84,6 +90,7 @@ export const useTheme = () => {
     onBeforeUnmount(() => mediaQuery.removeEventListener('change', handleSystemChange))
   })
 
+  // SSR 首屏固定 light，避免 hydration 与 client 恢复后的主题不一致
   if (import.meta.server) {
     store.setResolvedMode('light')
   }

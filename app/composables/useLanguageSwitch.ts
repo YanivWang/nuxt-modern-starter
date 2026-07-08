@@ -27,10 +27,12 @@ export const useLanguageSwitch = () => {
   const { switchLocalePath } = useLocalePath()
 
   const switchLanguage = async (locale: SupportedLocale) => {
+    // 非法 locale 或已是当前语言时直接返回，避免重复加载 i18n 与导航
     if (!SUPPORTED_LOCALES.includes(locale) || locale === languageStore.currentLanguage) {
       return
     }
 
+    // 先更新 store 与 i18n 文案，再导航；公开页改 URL，产品区 path 不变（见 getSwitchLanguageUrl）
     await languageStore.chooseLanguage(locale)
     await router.push(switchLocalePath(locale))
   }

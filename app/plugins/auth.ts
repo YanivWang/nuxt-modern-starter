@@ -22,10 +22,12 @@
 export default defineNuxtPlugin(async () => {
   const { authStore, ensureSession } = useAuth()
 
+  // 无任何 token cookie 时直接标记未登录，跳过 /me 与 refresh 请求
   if (!authStore.accessToken && !authStore.refreshToken) {
     authStore.status = 'unauthenticated'
     return
   }
 
+  // 有 token 时尝试 fetchMe；access 过期则 refresh 后再 fetchMe（见 useAuth.ensureSession）
   await ensureSession()
 })

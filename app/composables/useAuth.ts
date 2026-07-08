@@ -24,11 +24,16 @@ import type { Permission, Role } from '../../config/auth'
 export const useAuth = () => {
   const authStore = useAuthStore()
 
+  /**
+   * 恢复登录态：供 app/middleware/auth.ts 与页面初始化调用。
+   * isAuthenticated 要求 accessToken 与 user 同时存在，仅有 cookie 无 user 时会走下方恢复链。
+   */
   const ensureSession = async () => {
     if (authStore.isAuthenticated) {
       return true
     }
 
+    // 有 accessToken 时先 /me；成功即返回，失败（如 401）则继续尝试 refresh
     if (authStore.accessToken) {
       try {
         await authStore.fetchMe()
@@ -38,6 +43,7 @@ export const useAuth = () => {
       }
     }
 
+    // 无 refreshToken 则无法续期，清空残留 cookie 并视为未登录
     if (!authStore.refreshToken) {
       authStore.reset()
       return false
@@ -53,6 +59,7 @@ export const useAuth = () => {
     }
   }
 
+  // RBAC 直接委托 auth store，角色/权限数据来自 fetchMe 响应
   const can = (permission: Permission) => authStore.hasPermission(permission)
   const hasRole = (role: Role) => authStore.hasRole(role)
 
@@ -63,6 +70,7 @@ export const useAuth = () => {
     isAuthenticated: computed(() => authStore.isAuthenticated),
     login: authStore.login,
     register: authStore.register,
+    // logout 仅清 session，跳转由调用方（如 AccountPage）在 await 后执行
     logout: authStore.logout,
     ensureSession,
     can,

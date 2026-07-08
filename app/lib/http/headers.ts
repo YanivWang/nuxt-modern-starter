@@ -19,8 +19,10 @@
   【边界与注意】
     Public client 在 clients.ts 层 delete authorization/cookie，而非在此模块。
 */
+/** 将 HeadersInit 归一化为 Headers 实例，供 client 层合并与覆盖 */
 export const createHeaders = (headers: HeadersInit = {}) => new Headers(headers)
 
+/** token 存在时注入 Bearer authorization；无 token 时不写入该 header */
 export const createBearerHeaders = (token?: string | null, headers: HeadersInit = {}) => {
   const requestHeaders = createHeaders(headers)
 
@@ -31,6 +33,7 @@ export const createBearerHeaders = (token?: string | null, headers: HeadersInit 
   return requestHeaders
 }
 
+/** 日志脱敏：将 authorization / cookie 替换为 [redacted]，其余 header 原样保留 */
 export const sanitizeHeaders = (headers: HeadersInit = {}) => {
   const normalizedHeaders = createHeaders(headers)
 
