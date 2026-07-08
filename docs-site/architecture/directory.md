@@ -24,7 +24,7 @@ nuxt-modern-starter/
 | 路径                            | 对应 URL                 | 说明                               |
 | ------------------------------- | ------------------------ | ---------------------------------- |
 | `[[language]]/index.vue`        | `/`、`/en`               | 首页                               |
-| `[[language]]/pricing.vue`      | `/pricing`               | 定价（SWR）                        |
+| `[[language]]/pricing.vue`      | `/pricing`               | 定价（SSR）                        |
 | `[[language]]/about.vue`        | `/about`                 | 关于（prerender）                  |
 | `[[language]]/help.vue`         | `/help`                  | 帮助 + FAQ                         |
 | `[[language]]/news/`            | `/news/**`               | 新闻列表/详情                      |
@@ -35,6 +35,8 @@ nuxt-modern-starter/
 | `workspace/templates/index.vue` | `/workspace/templates`   | 模板占位                           |
 | `docs/[id].vue`                 | `/docs/:id`、`/docs/new` | 编辑器（`:id` 为项目 id 或 `new`） |
 | `account.vue`                   | `/account`               | 账户设置                           |
+
+各页面完整渲染方式见 [路由与渲染 — 各页面渲染方式](/architecture/routing#各页面渲染方式) 与 [各页面亮点](/architecture/routing#各页面亮点)。
 
 ::: tip 规则
 

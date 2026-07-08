@@ -133,8 +133,8 @@ export default {
         label: '开箱即用的核心工程模块'
       },
       deploy: {
-        value: 'SSR',
-        label: '默认服务端渲染与缓存策略'
+        value: '4 种',
+        label: '按路由分层的混合渲染策略'
       }
     },
     featuresEyebrow: 'Nuxt 4 强力驱动',
@@ -160,7 +160,8 @@ export default {
       },
       content: {
         title: '内容中心',
-        description: 'FAQ 与新闻内容来自 typed 本地数据，后续可以平滑替换成 CMS 或 API。'
+        description:
+          'FAQ 来自本地 typed config；新闻与定价经 Public API 拉取，后续可统一替换为 CMS 或后台接口。'
       },
       deploy: {
         title: '生产部署',
@@ -173,7 +174,7 @@ export default {
       lead: '保留 starter 的轻量感，同时补齐 SaaS 官网最需要展示的能力、转化入口和内容结构。',
       steps: {
         routes: '先复用首页、价格页、帮助中心和新闻中心组织公开信息。',
-        content: '再替换本地内容数据，沉淀产品卖点、FAQ、公告和客户故事。',
+        content: '再替换 i18n 文案与内容数据（定价/新闻已接 API，可按业务改为 CMS）。',
         auth: '最后接入后端账号体系，把登录态、权限和业务工作台串起来。'
       }
     },
@@ -244,7 +245,7 @@ export default {
   help: {
     eyebrow: '帮助中心',
     title: '快速了解 Nuxt Modern Starter 的使用方式',
-    lead: '这里汇总了项目启动、多语言扩展、鉴权接入、SEO 配置与部署验证等常见问题。内容来自 typed 本地数据，后续可平滑替换为 CMS 或后台接口。',
+    lead: '这里汇总了项目启动、多语言扩展、鉴权接入、SEO 配置与部署验证等常见问题。上手步骤与资源清单来自 i18n，FAQ 来自本地 config，后续可替换为 CMS 或后台接口。',
     faqTitle: '常见问题',
     quickStart: {
       title: '30 分钟快速上手',

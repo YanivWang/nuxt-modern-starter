@@ -134,8 +134,8 @@ export default {
         label: 'Core engineering modules included'
       },
       deploy: {
-        value: 'SSR',
-        label: 'Server rendering and cache rules by default'
+        value: '4',
+        label: 'Hybrid rendering strategies by route'
       }
     },
     featuresEyebrow: 'Powered by Nuxt 4',
@@ -166,7 +166,7 @@ export default {
       content: {
         title: 'Content hub',
         description:
-          'FAQ and news entries come from typed local data and can later move to a CMS or API.'
+          'FAQ comes from typed local config; news and pricing load through the public API and can later move to a CMS or backend.'
       },
       deploy: {
         title: 'Production deployment',
@@ -181,7 +181,7 @@ export default {
       steps: {
         routes: 'Reuse home, pricing, help, and news pages to organize public information first.',
         content:
-          'Replace local content with product proof points, FAQs, announcements, and customer stories.',
+          'Replace i18n copy and content sources next (pricing/news already use the API and can move to a CMS).',
         auth: 'Connect your backend account system when you are ready to wire sessions, roles, and the product app.'
       }
     },
@@ -255,7 +255,7 @@ export default {
   help: {
     eyebrow: 'Help center',
     title: 'Learn how to use Nuxt Modern Starter',
-    lead: 'This page collects common questions about project setup, i18n, auth, SEO, and deployment. Content comes from typed local data and can later move to a CMS or backend API.',
+    lead: 'This page collects common questions about project setup, i18n, auth, SEO, and deployment. Quick-start steps and resource lists come from i18n; FAQ comes from local config and can later move to a CMS or backend API.',
     faqTitle: 'FAQ',
     quickStart: {
       title: 'Get running in 30 minutes',
@@ -281,7 +281,7 @@ export default {
   news: {
     eyebrow: 'Project updates',
     title: 'Nuxt Modern Starter releases and notes',
-    lead: 'Track starter releases, deployment practices, and extension guidance. These pages also demonstrate news layouts, Article JSON-LD, and SWR cache rules.',
+    lead: 'Track starter releases, deployment practices, and extension guidance. These pages also demonstrate news list/detail layouts, detail-page Article JSON-LD, and SWR cache rules.',
     notFound: 'This news article was not found'
   },
   error: {

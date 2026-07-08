@@ -18,7 +18,7 @@
     页面注释可写完整路径 GET /api/content/pricing（便于联调）。
 
   【边界与注意】
-    FAQ 不经远程 API；新闻 / 定价走 Public client，SSR / SWR 安全。
+    FAQ 不经远程 API；新闻 / 定价走 Public client，适合 SSR 公开页（不经 token）。
 */
 import type { ApiResponse } from '../lib/http/types'
 import { faqItems } from '../../config/content/faq'

@@ -43,7 +43,7 @@ Page / Store / Feature Component
 
 ### Public 客户端
 
-用于新闻、定价等 **可被 CDN/爬虫缓存** 的公开数据：
+用于新闻、定价等 **不经 token 的公开 SEO 数据**（是否 CDN 缓存由 `routeRules` 决定，如新闻 SWR、定价 SSR）：
 
 ```ts
 // app/api/public.ts

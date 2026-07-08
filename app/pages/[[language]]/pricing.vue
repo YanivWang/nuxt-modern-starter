@@ -5,7 +5,7 @@
     公开展示三档定价方案与能力清单，CTA 导向注册或帮助页。
 
   【架构位置】
-    公开 SEO 区 — app/pages/[[language]]，default layout，PUBLIC_PAGE_PATHS + SWR。
+    公开 SEO 区 — app/pages/[[language]]，default layout，PUBLIC_PAGE_PATHS，默认 SSR。
 
   路由：/pricing、/en/pricing
   Layout：default
@@ -26,7 +26,7 @@
   - 被引用：AppHeader、首页 CTA、product-shell 底部定价链接
 
   【渲染 / 数据】
-    SSR + SWR 1h；fetchPricingPage → adapter /content/pricing（网关 GET /api/content/pricing，base 已含 /api）。
+    SSR；fetchPricingPage → adapter /content/pricing（网关 GET /api/content/pricing，base 已含 /api）。
     useAsyncData 水合复用 payload。
 
   子组件：

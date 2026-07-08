@@ -47,7 +47,7 @@ Route rendering is centralized in `nuxt.config.ts` through `config/routes.ts`:
 
 - Default public routes: SSR.
 - `prerenderRoutes`: build-time static HTML for selected public pages such as `/`, `/about`, `/help`, and their `/en` variants.
-- `swrRouteRules`: SSR with 1-hour SWR cache for `/news/**`, `/en/news/**`, `/pricing`, and `/en/pricing`.
+- `swrRouteRules`: SSR with 1-hour SWR cache for `/news/**` and `/en/news/**`. `/pricing` and `/en/pricing` use default SSR (no SWR).
 - `csrRouteRules`: client-only rendering for product routes (`/workspace/**`, `/docs/**`, `/account`).
 
 This keeps SEO pages cache-friendly while product pages stay session-aware and interaction-heavy.

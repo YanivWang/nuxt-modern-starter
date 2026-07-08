@@ -16,7 +16,7 @@
       useLocalePath、server/utils/seo.ts
 
   【渲染 / 数据】
-    prerender：/、/about、/help 及 /en 变体；SWR：/news/**、/pricing 及 /en 变体；
+    prerender：/、/about、/help 及 /en 变体；SWR：/news/** 及 /en 变体；/pricing 走默认 SSR；
     CSR（ssr: false）：/workspace/**、/docs/**、/account。
 
   【边界与注意】
@@ -88,5 +88,5 @@ export const prerenderRoutes = publicLocalizedPaths().filter(
     path === '/en/help'
 )
 
-// 新闻、定价等动态内容走 API，更新频率较低，适合 SWR 缓存 SSR 结果。
-export const swrRouteRules = ['/news/**', '/en/news/**', '/pricing', '/en/pricing'] as const
+// 新闻等动态内容走 API，更新频率较低，适合 SWR 缓存 SSR 结果。
+export const swrRouteRules = ['/news/**', '/en/news/**'] as const

@@ -58,18 +58,23 @@ Nuxt 页面文件（`app/pages/*`）只做：
 
 ## 预置功能清单
 
-| 模块      | 路由                     | 说明                                      |
-| --------- | ------------------------ | ----------------------------------------- |
-| 首页      | `/`、`/en`               | prerender，WebPage/Organization JSON-LD   |
-| 定价      | `/pricing`               | SWR，内容来自 API                         |
-| 关于      | `/about`                 | prerender，纯 i18n                        |
-| 帮助      | `/help`                  | prerender，FAQ 本地数据                   |
-| 新闻      | `/news`、`/news/:slug`   | SWR，Article JSON-LD                      |
-| 登录/注册 | `/sign-in`、`/sign-up`   | noindex                                   |
-| 工作台    | `/workspace`             | CSR，项目 CRUD                            |
-| 模板      | `/workspace/templates`   | CSR，占位 UI                              |
-| 编辑器    | `/docs/:id`、`/docs/new` | CSR，YanivEditor PPT 编辑器 + 2s 自动保存 |
-| 账户      | `/account`               | CSR，profile + 退出                       |
+| 模块     | 路由                            | 渲染方式        | 说明                                            |
+| -------- | ------------------------------- | --------------- | ----------------------------------------------- |
+| 首页     | `/`、`/en`                      | **prerender**   | 营销落地页五段式 + WebPage/Organization JSON-LD |
+| 关于     | `/about`、`/en/about`           | **prerender**   | 使命 / 价值观 / 背景；纯 i18n                   |
+| 帮助     | `/help`、`/en/help`             | **prerender**   | 快速上手 + 资源清单 + FAQ 折叠                  |
+| 定价     | `/pricing`、`/en/pricing`       | **SSR**（默认） | 三档方案 + Includes；内容来自 API               |
+| 新闻列表 | `/news`、`/en/news`             | **SWR 3600s**   | 卡片列表；摘要来自 API                          |
+| 新闻详情 | `/news/:slug`、`/en/news/:slug` | **SWR 3600s**   | 正文来自 API；Article JSON-LD                   |
+| 登录     | `/sign-in`、`/en/sign-in`       | **SSR**（默认） | noindex；安全 redirect，默认进工作台            |
+| 注册     | `/sign-up`、`/en/sign-up`       | **SSR**（默认） | noindex；不自动登录，跳转登录预填用户名         |
+| 404 兜底 | 未匹配的公开路径                | **SSR**（默认） | HTTP 404 + noindex                              |
+| 工作台   | `/workspace`                    | **CSR**         | 列表/删除；创建走 `/docs/new`；路由预加载       |
+| 模板     | `/workspace/templates`          | **CSR**         | 6 张占位卡片 + 空状态                           |
+| 编辑器   | `/docs/:id`、`/docs/new`        | **CSR**         | PPT 编辑器；草稿首次保存创建项目；2s 自动保存   |
+| 账户     | `/account`                      | **CSR**         | profile 展示 + 退出回首页                       |
+
+完整页面文件路径、渲染策略与 UI 亮点见 [路由与渲染 — 各页面渲染方式](/architecture/routing#各页面渲染方式) 与 [各页面亮点](/architecture/routing#各页面亮点)。
 
 ## 技术栈一览
 

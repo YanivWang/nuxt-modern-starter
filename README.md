@@ -43,7 +43,7 @@ pnpm build
 - Nuxt 4, TypeScript, pnpm, Pinia, Ant Design Vue, SCSS, and `vue-i18n`.
 - Default-language routes without a prefix and English routes under `/en`.
 - Shared `useLocalePath`, `usePageSeo`, `useTheme`, and scenario-specific API clients.
-- Hybrid rendering: SSR for public pages, prerender for selected marketing routes, SWR for news and pricing, and CSR for product routes (`/workspace/**`, `/docs/**`, `/account`).
+- Hybrid rendering: default SSR for unconfigured public routes, prerender for selected marketing routes, SWR for news, and CSR for product routes (`/workspace/**`, `/docs/**`, `/account`). Pricing uses default SSR.
 - Separate public SEO routes and logged-in product routes. Product URLs stay language-neutral; `/en/workspace`, `/en/docs/**`, and `/en/account` redirect to canonical paths without a locale prefix.
 - Feature-first product modules under `app/features/*` for workspace, editor, product shell, account shell, templates, and future SaaS workflows.
 - Opt-in Bearer Token auth module with sign-in, sign-up, logout, user menu, safe redirect handling, and protected-route examples.
