@@ -15,6 +15,7 @@
 
   【渲染 / 数据】
     prerender / SWR 3600s / 产品区 ssr:false；/** CSP 含 script-src（启用 analytics 需放宽）。
+    css 挂载 ~/assets/styles/main.scss；vite 向 SFC 注入 tokens/_variables.scss。
 
   【边界与注意】
     测试环境追加 @nuxt/test-utils/module；修改 routeRules 须同步 config/routes 与单测。

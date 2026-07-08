@@ -141,7 +141,7 @@ defineExpose({
   transition: background 0.2s ease;
 
   &:hover {
-    background: rgb(15 23 42 / 4%);
+    background: var(--app-color-nav-hover-bg);
     color: var(--app-color-text);
   }
 }
@@ -149,7 +149,7 @@ defineExpose({
 .editor-workspace-header__autosave {
   margin: 0;
   color: var(--app-color-muted);
-  font-size: 12px;
+  font-size: var(--app-text-xs);
   white-space: nowrap;
 
   &.is-saving {
@@ -157,7 +157,7 @@ defineExpose({
   }
 
   &.is-error {
-    color: #cf1322;
+    color: var(--app-color-danger);
   }
 }
 
@@ -176,7 +176,7 @@ defineExpose({
 
   &:hover,
   &:focus-visible {
-    background: rgb(22 119 255 / 8%);
+    background: var(--app-color-nav-active-bg);
     outline: none;
   }
 
@@ -192,8 +192,8 @@ defineExpose({
   margin: -2px -6px;
   border: none;
   outline: none;
-  background: rgb(22 119 255 / 10%);
-  box-shadow: inset 0 0 0 1px rgb(22 119 255 / 24%);
+  background: var(--app-color-primary-subtle);
+  box-shadow: inset 0 0 0 1px var(--app-color-primary-border);
   font-size: var(--editor-header-title-size);
   font-weight: 700;
   line-height: 1.3;

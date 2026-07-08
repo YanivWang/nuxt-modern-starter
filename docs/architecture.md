@@ -31,6 +31,7 @@
 - `app/middleware/locale.global.ts`: global locale normalization before page rendering, including product canonical 301 redirects via `localizedProductPathToCanonical`.
 - `app/middleware/auth.ts`: named auth middleware for protected product routes (session, login redirect, RBAC). Does not handle product canonical redirects.
 - `app/plugins`: startup hooks such as `auth.ts` session hydration, `i18n.ts` setup, `attribution.client.ts` first-load and SPA attribution capture, and `analytics.client.ts` deferred third-party script loading behind env guards.
+- `app/assets/styles`: global SCSS entry (`main.scss`), layered tokens (`tokens/_variables.scss`, `_root.scss`, `_dark.scss`), public-page patterns (`patterns/_page.scss`), and runtime CSS var helpers (`tokens.ts`). Mounted from `nuxt.config.ts`; Sass variables are auto-injected into SFC style blocks.
 - `config`: site metadata, route lists, auth constants, theme tokens, and typed local content.
 - `config/site.ts`: site metadata, supported locales, navigation, and `PUBLIC_PAGE_PATHS` (`/`, `/pricing`, `/about`, `/help`, `/news`). Sign-in and sign-up are intentionally excluded.
 - `config/auth.ts`: auth endpoint paths, cookie keys, token max ages, auth route meta types, and frontend redirect constants (`AUTH_REDIRECTS.login = '/sign-in'`).

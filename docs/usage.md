@@ -230,9 +230,25 @@ Do not install `@nuxtjs/i18n` for this template. Language routing is intentional
 
 ## Theme Customization
 
-Edit `config/theme.ts` and `app/assets/styles/tokens.scss` together. CSS variables are the preferred page styling API; pages should not hardcode brand colors, background colors, body text colors, or borders.
+The style system is split into Ant Design component tokens and page-level CSS variables:
 
-To disable dark mode, keep only light tokens, set `DEFAULT_THEME_MODE` to `light`, and remove the theme toggle in `AppHeader.vue`.
+| Layer            | Location                                             | Role                                                     |
+| ---------------- | ---------------------------------------------------- | -------------------------------------------------------- |
+| Palette source   | `config/theme-palette.json`                          | Single source for brand and semantic colors              |
+| Ant Design       | `config/theme.ts`                                    | `getAntdThemeToken()` for ConfigProvider (reads palette) |
+| Page CSS vars    | `app/assets/styles/tokens/_root.scss` + `_dark.scss` | `--app-*` variables for pages and components             |
+| Sass build-time  | `app/assets/styles/tokens/_variables.scss`           | `$spacing-*`, `$color-*` for SCSS (generated)            |
+| Runtime JS       | `app/assets/styles/tokens.ts`                        | `cssVarTokens`, `getCssVar`, `setCssVar`                 |
+| Public patterns  | `app/assets/styles/patterns/_page.scss`              | `.page-panel`, `.page-faq`, etc.                         |
+| Product patterns | `app/assets/styles/patterns/_product.scss`           | `.workspace-card`, `.app-shell-nav`, etc.                |
+
+When changing colors, edit `config/theme-palette.json` and run `pnpm generate:theme`. Do not hand-edit `_variables.scss` or `_dark.scss`. Add derived tokens (gradients, alpha, typography) in `_root.scss` when needed. CSS variables are the preferred page styling API; pages should not hardcode brand colors, background colors, body text colors, or borders. `stylelint` enforces `color-no-hex` under `app/components`, `app/features`, `app/pages`, and `app/layouts`.
+
+Theme mode is applied with `html[data-theme='light'|'dark']` via `useTheme()`. On the client, `useTheme()` also calls `applyThemeCssVariables()` so Ant Design tokens and `--app-*` base colors share the same `theme-palette.json` source at runtime (already implemented). Global styles load from `app/assets/styles/main.scss`.
+
+See `docs-site/tech-stack/styles.md` for the full `--app-*` token catalog and product pattern guide.
+
+To disable dark mode, remove dark overrides from `tokens/index.scss`, set `DEFAULT_THEME_MODE` to `light`, and remove the theme toggle in `AppHeader.vue`.
 
 ## Environment Variables
 

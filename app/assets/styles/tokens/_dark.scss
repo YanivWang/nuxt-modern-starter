@@ -1,4 +1,5 @@
-// 暗黑模式 — 业务层 token 覆盖（不含 Ant Design Vue 组件 token）
+// AUTO-GENERATED — 请勿手改。编辑 config/theme-palette.mjs 后运行 pnpm generate:theme
+// 暗黑模式 — 色值覆盖（渐变/阴影语义项见下方）
 
 :root[data-theme='dark'] {
   color-scheme: dark;
@@ -8,30 +9,34 @@
   --app-color-primary-active: #4096ff;
   --app-color-primary-subtle: rgb(105 177 255 / 12%);
   --app-color-primary-border: rgb(105 177 255 / 24%);
-
   --app-color-brand: #f8fafc;
   --app-color-brand-hover: #e2e8f0;
   --app-color-brand-contrast: #0f172a;
-
   --app-color-bg: #0f172a;
   --app-color-elevated: #111c33;
+  --app-color-bg-canvas: #0f172a;
   --app-color-surface: #111c33;
   --app-color-overlay: rgb(17 28 51 / 72%);
-
   --app-color-text: #f8fafc;
   --app-color-text-strong: #ffffff;
   --app-color-muted: #94a3b8;
   --app-color-subtle: #64748b;
-
   --app-color-border: #26344d;
   --app-color-border-strong: #334155;
-
+  --app-color-fill-secondary: #1a2744;
+  --app-color-fill-tertiary: #152238;
   --app-color-success: #34d399;
   --app-color-success-subtle: rgb(52 211 153 / 12%);
   --app-color-warning: #fbbf24;
   --app-color-warning-subtle: rgb(251 191 36 / 12%);
   --app-color-danger: #f87171;
   --app-color-danger-subtle: rgb(248 113 113 / 12%);
+  --app-color-info: #69b1ff;
+  --app-color-avatar-fallback: #34d399;
+  --app-color-avatar-fallback-text: #0f172a;
+  --app-project-accent-violet: #91caff;
+  --app-project-accent-cyan: #22d3ee;
+  --app-project-accent-rose: #fb7185;
 
   --app-gradient-hero: linear-gradient(
     180deg,
@@ -65,6 +70,9 @@
   --app-shadow-primary: 0 24px 56px var(--app-color-primary-a18);
   --app-shadow-surface: 0 16px 42px rgb(0 0 0 / 24%);
   --app-shadow-surface-hover: 0 24px 54px rgb(0 0 0 / 30%);
+  --app-shadow-elevation-1: 0 1px 2px rgb(0 0 0 / 24%);
+  --app-shadow-elevation-2: 0 2px 8px rgb(0 0 0 / 28%);
+  --app-shadow-elevation-3: 0 8px 24px rgb(0 0 0 / 35%);
 
   --app-auth-sign-in-bg: transparent;
   --app-auth-sign-in-bg-hover: rgb(248 250 252 / 6%);
@@ -85,4 +93,7 @@
   --app-home-cta-btn-bg: var(--app-color-primary);
   --app-home-cta-btn-text: var(--app-color-brand-contrast);
   --app-home-cta-btn-border: transparent;
+  --app-color-nav-hover-bg: color-mix(in srgb, var(--app-color-brand) 4%, transparent);
+  --app-color-nav-active-bg: color-mix(in srgb, var(--app-color-primary) 10%, transparent);
+  --app-color-surface-muted: color-mix(in srgb, var(--app-color-fill-secondary) 88%, transparent);
 }

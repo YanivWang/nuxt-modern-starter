@@ -1,5 +1,4 @@
-// Design Token — Sass 构建期默认值（不直接输出 CSS）
-// 与 config/theme.ts light 色板、tokens/_root.scss 对齐
+// AUTO-GENERATED — 请勿手改。编辑 config/theme-palette.mjs 后运行 pnpm generate:theme
 
 // Brand — interactive
 $color-primary: #1677ff;
@@ -16,6 +15,7 @@ $color-brand-contrast: #ffffff;
 // Surfaces
 $color-bg: #ffffff;
 $color-elevated: #f8fafc;
+$color-bg-canvas: #f8fafc;
 $color-surface: #ffffff;
 $color-overlay: rgb(255 255 255 / 72%);
 
@@ -25,9 +25,11 @@ $color-text-strong: #0f172a;
 $color-muted: #64748b;
 $color-subtle: #475569;
 
-// Borders
+// Borders & fills
 $color-border: #e5e7eb;
 $color-border-strong: #e2e8f0;
+$color-fill-secondary: #f3f4f6;
+$color-fill-tertiary: #f9fafb;
 
 // Semantic
 $color-success: #10b981;
@@ -36,6 +38,14 @@ $color-warning: #f59e0b;
 $color-warning-subtle: #fffbeb;
 $color-danger: #ef4444;
 $color-danger-subtle: #fef2f2;
+$color-info: #1677ff;
+$color-avatar-fallback: #10b981;
+$color-avatar-fallback-text: #ffffff;
+
+// Project accents
+$project-accent-violet: #4096ff;
+$project-accent-cyan: #0891b2;
+$project-accent-rose: #e11d48;
 
 // Layout
 $container-max: 1300px;
@@ -50,9 +60,7 @@ $header-actions-gap: 16px;
 $header-auth-gap: 12px;
 $auth-btn-radius: 8px;
 $auth-btn-padding-inline: 18px;
-$auth-sign-in-border-hover: #cbd5e1;
 $header-blur: 8px;
-$header-bg-scrolled: rgb(255 255 255 / 80%);
 $theme-switch-width: 48px;
 $theme-switch-height: 24px;
 $theme-switch-padding: 2px;
@@ -62,6 +70,10 @@ $lang-panel-min-width: 132px;
 $lang-panel-padding: 4px;
 $lang-item-height: 32px;
 $lang-item-font-size: 14px;
+$product-sidebar-width: 260px;
+$product-nav-radius: 10px;
+$auth-sign-in-border-hover: #cbd5e1;
+$header-bg-scrolled: rgb(255 255 255 / 80%);
 $radius-lg: 16px;
 
 // Typography
@@ -73,8 +85,23 @@ $font-sans:
   BlinkMacSystemFont,
   'Segoe UI',
   sans-serif;
+$text-xs: 12px;
+$text-sm: 13px;
+$text-base: 14px;
+$text-md: 15px;
+$text-lg: 16px;
+$text-xl: 18px;
+$text-2xl: 24px;
+$text-3xl: 30px;
+$leading-tight: 1.25;
+$leading-normal: 1.5;
+$leading-relaxed: 1.75;
+$weight-medium: 500;
+$weight-semibold: 600;
+$weight-bold: 700;
+$weight-extrabold: 800;
 
-// Spacing（SFC 构建期可用）
+// Spacing
 $spacing-xs: 4px;
 $spacing-sm: 8px;
 $spacing-md: 16px;
@@ -84,7 +111,17 @@ $spacing-xl: 32px;
 // Radius
 $radius-base: 4px;
 $radius-medium: 8px;
-$radius-large: 16px;
+$radius-large: 12px;
+$radius-xl: 16px;
+
+// Shadows
+$shadow-base: 0 18px 45px rgb(15 23 42 / 10%);
+$shadow-brand: 0 18px 36px rgb(15 23 42 / 18%);
+$shadow-primary: 0 24px 56px rgb(22 119 255 / 20%);
+$shadow-surface: 0 16px 42px rgb(15 23 42 / 6%);
+$shadow-elevation-1: 0 1px 2px rgb(15 23 42 / 4%);
+$shadow-elevation-2: 0 2px 8px rgb(15 23 42 / 4%);
+$shadow-elevation-3: 0 8px 24px rgb(15 23 42 / 12%);
 
 // Transition
 $transition-base: all 0.3s ease;

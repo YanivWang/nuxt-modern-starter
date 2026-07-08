@@ -39,23 +39,23 @@ const resolveNavIcon = (icon: string) =>
   <div class="product-shell">
     <aside class="product-shell__sidebar" aria-label="Product navigation">
       <BaseLogo />
-      <nav class="product-shell__nav">
+      <nav class="product-shell__nav app-shell-nav">
         <NuxtLink
           v-for="item in productNavItems"
           :key="item.path"
           :to="localePath(item.path)"
-          class="product-shell__nav-link"
+          class="product-shell__nav-link app-shell-nav__link"
         >
           <component :is="resolveNavIcon(item.icon)" aria-hidden="true" />
           <span>{{ $t(item.labelKey) }}</span>
         </NuxtLink>
       </nav>
-      <nav class="product-shell__footer-nav" aria-label="Product footer navigation">
+      <nav class="product-shell__footer-nav app-shell-nav" aria-label="Product footer navigation">
         <NuxtLink
           v-for="item in productFooterNavItems"
           :key="item.path"
           :to="localePath(item.path)"
-          class="product-shell__nav-link product-shell__nav-link--footer"
+          class="product-shell__nav-link product-shell__nav-link--footer app-shell-nav__link app-shell-nav__link--footer"
         >
           <component :is="resolveNavIcon(item.icon)" aria-hidden="true" />
           <span>{{ $t(item.labelKey) }}</span>
@@ -89,44 +89,10 @@ const resolveNavIcon = (icon: string) =>
   background: var(--app-color-bg);
 }
 
-.product-shell__nav,
-.product-shell__footer-nav {
-  display: grid;
-  gap: 8px;
-}
-
 .product-shell__footer-nav {
   margin-top: auto;
-  padding-top: 16px;
+  padding-top: var(--app-spacing-md);
   border-top: 1px solid var(--app-color-border);
-}
-
-.product-shell__nav-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 12px;
-  border-radius: 10px;
-  color: var(--app-color-muted);
-  font-weight: 600;
-  text-decoration: none;
-  transition:
-    background 0.2s ease,
-    color 0.2s ease;
-
-  &:hover {
-    color: var(--app-color-text);
-    background: rgb(15 23 42 / 4%);
-  }
-
-  &.router-link-active {
-    background: rgb(22 119 255 / 10%);
-    color: var(--app-color-primary);
-  }
-}
-
-.product-shell__nav-link--footer {
-  font-weight: 500;
 }
 
 .product-shell__content {

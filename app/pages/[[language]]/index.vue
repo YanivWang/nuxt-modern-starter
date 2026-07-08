@@ -234,7 +234,7 @@ usePageSeo({
     linear-gradient(90deg, var(--app-color-brand-a5) 1px, transparent 1px);
   background-position: center top;
   background-size: 80px 80px;
-  mask-image: linear-gradient(180deg, #000 0%, transparent 70%);
+  mask-image: linear-gradient(180deg, black 0%, transparent 70%);
 }
 
 .hero::after {

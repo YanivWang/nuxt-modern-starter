@@ -48,6 +48,6 @@ const { localePath } = useLocalePath()
   place-items: center;
   border-radius: 10px;
   background: var(--app-color-primary);
-  color: #ffffff;
+  color: var(--app-color-brand-contrast);
 }
 </style>

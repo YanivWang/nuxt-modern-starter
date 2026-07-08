@@ -21,8 +21,12 @@
   /* Surfaces */
   --app-color-bg: #{$color-bg};
   --app-color-elevated: #{$color-elevated};
+  --app-color-bg-canvas: #{$color-bg-canvas};
   --app-color-surface: #{$color-surface};
   --app-color-overlay: #{$color-overlay};
+  --app-color-fill-secondary: #{$color-fill-secondary};
+  --app-color-fill-tertiary: #{$color-fill-tertiary};
+  --app-color-surface-muted: color-mix(in srgb, #{$color-fill-secondary} 88%, transparent);
 
   /* Text */
   --app-color-text: #{$color-text};
@@ -41,6 +45,18 @@
   --app-color-warning-subtle: #{$color-warning-subtle};
   --app-color-danger: #{$color-danger};
   --app-color-danger-subtle: #{$color-danger-subtle};
+  --app-color-info: #{$color-info};
+  --app-color-avatar-fallback: #{$color-avatar-fallback};
+  --app-color-avatar-fallback-text: #{$color-avatar-fallback-text};
+
+  /* Product navigation */
+  --app-color-nav-hover-bg: color-mix(in srgb, var(--app-color-brand) 4%, transparent);
+  --app-color-nav-active-bg: color-mix(in srgb, var(--app-color-primary) 10%, transparent);
+
+  /* Project card accents */
+  --app-project-accent-violet: #{$project-accent-violet};
+  --app-project-accent-cyan: #{$project-accent-cyan};
+  --app-project-accent-rose: #{$project-accent-rose};
 
   /* Alpha helpers */
   --app-color-brand-a5: color-mix(in srgb, var(--app-color-brand) 5%, transparent);
@@ -113,6 +129,9 @@
   --app-shadow-primary: 0 24px 56px var(--app-color-primary-a20);
   --app-shadow-surface: 0 16px 42px var(--app-color-brand-a6);
   --app-shadow-surface-hover: 0 24px 54px var(--app-color-brand-a10);
+  --app-shadow-elevation-1: #{$shadow-elevation-1};
+  --app-shadow-elevation-2: #{$shadow-elevation-2};
+  --app-shadow-elevation-3: #{$shadow-elevation-3};
 
   /* Layout */
   --app-container-max: #{$container-max};
@@ -160,6 +179,26 @@
   --app-home-cta-btn-text: var(--app-color-brand);
   --app-home-cta-btn-border: var(--app-color-surface);
   --app-font-sans: #{$font-sans};
+  --app-text-xs: #{$text-xs};
+  --app-text-sm: #{$text-sm};
+  --app-text-base: #{$text-base};
+  --app-text-md: #{$text-md};
+  --app-text-lg: #{$text-lg};
+  --app-text-xl: #{$text-xl};
+  --app-text-2xl: #{$text-2xl};
+  --app-text-3xl: #{$text-3xl};
+  --app-leading-tight: #{$leading-tight};
+  --app-leading-normal: #{$leading-normal};
+  --app-leading-relaxed: #{$leading-relaxed};
+  --app-weight-medium: #{$weight-medium};
+  --app-weight-semibold: #{$weight-semibold};
+  --app-weight-bold: #{$weight-bold};
+  --app-weight-extrabold: #{$weight-extrabold};
+  --app-focus-ring: 0 0 0 2px color-mix(in srgb, var(--app-color-primary) 28%, transparent);
+
+  /* Product layout */
+  --app-product-sidebar-width: #{$product-sidebar-width};
+  --app-product-nav-radius: #{$product-nav-radius};
 
   /* Spacing / radius / z-index（运行时 API，与 Sass $ 对齐） */
   --app-spacing-xs: #{$spacing-xs};

@@ -49,9 +49,15 @@
 
 ## 样式体系
 
-- `config/theme.ts` — Ant Design token
-- `app/assets/styles/tokens.scss` — CSS 变量
-- 页面优先用 semantic CSS 变量，避免硬编码品牌色
+分层设计 token，详见 [样式体系](/tech-stack/styles)：
+
+- `config/theme.ts` — Ant Design ConfigProvider token
+- `app/assets/styles/tokens/` — Sass `$` + CSS `--app-*` 变量（亮/暗）
+- `app/assets/styles/tokens.ts` — 运行时 `cssVarTokens`
+- `app/assets/styles/patterns/` — 公开页 `.page-*` 模式类
+- `app/assets/styles/main.scss` — 全局入口
+
+页面优先用 semantic `--app-*` 变量，避免硬编码品牌色。
 
 ## 与后端契约
 
@@ -62,5 +68,6 @@
 
 ## 下一步
 
+- [样式体系](/tech-stack/styles)
 - [Nuxt 4 在本项目中的用法](/tech-stack/nuxt)
 - [HTTP 请求层](/tech-stack/http)

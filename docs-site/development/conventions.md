@@ -2,14 +2,14 @@
 
 ## 配置边界
 
-| 层         | 文件                              | 放什么                       |
-| ---------- | --------------------------------- | ---------------------------- |
-| 部署配置   | `runtimeConfig` / `.env.*`        | API 地址、siteUrl、analytics |
-| UI 默认    | `app/app.config.ts`               | 品牌文案、layout 开关        |
-| 站点元数据 | `config/site.ts`                  | 语言、导航、公开页路径       |
-| 路由规则   | `config/routes.ts`                | prerender/SWR/CSR            |
-| 鉴权常量   | `config/auth.ts`                  | 端点、cookie、过期时间       |
-| 主题       | `config/theme.ts` + `tokens.scss` | 设计 token                   |
+| 层         | 文件                                            | 放什么                                     |
+| ---------- | ----------------------------------------------- | ------------------------------------------ |
+| 部署配置   | `runtimeConfig` / `.env.*`                      | API 地址、siteUrl、analytics               |
+| UI 默认    | `app/app.config.ts`                             | 品牌文案、layout 开关                      |
+| 站点元数据 | `config/site.ts`                                | 语言、导航、公开页路径                     |
+| 路由规则   | `config/routes.ts`                              | prerender/SWR/CSR                          |
+| 鉴权常量   | `config/auth.ts`                                | 端点、cookie、过期时间                     |
+| 主题       | `config/theme.ts` + `app/assets/styles/tokens/` | Ant Design token + 页面 `--app-*` CSS 变量 |
 
 ## 命名
 
@@ -62,4 +62,5 @@
 
 ## 下一步
 
+- [样式体系](/tech-stack/styles)
 - [测试与质量](/development/testing)

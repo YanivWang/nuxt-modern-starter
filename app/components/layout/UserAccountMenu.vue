@@ -29,10 +29,15 @@
       aria-haspopup="menu"
       @click="toggleMenu"
     >
-      <span v-if="avatarUrl" class="user-account-menu__avatar user-account-menu__avatar--image">
+      <span
+        v-if="avatarUrl"
+        class="user-account-menu__avatar app-avatar-fallback app-avatar-fallback--sm app-avatar-fallback--image"
+      >
         <img :src="avatarUrl" alt="" />
       </span>
-      <span v-else class="user-account-menu__avatar">{{ initials }}</span>
+      <span v-else class="user-account-menu__avatar app-avatar-fallback app-avatar-fallback--sm">{{
+        initials
+      }}</span>
     </button>
 
     <Transition name="user-account-menu-pop">
@@ -42,13 +47,15 @@
             <div class="user-account-menu__header">
               <span
                 v-if="avatarUrl"
-                class="user-account-menu__avatar user-account-menu__avatar--image user-account-menu__avatar--lg"
+                class="user-account-menu__avatar app-avatar-fallback app-avatar-fallback--lg app-avatar-fallback--image"
               >
                 <img :src="avatarUrl" alt="" />
               </span>
-              <span v-else class="user-account-menu__avatar user-account-menu__avatar--lg">{{
-                initials
-              }}</span>
+              <span
+                v-else
+                class="user-account-menu__avatar app-avatar-fallback app-avatar-fallback--lg"
+                >{{ initials }}</span
+              >
               <div class="user-account-menu__identity">
                 <p class="user-account-menu__name">{{ displayName }}</p>
                 <p v-if="username" class="user-account-menu__username">{{ username }}</p>
@@ -299,35 +306,7 @@ const handleSignOut = async () => {
 }
 
 .user-account-menu__avatar {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: #22c55e;
-  color: #ffffff;
-  font-size: 15px;
-  font-weight: 600;
-  line-height: 1;
   user-select: none;
-
-  &--lg {
-    width: 44px;
-    height: 44px;
-    font-size: 18px;
-  }
-
-  &--image {
-    overflow: hidden;
-    background: transparent;
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-  }
 }
 
 .user-account-menu__flyout {

@@ -52,12 +52,12 @@
 
 ## 多语言
 
-| 命令               | 说明                                                              |
-| ------------------ | ----------------------------------------------------------------- |
-| `pnpm i18n:check`  | 校验 locale 配置、目录、resolver、AntD 映射、key 完整性与快照同步 |
-| `pnpm i18n:diff`   | 基于聚合后的运行时消息树输出 `scripts/i18n-diff.json`             |
-| `pnpm i18n:scan`   | 先从源码重建 diff，再输出实际使用 key 到 `scripts/i18n-used.json` |
-| `pnpm i18n:unused` | 先从源码重建 diff，再输出未使用 key 到 `scripts/i18n-unused.json` |
+| 命令                  | 说明                                                                         |
+| --------------------- | ---------------------------------------------------------------------------- |
+| `pnpm i18n:check`     | 校验 locale 配置、目录、resolver、AntD 映射、key 完整性与快照同步            |
+| `pnpm i18n:diff`      | 基于聚合后的运行时消息树输出 `scripts/i18n-diff.json`                        |
+| `pnpm i18n:scan`      | 先从源码重建 diff，再输出实际使用 key 到 `scripts/i18n-used.json`            |
+| `pnpm generate:theme` | 从 `config/theme-palette.json` 生成 `tokens/_variables.scss` 与 `_dark.scss` |
 
 ## 引擎版本
 

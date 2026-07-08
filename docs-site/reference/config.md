@@ -2,14 +2,15 @@
 
 ## nuxt.config.ts
 
-| 配置块                 | 作用                                |
-| ---------------------- | ----------------------------------- |
-| `modules`              | Pinia、Ant Design Vue、ESLint       |
-| `runtimeConfig`        | 服务端 `revalidateSecret`           |
-| `runtimeConfig.public` | 公开环境变量映射                    |
-| `routeRules`           | prerender / SWR / CSR / CSP headers |
-| `css`                  | 全局 SCSS                           |
-| `typescript.strict`    | 严格模式 + typeCheck                |
+| 配置块                              | 作用                                 |
+| ----------------------------------- | ------------------------------------ |
+| `modules`                           | Pinia、Ant Design Vue、ESLint        |
+| `runtimeConfig`                     | 服务端 `revalidateSecret`            |
+| `runtimeConfig.public`              | 公开环境变量映射                     |
+| `routeRules`                        | prerender / SWR / CSR / CSP headers  |
+| `css`                               | 全局 SCSS（`main.scss`）             |
+| `vite.css.preprocessorOptions.scss` | 向 SFC 注入 `tokens/_variables.scss` |
+| `typescript.strict`                 | 严格模式 + typeCheck                 |
 
 ## config/site.ts
 
@@ -58,9 +59,27 @@ AuthUser / AuthRouteMeta // 类型
 | `app/features/workspace/api.ts` | `WORKSPACE_NEW_PROJECT_ID`                       | `'new'`，对应 `/docs/new` |
 | `app/features/workspace/api.ts` | `getWorkspaceDocPath` / `getWorkspaceNewDocPath` | 编辑器链接 helper         |
 
+## config/theme-palette.json
+
+品牌色与语义色的**唯一编辑入口**。修改后运行 `pnpm generate:theme`（`prebuild` 也会自动执行）。
+
 ## config/theme.ts
 
-Ant Design Vue `theme.token` 映射。
+Ant Design Vue `theme.token` 映射（`getAntdThemeToken`），从 `theme-palette.json` 读取色值。`applyThemeCssVariables()` **已在** `useTheme()` 中启用：切主题时将 `themeTokens` 基础色写入 `--app-*`，与 ConfigProvider 同源（详见 [样式体系 — 主题切换与运行时同步](/tech-stack/styles#主题切换与运行时同步-已实现)）。
+
+## app/assets/styles/
+
+| 路径                     | 作用                                        |
+| ------------------------ | ------------------------------------------- |
+| `main.scss`              | 全局样式入口                                |
+| `tokens/_variables.scss` | Sass 构建期变量（自动生成）                 |
+| `tokens/_root.scss`      | 亮色 `--app-*` CSS 变量与派生 token（手写） |
+| `tokens/_dark.scss`      | 暗色覆盖（自动生成）                        |
+| `tokens.ts`              | `cssVarTokens`、`getCssVar`、`setCssVar`    |
+| `patterns/_page.scss`    | 公开页 `.page-*` 模式类                     |
+| `patterns/_product.scss` | 产品区 `.app-*`、`.workspace-card` 模式类   |
+
+详见 [样式体系](/tech-stack/styles)（含完整 token 目录与 pattern 用法）。
 
 ## app/app.config.ts
 

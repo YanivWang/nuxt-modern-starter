@@ -63,7 +63,13 @@ export const swrRouteRules = ['/my-page', '/en/my-page', /* 现有项 */] as con
 
 在每个 `i18n/<locale>/modules/marketing.json` 中添加 `myPage.*` 键，并确认对应 `index.ts` 已聚合该模块。
 
-### 5. 内部链接
+### 5. 样式与布局
+
+- 使用 `<PageContainer>` 统一内容区宽度；长文页可设 `layout="prose"`。
+- 复用 `patterns/_page.scss` 中的 `.page-panel`、`.page-surface-card` 等模式类，或 `main.scss` 中的 `.page-title` / `.page-lead`。
+- 颜色、背景、边框使用 `var(--app-*)` token，不要硬编码品牌色。详见 [样式体系](/tech-stack/styles)。
+
+### 6. 内部链接
 
 ```vue
 <NuxtLink :to="localePath('/my-page')">...</NuxtLink>
@@ -96,6 +102,7 @@ const { data } = await useAsyncData('my-page', () =>
 - [ ] prerender/SWR 已配置（若需要）
 - [ ] i18n 中英文已补
 - [ ] 内部链接用 `localePath()`
+- [ ] 样式使用 `--app-*` token 或 patterns 模式类（无硬编码品牌色）
 - [ ] 补充 locale/SEO 单测
 
 ## 下一步

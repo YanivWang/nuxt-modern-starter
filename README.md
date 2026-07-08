@@ -75,7 +75,7 @@ Repository reference docs (linked from README / help page):
 
 - `docs/architecture.md`: directory responsibilities, rendering strategy, and runtime flow.
 - `docs/usage.md`: adding pages, requests, SEO, languages, themes, workspace/editor, and auth.
-- `docs/conventions.md`: config boundaries, tokens, request, test, safety, and accessibility conventions.
+- `docs/conventions.md`: config boundaries, design tokens (`tokens/` + `patterns/`), request, test, safety, and accessibility conventions.
 - `docs/deployment.md`: local, Docker, Nginx deployment, and full-stack API pairing validation.
 
 ## Scripts

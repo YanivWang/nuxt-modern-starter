@@ -77,16 +77,17 @@ app/features/my-feature/
 
 ### 共享层（框架级）
 
-| 目录                     | 放什么                                                                               | 不放什么                |
-| ------------------------ | ------------------------------------------------------------------------------------ | ----------------------- |
-| `app/components/base/`   | AppContainer、PageContainer、BaseButton、BaseLogo、BasePicture 等通用组件            | 业务页面块              |
-| `app/components/layout/` | AppHeader、AppFooter、AppShellHeader、LanguageSwitcher、ThemeSwitch、UserAccountMenu | feature 专属 UI         |
-| `app/composables/`       | useAuth、usePageSeo、useLocalePath、useTheme、useLanguageSwitch、useUserAvatar       | feature 专属 composable |
-| `app/stores/`            | auth、language、theme                                                                | feature 专属 store      |
-| `app/utils/`             | auth-session、safe-redirect、attribution-params、formatDate、antdIcon、load-script   | 业务逻辑                |
-| `app/layouts/`           | default、product、editor、account、empty                                             | —                       |
-| `app/middleware/`        | locale.global、auth                                                                  | —                       |
-| `app/plugins/`           | i18n、auth、attribution、analytics                                                   | —                       |
+| 目录                     | 放什么                                                                                     | 不放什么                |
+| ------------------------ | ------------------------------------------------------------------------------------------ | ----------------------- |
+| `app/assets/styles/`     | `main.scss` 全局入口；`tokens/` 设计 token；`patterns/` 公开页模式；`tokens.ts` 运行时 API | feature 私有样式        |
+| `app/components/base/`   | AppContainer、PageContainer、BaseButton、BaseLogo、BasePicture 等通用组件                  | 业务页面块              |
+| `app/components/layout/` | AppHeader、AppFooter、AppShellHeader、LanguageSwitcher、ThemeSwitch、UserAccountMenu       | feature 专属 UI         |
+| `app/composables/`       | useAuth、usePageSeo、useLocalePath、useTheme、useLanguageSwitch、useUserAvatar             | feature 专属 composable |
+| `app/stores/`            | auth、language、theme                                                                      | feature 专属 store      |
+| `app/utils/`             | auth-session、safe-redirect、attribution-params、formatDate、antdIcon、load-script         | 业务逻辑                |
+| `app/layouts/`           | default、product、editor、account、empty                                                   | —                       |
+| `app/middleware/`        | locale.global、auth                                                                        | —                       |
+| `app/plugins/`           | i18n、auth、attribution、analytics                                                         | —                       |
 
 ### API 与 HTTP
 
@@ -105,13 +106,13 @@ app/
 
 ## `config/` — 静态配置
 
-| 文件             | 内容                                        |
-| ---------------- | ------------------------------------------- |
-| `site.ts`        | 站点名、语言列表、`PUBLIC_PAGE_PATHS`、导航 |
-| `routes.ts`      | prerender/SWR/CSR 规则、路径 helper         |
-| `auth.ts`        | 鉴权端点、cookie 键、token 过期时间         |
-| `theme.ts`       | Ant Design token 映射                       |
-| `content/faq.ts` | 帮助页 FAQ 本地数据                         |
+| 文件             | 内容                                                           |
+| ---------------- | -------------------------------------------------------------- |
+| `site.ts`        | 站点名、语言列表、`PUBLIC_PAGE_PATHS`、导航                    |
+| `routes.ts`      | prerender/SWR/CSR 规则、路径 helper                            |
+| `auth.ts`        | 鉴权端点、cookie 键、token 过期时间                            |
+| `theme.ts`       | Ant Design token 映射；与 `app/assets/styles/tokens/` 色板对齐 |
+| `content/faq.ts` | 帮助页 FAQ 本地数据                                            |
 
 ## `server/` — 服务端
 

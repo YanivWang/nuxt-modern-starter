@@ -8,7 +8,10 @@
 - `config/auth.ts`: auth endpoint paths, cookie keys, token max ages, and auth route meta types.
 - `config/routes.ts`: public/product path helpers and route rule sources for prerender, SWR, and CSR.
 - `config/theme.ts`: TypeScript design tokens and Ant Design Vue token mapping.
-- `app/assets/styles/tokens.scss`: CSS variables consumed by Vue components and pages.
+- `app/assets/styles/tokens/`: layered design tokens (`_variables.scss` for Sass build-time values, `_root.scss` for light `--app-*` CSS variables, `_dark.scss` for dark overrides).
+- `app/assets/styles/tokens.ts`: runtime `cssVarTokens` map and `getCssVar` / `setCssVar` helpers.
+- `app/assets/styles/patterns/`: reusable public-page pattern classes (`.page-panel`, `.page-faq`, etc.).
+- `app/assets/styles/main.scss`: global style entry mounted from `nuxt.config.ts`.
 
 `runtimeConfig.public.siteUrl` should be set in production. Local development falls back to `http://localhost:3000`; production deployments should fail review if this remains unchanged.
 
@@ -38,7 +41,11 @@ Import Ant Design icons through `app/utils/antdIcon.ts` so only the SVGs a scree
 
 ## Design Tokens
 
-Prefer semantic CSS variables from `tokens.scss`. Do not hardcode brand colors, page backgrounds, body text, or border colors inside page components unless the value is local illustrative content.
+Prefer semantic CSS variables from `app/assets/styles/tokens/` (`--app-*` prefix). Do not hardcode brand colors, page backgrounds, body text, or border colors inside page components unless the value is local illustrative content.
+
+When changing palette values, edit `config/theme-palette.json` and run `pnpm generate:theme`. `config/theme.ts` reads the same palette for Ant Design (`getAntdThemeToken`) and page CSS variables (`applyThemeCssVariables`, already wired in `useTheme()`). Generated `tokens/_variables.scss` / `_dark.scss` stay in sync via `pnpm generate:theme`. Use `patterns/_page.scss` for shared public-page blocks instead of duplicating panel/card/faq styles in page scoped CSS.
+
+SFC authors may use Sass variables from `tokens/_variables.scss` (injected via `nuxt.config.ts` `vite.css.preprocessorOptions.scss.additionalData`). For JS runtime reads, import `cssVarTokens` from `~/assets/styles/tokens`.
 
 ## Requests
 

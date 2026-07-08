@@ -20,6 +20,7 @@
     mode === 'system' 时随 OS 深色模式自动切换 resolvedMode。
 */
 import {
+  applyThemeCssVariables,
   getAntdThemeToken,
   THEME_STORAGE_KEY,
   type ResolvedThemeMode,
@@ -35,10 +36,11 @@ const resolveSystemMode = (): ResolvedThemeMode => {
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
 }
 
-/** 将 resolved 主题写入 <html data-theme>，供全局 SCSS 变量切换 */
+/** 将 resolved 主题写入 <html data-theme> 并同步 CSS 变量 */
 const applyDocumentTheme = (mode: ResolvedThemeMode) => {
   if (import.meta.client) {
     document.documentElement.dataset.theme = mode
+    applyThemeCssVariables(mode)
   }
 }
 

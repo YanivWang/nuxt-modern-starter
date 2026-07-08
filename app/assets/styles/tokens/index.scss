@@ -1,4 +1,4 @@
-// Design tokens — 应用入口一次性引入
+// Design tokens — 应用入口（@forward variables 供 SFC @use；@use root/dark 输出 CSS）
 
 @forward './variables';
 @use './root';

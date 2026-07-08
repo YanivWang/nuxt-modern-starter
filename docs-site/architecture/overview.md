@@ -18,6 +18,7 @@
 │  app/features/*     业务 UI + feature API                      │
 │  app/composables    共享运行时 API                             │
 │  app/stores         auth / language / theme                    │
+│  app/assets/styles  tokens/ + patterns/ + main.scss            │
 └────────────────────────────┬─────────────────────────────────┘
                              │
 ┌────────────────────────────▼─────────────────────────────────┐

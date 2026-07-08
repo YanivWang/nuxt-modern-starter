@@ -78,17 +78,17 @@ Nuxt 页面文件（`app/pages/*`）只做：
 
 ## 技术栈一览
 
-| 类别   | 选型                                    |
-| ------ | --------------------------------------- |
-| 框架   | Nuxt 4.4.8 + Vue 3.5 + TypeScript       |
-| 包管理 | pnpm 11                                 |
-| 状态   | Pinia                                   |
-| UI     | Ant Design Vue 4                        |
-| 样式   | SCSS + CSS 变量 token                   |
-| i18n   | vue-i18n（自建路由，不用 @nuxtjs/i18n） |
-| 编辑器 | @yanivjs/yaniv-editor                   | PPT/幻灯片编辑器（`mode: edit`, `preset: full`） |
-| 测试   | Vitest 4.1.9 + @nuxt/test-utils 4.0.3   | Nuxt 环境 + 单元测试（23 文件 / 84 用例）        |
-| 部署   | Nitro node-server + Docker + Nginx 样例 |
+| 类别   | 选型                                                   |
+| ------ | ------------------------------------------------------ |
+| 框架   | Nuxt 4.4.8 + Vue 3.5 + TypeScript                      |
+| 包管理 | pnpm 11                                                |
+| 状态   | Pinia                                                  |
+| UI     | Ant Design Vue 4                                       |
+| 样式   | SCSS 分层 token（`tokens/` + `patterns/` + `--app-*`） |
+| i18n   | vue-i18n（自建路由，不用 @nuxtjs/i18n）                |
+| 编辑器 | @yanivjs/yaniv-editor                                  | PPT/幻灯片编辑器（`mode: edit`, `preset: full`） |
+| 测试   | Vitest 4.1.9 + @nuxt/test-utils 4.0.3                  | Nuxt 环境 + 单元测试（23 文件 / 84 用例）        |
+| 部署   | Nitro node-server + Docker + Nginx 样例                |
 
 详见 [技术栈总览](/tech-stack/overview)。
 

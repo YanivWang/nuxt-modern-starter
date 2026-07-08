@@ -1,44 +1,59 @@
 /*
   【文件职责】
     Design Token 运行时 API：CSS 变量名常量、getCssVar / setCssVar。
-    与 tokens/_root.scss、tokens/_dark.scss 中的 --app-* 命名对齐。
+    与 config/theme-palette.mjs、tokens/_root.scss 对齐。
 
   【架构位置】
     共享层 — app/assets/styles，供 TS/图表/Canvas 等运行时读取主题变量。
-
-  【依赖关系】
-    - 依赖：无
-    - 被引用：需要 JS 侧读取 CSS 变量的 composable / 组件
 */
-import type { ResolvedThemeMode } from '../../../config/theme'
+import {
+  applyThemeCssVariables,
+  themeTokenCssVarMap,
+  type ResolvedThemeMode
+} from '../../../config/theme'
+
+export { applyThemeCssVariables, themeTokenCssVarMap }
 
 /** CSS 自定义属性名（与 tokens/_root.scss 对齐） */
 export const cssVarTokens = {
   color: {
-    primary: '--app-color-primary',
-    primaryHover: '--app-color-primary-hover',
-    primaryActive: '--app-color-primary-active',
-    primarySubtle: '--app-color-primary-subtle',
-    primaryBorder: '--app-color-primary-border',
-    brand: '--app-color-brand',
-    brandHover: '--app-color-brand-hover',
-    brandContrast: '--app-color-brand-contrast',
-    bg: '--app-color-bg',
-    elevated: '--app-color-elevated',
-    surface: '--app-color-surface',
-    overlay: '--app-color-overlay',
-    text: '--app-color-text',
-    textStrong: '--app-color-text-strong',
-    muted: '--app-color-muted',
-    subtle: '--app-color-subtle',
-    border: '--app-color-border',
-    borderStrong: '--app-color-border-strong',
-    success: '--app-color-success',
-    successSubtle: '--app-color-success-subtle',
-    warning: '--app-color-warning',
-    warningSubtle: '--app-color-warning-subtle',
-    danger: '--app-color-danger',
-    dangerSubtle: '--app-color-danger-subtle'
+    primary: themeTokenCssVarMap.colorPrimary,
+    primaryHover: themeTokenCssVarMap.colorPrimaryHover,
+    primaryActive: themeTokenCssVarMap.colorPrimaryActive,
+    primarySubtle: themeTokenCssVarMap.colorPrimarySubtle,
+    primaryBorder: themeTokenCssVarMap.colorPrimaryBorder,
+    brand: themeTokenCssVarMap.colorBrand,
+    brandHover: themeTokenCssVarMap.colorBrandHover,
+    brandContrast: themeTokenCssVarMap.colorBrandContrast,
+    bg: themeTokenCssVarMap.colorBgBase,
+    elevated: themeTokenCssVarMap.colorBgElevated,
+    bgCanvas: themeTokenCssVarMap.colorBgCanvas,
+    surface: themeTokenCssVarMap.colorSurface,
+    overlay: themeTokenCssVarMap.colorOverlay,
+    text: themeTokenCssVarMap.colorTextBase,
+    textStrong: themeTokenCssVarMap.colorTextStrong,
+    muted: themeTokenCssVarMap.colorTextMuted,
+    subtle: themeTokenCssVarMap.colorTextSubtle,
+    border: themeTokenCssVarMap.colorBorder,
+    borderStrong: themeTokenCssVarMap.colorBorderStrong,
+    fillSecondary: themeTokenCssVarMap.colorFillSecondary,
+    fillTertiary: themeTokenCssVarMap.colorFillTertiary,
+    success: themeTokenCssVarMap.colorSuccess,
+    successSubtle: themeTokenCssVarMap.colorSuccessSubtle,
+    warning: themeTokenCssVarMap.colorWarning,
+    warningSubtle: themeTokenCssVarMap.colorWarningSubtle,
+    danger: themeTokenCssVarMap.colorDanger,
+    dangerSubtle: themeTokenCssVarMap.colorDangerSubtle,
+    info: themeTokenCssVarMap.colorInfo,
+    avatarFallback: themeTokenCssVarMap.colorAvatarFallback,
+    avatarFallbackText: themeTokenCssVarMap.colorAvatarFallbackText,
+    navHoverBg: '--app-color-nav-hover-bg',
+    navActiveBg: '--app-color-nav-active-bg'
+  },
+  projectAccent: {
+    violet: themeTokenCssVarMap.colorProjectAccentViolet,
+    cyan: themeTokenCssVarMap.colorProjectAccentCyan,
+    rose: themeTokenCssVarMap.colorProjectAccentRose
   },
   gradient: {
     brandAccent: '--app-gradient-brand-accent',
@@ -56,7 +71,10 @@ export const cssVarTokens = {
     surface: '--app-shadow-surface',
     surfaceHover: '--app-shadow-surface-hover',
     dropdown: '--app-shadow-dropdown',
-    sm: '--app-shadow-sm'
+    sm: '--app-shadow-sm',
+    elevation1: '--app-shadow-elevation-1',
+    elevation2: '--app-shadow-elevation-2',
+    elevation3: '--app-shadow-elevation-3'
   },
   layout: {
     containerMax: '--app-container-max',
@@ -71,7 +89,27 @@ export const cssVarTokens = {
     headerAuthGap: '--app-header-auth-gap',
     headerBlur: '--app-header-blur',
     headerBgScrolled: '--app-header-bg-scrolled',
-    headerBorderScrolled: '--app-header-border-scrolled'
+    headerBorderScrolled: '--app-header-border-scrolled',
+    productSidebarWidth: '--app-product-sidebar-width',
+    productNavRadius: '--app-product-nav-radius'
+  },
+  typography: {
+    xs: '--app-text-xs',
+    sm: '--app-text-sm',
+    base: '--app-text-base',
+    md: '--app-text-md',
+    lg: '--app-text-lg',
+    xl: '--app-text-xl',
+    '2xl': '--app-text-2xl',
+    '3xl': '--app-text-3xl',
+    leadingTight: '--app-leading-tight',
+    leadingNormal: '--app-leading-normal',
+    leadingRelaxed: '--app-leading-relaxed',
+    weightMedium: '--app-weight-medium',
+    weightSemibold: '--app-weight-semibold',
+    weightBold: '--app-weight-bold',
+    weightExtrabold: '--app-weight-extrabold',
+    sans: '--app-font-sans'
   },
   spacing: {
     xs: '--app-spacing-xs',
@@ -95,8 +133,8 @@ export const cssVarTokens = {
     popover: '--app-z-index-popover',
     tooltip: '--app-z-index-tooltip'
   },
-  font: {
-    sans: '--app-font-sans'
+  focus: {
+    ring: '--app-focus-ring'
   }
 } as const
 
@@ -125,5 +163,7 @@ export const setCssVar = (
   }
 }
 
-/** 当前 resolved 主题对应的 data-theme 属性值 */
-export const themeDataAttribute = (mode: ResolvedThemeMode): ResolvedThemeMode => mode
+/** 将 resolved 主题同步到 DOM（封装 config/theme API） */
+export const syncThemeCssVariables = (mode: ResolvedThemeMode) => {
+  applyThemeCssVariables(mode)
+}

@@ -48,6 +48,7 @@ export default defineConfig({
             { text: '技术栈总览', link: '/tech-stack/overview' },
             { text: 'Nuxt 4', link: '/tech-stack/nuxt' },
             { text: 'Pinia 状态管理', link: '/tech-stack/pinia' },
+            { text: '样式体系', link: '/tech-stack/styles' },
             { text: 'Ant Design Vue', link: '/tech-stack/ant-design-vue' },
             { text: 'HTTP 请求层', link: '/tech-stack/http' }
           ]

@@ -1,25 +1,18 @@
 /*
   【文件职责】
-    主题模式与 design tokens 单一来源：light / dark 色板、Ant Design Vue token 映射、localStorage 键。
-    getAntdThemeToken 将 themeTokens 投影为 Ant Design ConfigProvider theme.token 形状。
+    主题模式与 design tokens：从 config/theme-palette.json 读取色板，映射 Ant Design Vue token，
+    并提供运行时 CSS 变量同步 API。
 
   【架构位置】
-    config 层 — 与 app/assets/styles/tokens/ 共同构成视觉体系；被 theme composable / plugin 消费。
-
-  【主要导出 / 路由】
-    ThemeMode、ResolvedThemeMode、DEFAULT_THEME_MODE、THEME_STORAGE_KEY、
-    themeTokens、getAntdThemeToken
-
-  【依赖关系】
-    - 依赖：无
-    - 被引用：app/app.config.ts、app/app.vue、theme store / composable
-
-  【渲染 / 数据】
-    无 — 客户端 theme store 读取 THEME_STORAGE_KEY 持久化用户偏好。
+    config 层 — 与 app/assets/styles/tokens/ 共同构成视觉体系。
 
   【边界与注意】
-    修改 token 值时需同步 app/assets/styles/tokens/_variables.scss 与 _dark.scss。
+    色值唯一源为 config/theme-palette.json；改色后运行 pnpm generate:theme 生成 SCSS。
 */
+import themePalette from './theme-palette.json'
+
+const { colorPalettes, themeTokenCssVarMap } = themePalette
+
 export type ThemeMode = 'system' | 'light' | 'dark'
 export type ResolvedThemeMode = 'light' | 'dark'
 
@@ -34,96 +27,91 @@ export type ThemeTokens = {
   colorBrandContrast: string
   colorBgBase: string
   colorBgElevated: string
+  colorBgCanvas: string
   colorSurface: string
+  colorOverlay: string
   colorTextBase: string
   colorTextStrong: string
   colorTextMuted: string
   colorTextSubtle: string
   colorBorder: string
   colorBorderStrong: string
+  colorFillSecondary: string
+  colorFillTertiary: string
   colorSuccess: string
   colorSuccessSubtle: string
   colorWarning: string
   colorWarningSubtle: string
   colorDanger: string
   colorDangerSubtle: string
+  colorInfo: string
+  colorAvatarFallback: string
+  colorAvatarFallbackText: string
+  colorProjectAccentViolet: string
+  colorProjectAccentCyan: string
+  colorProjectAccentRose: string
   borderRadius: number
   fontFamily: string
   boxShadow: string
   boxShadowBrand: string
   boxShadowPrimary: string
   boxShadowSurface: string
+  boxShadowElevation1: string
+  boxShadowElevation2: string
+  boxShadowElevation3: string
 }
 
 export const DEFAULT_THEME_MODE: ThemeMode = 'system'
-
 export const THEME_STORAGE_KEY = 'nuxt-modern-starter-theme'
 
+const toThemeTokens = (palette: Record<string, string | number>): ThemeTokens => ({
+  colorPrimary: String(palette.colorPrimary),
+  colorPrimaryHover: String(palette.colorPrimaryHover),
+  colorPrimaryActive: String(palette.colorPrimaryActive),
+  colorPrimarySubtle: String(palette.colorPrimarySubtle),
+  colorPrimaryBorder: String(palette.colorPrimaryBorder),
+  colorBrand: String(palette.colorBrand),
+  colorBrandHover: String(palette.colorBrandHover),
+  colorBrandContrast: String(palette.colorBrandContrast),
+  colorBgBase: String(palette.colorBgBase),
+  colorBgElevated: String(palette.colorBgElevated),
+  colorBgCanvas: String(palette.colorBgCanvas),
+  colorSurface: String(palette.colorSurface),
+  colorOverlay: String(palette.colorOverlay),
+  colorTextBase: String(palette.colorTextBase),
+  colorTextStrong: String(palette.colorTextStrong),
+  colorTextMuted: String(palette.colorTextMuted),
+  colorTextSubtle: String(palette.colorTextSubtle),
+  colorBorder: String(palette.colorBorder),
+  colorBorderStrong: String(palette.colorBorderStrong),
+  colorFillSecondary: String(palette.colorFillSecondary),
+  colorFillTertiary: String(palette.colorFillTertiary),
+  colorSuccess: String(palette.colorSuccess),
+  colorSuccessSubtle: String(palette.colorSuccessSubtle),
+  colorWarning: String(palette.colorWarning),
+  colorWarningSubtle: String(palette.colorWarningSubtle),
+  colorDanger: String(palette.colorDanger),
+  colorDangerSubtle: String(palette.colorDangerSubtle),
+  colorInfo: String(palette.colorInfo),
+  colorAvatarFallback: String(palette.colorAvatarFallback),
+  colorAvatarFallbackText: String(palette.colorAvatarFallbackText),
+  colorProjectAccentViolet: String(palette.colorProjectAccentViolet),
+  colorProjectAccentCyan: String(palette.colorProjectAccentCyan),
+  colorProjectAccentRose: String(palette.colorProjectAccentRose),
+  borderRadius: Number(palette.borderRadius),
+  fontFamily: String(palette.fontFamily),
+  boxShadow: String(palette.boxShadow),
+  boxShadowBrand: String(palette.boxShadowBrand),
+  boxShadowPrimary: String(palette.boxShadowPrimary),
+  boxShadowSurface: String(palette.boxShadowSurface),
+  boxShadowElevation1: String(palette.boxShadowElevation1),
+  boxShadowElevation2: String(palette.boxShadowElevation2),
+  boxShadowElevation3: String(palette.boxShadowElevation3)
+})
+
 export const themeTokens: Record<ResolvedThemeMode, ThemeTokens> = {
-  light: {
-    colorPrimary: '#1677ff',
-    colorPrimaryHover: '#4096ff',
-    colorPrimaryActive: '#0958d9',
-    colorPrimarySubtle: '#eff6ff',
-    colorPrimaryBorder: '#bfdbfe',
-    colorBrand: '#0f172a',
-    colorBrandHover: '#1e293b',
-    colorBrandContrast: '#ffffff',
-    colorBgBase: '#ffffff',
-    colorBgElevated: '#f8fafc',
-    colorSurface: '#ffffff',
-    colorTextBase: '#1f2937',
-    colorTextStrong: '#0f172a',
-    colorTextMuted: '#64748b',
-    colorTextSubtle: '#475569',
-    colorBorder: '#e5e7eb',
-    colorBorderStrong: '#e2e8f0',
-    colorSuccess: '#10b981',
-    colorSuccessSubtle: '#ecfdf5',
-    colorWarning: '#f59e0b',
-    colorWarningSubtle: '#fffbeb',
-    colorDanger: '#ef4444',
-    colorDangerSubtle: '#fef2f2',
-    borderRadius: 16,
-    fontFamily:
-      "Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-    boxShadow: '0 18px 45px rgb(15 23 42 / 10%)',
-    boxShadowBrand: '0 18px 36px rgb(15 23 42 / 18%)',
-    boxShadowPrimary: '0 24px 56px rgb(22 119 255 / 20%)',
-    boxShadowSurface: '0 16px 42px rgb(15 23 42 / 6%)'
-  },
-  dark: {
-    colorPrimary: '#69b1ff',
-    colorPrimaryHover: '#91caff',
-    colorPrimaryActive: '#4096ff',
-    colorPrimarySubtle: 'rgb(105 177 255 / 12%)',
-    colorPrimaryBorder: 'rgb(105 177 255 / 24%)',
-    colorBrand: '#f8fafc',
-    colorBrandHover: '#e2e8f0',
-    colorBrandContrast: '#0f172a',
-    colorBgBase: '#0f172a',
-    colorBgElevated: '#111c33',
-    colorSurface: '#111c33',
-    colorTextBase: '#f8fafc',
-    colorTextStrong: '#ffffff',
-    colorTextMuted: '#94a3b8',
-    colorTextSubtle: '#64748b',
-    colorBorder: '#26344d',
-    colorBorderStrong: '#334155',
-    colorSuccess: '#34d399',
-    colorSuccessSubtle: 'rgb(52 211 153 / 12%)',
-    colorWarning: '#fbbf24',
-    colorWarningSubtle: 'rgb(251 191 36 / 12%)',
-    colorDanger: '#f87171',
-    colorDangerSubtle: 'rgb(248 113 113 / 12%)',
-    borderRadius: 16,
-    fontFamily:
-      "Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-    boxShadow: '0 18px 45px rgb(0 0 0 / 30%)',
-    boxShadowBrand: '0 18px 36px rgb(0 0 0 / 28%)',
-    boxShadowPrimary: '0 24px 56px rgb(105 177 255 / 18%)',
-    boxShadowSurface: '0 16px 42px rgb(0 0 0 / 24%)'
-  }
+  light: toThemeTokens(colorPalettes.light),
+  dark: toThemeTokens(colorPalettes.dark)
 }
 
 export const getAntdThemeToken = (mode: ResolvedThemeMode) => {
@@ -134,12 +122,46 @@ export const getAntdThemeToken = (mode: ResolvedThemeMode) => {
     colorPrimaryHover: token.colorPrimaryHover,
     colorPrimaryActive: token.colorPrimaryActive,
     colorLink: token.colorPrimary,
+    colorInfo: token.colorInfo,
     colorSuccess: token.colorSuccess,
     colorWarning: token.colorWarning,
     colorError: token.colorDanger,
     colorBgBase: token.colorBgBase,
+    colorBgContainer: token.colorSurface,
+    colorBgElevated: token.colorBgElevated,
+    colorBgLayout: token.colorBgCanvas,
+    colorText: token.colorTextBase,
     colorTextBase: token.colorTextBase,
+    colorTextSecondary: token.colorTextMuted,
+    colorTextTertiary: token.colorTextSubtle,
+    colorBorder: token.colorBorder,
+    colorBorderSecondary: token.colorBorderStrong,
+    colorFillSecondary: token.colorFillSecondary,
+    colorFillTertiary: token.colorFillTertiary,
     borderRadius: token.borderRadius,
-    fontFamily: token.fontFamily
+    fontFamily: token.fontFamily,
+    boxShadow: token.boxShadow,
+    boxShadowSecondary: token.boxShadowSurface
   }
 }
+
+/** 将 resolved 主题色板同步到 document CSS 变量（client only） */
+export const applyThemeCssVariables = (
+  mode: ResolvedThemeMode,
+  element: HTMLElement = document.documentElement
+) => {
+  if (!import.meta.client) {
+    return
+  }
+
+  const token = themeTokens[mode]
+
+  for (const [key, cssVar] of Object.entries(themeTokenCssVarMap)) {
+    const value = token[key as keyof ThemeTokens]
+    if (typeof value === 'string') {
+      element.style.setProperty(cssVar, value)
+    }
+  }
+}
+
+export { themeTokenCssVarMap }
