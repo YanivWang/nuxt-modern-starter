@@ -9,7 +9,7 @@
 
   【主要导出 / 路由】
     SITE_NAME、SITE_DESCRIPTION、DEFAULT_SITE_URL、DEFAULT_LOCALE、SUPPORTED_LOCALES、
-    SITE_LOCALE_PREFIX_MAP、PUBLIC_PAGE_PATHS、NAV_ITEMS、DEFAULT_SEO、SITE_ORG、SupportedLocale
+    SITE_LOCALE_PREFIX_MAP、SITE_HREFLANG_MAP、PUBLIC_PAGE_PATHS、NAV_ITEMS、DEFAULT_SEO、SITE_ORG、SupportedLocale
 
   【依赖关系】
     - 依赖：无（纯常量）
@@ -33,13 +33,62 @@ export const DEFAULT_SITE_URL = 'https://example.com'
 
 export const DEFAULT_LOCALE = 'zh-CN'
 
-export const SUPPORTED_LOCALES = ['zh-CN', 'en-US'] as const
+export const SUPPORTED_LOCALES = [
+  'zh-CN',
+  'en-US',
+  'pt-PT',
+  'es-ES',
+  'ko-KR',
+  'th-TH',
+  'ms-MY',
+  'id-ID',
+  'ph-PH',
+  'ja-JP',
+  'de-DE',
+  'fr-FR',
+  'ru-RU',
+  'zh-HK',
+  'pt-BR'
+] as const
 
 export type SupportedLocale = (typeof SUPPORTED_LOCALES)[number]
 
+/** URL 路径前缀；默认语言 zh-CN 无前缀，部分语言使用市场路径（如 ko → /kr） */
 export const SITE_LOCALE_PREFIX_MAP: Record<SupportedLocale, string> = {
   'zh-CN': 'zh',
-  'en-US': 'en'
+  'en-US': 'en',
+  'pt-PT': 'pt',
+  'es-ES': 'es',
+  'ko-KR': 'kr',
+  'th-TH': 'th',
+  'ms-MY': 'my',
+  'id-ID': 'id',
+  'ph-PH': 'ph',
+  'ja-JP': 'jp',
+  'de-DE': 'de',
+  'fr-FR': 'fr',
+  'ru-RU': 'ru',
+  'zh-HK': 'zh-hk',
+  'pt-BR': 'pt-br'
+}
+
+/** hreflang 属性值；单语言市场用语言码，区域变体保留完整码（对齐 aippt / Duolingo 等主流站） */
+export const SITE_HREFLANG_MAP: Record<SupportedLocale, string> = {
+  'zh-CN': 'zh',
+  'en-US': 'en',
+  'pt-PT': 'pt',
+  'es-ES': 'es',
+  'ko-KR': 'ko',
+  'th-TH': 'th',
+  'ms-MY': 'ms',
+  'id-ID': 'id',
+  'ph-PH': 'tl',
+  'ja-JP': 'ja',
+  'de-DE': 'de',
+  'fr-FR': 'fr',
+  'ru-RU': 'ru',
+  'zh-HK': 'zh-HK',
+  'pt-BR': 'pt-BR'
 }
 
 export const PUBLIC_PAGE_PATHS = ['/', '/pricing', '/about', '/help', '/news'] as const

@@ -1,0 +1,47 @@
+{
+  "nav": {
+    "home": "首页",
+    "pricing": "价格",
+    "about": "关于我们",
+    "help": "帮助",
+    "news": "新闻",
+    "primary": "主导航"
+  },
+  "brand": {
+    "tagline": "面向公开站点的现代 Nuxt 基础骨架"
+  },
+  "seo": {
+    "defaultDescription": "面向营销站点、SEO 页面与轻量 SaaS 前台的 Nuxt 4 可复用 starter。"
+  },
+  "common": {
+    "switchLanguage": "切换语言",
+    "switchTheme": "切换主题",
+    "readMore": "阅读更多",
+    "backHome": "返回首页",
+    "error": "操作失败，请稍后重试",
+    "loadFailed": "加载失败，请稍后重试",
+    "retry": "重试"
+  },
+  "productNav": {
+    "workspace": "工作台",
+    "themeTemplates": "主题模版",
+    "pricing": "定价"
+  },
+  "userMenu": {
+    "account": "账户",
+    "language": "语言",
+    "signOut": "退出登录"
+  },
+  "accountNav": {
+    "settings": "账户设置"
+  },
+  "templates": {
+    "empty": "主题模版即将上线，敬请期待。"
+  },
+  "error": {
+    "title": "页面不存在",
+    "message": "请检查访问地址，或返回首页继续浏览。",
+    "forbidden": "无权访问",
+    "unsupportedLanguage": "不支持的语言"
+  }
+}

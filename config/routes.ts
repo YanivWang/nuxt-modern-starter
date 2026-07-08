@@ -27,6 +27,7 @@ import {
   DEFAULT_LOCALE,
   PUBLIC_PAGE_PATHS,
   SITE_LOCALE_PREFIX_MAP,
+  SUPPORTED_LOCALES,
   type SupportedLocale
 } from './site'
 
@@ -75,10 +76,14 @@ export const localizedPath = (path: string, locale: SupportedLocale) => {
   return `/${SITE_LOCALE_PREFIX_MAP[locale]}${normalizedPath}`
 }
 
-export const publicLocalizedPaths = (locales: readonly SupportedLocale[] = ['zh-CN', 'en-US']) =>
+export const publicLocalizedPaths = (locales: readonly SupportedLocale[] = SUPPORTED_LOCALES) =>
   locales.flatMap((locale) => PUBLIC_PAGE_PATHS.map((path) => localizedPath(path, locale)))
 
-export const prerenderRoutes = publicLocalizedPaths().filter(
+const nonDefaultLocalePrefixes = SUPPORTED_LOCALES.filter(
+  (locale) => locale !== DEFAULT_LOCALE
+).map((locale) => SITE_LOCALE_PREFIX_MAP[locale])
+
+export const prerenderRoutes = publicLocalizedPaths(['zh-CN', 'en-US']).filter(
   (path) =>
     path === '/' ||
     path === '/about' ||
@@ -89,4 +94,7 @@ export const prerenderRoutes = publicLocalizedPaths().filter(
 )
 
 // 新闻等动态内容走 API，更新频率较低，适合 SWR 缓存 SSR 结果。
-export const swrRouteRules = ['/news/**', '/en/news/**'] as const
+export const swrRouteRules = [
+  '/news/**',
+  ...nonDefaultLocalePrefixes.map((prefix) => `/${prefix}/news/**`)
+] as const

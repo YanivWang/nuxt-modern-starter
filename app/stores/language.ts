@@ -1,6 +1,6 @@
 /*
   【文件职责】
-    UI 语言 Pinia store：currentLanguage 状态、chooseLanguage 加载 i18n 文案、localStorage 持久化。
+    UI 语言 Pinia store：currentLanguage 状态、chooseLanguage 加载 i18n 文案、cookie 持久化。
     产品区 UI 语言与 URL 解耦，由 languageStore 独立控制。
 
   【架构位置】
@@ -14,7 +14,7 @@
     - 被引用：app/middleware/locale.global.ts、LanguageSwitcher、UserAccountMenu
 
   【渲染 / 数据】
-    SSR 与 CSR；chooseLanguage 触发 loadLocaleMessages；client 写 STORAGE_KEY_LANGUAGE。
+    SSR 与 CSR；chooseLanguage 触发 loadLocaleMessages；同一 cookie 供 SSR/CSR 读取。
 
   【边界与注意】
     产品 URL 语言中性；切换 UI 语言在产品区不改变 path（见 useLanguageSwitch / getSwitchLanguageUrl）。
@@ -25,10 +25,24 @@ import {
   SUPPORTED_LOCALES,
   type SupportedLocale
 } from '../../config/site'
-import { loadLocaleMessages, SITE_LANG_MAP, STORAGE_KEY_LANGUAGE } from '../../i18n'
+import {
+  LANGUAGE_COOKIE_MAX_AGE,
+  loadLocaleMessages,
+  resolveStoredLocale,
+  SITE_LANG_MAP,
+  STORAGE_KEY_LANGUAGE
+} from '../../i18n'
 
 export const useLanguageStore = defineStore('language', () => {
-  const currentLanguage = ref<SupportedLocale>(DEFAULT_LOCALE)
+  const languageCookie = useCookie<SupportedLocale | undefined>(STORAGE_KEY_LANGUAGE, {
+    default: () => DEFAULT_LOCALE,
+    maxAge: LANGUAGE_COOKIE_MAX_AGE,
+    path: '/',
+    sameSite: 'lax'
+  })
+  const currentLanguage = ref<SupportedLocale>(
+    resolveStoredLocale(languageCookie.value) || DEFAULT_LOCALE
+  )
   const currentLanguageId = computed(() => SITE_LANG_MAP[currentLanguage.value].id)
   const languages = SUPPORTED_LOCALES.map((locale) => ({
     locale,
@@ -37,10 +51,7 @@ export const useLanguageStore = defineStore('language', () => {
 
   const chooseLanguage = async (locale: SupportedLocale) => {
     currentLanguage.value = locale
-
-    if (import.meta.client) {
-      localStorage.setItem(STORAGE_KEY_LANGUAGE, locale)
-    }
+    languageCookie.value = locale
 
     await loadLocaleMessages(locale)
   }

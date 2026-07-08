@@ -1,0 +1,90 @@
+{
+  "auth": {
+    "header": {
+      "signIn": "登录",
+      "signUp": "注册",
+      "enterWorkspace": "进入工作台"
+    },
+    "form": {
+      "username": "用户名",
+      "password": "密码",
+      "confirmPassword": "确认密码"
+    },
+    "login": {
+      "title": "登录",
+      "submit": "登录",
+      "success": "登录成功",
+      "noAccount": "还没有账户？"
+    },
+    "register": {
+      "title": "注册",
+      "submit": "注册",
+      "success": "注册成功，请继续登录",
+      "hasAccount": "已有账户？"
+    },
+    "logout": {
+      "submit": "退出登录",
+      "success": "已退出登录"
+    },
+    "account": {
+      "eyebrow": "受保护页面",
+      "title": "账户",
+      "lead": "此页面通过命名 auth 中间件保护，展示当前登录用户和扩展资料。",
+      "avatar": "头像",
+      "sessionTitle": "登录态",
+      "profileTitle": "扩展资料",
+      "userId": "用户 ID",
+      "nickname": "昵称",
+      "roles": "角色",
+      "permissions": "权限",
+      "none": "暂无",
+      "emptyProfile": "暂无扩展资料"
+    },
+    "validation": {
+      "usernameRequired": "请输入用户名",
+      "passwordRequired": "请输入密码",
+      "confirmPasswordRequired": "请再次输入密码",
+      "passwordMin": "密码至少需要 6 个字符",
+      "passwordMismatch": "两次输入的密码不一致"
+    },
+    "errors": {
+      "loginFailed": "登录失败，请检查用户名或密码",
+      "registerFailed": "注册失败，请稍后重试",
+      "unauthorized": "未登录或无效登录凭证"
+    }
+  },
+  "editor": {
+    "eyebrow": "Yaniv Editor",
+    "title": "内容编辑器",
+    "placeholder": "开始撰写你的内容...",
+    "metaTitle": "编辑器",
+    "autosave": {
+      "saving": "保存中…",
+      "saved": "已自动保存 · {time}",
+      "failed": "自动保存失败，将继续重试"
+    },
+    "rename": {
+      "failed": "重命名失败，请重试"
+    }
+  },
+  "workspace": {
+    "nav": "工作台",
+    "title": "管理你的 PPT 作品",
+    "defaultTitle": "未命名作品",
+    "empty": "暂无作品，点击右上角按钮创建。",
+    "projectNotFound": "项目不存在或无权访问",
+    "create": "新建空白 PPT",
+    "edit": "编辑",
+    "delete": "删除",
+    "deleteCancel": "取消",
+    "deleteConfirm": "确定删除「{title}」吗？此操作不可恢复。",
+    "deleteSuccess": "作品已删除",
+    "save": "保存",
+    "projectName": "作品名称",
+    "backToWorkspace": "返回工作台",
+    "browse": "浏览",
+    "share": "分享",
+    "download": "下载",
+    "more": "更多操作"
+  }
+}

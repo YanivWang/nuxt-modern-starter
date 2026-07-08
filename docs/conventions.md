@@ -79,13 +79,13 @@ Use Nuxt test environment for composables, route middleware, server routes, and 
 
 Formatting and lint responsibilities are split on purpose:
 
-| Tool           | Role                                                                                       |
-| -------------- | ------------------------------------------------------------------------------------------ |
-| Prettier       | Source of truth for JS/TS/Vue/Markdown/JSON/CSS/SCSS formatting                            |
-| ESLint         | Code quality and Vue semantics; markup self-closing rules are aligned with Prettier output |
-| Stylelint      | SCSS/CSS/Vue style blocks only; does not format script or template markup                  |
-| Husky          | `lint-staged` on commit, then full `pnpm lint`, `stylelint`, `typecheck`, and `test`       |
-| `pnpm quality` | Release gate: adds `format:check` and `build` on top of the pre-commit subset              |
+| Tool           | Role                                                                                         |
+| -------------- | -------------------------------------------------------------------------------------------- |
+| Prettier       | Source of truth for JS/TS/Vue/Markdown/JSON/CSS/SCSS formatting                              |
+| ESLint         | Code quality and Vue semantics; markup self-closing rules are aligned with Prettier output   |
+| Stylelint      | SCSS/CSS/Vue style blocks only; does not format script or template markup                    |
+| Husky          | `lint-staged` on commit, then full `pnpm lint`, `stylelint`, `typecheck`, and `test`         |
+| `pnpm quality` | Release gate: adds `format:check`, `i18n:check`, and `build` on top of the pre-commit subset |
 
 Commit flow for staged code files:
 

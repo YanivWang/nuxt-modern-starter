@@ -137,7 +137,7 @@ Run the full local quality gate:
 pnpm quality
 ```
 
-`pnpm quality` runs lint, format:check, stylelint, typecheck, test, and build. Husky pre-commit keeps the faster subset for everyday commits.
+`pnpm quality` runs lint, format:check, stylelint, typecheck, i18n:check, test, and build. Husky pre-commit keeps the faster subset for everyday commits.
 
 Then verify deployment samples:
 

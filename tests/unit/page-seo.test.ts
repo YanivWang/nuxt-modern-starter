@@ -20,11 +20,12 @@
 */
 import { describe, expect, it } from 'vitest'
 import {
+  buildHtmlLang,
   buildPageSeoLinks,
   buildPageSeoMeta,
   buildPageSeoScripts
 } from '../../app/composables/usePageSeo'
-import { SITE_NAME, SITE_ORG } from '../../config/site'
+import { SITE_HREFLANG_MAP, SITE_NAME, SITE_ORG, SUPPORTED_LOCALES } from '../../config/site'
 
 const siteUrl = 'https://example.com'
 const resolvedTitle = 'Pricing · Nuxt Modern Starter'
@@ -33,6 +34,12 @@ const canonical = 'https://example.com/pricing'
 const ogImage = 'https://example.com/og-default.png'
 
 describe('page seo links', () => {
+  it('maps app locales to html lang values', () => {
+    expect(buildHtmlLang('zh-CN')).toBe('zh')
+    expect(buildHtmlLang('ko-KR')).toBe('ko')
+    expect(buildHtmlLang('pt-BR')).toBe('pt-BR')
+  })
+
   it('generates alternate language links for public pages', () => {
     const links = buildPageSeoLinks({
       siteUrl,
@@ -43,19 +50,25 @@ describe('page seo links', () => {
     expect(links).toContainEqual({ rel: 'canonical', href: 'https://example.com/pricing' })
     expect(links).toContainEqual({
       rel: 'alternate',
-      hreflang: 'zh-CN',
+      hreflang: SITE_HREFLANG_MAP['zh-CN'],
       href: 'https://example.com/pricing'
     })
     expect(links).toContainEqual({
       rel: 'alternate',
-      hreflang: 'en-US',
+      hreflang: SITE_HREFLANG_MAP['en-US'],
       href: 'https://example.com/en/pricing'
+    })
+    expect(links).toContainEqual({
+      rel: 'alternate',
+      hreflang: SITE_HREFLANG_MAP['ko-KR'],
+      href: 'https://example.com/kr/pricing'
     })
     expect(links).toContainEqual({
       rel: 'alternate',
       hreflang: 'x-default',
       href: 'https://example.com/pricing'
     })
+    expect(links).toHaveLength(SUPPORTED_LOCALES.length + 2)
   })
 
   it('does not generate alternate language links for noindex product pages', () => {

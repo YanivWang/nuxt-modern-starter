@@ -17,15 +17,24 @@
     帮助页 SSR；getFaqItems(currentLanguage) 本地读取，不经远程 API。
 
   【边界与注意】
-    新增 FAQ 条目只需扩展 faqItems；每条须同时提供 zh-CN 与 en-US 字段。
+    新增 FAQ 条目只需扩展 faqItems；每条至少提供 zh-CN 与 en-US，其余语言可按需补译。
 */
-import type { SupportedLocale } from '../site'
+import { DEFAULT_LOCALE, type SupportedLocale } from '../site'
+
+/** 至少提供 zh-CN / en-US；其余 locale 可后续补译，读取时回退到 en-US → zh-CN */
+export type LocalizedContent = Partial<Record<SupportedLocale, string>> & {
+  'zh-CN': string
+  'en-US': string
+}
 
 export type FaqItem = {
   key: string
-  question: Record<SupportedLocale, string>
-  answer: Record<SupportedLocale, string>
+  question: LocalizedContent
+  answer: LocalizedContent
 }
+
+export const resolveLocalizedContent = (content: LocalizedContent, locale: SupportedLocale) =>
+  content[locale] ?? content['en-US'] ?? content[DEFAULT_LOCALE]
 
 export const faqItems: FaqItem[] = [
   {
@@ -153,9 +162,9 @@ export const faqItems: FaqItem[] = [
     },
     answer: {
       'zh-CN':
-        '发布或部署前运行 pnpm quality。该命令依次执行 lint、format:check、stylelint、typecheck、test 与 build。日常提交仍由 Husky pre-commit 提供更快的 lint/stylelint/typecheck/test 反馈。若涉及部署变更，再补充 Docker 构建运行与 Nginx 反向代理验证，步骤可参考 docs/deployment.md。',
+        '发布或部署前运行 pnpm quality。该命令依次执行 lint、format:check、stylelint、typecheck、i18n:check、test 与 build。日常提交仍由 Husky pre-commit 提供更快的 lint/stylelint/typecheck/test 反馈。若涉及部署变更，再补充 Docker 构建运行与 Nginx 反向代理验证，步骤可参考 docs/deployment.md。',
       'en-US':
-        'Run pnpm quality before release or deployment. It executes lint, format:check, stylelint, typecheck, test, and build. Day-to-day commits still use the faster Husky pre-commit subset. If deployment changed, also validate Docker build/run and the Nginx reverse proxy. See docs/deployment.md for the validation flow.'
+        'Run pnpm quality before release or deployment. It executes lint, format:check, stylelint, typecheck, i18n:check, test, and build. Day-to-day commits still use the faster Husky pre-commit subset. If deployment changed, also validate Docker build/run and the Nginx reverse proxy. See docs/deployment.md for the validation flow.'
     }
   }
 ]

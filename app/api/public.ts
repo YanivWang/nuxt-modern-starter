@@ -21,7 +21,7 @@
     FAQ 不经远程 API；新闻 / 定价走 Public client，适合 SSR 公开页（不经 token）。
 */
 import type { ApiResponse } from '../lib/http/types'
-import { faqItems } from '../../config/content/faq'
+import { faqItems, resolveLocalizedContent } from '../../config/content/faq'
 import type { SupportedLocale } from '../../config/site'
 import { createPublicApiClient } from './clients'
 
@@ -65,8 +65,8 @@ export type PricingPageContent = {
 export const getFaqItems = (locale: SupportedLocale) =>
   faqItems.map((item) => ({
     key: item.key,
-    question: item.question[locale],
-    answer: item.answer[locale]
+    question: resolveLocalizedContent(item.question, locale),
+    answer: resolveLocalizedContent(item.answer, locale)
   }))
 
 export const fetchNewsArticles = (locale: SupportedLocale) =>

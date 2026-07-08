@@ -17,8 +17,9 @@
 SITE_NAME
 SITE_DESCRIPTION
 DEFAULT_SITE_URL // sitemap/robots fallback 用占位域名
-SUPPORTED_LOCALES // ['zh-CN', 'en-US']
-SITE_LOCALE_PREFIX_MAP // { 'zh-CN': 'zh', 'en-US': 'en' }
+SUPPORTED_LOCALES // 15 个内置 locale，默认 zh-CN
+SITE_LOCALE_PREFIX_MAP // zh-CN 使用无前缀 canonical，其余语言映射到 /en、/pt、/zh-hk 等
+SITE_HREFLANG_MAP // hreflang / html lang 来源
 PUBLIC_PAGE_PATHS // sitemap/hreflang 来源
 NAV_ITEMS // 公开页导航
 DEFAULT_SEO // 默认 title/description/ogImage

@@ -23,6 +23,7 @@
 import {
   DEFAULT_LOCALE,
   DEFAULT_SEO,
+  SITE_HREFLANG_MAP,
   SITE_NAME,
   SITE_ORG,
   SUPPORTED_LOCALES,
@@ -154,6 +155,9 @@ const getLocaleMessage = (locale: SupportedLocale, key: string) => {
   return typeof value === 'string' ? value : undefined
 }
 
+/** HTML lang 使用 BCP 47 语言值；与 hreflang 保持同一份配置来源 */
+export const buildHtmlLang = (locale: SupportedLocale) => SITE_HREFLANG_MAP[locale]
+
 /** 生成 canonical 与 hreflang link；公开页输出完整 alternate，noindex 页仅 canonical */
 export const buildPageSeoLinks = (input: PageSeoLinkInput) => {
   const locale = input.locale || DEFAULT_LOCALE
@@ -168,10 +172,10 @@ export const buildPageSeoLinks = (input: PageSeoLinkInput) => {
 
   return [
     canonicalLink,
-    // 为 SUPPORTED_LOCALES 各生成一条 alternate（当前为 zh-CN、en-US）
+    // 为 SUPPORTED_LOCALES 各生成一条 alternate hreflang
     ...SUPPORTED_LOCALES.map((targetLocale) => ({
       rel: 'alternate',
-      hreflang: targetLocale,
+      hreflang: SITE_HREFLANG_MAP[targetLocale],
       href: absoluteUrl(input.siteUrl, localizedPath(input.path, targetLocale))
     })),
     // x-default 指向默认语言 canonical（zh-CN 无前缀 path）
@@ -299,6 +303,9 @@ export const usePageSeo = (input: PageSeoInput) => {
 
   useHead({
     title,
+    htmlAttrs: {
+      lang: buildHtmlLang(locale)
+    },
     meta: buildPageSeoMeta({
       siteUrl,
       siteName: SITE_NAME,

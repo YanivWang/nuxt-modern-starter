@@ -10,6 +10,8 @@
 */
 import { hash } from 'ohash'
 import { parseURL } from 'ufo'
+import { SUPPORTED_LOCALES } from '../../config/site'
+import { localizedPath } from '../../config/routes'
 
 const ROUTE_CACHE_GROUP = 'nitro/routes'
 const ROUTE_CACHE_NAME = '_'
@@ -44,7 +46,11 @@ export function buildRouteCacheKey(path: string) {
 
 export function getNewsRevalidatePaths(slug: string) {
   const normalizedSlug = slug.trim()
-  return ['/news', `/news/${normalizedSlug}`, '/en/news', `/en/news/${normalizedSlug}`]
+
+  return SUPPORTED_LOCALES.flatMap((locale) => [
+    localizedPath('/news', locale),
+    localizedPath(`/news/${normalizedSlug}`, locale)
+  ])
 }
 
 export async function purgeRouteCache(path: string) {

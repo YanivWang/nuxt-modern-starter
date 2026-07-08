@@ -22,7 +22,12 @@
     siteUrl 来自 runtimeConfig.public.siteUrl，空值 fallback DEFAULT_SITE_URL。
 */
 import type { ApiResponse } from '../../app/lib/http/types'
-import { DEFAULT_SITE_URL, SUPPORTED_LOCALES } from '../../config/site'
+import {
+  DEFAULT_LOCALE,
+  DEFAULT_SITE_URL,
+  SITE_LOCALE_PREFIX_MAP,
+  SUPPORTED_LOCALES
+} from '../../config/site'
 import { localizedPath, publicLocalizedPaths } from '../../config/routes'
 
 export type SitemapEntry = {
@@ -94,10 +99,25 @@ export const buildSitemapXmlAsync = async (siteUrl?: string, apiBase?: string) =
   return buildSitemapXml(siteUrl, newsSlugs)
 }
 
+const localizedAuthDisallowRules = () => {
+  const nonDefaultPrefixes = SUPPORTED_LOCALES.filter((locale) => locale !== DEFAULT_LOCALE).map(
+    (locale) => SITE_LOCALE_PREFIX_MAP[locale]
+  )
+
+  return nonDefaultPrefixes.flatMap((prefix) => [
+    `Disallow: /${prefix}/workspace`,
+    `Disallow: /${prefix}/workspace/`,
+    `Disallow: /${prefix}/docs/`,
+    `Disallow: /${prefix}/account`,
+    `Disallow: /${prefix}/sign-in`,
+    `Disallow: /${prefix}/sign-up`
+  ])
+}
+
 export const buildRobotsTxt = (siteUrl?: string) => {
   const normalizedSiteUrl = normalizeSiteUrl(siteUrl)
 
-  // 产品区、鉴权页 noindex；同时 block /en 变体以防爬虫收录带前缀 URL
+  // 产品区、鉴权页 noindex；同时 block 各语言前缀变体以防爬虫收录带前缀 URL
   return [
     'User-agent: *',
     'Allow: /',
@@ -105,14 +125,9 @@ export const buildRobotsTxt = (siteUrl?: string) => {
     'Disallow: /workspace/',
     'Disallow: /docs/',
     'Disallow: /account',
-    'Disallow: /en/workspace',
-    'Disallow: /en/workspace/',
-    'Disallow: /en/docs/',
-    'Disallow: /en/account',
+    ...localizedAuthDisallowRules(),
     'Disallow: /sign-in',
-    'Disallow: /en/sign-in',
     'Disallow: /sign-up',
-    'Disallow: /en/sign-up',
     '',
     `Sitemap: ${normalizedSiteUrl}/sitemap.xml`,
     ''

@@ -44,6 +44,9 @@ describe('locale path utilities', () => {
     expect(getSwitchLanguageUrl('/en/pricing', 'zh-CN', '?plan=growth#faq')).toBe(
       '/pricing?plan=growth#faq'
     )
+    expect(getSwitchLanguageUrl('https://example.com/en/pricing?plan=growth#faq', 'zh-CN')).toBe(
+      '/pricing?plan=growth#faq'
+    )
     expect(getSwitchLanguageUrl('/pricing', 'en-US')).toBe('/en/pricing')
     expect(getSwitchLanguageUrl('/workspace', 'en-US')).toBe('/workspace')
     expect(getSwitchLanguageUrl('/en/workspace', 'zh-CN')).toBe('/workspace')

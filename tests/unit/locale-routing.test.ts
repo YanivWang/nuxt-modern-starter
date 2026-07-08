@@ -20,23 +20,28 @@
     不覆盖 middleware 内 loadLocaleMessages / navigateTo；修改决策树须同步本文件。
 */
 import { describe, expect, it } from 'vitest'
-import { localeFromPrefix, matchRouteLanguage } from '../../i18n'
+import { extractLanguagePrefixByPath, localeFromPrefix, resolvePreferredLocale } from '../../i18n'
 import { resolveLocaleRouteDecision } from '../../app/middleware/locale.global'
 
 describe('locale routing decisions', () => {
   it('resolves default and non-default language prefixes', () => {
-    expect(matchRouteLanguage()).toBe('zh-CN')
-    expect(matchRouteLanguage('en')).toBe('en-US')
+    expect(resolvePreferredLocale('/')).toBe('zh-CN')
+    expect(resolvePreferredLocale('/en/pricing')).toBe('en-US')
+    expect(resolvePreferredLocale('/kr/pricing')).toBe('ko-KR')
+    expect(resolvePreferredLocale('/zh-hk/help')).toBe('zh-HK')
   })
 
   it('returns undefined for unsupported language-like prefixes', () => {
-    expect(matchRouteLanguage('fr')).toBeUndefined()
-    expect(localeFromPrefix('fr')).toBeUndefined()
+    expect(localeFromPrefix('xx')).toBeUndefined()
   })
 
   it('extracts supported language prefixes from paths', () => {
     expect(localeFromPrefix('en')).toBe('en-US')
+    expect(localeFromPrefix('jp')).toBe('ja-JP')
     expect(localeFromPrefix(undefined)).toBeUndefined()
+    expect(extractLanguagePrefixByPath('/en/pricing')).toBe('en')
+    expect(extractLanguagePrefixByPath('/zh-hk/help')).toBe('zh-hk')
+    expect(extractLanguagePrefixByPath('/workspace')).toBe('')
   })
 
   it('redirects default prefixes and trailing slashes with 301', () => {
@@ -68,13 +73,44 @@ describe('locale routing decisions', () => {
       path: '/account',
       redirectCode: 301
     })
+    expect(resolveLocaleRouteDecision('/kr/workspace')).toEqual({
+      type: 'redirect',
+      path: '/workspace',
+      redirectCode: 301
+    })
   })
 
   it('returns a 404 decision for unsupported language prefixes', () => {
-    expect(resolveLocaleRouteDecision('/fr/pricing')).toEqual({
+    expect(resolveLocaleRouteDecision('/xx/pricing')).toEqual({
       type: 'error',
       statusCode: 404,
       statusMessage: 'error.unsupportedLanguage'
+    })
+  })
+
+  it('resolves newly added public language prefixes', () => {
+    expect(resolveLocaleRouteDecision('/fr/pricing')).toEqual({
+      type: 'locale',
+      locale: 'fr-FR'
+    })
+    expect(resolveLocaleRouteDecision('/pt-br/about')).toEqual({
+      type: 'locale',
+      locale: 'pt-BR'
+    })
+  })
+
+  it('prefers the persisted locale for language-neutral product routes', () => {
+    expect(resolveLocaleRouteDecision('/workspace', 'en-US')).toEqual({
+      type: 'locale',
+      locale: 'en-US'
+    })
+    expect(resolveLocaleRouteDecision('/docs/deck-1', 'fr-FR')).toEqual({
+      type: 'locale',
+      locale: 'fr-FR'
+    })
+    expect(resolveLocaleRouteDecision('/account', 'pt-BR')).toEqual({
+      type: 'locale',
+      locale: 'pt-BR'
     })
   })
 })

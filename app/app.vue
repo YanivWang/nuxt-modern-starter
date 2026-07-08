@@ -20,7 +20,7 @@
 -->
 <template>
   <a-extract-style>
-    <a-config-provider :theme="antdTheme">
+    <a-config-provider :theme="antdTheme" :locale="antdLocale">
       <NuxtLayout>
         <NuxtPage />
       </NuxtLayout>
@@ -30,6 +30,7 @@
 
 <script setup lang="ts">
 import { THEME_STORAGE_KEY } from '../config/theme'
+import { getAntdLocale } from '../config/antd-locale'
 
 useHead({
   script: [
@@ -42,4 +43,6 @@ useHead({
 })
 
 const { antdTheme } = useTheme()
+const languageStore = useLanguageStore()
+const antdLocale = computed(() => getAntdLocale(languageStore.currentLanguage))
 </script>

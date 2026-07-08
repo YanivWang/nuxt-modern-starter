@@ -14,8 +14,10 @@ pnpm quality         # 发布全量门禁
 ## quality 门禁内容
 
 ```
-lint → format:check → stylelint → typecheck → test → build
+lint → format:check → stylelint → typecheck → i18n:check → test → build
 ```
+
+`i18n:check` 防止 locale 配置、语言包目录、resolver 与 key 快照漂移。
 
 Husky pre-commit 跑较快子集：`lint-staged`，再跑 `lint`、`stylelint`、`typecheck`、`test`（不含 `format:check` 和 `build`）。
 

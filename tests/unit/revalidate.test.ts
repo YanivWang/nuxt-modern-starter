@@ -6,6 +6,7 @@
     tests/unit — server/utils/revalidate.ts 纯函数。
 */
 import { describe, expect, it } from 'vitest'
+import { SUPPORTED_LOCALES } from '../../config/site'
 import {
   buildRouteCacheKey,
   getNewsRevalidatePaths,
@@ -22,26 +23,26 @@ describe('revalidate helpers', () => {
   })
 
   it('expands slug into localized news paths', () => {
-    expect(getNewsRevalidatePaths('starter-release')).toEqual([
-      '/news',
-      '/news/starter-release',
-      '/en/news',
-      '/en/news/starter-release'
-    ])
+    const paths = getNewsRevalidatePaths('starter-release')
+
+    expect(paths).toContain('/news')
+    expect(paths).toContain('/news/starter-release')
+    expect(paths).toContain('/en/news')
+    expect(paths).toContain('/en/news/starter-release')
+    expect(paths).toContain('/kr/news/starter-release')
+    expect(paths).toHaveLength(SUPPORTED_LOCALES.length * 2)
   })
 
   it('resolves explicit paths and slug shortcuts from request body', () => {
-    expect(
-      resolveRevalidatePaths({
-        paths: ['/news', '/en/news/foo'],
-        slug: 'starter-release'
-      })
-    ).toEqual([
-      '/news',
-      '/en/news/foo',
-      '/news/starter-release',
-      '/en/news',
-      '/en/news/starter-release'
-    ])
+    const resolved = resolveRevalidatePaths({
+      paths: ['/news', '/en/news/foo'],
+      slug: 'starter-release'
+    })
+
+    expect(resolved).toContain('/news')
+    expect(resolved).toContain('/en/news/foo')
+    expect(resolved).toContain('/news/starter-release')
+    expect(resolved).toContain('/en/news/starter-release')
+    expect(resolved).toHaveLength(SUPPORTED_LOCALES.length * 2 + 1)
   })
 })

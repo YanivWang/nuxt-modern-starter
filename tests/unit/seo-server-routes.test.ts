@@ -39,6 +39,7 @@ describe('SEO server route helpers', () => {
     expect(urls).toContain('https://example.com/')
     expect(urls).toContain('https://example.com/pricing')
     expect(urls).toContain('https://example.com/en/news')
+    expect(urls).toContain('https://example.com/kr/news')
     expect(urls).toContain('https://example.com/news/starter-release')
     expect(urls).toContain('https://example.com/en/news/starter-release')
     expect(urls.some((url) => url.includes('/workspace'))).toBe(false)

@@ -8,7 +8,7 @@ Before tagging, deploying, or running `pnpm docker:up`, run the full local quali
 pnpm quality
 ```
 
-`pnpm quality` runs `lint`, `format:check`, `stylelint`, `typecheck`, `test`, and `build`. Husky pre-commit still runs the faster subset (`lint-staged`, then `lint`, `stylelint`, `typecheck`, `test`) on every commit and intentionally skips `format:check` and `build` to keep day-to-day commits fast.
+`pnpm quality` runs `lint`, `format:check`, `stylelint`, `typecheck`, `i18n:check`, `test`, and `build`. Husky pre-commit still runs the faster subset (`lint-staged`, then `lint`, `stylelint`, `typecheck`, `test`) on every commit and intentionally skips `format:check`, `i18n:check`, and `build` to keep day-to-day commits fast.
 
 Typical release flow:
 

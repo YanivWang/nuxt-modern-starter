@@ -43,7 +43,7 @@
 | ESLint         | 代码质量与 Vue 语义；`--max-warnings 0`                                 |
 | Stylelint      | SCSS/CSS/Vue style 块                                                   |
 | Husky          | pre-commit：`lint-staged` → `lint` → `stylelint` → `typecheck` → `test` |
-| `pnpm quality` | 发布门禁：上述 + `format:check` + `build`                               |
+| `pnpm quality` | 发布门禁：上述 + `format:check` + `i18n:check` + `build`                |
 
 提交时 staged 文件先 `prettier --write`，再 `eslint --fix --max-warnings 0`。
 

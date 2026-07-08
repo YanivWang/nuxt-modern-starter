@@ -38,6 +38,13 @@ describe('public content api', () => {
     })
   })
 
+  it('falls back to English FAQ content for locales without dedicated translations', () => {
+    const englishItems = getFaqItems('en-US')
+    const frenchItems = getFaqItems('fr-FR')
+
+    expect(frenchItems).toEqual(englishItems)
+  })
+
   it('fetches news articles through the public client', async () => {
     const request = vi.fn().mockResolvedValue({
       code: 200,
