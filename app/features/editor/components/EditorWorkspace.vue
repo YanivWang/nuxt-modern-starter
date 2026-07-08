@@ -31,6 +31,7 @@ import {
   updateWorkspaceProject,
   type WorkspaceProject
 } from '~/features/workspace'
+import { editorCustomAppearanceVars } from '../editor-appearance'
 import EditorWorkspaceHeader from './EditorWorkspaceHeader.vue'
 
 type EditorProjectContext = Pick<WorkspaceProject, 'id' | 'title'>
@@ -45,7 +46,7 @@ const emit = defineEmits<{
   'project-updated': [project: Pick<WorkspaceProject, 'id' | 'title'>]
 }>()
 
-const AUTOSAVE_DEBOUNCE_MS = 2000 // 内容变更 debounce 后触发 persistDocument
+const { resolvedMode } = useTheme()
 
 const { t } = useI18n()
 const languageStore = useLanguageStore()
@@ -69,6 +70,8 @@ const titleSaving = ref(false)
 
 const EDITOR_MODE = 'edit' as const
 const EDITOR_PRESET = 'full' as const
+const EDITOR_APPEARANCE = 'custom' as const
+const AUTOSAVE_DEBOUNCE_MS = 2000
 
 let autosaveTimer: ReturnType<typeof setTimeout> | null = null
 
@@ -446,6 +449,9 @@ onBeforeRouteLeave(async () => {
           ref="editorRef"
           :mode="EDITOR_MODE"
           :preset="EDITOR_PRESET"
+          :appearance="EDITOR_APPEARANCE"
+          :custom-appearance-vars="editorCustomAppearanceVars"
+          :color-mode="resolvedMode"
           :locale="languageStore.currentLanguage"
           :initial-content="editorInitialContent"
           @update="onEditorUpdate"
@@ -455,36 +461,3 @@ onBeforeRouteLeave(async () => {
     </main>
   </div>
 </template>
-
-<style scoped lang="scss">
-.editor-workspace {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  background: var(--app-color-elevated);
-}
-
-.editor-workspace__body {
-  display: flex;
-  flex: 1;
-  min-height: 0;
-  padding: clamp(12px, 2vw, 20px) clamp(16px, 3vw, 24px) clamp(16px, 3vw, 24px);
-}
-
-.editor-workspace__surface {
-  display: flex;
-  flex: 1;
-  min-height: 0;
-  overflow: hidden;
-  border: 1px solid var(--app-color-border);
-  border-radius: 8px;
-  background: var(--app-color-bg);
-}
-
-.editor-workspace__loading {
-  display: flex;
-  flex: 1;
-  align-items: center;
-  justify-content: center;
-}
-</style>

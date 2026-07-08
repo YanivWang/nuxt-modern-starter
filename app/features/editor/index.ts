@@ -19,4 +19,5 @@
     页面须从 ~/features/editor 导入；与 workspace api 协同完成新建 / 编辑流程。
 */
 export * from './api'
+export { editorCustomAppearanceVars } from './editor-appearance'
 export { default as EditorWorkspace } from './components/EditorWorkspace.vue'

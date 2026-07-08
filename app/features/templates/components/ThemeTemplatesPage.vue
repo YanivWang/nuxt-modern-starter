@@ -20,9 +20,11 @@
 -->
 <template>
   <section class="theme-templates-page">
-    <header class="theme-templates-page__header">
-      <h1 class="theme-templates-page__title">{{ $t('productNav.themeTemplates') }}</h1>
-      <p class="theme-templates-page__lead">{{ $t('templates.empty') }}</p>
+    <header class="app-product-page__header theme-templates-page__header">
+      <div>
+        <h1 class="app-product-page__title">{{ $t('productNav.themeTemplates') }}</h1>
+        <p class="app-product-page__lead">{{ $t('templates.empty') }}</p>
+      </div>
     </header>
     <div class="theme-templates-page__grid" aria-hidden="true">
       <div v-for="index in 6" :key="index" class="theme-templates-page__card" />
@@ -33,36 +35,25 @@
 
 <style scoped lang="scss">
 .theme-templates-page__header {
-  margin-bottom: 32px;
-}
-
-.theme-templates-page__title {
-  margin: 0 0 8px;
-  font-size: clamp(1.5rem, 3vw, 2rem);
-  font-weight: 700;
-}
-
-.theme-templates-page__lead {
-  margin: 0;
-  color: var(--app-color-muted);
+  margin-bottom: var(--app-spacing-xl);
 }
 
 .theme-templates-page__grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 16px;
-  margin-bottom: 24px;
+  gap: var(--app-spacing-md);
+  margin-bottom: var(--app-spacing-lg);
 }
 
 .theme-templates-page__card {
   aspect-ratio: 16 / 10;
   border: 1px dashed var(--app-color-border);
-  border-radius: 12px;
+  border-radius: var(--app-radius-large);
   background: var(--app-color-elevated);
   opacity: 0.45;
 }
 
 .theme-templates-page__empty {
-  padding: 24px 0;
+  padding: var(--app-spacing-lg) 0;
 }
 </style>

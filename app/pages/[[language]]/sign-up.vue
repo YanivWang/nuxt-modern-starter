@@ -136,7 +136,13 @@ const handleSubmit = async () => {
             />
           </a-form-item>
 
-          <a-button type="primary" html-type="submit" block :loading="loading">
+          <a-button
+            type="primary"
+            html-type="submit"
+            block
+            :loading="loading"
+            class="page-cta-btn page-cta-btn--block"
+          >
             {{ $t('auth.register.submit') }}
           </a-button>
         </a-form>

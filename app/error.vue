@@ -61,37 +61,16 @@ useHead({
 <template>
   <NuxtLayout name="empty">
     <main class="error-page">
-      <div class="page-empty-state">
+      <div class="page-empty-state page-empty-state--compact">
         <p class="page-eyebrow">{{ error.statusCode || 500 }}</p>
         <h1 class="page-title">
           {{ errorTitle }}
         </h1>
         <p class="page-lead">{{ t('error.message') }}</p>
-        <a-button type="primary" size="large" class="error-page__action" @click="handleError">
+        <button type="button" class="page-back-link" @click="handleError">
           {{ t('common.backHome') }}
-        </a-button>
+        </button>
       </div>
     </main>
   </NuxtLayout>
 </template>
-
-<style scoped lang="scss">
-.page-empty-state {
-  .page-title {
-    font-size: clamp(28px, 4vw, 40px);
-  }
-
-  .page-lead {
-    margin-top: 16px;
-    font-size: 16px;
-  }
-}
-
-.error-page__action {
-  margin-top: 24px;
-  min-width: 160px;
-  height: 44px;
-  border-radius: 12px;
-  font-weight: 600;
-}
-</style>

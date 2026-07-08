@@ -125,7 +125,7 @@ const handleLanguageSelect = async (locale: SupportedLocale) => {
   position: absolute;
   top: calc(100% + 6px);
   right: 0;
-  z-index: 20;
+  z-index: var(--app-z-index-dropdown);
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -198,7 +198,7 @@ const handleLanguageSelect = async (locale: SupportedLocale) => {
 
 .language-switcher__check {
   color: var(--app-color-primary);
-  font-size: 12px;
+  font-size: var(--app-text-xs);
   line-height: 1;
 }
 

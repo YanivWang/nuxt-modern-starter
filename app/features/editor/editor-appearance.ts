@@ -1,0 +1,63 @@
+/*
+  【文件职责】
+    将 app design token（--app-*）映射为 YanivEditor customAppearanceVars（--ye-*）。
+    使用 CSS var 引用，主题切换时编辑器自动跟随。
+
+  【架构位置】
+    登录产品区 — app/features/editor，EditorWorkspace 消费。
+*/
+export const editorCustomAppearanceVars: Record<string, string> = {
+  '--ye-primary': 'var(--app-color-primary)',
+  '--ye-primary-hover': 'var(--app-color-primary-hover)',
+  '--ye-primary-light': 'var(--app-color-primary-subtle)',
+  '--ye-bg': 'var(--app-color-bg)',
+  '--ye-bg-hover': 'var(--app-color-elevated)',
+  '--ye-bg-secondary': 'var(--app-color-surface)',
+  '--ye-bg-tertiary': 'var(--app-color-fill-secondary)',
+  '--ye-page-bg': 'var(--app-color-bg-canvas)',
+  '--ye-text': 'var(--app-color-text)',
+  '--ye-text-secondary': 'var(--app-color-muted)',
+  '--ye-text-muted': 'var(--app-color-subtle)',
+  '--ye-border': 'var(--app-color-border)',
+  '--ye-border-hover': 'var(--app-color-border-strong)',
+  '--ye-border-focus': 'var(--app-color-primary-border)',
+  '--ye-link': 'var(--app-color-primary)',
+  '--ye-link-hover': 'var(--app-color-primary-hover)',
+  '--ye-danger': 'var(--app-color-danger)',
+  '--ye-danger-bg': 'var(--app-color-danger-subtle)',
+  '--ye-toolbar-bg': 'var(--app-color-bg)',
+  '--ye-toolbar-border': 'var(--app-color-border)',
+  '--ye-toolbar-btn-bg': 'transparent',
+  '--ye-toolbar-btn-hover': 'var(--app-color-nav-hover-bg)',
+  '--ye-toolbar-btn-active': 'var(--app-color-nav-active-bg)',
+  '--ye-toolbar-btn-text': 'var(--app-color-text)',
+  '--ye-toolbar-btn-disabled': 'var(--app-color-subtle)',
+  '--ye-toolbar-divider': 'var(--app-color-border)',
+  '--ye-toolbar-shadow': 'var(--app-shadow-elevation-1)',
+  '--ye-toolbar-dropdown-shadow': 'var(--app-shadow-dropdown)',
+  '--ye-bubble-bg': 'var(--app-color-bg)',
+  '--ye-bubble-border': 'var(--app-color-border)',
+  '--ye-bubble-shadow': 'var(--app-shadow-dropdown)',
+  '--ye-code-bg': 'var(--app-color-fill-secondary)',
+  '--ye-code-text': 'var(--app-color-text)',
+  '--ye-codeblock-bg': 'var(--app-color-fill-secondary)',
+  '--ye-codeblock-text': 'var(--app-color-text)',
+  '--ye-blockquote-bg': 'var(--app-color-fill-secondary)',
+  '--ye-blockquote-border': 'var(--app-color-primary-border)',
+  '--ye-selection': 'var(--app-color-primary-subtle)',
+  '--ye-caret': 'var(--app-color-primary)',
+  '--ye-placeholder-color': 'var(--app-color-subtle)',
+  '--ye-font-family': 'var(--app-font-sans)',
+  '--ye-font-size': 'var(--app-text-md)',
+  '--ye-line-height': 'var(--app-leading-relaxed)',
+  '--ye-radius-sm': 'var(--app-radius-base)',
+  '--ye-radius-md': 'var(--app-radius-medium)',
+  '--ye-radius-lg': 'var(--app-radius-large)',
+  '--ye-shadow-sm': 'var(--app-shadow-elevation-1)',
+  '--ye-shadow-md': 'var(--app-shadow-elevation-2)',
+  '--ye-shadow-lg': 'var(--app-shadow-elevation-3)',
+  '--ye-z-toolbar': 'var(--app-z-index-sticky)',
+  '--ye-z-dropdown': 'var(--app-z-index-dropdown)',
+  '--ye-z-bubble': 'var(--app-z-index-popover)',
+  '--ye-z-modal': 'var(--app-z-index-modal)'
+}

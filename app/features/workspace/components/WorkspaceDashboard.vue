@@ -102,8 +102,8 @@ const handleDeleteProject = async (projectId: string) => {
 
 <template>
   <section class="workspace-dashboard">
-    <div class="workspace-dashboard__header">
-      <h1 class="workspace-dashboard__title">{{ $t('workspace.title') }}</h1>
+    <div class="app-product-page__header workspace-dashboard__header">
+      <h1 class="app-product-page__title">{{ $t('workspace.title') }}</h1>
       <a-button
         type="primary"
         size="large"
@@ -158,17 +158,7 @@ const handleDeleteProject = async (projectId: string) => {
 }
 
 .workspace-dashboard__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-}
-
-.workspace-dashboard__title {
-  margin: 0;
-  font-size: clamp(24px, 3vw, 32px);
-  line-height: 1.2;
-  letter-spacing: -0.02em;
+  margin-bottom: 0;
 }
 
 .workspace-grid {
@@ -192,11 +182,6 @@ const handleDeleteProject = async (projectId: string) => {
 }
 
 @media (width <= 720px) {
-  .workspace-dashboard__header {
-    align-items: stretch;
-    flex-direction: column;
-  }
-
   .workspace-grid {
     --workspace-card-min: 230px;
     --workspace-card-max: 1fr;

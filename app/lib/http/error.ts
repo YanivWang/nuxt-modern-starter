@@ -17,7 +17,7 @@
     无
 
   【边界与注意】
-    isUnauthorizedError 同时检查 response.status 与 statusCode，兼容 ofetch 错误形状。
+    isUnauthorizedError 检查 ofetch 标准错误形状 response.status。
 */
 import type { ApiResponse } from './types'
 
@@ -48,8 +48,8 @@ export const getApiErrorMessage = (error: unknown, defaultMessage: string) => {
   return apiError.data?.message || defaultMessage
 }
 
-/** 判定 401：兼容 ofetch 的 response.status 与顶层 statusCode 两种错误形状 */
+/** 判定 401：ofetch 标准错误形状 */
 export const isUnauthorizedError = (error: unknown) => {
-  const fetchError = error as { response?: { status?: number }; statusCode?: number }
-  return fetchError.response?.status === 401 || fetchError.statusCode === 401
+  const fetchError = error as { response?: { status?: number } }
+  return fetchError.response?.status === 401
 }

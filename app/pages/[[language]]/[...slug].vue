@@ -48,7 +48,7 @@ usePageSeo({
 
 <template>
   <PageContainer layout="compact">
-    <div class="page-empty-state">
+    <div class="page-empty-state page-empty-state--compact">
       <p class="page-eyebrow">404</p>
       <h1 class="page-title">{{ $t('error.title') }}</h1>
       <p class="page-lead">{{ $t('error.message') }}</p>
@@ -58,20 +58,3 @@ usePageSeo({
     </div>
   </PageContainer>
 </template>
-
-<style scoped lang="scss">
-.page-empty-state {
-  .page-title {
-    font-size: clamp(28px, 4vw, 40px);
-  }
-
-  .page-lead {
-    margin-top: 16px;
-    font-size: 16px;
-  }
-
-  .page-back-link {
-    margin-top: 24px;
-  }
-}
-</style>

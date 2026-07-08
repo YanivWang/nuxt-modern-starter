@@ -302,7 +302,7 @@ const handleSignOut = async () => {
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
-  z-index: 1100;
+  z-index: var(--app-z-index-dropdown);
 }
 
 .user-account-menu__avatar {
@@ -341,8 +341,8 @@ const handleSignOut = async () => {
   margin: 0;
   overflow: hidden;
   color: var(--app-color-text);
-  font-size: 15px;
-  font-weight: 700;
+  font-size: var(--app-text-md);
+  font-weight: var(--app-weight-bold);
   line-height: 1.3;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -352,7 +352,7 @@ const handleSignOut = async () => {
   margin: 2px 0 0;
   overflow: hidden;
   color: var(--app-color-muted);
-  font-size: 13px;
+  font-size: var(--app-text-sm);
   line-height: 1.3;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -383,7 +383,7 @@ const handleSignOut = async () => {
   color: var(--app-color-text);
   cursor: pointer;
   font: inherit;
-  font-size: 14px;
+  font-size: var(--app-text-base);
   line-height: 1.2;
   text-align: left;
   text-decoration: none;
@@ -405,7 +405,7 @@ const handleSignOut = async () => {
 .user-account-menu__icon {
   flex-shrink: 0;
   color: var(--app-color-muted);
-  font-size: 16px;
+  font-size: var(--app-text-lg);
   line-height: 1;
 }
 
@@ -419,7 +419,7 @@ const handleSignOut = async () => {
   flex-shrink: 0;
   margin-left: auto;
   color: var(--app-color-muted);
-  font-size: 11px;
+  font-size: var(--app-text-xs);
   line-height: 1;
 }
 
@@ -433,7 +433,7 @@ const handleSignOut = async () => {
   position: absolute;
   top: 0;
   right: calc(100% + 5px);
-  z-index: 1;
+  z-index: var(--app-z-index-base);
   display: grid;
   gap: 2px;
   box-sizing: border-box;
@@ -460,7 +460,7 @@ const handleSignOut = async () => {
   color: var(--app-color-text);
   cursor: pointer;
   font: inherit;
-  font-size: 14px;
+  font-size: var(--app-text-base);
   line-height: 1.2;
   text-align: left;
   transition:
@@ -476,12 +476,12 @@ const handleSignOut = async () => {
 .user-account-menu__language-item--active {
   background: var(--app-color-elevated);
   color: var(--app-color-primary);
-  font-weight: 600;
+  font-weight: var(--app-weight-semibold);
 }
 
 .user-account-menu__language-check {
   color: var(--app-color-primary);
-  font-size: 12px;
+  font-size: var(--app-text-xs);
   line-height: 1;
 }
 

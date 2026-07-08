@@ -77,7 +77,7 @@ onUnmounted(() => {
 .app-header {
   position: sticky;
   top: 0;
-  z-index: 50;
+  z-index: var(--app-z-index-sticky);
   border-bottom: 1px solid var(--app-color-border);
   background: transparent;
   transition:
@@ -109,8 +109,8 @@ onUnmounted(() => {
 
 .app-nav a {
   color: var(--app-color-muted);
-  font-size: 15px;
-  font-weight: 500;
+  font-size: var(--app-text-md);
+  font-weight: var(--app-weight-medium);
   line-height: var(--app-header-control-size);
   text-decoration: none;
   transition: color 0.2s ease;
@@ -150,8 +150,8 @@ onUnmounted(() => {
   min-height: var(--app-header-control-size);
   padding-inline: var(--app-auth-btn-padding-inline);
   border-radius: var(--app-auth-btn-radius);
-  font-size: 14px;
-  font-weight: 500;
+  font-size: var(--app-text-base);
+  font-weight: var(--app-weight-medium);
   line-height: 1;
   text-decoration: none;
   white-space: nowrap;
@@ -180,7 +180,7 @@ onUnmounted(() => {
   padding-inline-end: calc(var(--app-auth-btn-padding-inline) - 2px);
 
   :deep(.anticon) {
-    font-size: 13px;
+    font-size: var(--app-text-sm);
     line-height: 1;
   }
 

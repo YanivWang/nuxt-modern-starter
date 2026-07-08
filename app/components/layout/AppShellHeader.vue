@@ -42,7 +42,7 @@ import UserAccountMenu from './UserAccountMenu.vue'
 .app-shell-header {
   position: sticky;
   top: 0;
-  z-index: 40;
+  z-index: var(--app-z-index-sticky);
   flex-shrink: 0;
   border-bottom: 1px solid var(--app-color-border);
   background: var(--app-color-bg);

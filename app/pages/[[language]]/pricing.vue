@@ -71,7 +71,7 @@ usePageSeo({
       <a-card
         v-for="plan in pricing.plans"
         :key="plan.key"
-        class="pricing-card"
+        class="page-surface-card pricing-card"
         :class="{ 'pricing-card--featured': plan.featured }"
         :bordered="false"
       >
@@ -96,7 +96,12 @@ usePageSeo({
 
         <div class="pricing-card__footer">
           <NuxtLink :to="localePath(plan.ctaPath)" class="pricing-card__cta">
-            <BaseButton :type="plan.featured ? 'primary' : 'default'">{{ plan.cta }}</BaseButton>
+            <BaseButton
+              :type="plan.featured ? 'primary' : 'default'"
+              class="page-cta-btn page-cta-btn--block"
+            >
+              {{ plan.cta }}
+            </BaseButton>
           </NuxtLink>
         </div>
       </a-card>
@@ -115,181 +120,3 @@ usePageSeo({
     <p class="page-note">{{ pricing.note }}</p>
   </PageContainer>
 </template>
-
-<style scoped lang="scss">
-.pricing-grid {
-  display: grid;
-  align-items: stretch;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(16px, 2.5vw, 24px);
-  margin-top: clamp(36px, 5vw, 52px);
-}
-
-.pricing-card {
-  position: relative;
-  overflow: hidden;
-  height: 100%;
-  border: 1px solid var(--app-color-border);
-  border-radius: 24px;
-  background: var(--app-color-bg);
-  box-shadow: 0 12px 32px var(--app-color-brand-a5);
-  transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease,
-    border-color 0.25s ease;
-
-  &:hover:not(.pricing-card--featured) {
-    border-color: var(--app-color-primary-a22);
-    box-shadow: var(--app-shadow-surface-hover);
-    transform: translateY(-2px);
-  }
-
-  :deep(.ant-card-body) {
-    display: flex;
-    height: 100%;
-    flex-direction: column;
-    padding: clamp(24px, 3vw, 32px);
-  }
-}
-
-.pricing-card--featured {
-  border: 2px solid var(--app-color-primary-a32);
-  background:
-    linear-gradient(180deg, var(--app-color-primary-a7) 0%, transparent 42%), var(--app-color-bg);
-  box-shadow: 0 28px 60px var(--app-color-primary-a16);
-
-  &::before {
-    position: absolute;
-    inset: 0 0 auto;
-    height: 3px;
-    background: var(--app-gradient-accent-line);
-    content: '';
-  }
-}
-
-.pricing-card__ribbon {
-  position: absolute;
-  top: 18px;
-  right: 18px;
-  padding: 6px 12px;
-  border-radius: 999px;
-  background: var(--app-color-primary);
-  color: var(--app-color-brand-contrast);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  line-height: 1;
-}
-
-.pricing-card__price-block {
-  margin-top: 4px;
-}
-
-.pricing-card__badge + .pricing-card__price-block {
-  margin-top: 14px;
-}
-
-.pricing-card--featured .pricing-card__price-block {
-  margin-top: 0;
-  padding-right: 96px;
-}
-
-.pricing-card__price {
-  margin: 0;
-  color: var(--app-color-text);
-  font-size: clamp(30px, 3.6vw, 38px);
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: -0.04em;
-}
-
-.pricing-card--featured .pricing-card__price {
-  color: var(--app-color-primary);
-}
-
-.pricing-card__period {
-  margin: 10px 0 0;
-  color: var(--app-color-muted);
-  font-size: 14px;
-  line-height: 1.4;
-}
-
-.pricing-card__name {
-  margin: 20px 0 0;
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
-
-.pricing-card__description {
-  margin: 14px 0 0;
-  color: var(--app-color-muted);
-  font-size: 15px;
-  line-height: 1.65;
-}
-
-.pricing-card__features {
-  flex: 1;
-  margin-top: 24px;
-}
-
-.pricing-card__footer {
-  margin-top: 28px;
-  padding-top: 22px;
-  border-top: 1px solid var(--app-color-border);
-}
-
-.pricing-card__cta {
-  display: block;
-  text-decoration: none;
-
-  :deep(.ant-btn) {
-    width: 100%;
-    height: 44px;
-    border-radius: 12px;
-    font-weight: 600;
-  }
-}
-
-.pricing-includes {
-  margin-top: clamp(48px, 7vw, 72px);
-}
-
-.pricing-includes__title {
-  margin: 0;
-  font-size: clamp(24px, 3vw, 32px);
-  letter-spacing: -0.03em;
-}
-
-.pricing-includes__list {
-  margin-top: 28px;
-}
-
-@media (width >= 901px) {
-  .pricing-grid {
-    align-items: center;
-  }
-
-  .pricing-card--featured {
-    transform: scale(1.03);
-  }
-
-  .pricing-card--featured:hover {
-    transform: scale(1.03) translateY(-2px);
-  }
-}
-
-@media (width <= 900px) {
-  .pricing-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .pricing-card--featured {
-    order: -1;
-  }
-
-  .pricing-card__price-block {
-    padding-right: 0;
-  }
-}
-</style>

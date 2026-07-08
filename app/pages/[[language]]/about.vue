@@ -75,18 +75,3 @@ usePageSeo({
     </section>
   </PageContainer>
 </template>
-
-<style scoped lang="scss">
-.about-section__body,
-.about-values,
-.about-story {
-  margin-top: 24px;
-}
-
-.about-section__body,
-.about-story p {
-  color: var(--app-color-muted);
-  font-size: 16px;
-  line-height: 1.75;
-}
-</style>

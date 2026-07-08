@@ -89,17 +89,8 @@ usePageSeo({
     </article>
 
     <NuxtLink :to="localePath('/news')" class="page-back-link">
-      <ArrowRightOutlined aria-hidden="true" style="transform: rotate(180deg)" />
+      <ArrowRightOutlined class="page-icon--flip" aria-hidden="true" />
       {{ $t('nav.news') }}
     </NuxtLink>
   </PageContainer>
 </template>
-
-<style scoped lang="scss">
-.page-meta--article {
-  margin-bottom: 14px;
-  font-size: 14px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-</style>

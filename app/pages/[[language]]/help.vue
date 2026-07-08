@@ -91,10 +91,3 @@ usePageSeo({
     </section>
   </PageContainer>
 </template>
-
-<style scoped lang="scss">
-.help-steps,
-.help-resources {
-  margin-top: 24px;
-}
-</style>

@@ -86,22 +86,3 @@ usePageSeo({
     </div>
   </PageContainer>
 </template>
-
-<style scoped lang="scss">
-.news-list {
-  grid-template-columns: 1fr;
-}
-
-.news-card__title {
-  margin: 12px 0 0;
-  font-size: clamp(22px, 3vw, 28px);
-  letter-spacing: -0.03em;
-}
-
-.news-card__description {
-  flex: 1;
-  margin: 12px 0 0;
-  color: var(--app-color-muted);
-  line-height: 1.75;
-}
-</style>
