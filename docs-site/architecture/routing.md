@@ -36,23 +36,37 @@ export const prerenderRoutes = ['/', '/about', '/help', '/en', '/en/about', '/en
 export const swrRouteRules = ['/news/**', '/en/news/**']
 ```
 
+### SWR 按需失效
+
+SWR 默认最长 1 小时才后台刷新。新闻等内容变更后，后端可 webhook 调用 `POST /api/revalidate` 主动清除缓存：
+
+```bash
+# 按 slug 失效（推荐）
+{ "slug": "starter-release" }
+
+# 或显式 paths
+{ "paths": ["/news", "/news/starter-release", "/en/news", "/en/news/starter-release"] }
+```
+
+需配置 `NUXT_REVALIDATE_SECRET` 并通过 Header `x-revalidate-secret` 鉴权。实现见 `server/api/revalidate.post.ts` 与 `server/utils/revalidate.ts`。
+
 ## 各页面渲染方式
 
 当前预置的 **13 个页面文件**，按路由分区与 `routeRules` 对应如下。
 
 ### 公开 SEO 区（`app/pages/[[language]]/`）
 
-| 页面     | 路由                            | 页面文件          | 渲染方式        | 说明                                         |
-| -------- | ------------------------------- | ----------------- | --------------- | -------------------------------------------- |
-| 首页     | `/`、`/en`                      | `index.vue`       | **prerender**   | 构建时静态 HTML，纯 i18n                     |
-| 关于     | `/about`、`/en/about`           | `about.vue`       | **prerender**   | 构建时静态 HTML，纯 i18n                     |
-| 帮助     | `/help`、`/en/help`             | `help.vue`        | **prerender**   | 构建时静态 HTML；i18n 文案 + FAQ 本地 config |
-| 定价     | `/pricing`、`/en/pricing`       | `pricing.vue`     | **SSR**（默认） | 每次请求服务端渲染，内容来自 API             |
-| 新闻列表 | `/news`、`/en/news`             | `news/index.vue`  | **SWR 3600s**   | 摘要来自 API；基础 SEO meta                  |
-| 新闻详情 | `/news/:slug`、`/en/news/:slug` | `news/[slug].vue` | **SWR 3600s**   | 正文来自 API；Article JSON-LD                |
-| 登录     | `/sign-in`、`/en/sign-in`       | `sign-in.vue`     | **SSR**（默认） | noindex，不在 `PUBLIC_PAGE_PATHS`            |
-| 注册     | `/sign-up`、`/en/sign-up`       | `sign-up.vue`     | **SSR**（默认） | noindex，不在 `PUBLIC_PAGE_PATHS`            |
-| 404 兜底 | 未匹配的公开路径（如 `/foo`）   | `[...slug].vue`   | **SSR**（默认） | HTTP 404 + noindex                           |
+| 页面     | 路由                            | 页面文件          | 渲染方式        | 说明                                               |
+| -------- | ------------------------------- | ----------------- | --------------- | -------------------------------------------------- |
+| 首页     | `/`、`/en`                      | `index.vue`       | **prerender**   | 构建时静态 HTML，纯 i18n                           |
+| 关于     | `/about`、`/en/about`           | `about.vue`       | **prerender**   | 构建时静态 HTML，纯 i18n                           |
+| 帮助     | `/help`、`/en/help`             | `help.vue`        | **prerender**   | 构建时静态 HTML；i18n 文案 + FAQ 本地 config       |
+| 定价     | `/pricing`、`/en/pricing`       | `pricing.vue`     | **SSR**（默认） | 每次请求服务端渲染，内容来自 API                   |
+| 新闻列表 | `/news`、`/en/news`             | `news/index.vue`  | **SWR 3600s**   | 摘要来自 API；基础 SEO meta；支持按需 revalidate   |
+| 新闻详情 | `/news/:slug`、`/en/news/:slug` | `news/[slug].vue` | **SWR 3600s**   | 正文来自 API；Article JSON-LD；支持按需 revalidate |
+| 登录     | `/sign-in`、`/en/sign-in`       | `sign-in.vue`     | **SSR**（默认） | noindex，不在 `PUBLIC_PAGE_PATHS`                  |
+| 注册     | `/sign-up`、`/en/sign-up`       | `sign-up.vue`     | **SSR**（默认） | noindex，不在 `PUBLIC_PAGE_PATHS`                  |
+| 404 兜底 | 未匹配的公开路径（如 `/foo`）   | `[...slug].vue`   | **SSR**（默认） | HTTP 404 + noindex                                 |
 
 ### 登录产品区（语言中性 URL，不带 `/en` 前缀）
 

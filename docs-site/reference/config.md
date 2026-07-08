@@ -5,7 +5,8 @@
 | 配置块                 | 作用                                |
 | ---------------------- | ----------------------------------- |
 | `modules`              | Pinia、Ant Design Vue、ESLint       |
-| `runtimeConfig.public` | 环境变量映射                        |
+| `runtimeConfig`        | 服务端 `revalidateSecret`           |
+| `runtimeConfig.public` | 公开环境变量映射                    |
 | `routeRules`           | prerender / SWR / CSR / CSP headers |
 | `css`                  | 全局 SCSS                           |
 | `typescript.strict`    | 严格模式 + typeCheck                |
@@ -69,6 +70,35 @@ UI 级默认（品牌、layout 开关等）。
 | -------------------------------------- | -------------------------------------------------------------------------- |
 | `app/features/product-shell/config.ts` | `productNavItems`（工作台、主题模板）、`productFooterNavItems`（定价链接） |
 | `app/features/account-shell/config.ts` | `accountNavItems`                                                          |
+
+## `server/` — 服务端路由与工具
+
+| 文件                              | 作用                                           |
+| --------------------------------- | ---------------------------------------------- |
+| `api/revalidate.post.ts`          | `POST /api/revalidate`，按 paths/slug 清除 SWR |
+| `routes/sitemap.xml.ts`           | 动态 sitemap                                   |
+| `routes/robots.txt.ts`            | robots 规则                                    |
+| `middleware/product-canonical.ts` | `/en/workspace` → `/workspace` 301             |
+| `utils/seo.ts`                    | sitemap/robots 生成逻辑                        |
+| `utils/revalidate.ts`             | Nitro cache key 计算与 `purgeRouteCaches`      |
+
+### `POST /api/revalidate`
+
+新闻等内容变更后，由 `nuxt-modern-starter-api` webhook 调用，主动清除 SWR 缓存（避免最长 1 小时陈旧内容）。
+
+```bash
+curl -X POST https://example.com/api/revalidate \
+  -H 'Content-Type: application/json' \
+  -H 'x-revalidate-secret: <NUXT_REVALIDATE_SECRET>' \
+  -d '{"slug":"starter-release"}'
+```
+
+Body 支持：
+
+- `{ "slug": "article-slug" }` — 自动展开为 `/news`、`/news/:slug`、`/en/news`、`/en/news/:slug`
+- `{ "paths": ["/news", "/en/news/foo"] }` — 显式路径列表
+
+响应：`{ requested: string[], purged: string[] }`。未配置 secret → 503；密钥错误 → 401。
 
 ## 下一步
 

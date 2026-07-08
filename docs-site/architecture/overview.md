@@ -32,6 +32,7 @@
 
 ┌──────────────────────────────────────────────────────────────┐
 │  server/routes      sitemap.xml / robots.txt                   │
+│  server/api         POST /api/revalidate（SWR 按需失效）         │
 │  server/middleware  产品 URL canonical 301                     │
 │  config/*           站点元数据、路由规则、鉴权常量、主题 token    │
 │  i18n/*             语言包与切换 helper                         │

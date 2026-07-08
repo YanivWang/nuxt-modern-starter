@@ -53,11 +53,25 @@ Organization JSON-LD 使用 `config/site.ts` 中的 `SITE_ORG`（`name`、`logo`
 
 ## 渲染与 SEO 的关系
 
-| 渲染       | SEO 含义                        |
-| ---------- | ------------------------------- |
-| prerender  | 构建时 HTML 已含 meta，爬虫友好 |
-| SWR        | 首屏 SSR HTML 含 meta，后台刷新 |
-| CSR 产品页 | noindex，不参与 sitemap         |
+| 渲染       | SEO 含义                                              |
+| ---------- | ----------------------------------------------------- |
+| prerender  | 构建时 HTML 已含 meta，爬虫友好                       |
+| SWR        | 首屏 SSR HTML 含 meta，后台刷新；支持按需失效（见下） |
+| CSR 产品页 | noindex，不参与 sitemap                               |
+
+## SWR 按需缓存失效
+
+新闻列表/详情走 **SWR 3600s**（`config/routes.ts` → `swrRouteRules`）。内容在 CMS/API 侧更新后，可调用 `POST /api/revalidate` 立即清除 Nitro 路由缓存，而不必等待 1 小时 TTL。
+
+| 项     | 说明                                                                   |
+| ------ | ---------------------------------------------------------------------- |
+| 入口   | `server/api/revalidate.post.ts`                                        |
+| 工具   | `server/utils/revalidate.ts`（cache key 算法与 Nitro SWR 保持一致）    |
+| 鉴权   | Header `x-revalidate-secret`，值来自 `NUXT_REVALIDATE_SECRET`          |
+| 调用方 | `nuxt-modern-starter-api` 在新闻发布/更新/删除后 webhook 调用          |
+| `slug` | 自动失效 `/news`、`/news/:slug`、`/en/news`、`/en/news/:slug` 四条路径 |
+
+未配置 `NUXT_REVALIDATE_SECRET` 时接口返回 503，避免未鉴权的缓存清除入口暴露在生产环境。
 
 ## 搜索控制台验证
 

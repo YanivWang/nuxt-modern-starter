@@ -36,6 +36,7 @@ export default defineNuxtConfig({
   components: [{ path: '~/components', pathPrefix: false }],
   css: ['~/assets/styles/main.scss'],
   runtimeConfig: {
+    revalidateSecret: process.env.NUXT_REVALIDATE_SECRET || '',
     public: {
       appEnv: process.env.NUXT_APP_ENV || 'development',
       apiBase: process.env.NUXT_PUBLIC_API_BASE || 'http://localhost:2026/api',

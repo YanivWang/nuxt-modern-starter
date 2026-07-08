@@ -68,6 +68,8 @@ noindex 页仍输出 canonical/OG/Twitter，但 **不输出 hreflang**。
 2. sitemap 通过 `publicLocalizedPaths()` 自动包含
 3. 新闻详情由 `server/utils/seo.ts` 从 API 拉 slug
 
+新闻页若走 SWR，内容更新后由后端 webhook 调用 `POST /api/revalidate`（见 [SEO 设计 — SWR 按需缓存失效](/architecture/seo#swr-按需缓存失效)）。
+
 无需手改 `sitemap.xml.ts`，除非有新 **内容类型** 的 URL 模式。
 
 ## 下一步

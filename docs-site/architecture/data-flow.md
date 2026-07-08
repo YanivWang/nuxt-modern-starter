@@ -93,6 +93,24 @@ POST /refresh { refreshToken }
 
 实现位置：`app/api/auth.ts` 的 `refreshAccessTokenOnce`。
 
+## SWR 按需缓存失效
+
+新闻页走 SWR 3600s。CMS/API 侧内容变更后，由后端 webhook 调用 Nuxt 服务端接口，不必等待 TTL：
+
+```
+nuxt-modern-starter-api（新闻发布/更新/删除）
+        ↓
+POST /api/revalidate
+  Header: x-revalidate-secret: <NUXT_REVALIDATE_SECRET>
+  Body: { "slug": "article-slug" } 或 { "paths": [...] }
+        ↓
+server/utils/revalidate.ts → purgeRouteCaches()
+        ↓
+清除 nitro/routes 缓存条目 → 下次请求重新 SSR
+```
+
+`slug` 快捷方式会展开为中英文新闻列表与详情四条路径。未配置 secret 时返回 503。
+
 ## API 端点地图
 
 ### 公开内容（`~/api/public`）

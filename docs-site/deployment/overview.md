@@ -54,6 +54,7 @@ pnpm docker:up       # 可选 Compose 栈
 2. 前端 `NUXT_PUBLIC_API_BASE=http://localhost:2026/api`
 3. 后端 CORS 包含 `http://localhost:3000`
 4. 验证：登录 → 工作台（列表/删除/创建跳转 `/docs/new`）→ 编辑器自动保存 → 账户
+5. 新闻变更后：后端 webhook 调用 `POST /api/revalidate`（需配置 `NUXT_REVALIDATE_SECRET`）
 
 ## 产品区工作流（联调参考）
 

@@ -28,18 +28,21 @@ Committed env files should only contain non-secret defaults. Override them with 
 
 ### Runtime variables
 
-| Variable                               | Purpose                                                              | Local default                                                    |
-| -------------------------------------- | -------------------------------------------------------------------- | ---------------------------------------------------------------- |
-| `NUXT_PUBLIC_SITE_URL`                 | Canonical site origin for SEO, sitemap, and robots                   | `http://localhost:3000`                                          |
-| `NUXT_PUBLIC_API_BASE`                 | Backend API origin including `/api` prefix                           | `http://localhost:2026/api`                                      |
-| `NUXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | Google Search Console verification token                             | empty                                                            |
-| `NUXT_PUBLIC_BAIDU_SITE_VERIFICATION`  | Baidu verification token                                             | empty                                                            |
-| `NUXT_PUBLIC_ANALYTICS_ENABLED`        | Must be exactly `true` to enable analytics plugin                    | `false`                                                          |
-| `NUXT_PUBLIC_ANALYTICS_SCRIPT_SRC`     | Single deferred third-party script URL                               | empty                                                            |
-| `NUXT_PUBLIC_ANALYTICS_DEFER_MS`       | Client defer before loading analytics script                         | `3000`                                                           |
-| `NUXT_APP_ENV`                         | Controls auth cookie `secure` flag via `runtimeConfig.public.appEnv` | `development` locally; Docker Compose sets `production` or `dev` |
+| Variable                               | Purpose                                                               | Local default                                                    |
+| -------------------------------------- | --------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| `NUXT_PUBLIC_SITE_URL`                 | Canonical site origin for SEO, sitemap, and robots                    | `http://localhost:3000`                                          |
+| `NUXT_PUBLIC_API_BASE`                 | Backend API origin including `/api` prefix                            | `http://localhost:2026/api`                                      |
+| `NUXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | Google Search Console verification token                              | empty                                                            |
+| `NUXT_PUBLIC_BAIDU_SITE_VERIFICATION`  | Baidu verification token                                              | empty                                                            |
+| `NUXT_PUBLIC_ANALYTICS_ENABLED`        | Must be exactly `true` to enable analytics plugin                     | `false`                                                          |
+| `NUXT_PUBLIC_ANALYTICS_SCRIPT_SRC`     | Single deferred third-party script URL                                | empty                                                            |
+| `NUXT_PUBLIC_ANALYTICS_DEFER_MS`       | Client defer before loading analytics script                          | `3000`                                                           |
+| `NUXT_APP_ENV`                         | Controls auth cookie `secure` flag via `runtimeConfig.public.appEnv`  | `development` locally; Docker Compose sets `production` or `dev` |
+| `NUXT_REVALIDATE_SECRET`               | Server-only secret for `POST /api/revalidate` (`x-revalidate-secret`) | placeholder in committed env files; replace in production        |
 
 Production auth cookies are marked `secure` when `NUXT_APP_ENV=production`, so real login flows must be served over HTTPS.
+
+`NUXT_REVALIDATE_SECRET` is not exposed to the client. If it is unset, `/api/revalidate` returns 503 so unauthenticated cache purge is not available in production.
 
 ## Local Full-Stack Verification
 

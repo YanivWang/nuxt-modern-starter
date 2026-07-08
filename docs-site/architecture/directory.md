@@ -6,7 +6,7 @@
 nuxt-modern-starter/
 ├── app/                 # Nuxt 4 应用源码（pages/composables/features/...）
 ├── config/              # 部署无关的静态配置
-├── server/              # Nitro 服务端（SEO 路由、301 中间件）
+├── server/              # Nitro 服务端（SEO 路由、SWR 失效、301 中间件）
 ├── i18n/                # vue-i18n 语言包与 helper
 ├── tests/               # Vitest 单元测试 + Nuxt smoke
 ├── docker/              # Dockerfile、Compose、Nginx 样例
@@ -115,12 +115,14 @@ app/
 
 ## `server/` — 服务端
 
-| 文件                              | 作用                               |
-| --------------------------------- | ---------------------------------- |
-| `routes/sitemap.xml.ts`           | 动态 sitemap                       |
-| `routes/robots.txt.ts`            | robots 规则                        |
-| `middleware/product-canonical.ts` | `/en/workspace` → `/workspace` 301 |
-| `utils/seo.ts`                    | sitemap/robots 生成逻辑            |
+| 文件                              | 作用                                           |
+| --------------------------------- | ---------------------------------------------- |
+| `api/revalidate.post.ts`          | `POST /api/revalidate`，按 paths/slug 清除 SWR |
+| `routes/sitemap.xml.ts`           | 动态 sitemap                                   |
+| `routes/robots.txt.ts`            | robots 规则                                    |
+| `middleware/product-canonical.ts` | `/en/workspace` → `/workspace` 301             |
+| `utils/seo.ts`                    | sitemap/robots 生成逻辑                        |
+| `utils/revalidate.ts`             | Nitro SWR cache key 与 `purgeRouteCaches`      |
 
 ## `i18n/` — 国际化
 
