@@ -1,121 +1,121 @@
 {
   "home": {
     "eyebrow": "Nuxt 4 · TypeScript · Ant Design Vue",
-    "title": "Modern Nuxt starter for public websites",
-    "lead": "Nuxt Modern Starter brings marketing pages, auth flows, multilingual content, SEO routes, and Docker/Nginx deployment defaults into one clean foundation. Use it to launch a SaaS website, product frontend, or content hub, then replace content and backend integrations as your product grows.",
-    "primaryCta": "Start building",
-    "secondaryCta": "View pricing example",
+    "title": "Modernong Nuxt starter para sa pampublikong website",
+    "lead": "Pinagsasama ng Nuxt Modern Starter ang marketing page, auth flow, multilingual content, SEO route, at Docker/Nginx deployment default sa isang malinis na pundasyon. Gamitin ito para mag-launch ng SaaS website, product frontend, o content hub, at palitan ang content at backend integration habang lumalaki ang produkto.",
+    "primaryCta": "Magsimulang magtayo",
+    "secondaryCta": "Tingnan ang halimbawa ng presyo",
     "preview": {
-      "metricLabel": "Template coverage",
-      "metricValue": "12+ pages"
+      "metricLabel": "Saklaw ng template",
+      "metricValue": "12+ page"
     },
     "stats": {
       "pages": {
         "value": "12+",
-        "label": "Reusable pages and content routes"
+        "label": "Reusable na page at content route"
       },
       "modules": {
         "value": "6",
-        "label": "Core engineering modules included"
+        "label": "Kasamang core engineering module"
       },
       "deploy": {
         "value": "4",
-        "label": "Hybrid rendering strategies by route"
+        "label": "Hybrid rendering strategy ayon sa route"
       }
     },
-    "featuresEyebrow": "Powered by Nuxt 4",
-    "featuresTitle": "The usual public-site building blocks, already organized",
-    "featuresLead": "Inspired by the Nuxt SaaS Template hierarchy, the homepage now gives the hero section a stronger follow-through with product-ready feature cards.",
+    "featuresEyebrow": "Pinapagana ng Nuxt 4",
+    "featuresTitle": "Karaniwang building block ng public site, nakaayos na",
+    "featuresLead": "Inspired sa hierarchy ng Nuxt SaaS Template, mas malakas ang follow-through ng homepage gamit ang product-ready feature card.",
     "features": {
       "design": {
         "title": "Unified design system",
-        "description": "Built on Ant Design Vue and local theme tokens so color mode, radius, shadows, and spacing stay consistent."
+        "description": "Built sa Ant Design Vue at local theme token para consistent ang color mode, radius, shadow, at spacing."
       },
       "i18n": {
         "title": "Localized routing",
-        "description": "Language prefixes, switching, and localized links are ready for marketing pages and content routes."
+        "description": "Handa na ang language prefix, switching, at localized link para sa marketing at content page."
       },
       "seo": {
-        "title": "SEO-friendly pages",
-        "description": "Home, pricing, help, and article pages all have extensible SEO entry points for public indexing."
+        "title": "SEO-friendly page",
+        "description": "May extensible SEO entry point ang home, pricing, help, at article para sa public indexing."
       },
       "auth": {
-        "title": "Account flows",
-        "description": "Login, registration, and account pages are wired to basic state and ready for a real backend."
+        "title": "Account flow",
+        "description": "Naka-wire na ang login, registration, at account page sa basic state at handa na para sa tunay na backend."
       },
       "content": {
         "title": "Content hub",
-        "description": "FAQ comes from typed local config; news and pricing load through the public API and can later move to a CMS or backend."
+        "description": "Galing sa typed local config ang FAQ; ang news at pricing ay sa Public API at puwedeng ilipat sa CMS o backend."
       },
       "deploy": {
         "title": "Production deployment",
-        "description": "Docker, Nginx, SWR route rules, and security headers are already part of the starter."
+        "description": "Kasama na sa starter ang Docker, Nginx, SWR route rule, at security header."
       }
     },
     "workflow": {
-      "eyebrow": "Everything you need to ship",
-      "title": "A shorter path from starter to launch",
-      "lead": "It keeps the starter lightweight while adding the capability, conversion, and content structure a SaaS frontend needs.",
+      "eyebrow": "Lahat ng kailangan para mag-ship",
+      "title": "Mas maikling daan mula starter hanggang launch",
+      "lead": "Nanatiling lightweight habang dinadagdagan ang kakayahan, conversion, at content structure na kailangan ng SaaS frontend.",
       "steps": {
-        "routes": "Reuse home, pricing, help, and news pages to organize public information first.",
-        "content": "Replace i18n copy and content sources next (pricing/news already use the API and can move to a CMS).",
-        "auth": "Connect your backend account system when you are ready to wire sessions, roles, and the product app."
+        "routes": "Gamitin muna ang home, pricing, help, at news page para ayusin ang public information.",
+        "content": "Palitan ang i18n copy at content source (pricing/news ay API na at puwedeng ilipat sa CMS).",
+        "auth": "Ikonekta ang backend account system kapag handa nang i-wire ang session, role, at product app."
       }
     },
-    "ctaEyebrow": "Ready to build",
-    "ctaTitle": "Use this Nuxt foundation to launch a polished product frontend faster."
+    "ctaEyebrow": "Handa nang magtayo",
+    "ctaTitle": "Gamitin ang Nuxt foundation na ito para mas mabilis mag-launch ng polished product frontend."
   },
   "about": {
-    "eyebrow": "About us",
-    "title": "Built for public sites and lightweight SaaS frontends",
-    "lead": "Nuxt Modern Starter is a reusable Nuxt 4 foundation for marketing pages, content hubs, and optional auth-ready product surfaces.",
+    "eyebrow": "Tungkol sa amin",
+    "title": "Ginawa para sa public site at lightweight SaaS frontend",
+    "lead": "Ang Nuxt Modern Starter ay reusable na Nuxt 4 foundation para sa marketing page, content hub, at optional auth-ready product surface.",
     "mission": {
-      "title": "Our mission",
-      "body": "We organize the most common public-site capabilities—i18n routing, SEO, content pages, auth samples, and deployment patterns—into a runnable starting point so teams can focus on product differences instead of rebuilding infrastructure."
+      "title": "Ang aming misyon",
+      "body": "Inaayos namin ang pinakakaraniwang kakayahan ng public site—i18n routing, SEO, content page, auth sample, at deployment pattern—sa isang runnable starting point para makapag-focus ang team sa product difference."
     },
     "values": {
-      "title": "What we optimize for",
+      "title": "Ang aming prayoridad",
       "items": {
-        "focus": "Stay focused on public-site scenarios with clear module boundaries instead of an oversized starter.",
-        "quality": "Ship with TypeScript strict mode, linting, tests, and deployment samples from day one.",
-        "openness": "Keep public and product layers separate so local content and API-driven content can be swapped in gradually."
+        "focus": "Nakatuon sa public-site scenario na may malinaw na module boundary, hindi oversized starter.",
+        "quality": "May TypeScript strict mode, lint, test, at deployment sample mula day one.",
+        "openness": "Hiwalay ang public at product layer para unti-unting mapalitan ang local at API-driven content."
       }
     },
     "story": {
-      "title": "Project background",
+      "title": "Background ng proyekto",
       "paragraphs": {
-        "origin": "The starter comes from repeated needs across SaaS websites and product frontends: marketing home, pricing, help, news, sign-in/sign-up, plus logged-in workspace and editor examples.",
-        "practice": "It defaults to Chinese as the primary locale with English under /en, mixes SSR/prerender/SWR for public pages, and keeps product routes language-neutral with CSR rendering.",
-        "next": "If you are evaluating a Nuxt public-site template, start with the README quick start, then replace copy, content, and backend integrations for your product."
+        "origin": "Nagmula ang starter sa paulit-ulit na pangangailangan sa SaaS website at product frontend: marketing home, pricing, help, news, sign-in/sign-up, at logged-in workspace at editor example.",
+        "practice": "Default na Chinese ang primary locale na may English sa /en, pinagsasama ang SSR/prerender/SWR para sa public page, at language-neutral ang product route na may CSR.",
+        "next": "Kung nag-e-evaluate ka ng Nuxt public-site template, magsimula sa README quick start at palitan ang copy, content, at backend integration."
       }
     }
   },
   "help": {
     "eyebrow": "Help center",
-    "title": "Learn how to use Nuxt Modern Starter",
-    "lead": "This page collects common questions about project setup, i18n, auth, SEO, and deployment. Quick-start steps and resource lists come from i18n; FAQ comes from local config and can later move to a CMS or backend API.",
+    "title": "Alamin kung paano gamitin ang Nuxt Modern Starter",
+    "lead": "Kinokolekta ng page na ito ang common question tungkol sa project setup, i18n, auth, SEO, at deployment. Galing sa i18n ang quick-start step at resource list; galing sa local config ang FAQ at puwedeng ilipat sa CMS o backend API.",
     "faqTitle": "FAQ",
     "quickStart": {
-      "title": "Get running in 30 minutes",
+      "title": "Makakagana sa 30 minuto",
       "steps": {
-        "install": "Enable Corepack, then run pnpm install.",
-        "dev": "Run pnpm dev and browse default Chinese routes plus /en English routes.",
-        "explore": "Review home, pricing, about, help, and news pages to understand the public-site structure.",
-        "extend": "Follow docs/usage.md to add pages, requests, SEO, and optional auth."
+        "install": "I-enable ang Corepack, pagkatapos ay pnpm install.",
+        "dev": "Patakbuhin ang pnpm dev at i-browse ang default Chinese route at /en English route.",
+        "explore": "Suriin ang home, pricing, about, help, at news page para maintindihan ang public-site structure.",
+        "extend": "Sundin ang docs/usage.md para magdagdag ng page, request, SEO, at optional auth."
       }
     },
     "resources": {
-      "title": "Recommended reading",
-      "architecture": "docs/architecture.md — directory responsibilities, rendering strategy, feature modules, and runtime flow",
-      "usage": "docs/usage.md — pages, requests, SEO, languages, workspace/editor/account flows, and auth",
-      "conventions": "docs/conventions.md — config boundaries, request layering, and coding conventions",
-      "deployment": "docs/deployment.md — local, Docker, and Nginx deployment validation"
+      "title": "Inirerekomendang basahin",
+      "architecture": "docs/architecture.md — directory responsibility, rendering strategy, feature module, at runtime flow",
+      "usage": "docs/usage.md — page, request, SEO, language, workspace/editor/account flow, at auth",
+      "conventions": "docs/conventions.md — config boundary, request layering, at coding convention",
+      "deployment": "docs/deployment.md — local, Docker, at Nginx deployment validation"
     }
   },
   "news": {
-    "eyebrow": "Project updates",
-    "title": "Nuxt Modern Starter releases and notes",
-    "lead": "Track starter releases, deployment practices, and extension guidance. These pages also demonstrate news list/detail layouts, detail-page Article JSON-LD, and SWR cache rules.",
-    "notFound": "This news article was not found"
+    "eyebrow": "Project update",
+    "title": "Nuxt Modern Starter release at note",
+    "lead": "Subaybayan ang starter release, deployment practice, at extension guidance. Ipinapakita rin ng page na ito ang news list/detail, Article JSON-LD, at SWR cache rule.",
+    "notFound": "Hindi mahanap ang artikulong ito"
   }
 }

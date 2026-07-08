@@ -1,47 +1,47 @@
 {
   "nav": {
-    "home": "Home",
-    "pricing": "Pricing",
-    "about": "About",
-    "help": "Help",
-    "news": "News",
-    "primary": "Primary navigation"
+    "home": "Accueil",
+    "pricing": "Tarifs",
+    "about": "À propos",
+    "help": "Aide",
+    "news": "Actualités",
+    "primary": "Navigation principale"
   },
   "brand": {
-    "tagline": "Modern Nuxt starter for public websites"
+    "tagline": "Starter Nuxt moderne pour sites publics"
   },
   "seo": {
-    "defaultDescription": "A reusable Nuxt 4 starter for marketing sites, SEO pages, and lightweight SaaS frontends."
+    "defaultDescription": "Un starter Nuxt 4 réutilisable pour sites marketing, pages SEO et frontends SaaS légers."
   },
   "common": {
-    "switchLanguage": "Switch language",
-    "switchTheme": "Switch theme",
-    "readMore": "Read more",
-    "backHome": "Back home",
-    "error": "Something went wrong. Please try again.",
-    "loadFailed": "Failed to load data. Please try again.",
-    "retry": "Retry"
+    "switchLanguage": "Changer de langue",
+    "switchTheme": "Changer de thème",
+    "readMore": "En savoir plus",
+    "backHome": "Retour à l'accueil",
+    "error": "Une erreur est survenue. Veuillez réessayer.",
+    "loadFailed": "Échec du chargement des données. Veuillez réessayer.",
+    "retry": "Réessayer"
   },
   "productNav": {
-    "workspace": "Workspace",
-    "themeTemplates": "Theme templates",
-    "pricing": "Pricing"
+    "workspace": "Espace de travail",
+    "themeTemplates": "Modèles de thème",
+    "pricing": "Tarifs"
   },
   "userMenu": {
-    "account": "Account",
-    "language": "Language",
-    "signOut": "Sign out"
+    "account": "Compte",
+    "language": "Langue",
+    "signOut": "Se déconnecter"
   },
   "accountNav": {
-    "settings": "Account settings"
+    "settings": "Paramètres du compte"
   },
   "templates": {
-    "empty": "Theme templates are coming soon."
+    "empty": "Les modèles de thème arrivent bientôt."
   },
   "error": {
-    "title": "Page not found",
-    "message": "Check the address or return home to keep browsing.",
-    "forbidden": "Access denied",
-    "unsupportedLanguage": "Unsupported language"
+    "title": "Page introuvable",
+    "message": "Vérifiez l'adresse ou revenez à l'accueil pour continuer.",
+    "forbidden": "Accès refusé",
+    "unsupportedLanguage": "Langue non prise en charge"
   }
 }

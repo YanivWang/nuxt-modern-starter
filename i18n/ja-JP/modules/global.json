@@ -1,47 +1,47 @@
 {
   "nav": {
-    "home": "Home",
-    "pricing": "Pricing",
-    "about": "About",
-    "help": "Help",
-    "news": "News",
-    "primary": "Primary navigation"
+    "home": "ホーム",
+    "pricing": "料金",
+    "about": "会社概要",
+    "help": "ヘルプ",
+    "news": "ニュース",
+    "primary": "メインナビゲーション"
   },
   "brand": {
-    "tagline": "Modern Nuxt starter for public websites"
+    "tagline": "公開サイト向けのモダン Nuxt スターター"
   },
   "seo": {
-    "defaultDescription": "A reusable Nuxt 4 starter for marketing sites, SEO pages, and lightweight SaaS frontends."
+    "defaultDescription": "マーケティングサイト、SEO ページ、軽量 SaaS フロントエンド向けの再利用可能な Nuxt 4 スターター。"
   },
   "common": {
-    "switchLanguage": "Switch language",
-    "switchTheme": "Switch theme",
-    "readMore": "Read more",
-    "backHome": "Back home",
-    "error": "Something went wrong. Please try again.",
-    "loadFailed": "Failed to load data. Please try again.",
-    "retry": "Retry"
+    "switchLanguage": "言語を切り替え",
+    "switchTheme": "テーマを切り替え",
+    "readMore": "続きを読む",
+    "backHome": "ホームに戻る",
+    "error": "問題が発生しました。もう一度お試しください。",
+    "loadFailed": "データの読み込みに失敗しました。もう一度お試しください。",
+    "retry": "再試行"
   },
   "productNav": {
-    "workspace": "Workspace",
-    "themeTemplates": "Theme templates",
-    "pricing": "Pricing"
+    "workspace": "ワークスペース",
+    "themeTemplates": "テーマテンプレート",
+    "pricing": "料金"
   },
   "userMenu": {
-    "account": "Account",
-    "language": "Language",
-    "signOut": "Sign out"
+    "account": "アカウント",
+    "language": "言語",
+    "signOut": "ログアウト"
   },
   "accountNav": {
-    "settings": "Account settings"
+    "settings": "アカウント設定"
   },
   "templates": {
-    "empty": "Theme templates are coming soon."
+    "empty": "テーマテンプレートは近日公開予定です。"
   },
   "error": {
-    "title": "Page not found",
-    "message": "Check the address or return home to keep browsing.",
-    "forbidden": "Access denied",
-    "unsupportedLanguage": "Unsupported language"
+    "title": "ページが見つかりません",
+    "message": "URL を確認するか、ホームに戻って閲覧を続けてください。",
+    "forbidden": "アクセスが拒否されました",
+    "unsupportedLanguage": "サポートされていない言語"
   }
 }

@@ -1,90 +1,90 @@
 {
   "auth": {
     "header": {
-      "signIn": "Sign in",
-      "signUp": "Sign up",
-      "enterWorkspace": "Enter workspace"
+      "signIn": "Mag-sign in",
+      "signUp": "Mag-sign up",
+      "enterWorkspace": "Pumasok sa workspace"
     },
     "form": {
       "username": "Username",
       "password": "Password",
-      "confirmPassword": "Confirm password"
+      "confirmPassword": "Kumpirmahin ang password"
     },
     "login": {
-      "title": "Log in",
-      "submit": "Log in",
-      "success": "Logged in successfully",
-      "noAccount": "No account yet?"
+      "title": "Mag-log in",
+      "submit": "Mag-log in",
+      "success": "Matagumpay na naka-log in",
+      "noAccount": "Wala pang account?"
     },
     "register": {
-      "title": "Register",
-      "submit": "Register",
-      "success": "Registered successfully. Please log in.",
-      "hasAccount": "Already have an account?"
+      "title": "Mag-register",
+      "submit": "Mag-register",
+      "success": "Matagumpay na nag-register. Mag-log in na.",
+      "hasAccount": "May account na?"
     },
     "logout": {
-      "submit": "Log out",
-      "success": "Logged out"
+      "submit": "Mag-log out",
+      "success": "Naka-log out na"
     },
     "account": {
       "eyebrow": "Protected page",
       "title": "Account",
-      "lead": "This page is protected by the named auth middleware and shows the current user profile.",
+      "lead": "Protektado ng named auth middleware ang page na ito at ipinapakita ang kasalukuyang user profile.",
       "avatar": "Profile photo",
       "sessionTitle": "Session",
       "profileTitle": "Extended profile",
       "userId": "User ID",
       "nickname": "Nickname",
-      "roles": "Roles",
-      "permissions": "Permissions",
-      "none": "None",
-      "emptyProfile": "No extended profile yet"
+      "roles": "Role",
+      "permissions": "Permission",
+      "none": "Wala",
+      "emptyProfile": "Wala pang extended profile"
     },
     "validation": {
-      "usernameRequired": "Please enter a username",
-      "passwordRequired": "Please enter a password",
-      "confirmPasswordRequired": "Please confirm your password",
-      "passwordMin": "Password must be at least 6 characters",
-      "passwordMismatch": "The two passwords do not match"
+      "usernameRequired": "Maglagay ng username",
+      "passwordRequired": "Maglagay ng password",
+      "confirmPasswordRequired": "Kumpirmahin ang password",
+      "passwordMin": "Dapat hindi bababa sa 6 character ang password",
+      "passwordMismatch": "Hindi magkatugma ang dalawang password"
     },
     "errors": {
-      "loginFailed": "Login failed. Check the username or password.",
-      "registerFailed": "Registration failed. Please try again later.",
-      "unauthorized": "Missing or invalid login credentials"
+      "loginFailed": "Hindi makapag-log in. Suriin ang username o password.",
+      "registerFailed": "Hindi makapag-register. Subukang muli mamaya.",
+      "unauthorized": "Walang o invalid na login credential"
     }
   },
   "editor": {
     "eyebrow": "Yaniv Editor",
     "title": "Content editor",
-    "placeholder": "Start writing your content...",
+    "placeholder": "Simulang magsulat ng content...",
     "metaTitle": "Editor",
     "autosave": {
-      "saving": "Saving…",
+      "saving": "Sine-save…",
       "saved": "Auto-saved · {time}",
-      "failed": "Auto-save failed, will retry on next edit"
+      "failed": "Hindi na-auto-save, susubukang muli sa susunod na edit"
     },
     "rename": {
-      "failed": "Failed to rename, please try again"
+      "failed": "Hindi ma-rename, subukang muli"
     }
   },
   "workspace": {
     "nav": "Workspace",
-    "title": "Manage your PPT projects",
-    "defaultTitle": "Untitled project",
-    "empty": "No projects yet. Use the button above to create one.",
-    "projectNotFound": "Project not found or access denied",
-    "create": "New blank PPT",
-    "edit": "Edit",
-    "delete": "Delete",
-    "deleteCancel": "Cancel",
-    "deleteConfirm": "Delete \"{title}\"? This action cannot be undone.",
-    "deleteSuccess": "Project deleted",
-    "save": "Save",
-    "projectName": "Project name",
-    "backToWorkspace": "Back to workspace",
-    "browse": "View",
-    "share": "Share",
-    "download": "Download",
-    "more": "More actions"
+    "title": "Pamahalaan ang iyong PPT project",
+    "defaultTitle": "Walang pamagat na project",
+    "empty": "Wala pang project. Gamitin ang button sa itaas para gumawa.",
+    "projectNotFound": "Hindi mahanap ang project o tinanggihan ang access",
+    "create": "Bagong blank PPT",
+    "edit": "I-edit",
+    "delete": "Burahin",
+    "deleteCancel": "Kanselahin",
+    "deleteConfirm": "Burahin ang \"{title}\"? Hindi na ito mababawi.",
+    "deleteSuccess": "Nabura na ang project",
+    "save": "I-save",
+    "projectName": "Pangalan ng project",
+    "backToWorkspace": "Bumalik sa workspace",
+    "browse": "Tingnan",
+    "share": "I-share",
+    "download": "I-download",
+    "more": "Higit pang aksyon"
   }
 }

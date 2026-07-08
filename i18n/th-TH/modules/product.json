@@ -1,90 +1,90 @@
 {
   "auth": {
     "header": {
-      "signIn": "Sign in",
-      "signUp": "Sign up",
-      "enterWorkspace": "Enter workspace"
+      "signIn": "เข้าสู่ระบบ",
+      "signUp": "สมัครสมาชิก",
+      "enterWorkspace": "เข้าพื้นที่ทำงาน"
     },
     "form": {
-      "username": "Username",
-      "password": "Password",
-      "confirmPassword": "Confirm password"
+      "username": "ชื่อผู้ใช้",
+      "password": "รหัสผ่าน",
+      "confirmPassword": "ยืนยันรหัสผ่าน"
     },
     "login": {
-      "title": "Log in",
-      "submit": "Log in",
-      "success": "Logged in successfully",
-      "noAccount": "No account yet?"
+      "title": "เข้าสู่ระบบ",
+      "submit": "เข้าสู่ระบบ",
+      "success": "เข้าสู่ระบบสำเร็จ",
+      "noAccount": "ยังไม่มีบัญชี?"
     },
     "register": {
-      "title": "Register",
-      "submit": "Register",
-      "success": "Registered successfully. Please log in.",
-      "hasAccount": "Already have an account?"
+      "title": "สมัครสมาชิก",
+      "submit": "สมัคร",
+      "success": "สมัครสำเร็จ โปรดเข้าสู่ระบบ",
+      "hasAccount": "มีบัญชีแล้ว?"
     },
     "logout": {
-      "submit": "Log out",
-      "success": "Logged out"
+      "submit": "ออกจากระบบ",
+      "success": "ออกจากระบบแล้ว"
     },
     "account": {
-      "eyebrow": "Protected page",
-      "title": "Account",
-      "lead": "This page is protected by the named auth middleware and shows the current user profile.",
-      "avatar": "Profile photo",
-      "sessionTitle": "Session",
-      "profileTitle": "Extended profile",
-      "userId": "User ID",
-      "nickname": "Nickname",
-      "roles": "Roles",
-      "permissions": "Permissions",
-      "none": "None",
-      "emptyProfile": "No extended profile yet"
+      "eyebrow": "หน้าที่มีการป้องกัน",
+      "title": "บัญชี",
+      "lead": "หน้านี้ถูกป้องกันด้วย named auth middleware และแสดงโปรไฟล์ผู้ใช้ปัจจุบัน",
+      "avatar": "รูปโปรไฟล์",
+      "sessionTitle": "เซสชัน",
+      "profileTitle": "โปรไฟล์เพิ่มเติม",
+      "userId": "ID ผู้ใช้",
+      "nickname": "ชื่อเล่น",
+      "roles": "บทบาท",
+      "permissions": "สิทธิ์",
+      "none": "ไม่มี",
+      "emptyProfile": "ยังไม่มีโปรไฟล์เพิ่มเติม"
     },
     "validation": {
-      "usernameRequired": "Please enter a username",
-      "passwordRequired": "Please enter a password",
-      "confirmPasswordRequired": "Please confirm your password",
-      "passwordMin": "Password must be at least 6 characters",
-      "passwordMismatch": "The two passwords do not match"
+      "usernameRequired": "กรุณากรอกชื่อผู้ใช้",
+      "passwordRequired": "กรุณากรอกรหัสผ่าน",
+      "confirmPasswordRequired": "กรุณายืนยันรหัสผ่าน",
+      "passwordMin": "รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร",
+      "passwordMismatch": "รหัสผ่านทั้งสองไม่ตรงกัน"
     },
     "errors": {
-      "loginFailed": "Login failed. Check the username or password.",
-      "registerFailed": "Registration failed. Please try again later.",
-      "unauthorized": "Missing or invalid login credentials"
+      "loginFailed": "เข้าสู่ระบบไม่สำเร็จ ตรวจสอบชื่อผู้ใช้หรือรหัสผ่าน",
+      "registerFailed": "สมัครไม่สำเร็จ โปรดลองอีกครั้งภายหลัง",
+      "unauthorized": "ไม่มีหรือข้อมูลเข้าสู่ระบบไม่ถูกต้อง"
     }
   },
   "editor": {
     "eyebrow": "Yaniv Editor",
-    "title": "Content editor",
-    "placeholder": "Start writing your content...",
-    "metaTitle": "Editor",
+    "title": "ตัวแก้ไขเนื้อหา",
+    "placeholder": "เริ่มเขียนเนื้อหาของคุณ...",
+    "metaTitle": "ตัวแก้ไข",
     "autosave": {
-      "saving": "Saving…",
-      "saved": "Auto-saved · {time}",
-      "failed": "Auto-save failed, will retry on next edit"
+      "saving": "กำลังบันทึก…",
+      "saved": "บันทึกอัตโนมัติ · {time}",
+      "failed": "บันทึกอัตโนมัติล้มเหลว จะลองใหม่เมื่อแก้ไขครั้งถัดไป"
     },
     "rename": {
-      "failed": "Failed to rename, please try again"
+      "failed": "เปลี่ยนชื่อไม่สำเร็จ โปรดลองอีกครั้ง"
     }
   },
   "workspace": {
-    "nav": "Workspace",
-    "title": "Manage your PPT projects",
-    "defaultTitle": "Untitled project",
-    "empty": "No projects yet. Use the button above to create one.",
-    "projectNotFound": "Project not found or access denied",
-    "create": "New blank PPT",
-    "edit": "Edit",
-    "delete": "Delete",
-    "deleteCancel": "Cancel",
-    "deleteConfirm": "Delete \"{title}\"? This action cannot be undone.",
-    "deleteSuccess": "Project deleted",
-    "save": "Save",
-    "projectName": "Project name",
-    "backToWorkspace": "Back to workspace",
-    "browse": "View",
-    "share": "Share",
-    "download": "Download",
-    "more": "More actions"
+    "nav": "พื้นที่ทำงาน",
+    "title": "จัดการโปรเจกต์ PPT ของคุณ",
+    "defaultTitle": "โปรเจกต์ไม่มีชื่อ",
+    "empty": "ยังไม่มีโปรเจกต์ ใช้ปุ่มด้านบนเพื่อสร้าง",
+    "projectNotFound": "ไม่พบโปรเจกต์หรือถูกปฏิเสธการเข้าถึง",
+    "create": "PPT ว่างใหม่",
+    "edit": "แก้ไข",
+    "delete": "ลบ",
+    "deleteCancel": "ยกเลิก",
+    "deleteConfirm": "ลบ \"{title}\" หรือไม่? การกระทำนี้ไม่สามารถย้อนกลับได้",
+    "deleteSuccess": "ลบโปรเจกต์แล้ว",
+    "save": "บันทึก",
+    "projectName": "ชื่อโปรเจกต์",
+    "backToWorkspace": "กลับพื้นที่ทำงาน",
+    "browse": "ดู",
+    "share": "แชร์",
+    "download": "ดาวน์โหลด",
+    "more": "การดำเนินการเพิ่มเติม"
   }
 }

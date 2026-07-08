@@ -1,47 +1,47 @@
 {
   "nav": {
-    "home": "Home",
-    "pricing": "Pricing",
-    "about": "About",
-    "help": "Help",
-    "news": "News",
-    "primary": "Primary navigation"
+    "home": "홈",
+    "pricing": "요금",
+    "about": "소개",
+    "help": "도움말",
+    "news": "뉴스",
+    "primary": "주요 내비게이션"
   },
   "brand": {
-    "tagline": "Modern Nuxt starter for public websites"
+    "tagline": "공개 웹사이트를 위한 모던 Nuxt 스타터"
   },
   "seo": {
-    "defaultDescription": "A reusable Nuxt 4 starter for marketing sites, SEO pages, and lightweight SaaS frontends."
+    "defaultDescription": "마케팅 사이트, SEO 페이지, 경량 SaaS 프론트엔드를 위한 재사용 가능한 Nuxt 4 스타터."
   },
   "common": {
-    "switchLanguage": "Switch language",
-    "switchTheme": "Switch theme",
-    "readMore": "Read more",
-    "backHome": "Back home",
-    "error": "Something went wrong. Please try again.",
-    "loadFailed": "Failed to load data. Please try again.",
-    "retry": "Retry"
+    "switchLanguage": "언어 변경",
+    "switchTheme": "테마 변경",
+    "readMore": "더 보기",
+    "backHome": "홈으로",
+    "error": "문제가 발생했습니다. 다시 시도해 주세요.",
+    "loadFailed": "데이터를 불러오지 못했습니다. 다시 시도해 주세요.",
+    "retry": "재시도"
   },
   "productNav": {
-    "workspace": "Workspace",
-    "themeTemplates": "Theme templates",
-    "pricing": "Pricing"
+    "workspace": "워크스페이스",
+    "themeTemplates": "테마 템플릿",
+    "pricing": "요금"
   },
   "userMenu": {
-    "account": "Account",
-    "language": "Language",
-    "signOut": "Sign out"
+    "account": "계정",
+    "language": "언어",
+    "signOut": "로그아웃"
   },
   "accountNav": {
-    "settings": "Account settings"
+    "settings": "계정 설정"
   },
   "templates": {
-    "empty": "Theme templates are coming soon."
+    "empty": "테마 템플릿이 곧 제공됩니다."
   },
   "error": {
-    "title": "Page not found",
-    "message": "Check the address or return home to keep browsing.",
-    "forbidden": "Access denied",
-    "unsupportedLanguage": "Unsupported language"
+    "title": "페이지를 찾을 수 없습니다",
+    "message": "주소를 확인하거나 홈으로 돌아가 계속 탐색하세요.",
+    "forbidden": "접근 거부",
+    "unsupportedLanguage": "지원하지 않는 언어"
   }
 }

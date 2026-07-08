@@ -1,47 +1,47 @@
 {
   "nav": {
-    "home": "Home",
-    "pricing": "Pricing",
-    "about": "About",
-    "help": "Help",
-    "news": "News",
-    "primary": "Primary navigation"
+    "home": "Laman Utama",
+    "pricing": "Harga",
+    "about": "Perihal",
+    "help": "Bantuan",
+    "news": "Berita",
+    "primary": "Navigasi utama"
   },
   "brand": {
-    "tagline": "Modern Nuxt starter for public websites"
+    "tagline": "Starter Nuxt moden untuk laman web awam"
   },
   "seo": {
-    "defaultDescription": "A reusable Nuxt 4 starter for marketing sites, SEO pages, and lightweight SaaS frontends."
+    "defaultDescription": "Starter Nuxt 4 boleh guna semula untuk laman pemasaran, halaman SEO, dan frontend SaaS ringan."
   },
   "common": {
-    "switchLanguage": "Switch language",
-    "switchTheme": "Switch theme",
-    "readMore": "Read more",
-    "backHome": "Back home",
-    "error": "Something went wrong. Please try again.",
-    "loadFailed": "Failed to load data. Please try again.",
-    "retry": "Retry"
+    "switchLanguage": "Tukar bahasa",
+    "switchTheme": "Tukar tema",
+    "readMore": "Baca lagi",
+    "backHome": "Kembali ke laman utama",
+    "error": "Sesuatu tidak kena. Sila cuba lagi.",
+    "loadFailed": "Gagal memuatkan data. Sila cuba lagi.",
+    "retry": "Cuba lagi"
   },
   "productNav": {
-    "workspace": "Workspace",
-    "themeTemplates": "Theme templates",
-    "pricing": "Pricing"
+    "workspace": "Ruang kerja",
+    "themeTemplates": "Templat tema",
+    "pricing": "Harga"
   },
   "userMenu": {
-    "account": "Account",
-    "language": "Language",
-    "signOut": "Sign out"
+    "account": "Akaun",
+    "language": "Bahasa",
+    "signOut": "Log keluar"
   },
   "accountNav": {
-    "settings": "Account settings"
+    "settings": "Tetapan akaun"
   },
   "templates": {
-    "empty": "Theme templates are coming soon."
+    "empty": "Templat tema akan datang tidak lama lagi."
   },
   "error": {
-    "title": "Page not found",
-    "message": "Check the address or return home to keep browsing.",
-    "forbidden": "Access denied",
-    "unsupportedLanguage": "Unsupported language"
+    "title": "Halaman tidak dijumpai",
+    "message": "Semak alamat atau kembali ke laman utama untuk meneruskan.",
+    "forbidden": "Akses dinafikan",
+    "unsupportedLanguage": "Bahasa tidak disokong"
   }
 }

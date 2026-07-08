@@ -1,121 +1,121 @@
 {
   "home": {
     "eyebrow": "Nuxt 4 · TypeScript · Ant Design Vue",
-    "title": "Modern Nuxt starter for public websites",
-    "lead": "Nuxt Modern Starter brings marketing pages, auth flows, multilingual content, SEO routes, and Docker/Nginx deployment defaults into one clean foundation. Use it to launch a SaaS website, product frontend, or content hub, then replace content and backend integrations as your product grows.",
-    "primaryCta": "Start building",
-    "secondaryCta": "View pricing example",
+    "title": "Starter moderno de Nuxt para sitios públicos",
+    "lead": "Nuxt Modern Starter reúne páginas de marketing, flujos de autenticación, contenido multilingüe, rutas SEO y valores predeterminados de despliegue Docker/Nginx en una base limpia. Úsalo para lanzar un sitio SaaS, frontend de producto o hub de contenido, y sustituye contenido e integraciones backend a medida que crece tu producto.",
+    "primaryCta": "Empezar a construir",
+    "secondaryCta": "Ver ejemplo de precios",
     "preview": {
-      "metricLabel": "Template coverage",
-      "metricValue": "12+ pages"
+      "metricLabel": "Cobertura de plantillas",
+      "metricValue": "12+ páginas"
     },
     "stats": {
       "pages": {
         "value": "12+",
-        "label": "Reusable pages and content routes"
+        "label": "Páginas reutilizables y rutas de contenido"
       },
       "modules": {
         "value": "6",
-        "label": "Core engineering modules included"
+        "label": "Módulos de ingeniería incluidos"
       },
       "deploy": {
         "value": "4",
-        "label": "Hybrid rendering strategies by route"
+        "label": "Estrategias de renderizado híbrido por ruta"
       }
     },
-    "featuresEyebrow": "Powered by Nuxt 4",
-    "featuresTitle": "The usual public-site building blocks, already organized",
-    "featuresLead": "Inspired by the Nuxt SaaS Template hierarchy, the homepage now gives the hero section a stronger follow-through with product-ready feature cards.",
+    "featuresEyebrow": "Impulsado por Nuxt 4",
+    "featuresTitle": "Los bloques habituales de sitios públicos, ya organizados",
+    "featuresLead": "Inspirado en la jerarquía de Nuxt SaaS Template, la página de inicio ofrece tarjetas de funciones más sólidas para un aspecto listo para producción.",
     "features": {
       "design": {
-        "title": "Unified design system",
-        "description": "Built on Ant Design Vue and local theme tokens so color mode, radius, shadows, and spacing stay consistent."
+        "title": "Sistema de diseño unificado",
+        "description": "Basado en Ant Design Vue y tokens de tema locales para mantener coherencia en modo de color, radio, sombras y espaciado."
       },
       "i18n": {
-        "title": "Localized routing",
-        "description": "Language prefixes, switching, and localized links are ready for marketing pages and content routes."
+        "title": "Enrutamiento localizado",
+        "description": "Prefijos de idioma, cambio y enlaces localizados listos para páginas de marketing y rutas de contenido."
       },
       "seo": {
-        "title": "SEO-friendly pages",
-        "description": "Home, pricing, help, and article pages all have extensible SEO entry points for public indexing."
+        "title": "Páginas optimizadas para SEO",
+        "description": "Inicio, precios, ayuda y artículos tienen puntos de entrada SEO extensibles para indexación pública."
       },
       "auth": {
-        "title": "Account flows",
-        "description": "Login, registration, and account pages are wired to basic state and ready for a real backend."
+        "title": "Flujos de cuenta",
+        "description": "Login, registro y páginas de cuenta conectadas al estado básico y listas para un backend real."
       },
       "content": {
-        "title": "Content hub",
-        "description": "FAQ comes from typed local config; news and pricing load through the public API and can later move to a CMS or backend."
+        "title": "Centro de contenido",
+        "description": "FAQ desde config local tipada; noticias y precios vía API pública, migrables luego a CMS o backend."
       },
       "deploy": {
-        "title": "Production deployment",
-        "description": "Docker, Nginx, SWR route rules, and security headers are already part of the starter."
+        "title": "Despliegue en producción",
+        "description": "Docker, Nginx, reglas SWR y cabeceras de seguridad ya incluidos en el starter."
       }
     },
     "workflow": {
-      "eyebrow": "Everything you need to ship",
-      "title": "A shorter path from starter to launch",
-      "lead": "It keeps the starter lightweight while adding the capability, conversion, and content structure a SaaS frontend needs.",
+      "eyebrow": "Todo lo que necesitas para publicar",
+      "title": "Un camino más corto del starter al lanzamiento",
+      "lead": "Mantiene el starter ligero añadiendo capacidades, conversión y estructura de contenido que un frontend SaaS necesita.",
       "steps": {
-        "routes": "Reuse home, pricing, help, and news pages to organize public information first.",
-        "content": "Replace i18n copy and content sources next (pricing/news already use the API and can move to a CMS).",
-        "auth": "Connect your backend account system when you are ready to wire sessions, roles, and the product app."
+        "routes": "Reutiliza inicio, precios, ayuda y noticias para organizar primero la información pública.",
+        "content": "Sustituye textos i18n y fuentes de contenido (precios/noticias ya usan la API y pueden pasar a CMS).",
+        "auth": "Conecta tu sistema de cuentas backend cuando quieras enlazar sesiones, roles y la app de producto."
       }
     },
-    "ctaEyebrow": "Ready to build",
-    "ctaTitle": "Use this Nuxt foundation to launch a polished product frontend faster."
+    "ctaEyebrow": "Listo para construir",
+    "ctaTitle": "Usa esta base Nuxt para lanzar un frontend de producto pulido más rápido."
   },
   "about": {
-    "eyebrow": "About us",
-    "title": "Built for public sites and lightweight SaaS frontends",
-    "lead": "Nuxt Modern Starter is a reusable Nuxt 4 foundation for marketing pages, content hubs, and optional auth-ready product surfaces.",
+    "eyebrow": "Acerca de nosotros",
+    "title": "Creado para sitios públicos y frontends SaaS ligeros",
+    "lead": "Nuxt Modern Starter es una base reutilizable de Nuxt 4 para páginas de marketing, hubs de contenido y superficies de producto opcionales con autenticación.",
     "mission": {
-      "title": "Our mission",
-      "body": "We organize the most common public-site capabilities—i18n routing, SEO, content pages, auth samples, and deployment patterns—into a runnable starting point so teams can focus on product differences instead of rebuilding infrastructure."
+      "title": "Nuestra misión",
+      "body": "Organizamos las capacidades más comunes de sitios públicos—enrutamiento i18n, SEO, páginas de contenido, ejemplos de auth y patrones de despliegue—en un punto de partida ejecutable para que los equipos se centren en diferencias de producto."
     },
     "values": {
-      "title": "What we optimize for",
+      "title": "En qué optimizamos",
       "items": {
-        "focus": "Stay focused on public-site scenarios with clear module boundaries instead of an oversized starter.",
-        "quality": "Ship with TypeScript strict mode, linting, tests, and deployment samples from day one.",
-        "openness": "Keep public and product layers separate so local content and API-driven content can be swapped in gradually."
+        "focus": "Enfocados en escenarios de sitios públicos con límites de módulo claros, sin un starter sobredimensionado.",
+        "quality": "TypeScript estricto, lint, tests y ejemplos de despliegue desde el primer día.",
+        "openness": "Capas pública y de producto separadas para sustituir contenido local y vía API gradualmente."
       }
     },
     "story": {
-      "title": "Project background",
+      "title": "Antecedentes del proyecto",
       "paragraphs": {
-        "origin": "The starter comes from repeated needs across SaaS websites and product frontends: marketing home, pricing, help, news, sign-in/sign-up, plus logged-in workspace and editor examples.",
-        "practice": "It defaults to Chinese as the primary locale with English under /en, mixes SSR/prerender/SWR for public pages, and keeps product routes language-neutral with CSR rendering.",
-        "next": "If you are evaluating a Nuxt public-site template, start with the README quick start, then replace copy, content, and backend integrations for your product."
+        "origin": "El starter surge de necesidades repetidas en sitios SaaS y frontends de producto: inicio de marketing, precios, ayuda, noticias, registro/login y ejemplos de espacio de trabajo y editor.",
+        "practice": "Por defecto chino como locale principal con inglés en /en, mezcla SSR/prerender/SWR en páginas públicas y rutas de producto neutras en idioma con CSR.",
+        "next": "Si evalúas una plantilla Nuxt para sitios públicos, empieza con el quick start del README y sustituye textos, contenido e integraciones backend."
       }
     }
   },
   "help": {
-    "eyebrow": "Help center",
-    "title": "Learn how to use Nuxt Modern Starter",
-    "lead": "This page collects common questions about project setup, i18n, auth, SEO, and deployment. Quick-start steps and resource lists come from i18n; FAQ comes from local config and can later move to a CMS or backend API.",
-    "faqTitle": "FAQ",
+    "eyebrow": "Centro de ayuda",
+    "title": "Aprende a usar Nuxt Modern Starter",
+    "lead": "Esta página recopila preguntas frecuentes sobre configuración, i18n, auth, SEO y despliegue. Pasos de inicio y recursos vienen de i18n; FAQ de config local, migrable luego a CMS o API backend.",
+    "faqTitle": "Preguntas frecuentes",
     "quickStart": {
-      "title": "Get running in 30 minutes",
+      "title": "En marcha en 30 minutos",
       "steps": {
-        "install": "Enable Corepack, then run pnpm install.",
-        "dev": "Run pnpm dev and browse default Chinese routes plus /en English routes.",
-        "explore": "Review home, pricing, about, help, and news pages to understand the public-site structure.",
-        "extend": "Follow docs/usage.md to add pages, requests, SEO, and optional auth."
+        "install": "Activa Corepack y ejecuta pnpm install.",
+        "dev": "Ejecuta pnpm dev y navega rutas chinas por defecto y /en en inglés.",
+        "explore": "Revisa inicio, precios, acerca de, ayuda y noticias para entender la estructura del sitio público.",
+        "extend": "Sigue docs/usage.md para añadir páginas, peticiones, SEO y auth opcional."
       }
     },
     "resources": {
-      "title": "Recommended reading",
-      "architecture": "docs/architecture.md — directory responsibilities, rendering strategy, feature modules, and runtime flow",
-      "usage": "docs/usage.md — pages, requests, SEO, languages, workspace/editor/account flows, and auth",
-      "conventions": "docs/conventions.md — config boundaries, request layering, and coding conventions",
-      "deployment": "docs/deployment.md — local, Docker, and Nginx deployment validation"
+      "title": "Lectura recomendada",
+      "architecture": "docs/architecture.md — responsabilidades de directorios, estrategia de renderizado, módulos y flujo en runtime",
+      "usage": "docs/usage.md — páginas, peticiones, SEO, idiomas, espacio de trabajo/editor/cuenta y auth",
+      "conventions": "docs/conventions.md — límites de config, capas de peticiones y convenciones de código",
+      "deployment": "docs/deployment.md — validación de despliegue local, Docker y Nginx"
     }
   },
   "news": {
-    "eyebrow": "Project updates",
-    "title": "Nuxt Modern Starter releases and notes",
-    "lead": "Track starter releases, deployment practices, and extension guidance. These pages also demonstrate news list/detail layouts, detail-page Article JSON-LD, and SWR cache rules.",
-    "notFound": "This news article was not found"
+    "eyebrow": "Actualizaciones del proyecto",
+    "title": "Lanzamientos y notas de Nuxt Modern Starter",
+    "lead": "Sigue releases del starter, prácticas de despliegue y guías de extensión. Estas páginas también demuestran listados/detalle de noticias, Article JSON-LD y reglas de caché SWR.",
+    "notFound": "No se encontró este artículo de noticias"
   }
 }

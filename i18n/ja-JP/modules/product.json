@@ -1,90 +1,90 @@
 {
   "auth": {
     "header": {
-      "signIn": "Sign in",
-      "signUp": "Sign up",
-      "enterWorkspace": "Enter workspace"
+      "signIn": "ログイン",
+      "signUp": "新規登録",
+      "enterWorkspace": "ワークスペースへ"
     },
     "form": {
-      "username": "Username",
-      "password": "Password",
-      "confirmPassword": "Confirm password"
+      "username": "ユーザー名",
+      "password": "パスワード",
+      "confirmPassword": "パスワード（確認）"
     },
     "login": {
-      "title": "Log in",
-      "submit": "Log in",
-      "success": "Logged in successfully",
-      "noAccount": "No account yet?"
+      "title": "ログイン",
+      "submit": "ログイン",
+      "success": "ログインしました",
+      "noAccount": "アカウントをお持ちでないですか？"
     },
     "register": {
-      "title": "Register",
-      "submit": "Register",
-      "success": "Registered successfully. Please log in.",
-      "hasAccount": "Already have an account?"
+      "title": "新規登録",
+      "submit": "登録",
+      "success": "登録が完了しました。ログインしてください。",
+      "hasAccount": "すでにアカウントをお持ちですか？"
     },
     "logout": {
-      "submit": "Log out",
-      "success": "Logged out"
+      "submit": "ログアウト",
+      "success": "ログアウトしました"
     },
     "account": {
-      "eyebrow": "Protected page",
-      "title": "Account",
-      "lead": "This page is protected by the named auth middleware and shows the current user profile.",
-      "avatar": "Profile photo",
-      "sessionTitle": "Session",
-      "profileTitle": "Extended profile",
-      "userId": "User ID",
-      "nickname": "Nickname",
-      "roles": "Roles",
-      "permissions": "Permissions",
-      "none": "None",
-      "emptyProfile": "No extended profile yet"
+      "eyebrow": "保護されたページ",
+      "title": "アカウント",
+      "lead": "このページは named auth ミドルウェアで保護され、現在のユーザープロフィールを表示します。",
+      "avatar": "プロフィール写真",
+      "sessionTitle": "セッション",
+      "profileTitle": "拡張プロフィール",
+      "userId": "ユーザー ID",
+      "nickname": "ニックネーム",
+      "roles": "ロール",
+      "permissions": "権限",
+      "none": "なし",
+      "emptyProfile": "拡張プロフィールはまだありません"
     },
     "validation": {
-      "usernameRequired": "Please enter a username",
-      "passwordRequired": "Please enter a password",
-      "confirmPasswordRequired": "Please confirm your password",
-      "passwordMin": "Password must be at least 6 characters",
-      "passwordMismatch": "The two passwords do not match"
+      "usernameRequired": "ユーザー名を入力してください",
+      "passwordRequired": "パスワードを入力してください",
+      "confirmPasswordRequired": "パスワードを再入力してください",
+      "passwordMin": "パスワードは 6 文字以上必要です",
+      "passwordMismatch": "2 つのパスワードが一致しません"
     },
     "errors": {
-      "loginFailed": "Login failed. Check the username or password.",
-      "registerFailed": "Registration failed. Please try again later.",
-      "unauthorized": "Missing or invalid login credentials"
+      "loginFailed": "ログインに失敗しました。ユーザー名またはパスワードを確認してください。",
+      "registerFailed": "登録に失敗しました。後でもう一度お試しください。",
+      "unauthorized": "ログイン情報が無効または未入力です"
     }
   },
   "editor": {
     "eyebrow": "Yaniv Editor",
-    "title": "Content editor",
-    "placeholder": "Start writing your content...",
-    "metaTitle": "Editor",
+    "title": "コンテンツエディター",
+    "placeholder": "コンテンツの作成を開始...",
+    "metaTitle": "エディター",
     "autosave": {
-      "saving": "Saving…",
-      "saved": "Auto-saved · {time}",
-      "failed": "Auto-save failed, will retry on next edit"
+      "saving": "保存中…",
+      "saved": "自動保存済み · {time}",
+      "failed": "自動保存に失敗しました。次回編集時に再試行します"
     },
     "rename": {
-      "failed": "Failed to rename, please try again"
+      "failed": "名前の変更に失敗しました。もう一度お試しください"
     }
   },
   "workspace": {
-    "nav": "Workspace",
-    "title": "Manage your PPT projects",
-    "defaultTitle": "Untitled project",
-    "empty": "No projects yet. Use the button above to create one.",
-    "projectNotFound": "Project not found or access denied",
-    "create": "New blank PPT",
-    "edit": "Edit",
-    "delete": "Delete",
-    "deleteCancel": "Cancel",
-    "deleteConfirm": "Delete \"{title}\"? This action cannot be undone.",
-    "deleteSuccess": "Project deleted",
-    "save": "Save",
-    "projectName": "Project name",
-    "backToWorkspace": "Back to workspace",
-    "browse": "View",
-    "share": "Share",
-    "download": "Download",
-    "more": "More actions"
+    "nav": "ワークスペース",
+    "title": "PPT プロジェクトを管理",
+    "defaultTitle": "無題のプロジェクト",
+    "empty": "プロジェクトはまだありません。右上のボタンで作成してください。",
+    "projectNotFound": "プロジェクトが見つからないか、アクセス権がありません",
+    "create": "新規空白 PPT",
+    "edit": "編集",
+    "delete": "削除",
+    "deleteCancel": "キャンセル",
+    "deleteConfirm": "「{title}」を削除しますか？この操作は元に戻せません。",
+    "deleteSuccess": "プロジェクトを削除しました",
+    "save": "保存",
+    "projectName": "プロジェクト名",
+    "backToWorkspace": "ワークスペースに戻る",
+    "browse": "表示",
+    "share": "共有",
+    "download": "ダウンロード",
+    "more": "その他の操作"
   }
 }

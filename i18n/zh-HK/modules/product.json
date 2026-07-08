@@ -1,90 +1,90 @@
 {
   "auth": {
     "header": {
-      "signIn": "Sign in",
-      "signUp": "Sign up",
-      "enterWorkspace": "Enter workspace"
+      "signIn": "登入",
+      "signUp": "註冊",
+      "enterWorkspace": "進入工作台"
     },
     "form": {
-      "username": "Username",
-      "password": "Password",
-      "confirmPassword": "Confirm password"
+      "username": "用戶名",
+      "password": "密碼",
+      "confirmPassword": "確認密碼"
     },
     "login": {
-      "title": "Log in",
-      "submit": "Log in",
-      "success": "Logged in successfully",
-      "noAccount": "No account yet?"
+      "title": "登入",
+      "submit": "登入",
+      "success": "登入成功",
+      "noAccount": "還沒有帳戶？"
     },
     "register": {
-      "title": "Register",
-      "submit": "Register",
-      "success": "Registered successfully. Please log in.",
-      "hasAccount": "Already have an account?"
+      "title": "註冊",
+      "submit": "註冊",
+      "success": "註冊成功，請繼續登入",
+      "hasAccount": "已有帳戶？"
     },
     "logout": {
-      "submit": "Log out",
-      "success": "Logged out"
+      "submit": "登出",
+      "success": "已登出"
     },
     "account": {
-      "eyebrow": "Protected page",
-      "title": "Account",
-      "lead": "This page is protected by the named auth middleware and shows the current user profile.",
-      "avatar": "Profile photo",
-      "sessionTitle": "Session",
-      "profileTitle": "Extended profile",
-      "userId": "User ID",
-      "nickname": "Nickname",
-      "roles": "Roles",
-      "permissions": "Permissions",
-      "none": "None",
-      "emptyProfile": "No extended profile yet"
+      "eyebrow": "受保護頁面",
+      "title": "帳戶",
+      "lead": "此頁面通過命名 auth 中間件保護，展示當前登入用戶和擴展資料。",
+      "avatar": "頭像",
+      "sessionTitle": "登入態",
+      "profileTitle": "擴展資料",
+      "userId": "用戶 ID",
+      "nickname": "暱稱",
+      "roles": "角色",
+      "permissions": "權限",
+      "none": "暫無",
+      "emptyProfile": "暫無擴展資料"
     },
     "validation": {
-      "usernameRequired": "Please enter a username",
-      "passwordRequired": "Please enter a password",
-      "confirmPasswordRequired": "Please confirm your password",
-      "passwordMin": "Password must be at least 6 characters",
-      "passwordMismatch": "The two passwords do not match"
+      "usernameRequired": "請輸入用戶名",
+      "passwordRequired": "請輸入密碼",
+      "confirmPasswordRequired": "請再次輸入密碼",
+      "passwordMin": "密碼至少需要 6 個字符",
+      "passwordMismatch": "兩次輸入的密碼不一致"
     },
     "errors": {
-      "loginFailed": "Login failed. Check the username or password.",
-      "registerFailed": "Registration failed. Please try again later.",
-      "unauthorized": "Missing or invalid login credentials"
+      "loginFailed": "登入失敗，請檢查用戶名或密碼",
+      "registerFailed": "註冊失敗，請稍後重試",
+      "unauthorized": "未登入或無效登入憑證"
     }
   },
   "editor": {
     "eyebrow": "Yaniv Editor",
-    "title": "Content editor",
-    "placeholder": "Start writing your content...",
-    "metaTitle": "Editor",
+    "title": "內容編輯器",
+    "placeholder": "開始撰寫你的內容...",
+    "metaTitle": "編輯器",
     "autosave": {
-      "saving": "Saving…",
-      "saved": "Auto-saved · {time}",
-      "failed": "Auto-save failed, will retry on next edit"
+      "saving": "保存中…",
+      "saved": "已自動保存 · {time}",
+      "failed": "自動保存失敗，將繼續重試"
     },
     "rename": {
-      "failed": "Failed to rename, please try again"
+      "failed": "重命名失敗，請重試"
     }
   },
   "workspace": {
-    "nav": "Workspace",
-    "title": "Manage your PPT projects",
-    "defaultTitle": "Untitled project",
-    "empty": "No projects yet. Use the button above to create one.",
-    "projectNotFound": "Project not found or access denied",
-    "create": "New blank PPT",
-    "edit": "Edit",
-    "delete": "Delete",
-    "deleteCancel": "Cancel",
-    "deleteConfirm": "Delete \"{title}\"? This action cannot be undone.",
-    "deleteSuccess": "Project deleted",
-    "save": "Save",
-    "projectName": "Project name",
-    "backToWorkspace": "Back to workspace",
-    "browse": "View",
-    "share": "Share",
-    "download": "Download",
-    "more": "More actions"
+    "nav": "工作台",
+    "title": "管理你的 PPT 作品",
+    "defaultTitle": "未命名作品",
+    "empty": "暫無作品，點擊右上角按鈕創建。",
+    "projectNotFound": "項目不存在或無權訪問",
+    "create": "新建空白 PPT",
+    "edit": "編輯",
+    "delete": "刪除",
+    "deleteCancel": "取消",
+    "deleteConfirm": "確定刪除「{title}」嗎？此操作不可恢復。",
+    "deleteSuccess": "作品已刪除",
+    "save": "保存",
+    "projectName": "作品名稱",
+    "backToWorkspace": "返回工作台",
+    "browse": "瀏覽",
+    "share": "分享",
+    "download": "下載",
+    "more": "更多操作"
   }
 }

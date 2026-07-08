@@ -1,47 +1,47 @@
 {
   "nav": {
-    "home": "Home",
-    "pricing": "Pricing",
-    "about": "About",
-    "help": "Help",
-    "news": "News",
-    "primary": "Primary navigation"
+    "home": "หน้าแรก",
+    "pricing": "ราคา",
+    "about": "เกี่ยวกับเรา",
+    "help": "ความช่วยเหลือ",
+    "news": "ข่าว",
+    "primary": "การนำทางหลัก"
   },
   "brand": {
-    "tagline": "Modern Nuxt starter for public websites"
+    "tagline": "Nuxt starter สมัยใหม่สำหรับเว็บไซต์สาธารณะ"
   },
   "seo": {
-    "defaultDescription": "A reusable Nuxt 4 starter for marketing sites, SEO pages, and lightweight SaaS frontends."
+    "defaultDescription": "Nuxt 4 starter ที่ใช้ซ้ำได้สำหรับเว็บไซต์การตลาด หน้า SEO และ frontend SaaS แบบเบา"
   },
   "common": {
-    "switchLanguage": "Switch language",
-    "switchTheme": "Switch theme",
-    "readMore": "Read more",
-    "backHome": "Back home",
-    "error": "Something went wrong. Please try again.",
-    "loadFailed": "Failed to load data. Please try again.",
-    "retry": "Retry"
+    "switchLanguage": "เปลี่ยนภาษา",
+    "switchTheme": "เปลี่ยนธีม",
+    "readMore": "อ่านเพิ่มเติม",
+    "backHome": "กลับหน้าแรก",
+    "error": "เกิดข้อผิดพลาด โปรดลองอีกครั้ง",
+    "loadFailed": "โหลดข้อมูลไม่สำเร็จ โปรดลองอีกครั้ง",
+    "retry": "ลองอีกครั้ง"
   },
   "productNav": {
-    "workspace": "Workspace",
-    "themeTemplates": "Theme templates",
-    "pricing": "Pricing"
+    "workspace": "พื้นที่ทำงาน",
+    "themeTemplates": "เทมเพลตธีม",
+    "pricing": "ราคา"
   },
   "userMenu": {
-    "account": "Account",
-    "language": "Language",
-    "signOut": "Sign out"
+    "account": "บัญชี",
+    "language": "ภาษา",
+    "signOut": "ออกจากระบบ"
   },
   "accountNav": {
-    "settings": "Account settings"
+    "settings": "การตั้งค่าบัญชี"
   },
   "templates": {
-    "empty": "Theme templates are coming soon."
+    "empty": "เทมเพลตธีมจะมาเร็ว ๆ นี้"
   },
   "error": {
-    "title": "Page not found",
-    "message": "Check the address or return home to keep browsing.",
-    "forbidden": "Access denied",
-    "unsupportedLanguage": "Unsupported language"
+    "title": "ไม่พบหน้า",
+    "message": "ตรวจสอบที่อยู่หรือกลับหน้าแรกเพื่อดำเนินการต่อ",
+    "forbidden": "ปฏิเสธการเข้าถึง",
+    "unsupportedLanguage": "ภาษาไม่รองรับ"
   }
 }

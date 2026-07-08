@@ -1,47 +1,47 @@
 {
   "nav": {
-    "home": "Home",
-    "pricing": "Pricing",
-    "about": "About",
-    "help": "Help",
-    "news": "News",
-    "primary": "Primary navigation"
+    "home": "首頁",
+    "pricing": "價格",
+    "about": "關於我們",
+    "help": "幫助",
+    "news": "新聞",
+    "primary": "主導航"
   },
   "brand": {
-    "tagline": "Modern Nuxt starter for public websites"
+    "tagline": "面向公開網站的現代 Nuxt 基礎骨架"
   },
   "seo": {
-    "defaultDescription": "A reusable Nuxt 4 starter for marketing sites, SEO pages, and lightweight SaaS frontends."
+    "defaultDescription": "面向營銷網站、SEO 頁面與輕量 SaaS 前台的 Nuxt 4 可重用 starter。"
   },
   "common": {
-    "switchLanguage": "Switch language",
-    "switchTheme": "Switch theme",
-    "readMore": "Read more",
-    "backHome": "Back home",
-    "error": "Something went wrong. Please try again.",
-    "loadFailed": "Failed to load data. Please try again.",
-    "retry": "Retry"
+    "switchLanguage": "切換語言",
+    "switchTheme": "切換主題",
+    "readMore": "閱讀更多",
+    "backHome": "返回首頁",
+    "error": "操作失敗，請稍後重試",
+    "loadFailed": "載入失敗，請稍後重試",
+    "retry": "重試"
   },
   "productNav": {
-    "workspace": "Workspace",
-    "themeTemplates": "Theme templates",
-    "pricing": "Pricing"
+    "workspace": "工作台",
+    "themeTemplates": "主題模版",
+    "pricing": "定價"
   },
   "userMenu": {
-    "account": "Account",
-    "language": "Language",
-    "signOut": "Sign out"
+    "account": "帳戶",
+    "language": "語言",
+    "signOut": "登出"
   },
   "accountNav": {
-    "settings": "Account settings"
+    "settings": "帳戶設定"
   },
   "templates": {
-    "empty": "Theme templates are coming soon."
+    "empty": "主題模版即將上線，敬請期待。"
   },
   "error": {
-    "title": "Page not found",
-    "message": "Check the address or return home to keep browsing.",
-    "forbidden": "Access denied",
-    "unsupportedLanguage": "Unsupported language"
+    "title": "頁面不存在",
+    "message": "請檢查訪問地址，或返回首頁繼續瀏覽。",
+    "forbidden": "無權訪問",
+    "unsupportedLanguage": "不支援的語言"
   }
 }

@@ -1,90 +1,90 @@
 {
   "auth": {
     "header": {
-      "signIn": "Sign in",
-      "signUp": "Sign up",
-      "enterWorkspace": "Enter workspace"
+      "signIn": "로그인",
+      "signUp": "회원가입",
+      "enterWorkspace": "워크스페이스 입장"
     },
     "form": {
-      "username": "Username",
-      "password": "Password",
-      "confirmPassword": "Confirm password"
+      "username": "사용자 이름",
+      "password": "비밀번호",
+      "confirmPassword": "비밀번호 확인"
     },
     "login": {
-      "title": "Log in",
-      "submit": "Log in",
-      "success": "Logged in successfully",
-      "noAccount": "No account yet?"
+      "title": "로그인",
+      "submit": "로그인",
+      "success": "로그인되었습니다",
+      "noAccount": "계정이 없으신가요?"
     },
     "register": {
-      "title": "Register",
-      "submit": "Register",
-      "success": "Registered successfully. Please log in.",
-      "hasAccount": "Already have an account?"
+      "title": "회원가입",
+      "submit": "가입",
+      "success": "가입 완료. 로그인해 주세요.",
+      "hasAccount": "이미 계정이 있으신가요?"
     },
     "logout": {
-      "submit": "Log out",
-      "success": "Logged out"
+      "submit": "로그아웃",
+      "success": "로그아웃되었습니다"
     },
     "account": {
-      "eyebrow": "Protected page",
-      "title": "Account",
-      "lead": "This page is protected by the named auth middleware and shows the current user profile.",
-      "avatar": "Profile photo",
-      "sessionTitle": "Session",
-      "profileTitle": "Extended profile",
-      "userId": "User ID",
-      "nickname": "Nickname",
-      "roles": "Roles",
-      "permissions": "Permissions",
-      "none": "None",
-      "emptyProfile": "No extended profile yet"
+      "eyebrow": "보호된 페이지",
+      "title": "계정",
+      "lead": "이 페이지는 named auth 미들웨어로 보호되며 현재 사용자 프로필을 표시합니다.",
+      "avatar": "프로필 사진",
+      "sessionTitle": "세션",
+      "profileTitle": "확장 프로필",
+      "userId": "사용자 ID",
+      "nickname": "닉네임",
+      "roles": "역할",
+      "permissions": "권한",
+      "none": "없음",
+      "emptyProfile": "확장 프로필 없음"
     },
     "validation": {
-      "usernameRequired": "Please enter a username",
-      "passwordRequired": "Please enter a password",
-      "confirmPasswordRequired": "Please confirm your password",
-      "passwordMin": "Password must be at least 6 characters",
-      "passwordMismatch": "The two passwords do not match"
+      "usernameRequired": "사용자 이름을 입력하세요",
+      "passwordRequired": "비밀번호를 입력하세요",
+      "confirmPasswordRequired": "비밀번호를 다시 입력하세요",
+      "passwordMin": "비밀번호는 최소 6자 이상",
+      "passwordMismatch": "비밀번호가 일치하지 않습니다"
     },
     "errors": {
-      "loginFailed": "Login failed. Check the username or password.",
-      "registerFailed": "Registration failed. Please try again later.",
-      "unauthorized": "Missing or invalid login credentials"
+      "loginFailed": "로그인 실패. 사용자 이름 또는 비밀번호를 확인하세요.",
+      "registerFailed": "가입 실패. 나중에 다시 시도하세요.",
+      "unauthorized": "로그인 정보가 없거나 유효하지 않습니다"
     }
   },
   "editor": {
     "eyebrow": "Yaniv Editor",
-    "title": "Content editor",
-    "placeholder": "Start writing your content...",
-    "metaTitle": "Editor",
+    "title": "콘텐츠 에디터",
+    "placeholder": "콘텐츠 작성을 시작하세요...",
+    "metaTitle": "에디터",
     "autosave": {
-      "saving": "Saving…",
-      "saved": "Auto-saved · {time}",
-      "failed": "Auto-save failed, will retry on next edit"
+      "saving": "저장 중…",
+      "saved": "자동 저장됨 · {time}",
+      "failed": "자동 저장 실패, 다음 편집 시 재시도"
     },
     "rename": {
-      "failed": "Failed to rename, please try again"
+      "failed": "이름 변경 실패, 다시 시도하세요"
     }
   },
   "workspace": {
-    "nav": "Workspace",
-    "title": "Manage your PPT projects",
-    "defaultTitle": "Untitled project",
-    "empty": "No projects yet. Use the button above to create one.",
-    "projectNotFound": "Project not found or access denied",
-    "create": "New blank PPT",
-    "edit": "Edit",
-    "delete": "Delete",
-    "deleteCancel": "Cancel",
-    "deleteConfirm": "Delete \"{title}\"? This action cannot be undone.",
-    "deleteSuccess": "Project deleted",
-    "save": "Save",
-    "projectName": "Project name",
-    "backToWorkspace": "Back to workspace",
-    "browse": "View",
-    "share": "Share",
-    "download": "Download",
-    "more": "More actions"
+    "nav": "워크스페이스",
+    "title": "PPT 프로젝트 관리",
+    "defaultTitle": "제목 없는 프로젝트",
+    "empty": "프로젝트가 없습니다. 위 버튼으로 생성하세요.",
+    "projectNotFound": "프로젝트를 찾을 수 없거나 접근이 거부되었습니다",
+    "create": "새 빈 PPT",
+    "edit": "편집",
+    "delete": "삭제",
+    "deleteCancel": "취소",
+    "deleteConfirm": "「{title}」을(를) 삭제할까요? 이 작업은 되돌릴 수 없습니다.",
+    "deleteSuccess": "프로젝트가 삭제되었습니다",
+    "save": "저장",
+    "projectName": "프로젝트 이름",
+    "backToWorkspace": "워크스페이스로",
+    "browse": "보기",
+    "share": "공유",
+    "download": "다운로드",
+    "more": "더 보기"
   }
 }

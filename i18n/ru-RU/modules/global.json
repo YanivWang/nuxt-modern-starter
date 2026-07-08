@@ -1,47 +1,47 @@
 {
   "nav": {
-    "home": "Home",
-    "pricing": "Pricing",
-    "about": "About",
-    "help": "Help",
-    "news": "News",
-    "primary": "Primary navigation"
+    "home": "Главная",
+    "pricing": "Цены",
+    "about": "О нас",
+    "help": "Помощь",
+    "news": "Новости",
+    "primary": "Основная навигация"
   },
   "brand": {
-    "tagline": "Modern Nuxt starter for public websites"
+    "tagline": "Современный Nuxt starter для публичных сайтов"
   },
   "seo": {
-    "defaultDescription": "A reusable Nuxt 4 starter for marketing sites, SEO pages, and lightweight SaaS frontends."
+    "defaultDescription": "Переиспользуемый Nuxt 4 starter для маркетинговых сайтов, SEO-страниц и лёгких SaaS-фронтендов."
   },
   "common": {
-    "switchLanguage": "Switch language",
-    "switchTheme": "Switch theme",
-    "readMore": "Read more",
-    "backHome": "Back home",
-    "error": "Something went wrong. Please try again.",
-    "loadFailed": "Failed to load data. Please try again.",
-    "retry": "Retry"
+    "switchLanguage": "Сменить язык",
+    "switchTheme": "Сменить тему",
+    "readMore": "Читать далее",
+    "backHome": "На главную",
+    "error": "Что-то пошло не так. Попробуйте снова.",
+    "loadFailed": "Не удалось загрузить данные. Попробуйте снова.",
+    "retry": "Повторить"
   },
   "productNav": {
-    "workspace": "Workspace",
-    "themeTemplates": "Theme templates",
-    "pricing": "Pricing"
+    "workspace": "Рабочая область",
+    "themeTemplates": "Шаблоны тем",
+    "pricing": "Цены"
   },
   "userMenu": {
-    "account": "Account",
-    "language": "Language",
-    "signOut": "Sign out"
+    "account": "Аккаунт",
+    "language": "Язык",
+    "signOut": "Выйти"
   },
   "accountNav": {
-    "settings": "Account settings"
+    "settings": "Настройки аккаунта"
   },
   "templates": {
-    "empty": "Theme templates are coming soon."
+    "empty": "Шаблоны тем скоро появятся."
   },
   "error": {
-    "title": "Page not found",
-    "message": "Check the address or return home to keep browsing.",
-    "forbidden": "Access denied",
-    "unsupportedLanguage": "Unsupported language"
+    "title": "Страница не найдена",
+    "message": "Проверьте адрес или вернитесь на главную.",
+    "forbidden": "Доступ запрещён",
+    "unsupportedLanguage": "Неподдерживаемый язык"
   }
 }

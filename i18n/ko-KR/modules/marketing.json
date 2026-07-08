@@ -1,121 +1,121 @@
 {
   "home": {
     "eyebrow": "Nuxt 4 · TypeScript · Ant Design Vue",
-    "title": "Modern Nuxt starter for public websites",
-    "lead": "Nuxt Modern Starter brings marketing pages, auth flows, multilingual content, SEO routes, and Docker/Nginx deployment defaults into one clean foundation. Use it to launch a SaaS website, product frontend, or content hub, then replace content and backend integrations as your product grows.",
-    "primaryCta": "Start building",
-    "secondaryCta": "View pricing example",
+    "title": "공개 웹사이트를 위한 모던 Nuxt 스타터",
+    "lead": "Nuxt Modern Starter는 마케팅 페이지, 인증 흐름, 다국어 콘텐츠, SEO 라우트, Docker/Nginx 배포 기본값을 하나의 깔끔한 기반으로 제공합니다. SaaS 웹사이트, 제품 프론트엔드, 콘텐츠 허브를 빠르게 시작하고 성장에 맞춰 콘텐츠와 백엔드 연동을 교체하세요.",
+    "primaryCta": "구축 시작",
+    "secondaryCta": "요금 예시 보기",
     "preview": {
-      "metricLabel": "Template coverage",
-      "metricValue": "12+ pages"
+      "metricLabel": "템플릿 커버리지",
+      "metricValue": "12+ 페이지"
     },
     "stats": {
       "pages": {
         "value": "12+",
-        "label": "Reusable pages and content routes"
+        "label": "재사용 가능한 페이지 및 콘텐츠 라우트"
       },
       "modules": {
         "value": "6",
-        "label": "Core engineering modules included"
+        "label": "포함된 핵심 엔지니어링 모듈"
       },
       "deploy": {
         "value": "4",
-        "label": "Hybrid rendering strategies by route"
+        "label": "라우트별 하이브리드 렌더링 전략"
       }
     },
-    "featuresEyebrow": "Powered by Nuxt 4",
-    "featuresTitle": "The usual public-site building blocks, already organized",
-    "featuresLead": "Inspired by the Nuxt SaaS Template hierarchy, the homepage now gives the hero section a stronger follow-through with product-ready feature cards.",
+    "featuresEyebrow": "Nuxt 4 기반",
+    "featuresTitle": "공개 사이트에 필요한 구성 요소를 이미 정리",
+    "featuresLead": "Nuxt SaaS Template 정보 계층을 참고해, 히어로 이후도 제품 수준의 기능 카드로 이어집니다.",
     "features": {
       "design": {
-        "title": "Unified design system",
-        "description": "Built on Ant Design Vue and local theme tokens so color mode, radius, shadows, and spacing stay consistent."
+        "title": "통합 디자인 시스템",
+        "description": "Ant Design Vue와 로컬 테마 토큰으로 색상 모드, 모서리, 그림자, 간격을 일관되게 유지."
       },
       "i18n": {
-        "title": "Localized routing",
-        "description": "Language prefixes, switching, and localized links are ready for marketing pages and content routes."
+        "title": "로컬라이즈드 라우팅",
+        "description": "언어 접두사, 전환, 로컬라이즈드 링크를 마케팅 및 콘텐츠 페이지에 바로 사용."
       },
       "seo": {
-        "title": "SEO-friendly pages",
-        "description": "Home, pricing, help, and article pages all have extensible SEO entry points for public indexing."
+        "title": "SEO 친화적 페이지",
+        "description": "홈, 요금, 도움말, 기사 페이지에 공개 인덱싱용 확장 가능 SEO 진입점."
       },
       "auth": {
-        "title": "Account flows",
-        "description": "Login, registration, and account pages are wired to basic state and ready for a real backend."
+        "title": "계정 흐름",
+        "description": "로그인, 회원가입, 계정 페이지가 기본 상태에 연결되어 실제 백엔드 연동 준비 완료."
       },
       "content": {
-        "title": "Content hub",
-        "description": "FAQ comes from typed local config; news and pricing load through the public API and can later move to a CMS or backend."
+        "title": "콘텐츠 허브",
+        "description": "FAQ는 typed 로컬 config, 뉴스와 요금은 Public API. 이후 CMS 또는 백엔드로 이전 가능."
       },
       "deploy": {
-        "title": "Production deployment",
-        "description": "Docker, Nginx, SWR route rules, and security headers are already part of the starter."
+        "title": "프로덕션 배포",
+        "description": "Docker, Nginx, SWR routeRules, 보안 헤더가 스타터에 포함."
       }
     },
     "workflow": {
-      "eyebrow": "Everything you need to ship",
-      "title": "A shorter path from starter to launch",
-      "lead": "It keeps the starter lightweight while adding the capability, conversion, and content structure a SaaS frontend needs.",
+      "eyebrow": "출시에 필요한 모든 것",
+      "title": "스타터에서 런칭까지 더 짧은 경로",
+      "lead": "가벼움을 유지하면서 SaaS 프론트엔드에 필요한 기능, 전환, 콘텐츠 구조를 보완합니다.",
       "steps": {
-        "routes": "Reuse home, pricing, help, and news pages to organize public information first.",
-        "content": "Replace i18n copy and content sources next (pricing/news already use the API and can move to a CMS).",
-        "auth": "Connect your backend account system when you are ready to wire sessions, roles, and the product app."
+        "routes": "먼저 홈, 요금, 도움말, 뉴스 페이지로 공개 정보를 구성.",
+        "content": "다음으로 i18n 문구와 콘텐츠 소스 교체(요금/뉴스는 API 사용, CMS 이전 가능).",
+        "auth": "준비되면 백엔드 계정 시스템을 연결해 세션, 역할, 제품 앱을 연동."
       }
     },
-    "ctaEyebrow": "Ready to build",
-    "ctaTitle": "Use this Nuxt foundation to launch a polished product frontend faster."
+    "ctaEyebrow": "구축 준비 완료",
+    "ctaTitle": "이 Nuxt 기반으로 더 빠르게 완성도 높은 제품 프론트엔드를 출시하세요."
   },
   "about": {
-    "eyebrow": "About us",
-    "title": "Built for public sites and lightweight SaaS frontends",
-    "lead": "Nuxt Modern Starter is a reusable Nuxt 4 foundation for marketing pages, content hubs, and optional auth-ready product surfaces.",
+    "eyebrow": "회사 소개",
+    "title": "공개 사이트와 경량 SaaS 프론트엔드를 위해",
+    "lead": "Nuxt Modern Starter는 마케팅 페이지, 콘텐츠 허브, 선택적 인증 제품 영역을 위한 재사용 가능한 Nuxt 4 기반입니다.",
     "mission": {
-      "title": "Our mission",
-      "body": "We organize the most common public-site capabilities—i18n routing, SEO, content pages, auth samples, and deployment patterns—into a runnable starting point so teams can focus on product differences instead of rebuilding infrastructure."
+      "title": "우리의 목표",
+      "body": "공개 사이트에서 가장 흔한 기능—i18n 라우팅, SEO, 콘텐츠 페이지, 인증 샘플, 배포 패턴—을 실행 가능한 시작점으로 정리해 팀이 인프라 재구축 대신 제품 차별화에 집중하도록 합니다."
     },
     "values": {
-      "title": "What we optimize for",
+      "title": "우리가 지향하는 것",
       "items": {
-        "focus": "Stay focused on public-site scenarios with clear module boundaries instead of an oversized starter.",
-        "quality": "Ship with TypeScript strict mode, linting, tests, and deployment samples from day one.",
-        "openness": "Keep public and product layers separate so local content and API-driven content can be swapped in gradually."
+        "focus": "공개 사이트 시나리오에 집중하고 모듈 경계를 명확히 하여 스타터 비대화를 피합니다.",
+        "quality": "첫날부터 TypeScript strict, lint, 테스트, 배포 샘플 제공.",
+        "openness": "공개/제품 계층을 분리해 로컬 및 API 콘텐츠를 점진적으로 교체 가능."
       }
     },
     "story": {
-      "title": "Project background",
+      "title": "프로젝트 배경",
       "paragraphs": {
-        "origin": "The starter comes from repeated needs across SaaS websites and product frontends: marketing home, pricing, help, news, sign-in/sign-up, plus logged-in workspace and editor examples.",
-        "practice": "It defaults to Chinese as the primary locale with English under /en, mixes SSR/prerender/SWR for public pages, and keeps product routes language-neutral with CSR rendering.",
-        "next": "If you are evaluating a Nuxt public-site template, start with the README quick start, then replace copy, content, and backend integrations for your product."
+        "origin": "SaaS 웹사이트와 제품 프론트엔드에서 반복되던 요구—마케팅 홈, 요금, 도움말, 뉴스, 로그인/회원가입, 로그인 후 워크스페이스 및 에디터 예시—에서 출발했습니다.",
+        "practice": "기본 locale은 중국어, 영어는 /en. 공개 페이지는 SSR/prerender/SWR 혼합, 제품 라우트는 언어 중립 URL과 CSR.",
+        "next": "Nuxt 공개 사이트 템플릿을 검토 중이라면 README 빠른 시작 후 문구, 콘텐츠, 백엔드 연동을 교체하세요."
       }
     }
   },
   "help": {
-    "eyebrow": "Help center",
-    "title": "Learn how to use Nuxt Modern Starter",
-    "lead": "This page collects common questions about project setup, i18n, auth, SEO, and deployment. Quick-start steps and resource lists come from i18n; FAQ comes from local config and can later move to a CMS or backend API.",
-    "faqTitle": "FAQ",
+    "eyebrow": "도움말 센터",
+    "title": "Nuxt Modern Starter 사용 방법",
+    "lead": "프로젝트 설정, i18n, 인증, SEO, 배포에 대한 FAQ를 모았습니다. 빠른 시작 단계와 리소스 목록은 i18n, FAQ는 로컬 config에서 오며 CMS 또는 백엔드 API로 이전 가능합니다.",
+    "faqTitle": "자주 묻는 질문",
     "quickStart": {
-      "title": "Get running in 30 minutes",
+      "title": "30분 안에 실행",
       "steps": {
-        "install": "Enable Corepack, then run pnpm install.",
-        "dev": "Run pnpm dev and browse default Chinese routes plus /en English routes.",
-        "explore": "Review home, pricing, about, help, and news pages to understand the public-site structure.",
-        "extend": "Follow docs/usage.md to add pages, requests, SEO, and optional auth."
+        "install": "Corepack을 활성화한 뒤 pnpm install 실행.",
+        "dev": "pnpm dev 실행 후 기본 중국어 라우트와 /en 영어 라우트 확인.",
+        "explore": "홈, 요금, 소개, 도움말, 뉴스 페이지로 공개 사이트 구조 파악.",
+        "extend": "docs/usage.md를 따라 페이지, 요청, SEO, 선택적 인증 추가."
       }
     },
     "resources": {
-      "title": "Recommended reading",
-      "architecture": "docs/architecture.md — directory responsibilities, rendering strategy, feature modules, and runtime flow",
-      "usage": "docs/usage.md — pages, requests, SEO, languages, workspace/editor/account flows, and auth",
-      "conventions": "docs/conventions.md — config boundaries, request layering, and coding conventions",
-      "deployment": "docs/deployment.md — local, Docker, and Nginx deployment validation"
+      "title": "추천 자료",
+      "architecture": "docs/architecture.md — 디렉터리 책임, 렌더링 전략, 기능 모듈, 런타임 흐름",
+      "usage": "docs/usage.md — 페이지, 요청, SEO, 언어, 워크스페이스/에디터/계정, 인증",
+      "conventions": "docs/conventions.md — 설정 경계, 요청 계층, 코딩 규약",
+      "deployment": "docs/deployment.md — 로컬, Docker, Nginx 배포 검증"
     }
   },
   "news": {
-    "eyebrow": "Project updates",
-    "title": "Nuxt Modern Starter releases and notes",
-    "lead": "Track starter releases, deployment practices, and extension guidance. These pages also demonstrate news list/detail layouts, detail-page Article JSON-LD, and SWR cache rules.",
-    "notFound": "This news article was not found"
+    "eyebrow": "프로젝트 업데이트",
+    "title": "Nuxt Modern Starter 릴리스 및 노트",
+    "lead": "스타터 릴리스, 배포 실무, 확장 가이드를 추적합니다. 뉴스 목록/상세, Article JSON-LD, SWR 캐시 규칙 데모도 포함.",
+    "notFound": "해당 뉴스 기사를 찾을 수 없습니다"
   }
 }

@@ -1,47 +1,47 @@
 {
   "nav": {
     "home": "Home",
-    "pricing": "Pricing",
-    "about": "About",
-    "help": "Help",
-    "news": "News",
-    "primary": "Primary navigation"
+    "pricing": "Presyo",
+    "about": "Tungkol sa amin",
+    "help": "Tulong",
+    "news": "Balita",
+    "primary": "Pangunahing navigation"
   },
   "brand": {
-    "tagline": "Modern Nuxt starter for public websites"
+    "tagline": "Modernong Nuxt starter para sa pampublikong website"
   },
   "seo": {
-    "defaultDescription": "A reusable Nuxt 4 starter for marketing sites, SEO pages, and lightweight SaaS frontends."
+    "defaultDescription": "Isang reusable na Nuxt 4 starter para sa marketing site, SEO page, at lightweight SaaS frontend."
   },
   "common": {
-    "switchLanguage": "Switch language",
-    "switchTheme": "Switch theme",
-    "readMore": "Read more",
-    "backHome": "Back home",
-    "error": "Something went wrong. Please try again.",
-    "loadFailed": "Failed to load data. Please try again.",
-    "retry": "Retry"
+    "switchLanguage": "Palitan ang wika",
+    "switchTheme": "Palitan ang tema",
+    "readMore": "Magbasa pa",
+    "backHome": "Bumalik sa home",
+    "error": "May naganap na error. Pakisubukang muli.",
+    "loadFailed": "Hindi ma-load ang data. Pakisubukang muli.",
+    "retry": "Subukang muli"
   },
   "productNav": {
     "workspace": "Workspace",
-    "themeTemplates": "Theme templates",
-    "pricing": "Pricing"
+    "themeTemplates": "Mga theme template",
+    "pricing": "Presyo"
   },
   "userMenu": {
     "account": "Account",
-    "language": "Language",
-    "signOut": "Sign out"
+    "language": "Wika",
+    "signOut": "Mag-sign out"
   },
   "accountNav": {
-    "settings": "Account settings"
+    "settings": "Mga setting ng account"
   },
   "templates": {
-    "empty": "Theme templates are coming soon."
+    "empty": "Malapit nang dumating ang mga theme template."
   },
   "error": {
-    "title": "Page not found",
-    "message": "Check the address or return home to keep browsing.",
-    "forbidden": "Access denied",
-    "unsupportedLanguage": "Unsupported language"
+    "title": "Hindi mahanap ang page",
+    "message": "Suriin ang address o bumalik sa home para magpatuloy.",
+    "forbidden": "Tinanggihan ang access",
+    "unsupportedLanguage": "Hindi suportadong wika"
   }
 }

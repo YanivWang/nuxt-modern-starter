@@ -1,121 +1,121 @@
 {
   "home": {
     "eyebrow": "Nuxt 4 · TypeScript · Ant Design Vue",
-    "title": "Modern Nuxt starter for public websites",
-    "lead": "Nuxt Modern Starter brings marketing pages, auth flows, multilingual content, SEO routes, and Docker/Nginx deployment defaults into one clean foundation. Use it to launch a SaaS website, product frontend, or content hub, then replace content and backend integrations as your product grows.",
-    "primaryCta": "Start building",
-    "secondaryCta": "View pricing example",
+    "title": "Nuxt starter สมัยใหม่สำหรับเว็บไซต์สาธารณะ",
+    "lead": "Nuxt Modern Starter รวมหน้าการตลาด auth flow เนื้อหาหลายภาษา SEO route และค่าเริ่มต้นการ deploy Docker/Nginx ไว้ในฐานที่เรียบง่าย ใช้เปิดตัวเว็บ SaaS frontend ผลิตภัณฑ์ หรือ content hub แล้วค่อย ๆ แทนที่เนื้อหาและการเชื่อมต่อ backend ตามการเติบโตของผลิตภัณฑ์",
+    "primaryCta": "เริ่มสร้าง",
+    "secondaryCta": "ดูตัวอย่างราคา",
     "preview": {
-      "metricLabel": "Template coverage",
-      "metricValue": "12+ pages"
+      "metricLabel": "ความครอบคลุมเทมเพลต",
+      "metricValue": "12+ หน้า"
     },
     "stats": {
       "pages": {
         "value": "12+",
-        "label": "Reusable pages and content routes"
+        "label": "หน้าและ route เนื้อหาที่ใช้ซ้ำได้"
       },
       "modules": {
         "value": "6",
-        "label": "Core engineering modules included"
+        "label": "โมดูลวิศวกรรมหลักที่รวมไว้"
       },
       "deploy": {
         "value": "4",
-        "label": "Hybrid rendering strategies by route"
+        "label": "กลยุทธ์ hybrid rendering ตาม route"
       }
     },
-    "featuresEyebrow": "Powered by Nuxt 4",
-    "featuresTitle": "The usual public-site building blocks, already organized",
-    "featuresLead": "Inspired by the Nuxt SaaS Template hierarchy, the homepage now gives the hero section a stronger follow-through with product-ready feature cards.",
+    "featuresEyebrow": "ขับเคลื่อนด้วย Nuxt 4",
+    "featuresTitle": "บล็อกสร้างเว็บสาธารณะทั่วไป จัดระเบียบไว้แล้ว",
+    "featuresLead": "อิงลำดับชั้นของ Nuxt SaaS Template หน้าแรกต่อเนื่องจาก hero ด้วยการ์ดฟีเจอร์ที่พร้อมใช้งานจริง",
     "features": {
       "design": {
-        "title": "Unified design system",
-        "description": "Built on Ant Design Vue and local theme tokens so color mode, radius, shadows, and spacing stay consistent."
+        "title": "ระบบดีไซน์แบบรวมศูนย์",
+        "description": "สร้างบน Ant Design Vue และ theme token ในเครื่อง ให้โหมดสี มุมโค้ง เงา และระยะห่างสอดคล้องกัน"
       },
       "i18n": {
         "title": "Localized routing",
-        "description": "Language prefixes, switching, and localized links are ready for marketing pages and content routes."
+        "description": "prefix ภาษา การสลับ และลิงก์แปลภาษาพร้อมใช้สำหรับหน้าการตลาดและเนื้อหา"
       },
       "seo": {
-        "title": "SEO-friendly pages",
-        "description": "Home, pricing, help, and article pages all have extensible SEO entry points for public indexing."
+        "title": "หน้าเป็นมิตรกับ SEO",
+        "description": "หน้าแรก ราคา ความช่วยเหลือ และบทความมีจุดเข้า SEO ที่ขยายได้สำหรับการ index สาธารณะ"
       },
       "auth": {
-        "title": "Account flows",
-        "description": "Login, registration, and account pages are wired to basic state and ready for a real backend."
+        "title": "ขั้นตอนบัญชี",
+        "description": "หน้า login สมัคร และบัญชีเชื่อมกับ state พื้นฐานและพร้อมเชื่อม backend จริง"
       },
       "content": {
-        "title": "Content hub",
-        "description": "FAQ comes from typed local config; news and pricing load through the public API and can later move to a CMS or backend."
+        "title": "ศูนย์เนื้อหา",
+        "description": "FAQ จาก typed local config ข่าวและราคาผ่าน Public API ย้ายไป CMS หรือ backend ได้ภายหลัง"
       },
       "deploy": {
         "title": "Production deployment",
-        "description": "Docker, Nginx, SWR route rules, and security headers are already part of the starter."
+        "description": "Docker Nginx SWR route rules และ security headers อยู่ใน starter แล้ว"
       }
     },
     "workflow": {
-      "eyebrow": "Everything you need to ship",
-      "title": "A shorter path from starter to launch",
-      "lead": "It keeps the starter lightweight while adding the capability, conversion, and content structure a SaaS frontend needs.",
+      "eyebrow": "ครบทุกอย่างที่ต้องใช้ปล่อย",
+      "title": "เส้นทางสั้นลงจาก starter สู่ launch",
+      "lead": "ยังคงเบา แต่เพิ่มความสามารถ conversion และโครงสร้างเนื้อหาที่ frontend SaaS ต้องการ",
       "steps": {
-        "routes": "Reuse home, pricing, help, and news pages to organize public information first.",
-        "content": "Replace i18n copy and content sources next (pricing/news already use the API and can move to a CMS).",
-        "auth": "Connect your backend account system when you are ready to wire sessions, roles, and the product app."
+        "routes": "ใช้หน้าแรก ราคา ความช่วยเหลือ และข่าวจัดระเบียบข้อมูลสาธารณะก่อน",
+        "content": "แทนที่ข้อความ i18n และแหล่งเนื้อหา (ราคา/ข่าวใช้ API แล้ว ย้าย CMS ได้)",
+        "auth": "เชื่อมระบบบัญชี backend เมื่อพร้อมจัดการ session บทบาท และแอปผลิตภัณฑ์"
       }
     },
-    "ctaEyebrow": "Ready to build",
-    "ctaTitle": "Use this Nuxt foundation to launch a polished product frontend faster."
+    "ctaEyebrow": "พร้อมสร้าง",
+    "ctaTitle": "ใช้ฐาน Nuxt นี้เปิดตัว frontend ผลิตภัณฑ์ที่สมบูรณ์ได้เร็วขึ้น"
   },
   "about": {
-    "eyebrow": "About us",
-    "title": "Built for public sites and lightweight SaaS frontends",
-    "lead": "Nuxt Modern Starter is a reusable Nuxt 4 foundation for marketing pages, content hubs, and optional auth-ready product surfaces.",
+    "eyebrow": "เกี่ยวกับเรา",
+    "title": "สร้างมาเพื่อเว็บสาธารณะและ frontend SaaS แบบเบา",
+    "lead": "Nuxt Modern Starter เป็นฐาน Nuxt 4 ที่ใช้ซ้ำได้สำหรับหน้าการตลาด content hub และพื้นที่ผลิตภัณฑ์ที่รองรับ auth แบบเลือกได้",
     "mission": {
-      "title": "Our mission",
-      "body": "We organize the most common public-site capabilities—i18n routing, SEO, content pages, auth samples, and deployment patterns—into a runnable starting point so teams can focus on product differences instead of rebuilding infrastructure."
+      "title": "พันธกิจของเรา",
+      "body": "เราจัดความสามารถทั่วไปของเว็บสาธารณะ—i18n routing SEO หน้าเนื้อหา ตัวอย่าง auth และรูปแบบ deploy—เป็นจุดเริ่มต้นที่รันได้ เพื่อให้ทีมโฟกัสความต่างของผลิตภัณฑ์"
     },
     "values": {
-      "title": "What we optimize for",
+      "title": "สิ่งที่เราให้ความสำคัญ",
       "items": {
-        "focus": "Stay focused on public-site scenarios with clear module boundaries instead of an oversized starter.",
-        "quality": "Ship with TypeScript strict mode, linting, tests, and deployment samples from day one.",
-        "openness": "Keep public and product layers separate so local content and API-driven content can be swapped in gradually."
+        "focus": "โฟกัสสถานการณ์เว็บสาธารณะ มีขอบเขตโมดูลชัดเจน ไม่ทำ starter ใหญ่เกินไป",
+        "quality": "TypeScript strict lint ทดสอบ และตัวอย่าง deploy ตั้งแต่วันแรก",
+        "openness": "แยกชั้นสาธารณะและผลิตภัณฑ์ เพื่อแทนที่เนื้อหา local และ API ได้ทีละน้อย"
       }
     },
     "story": {
-      "title": "Project background",
+      "title": "ที่มาของโปรเจกต์",
       "paragraphs": {
-        "origin": "The starter comes from repeated needs across SaaS websites and product frontends: marketing home, pricing, help, news, sign-in/sign-up, plus logged-in workspace and editor examples.",
-        "practice": "It defaults to Chinese as the primary locale with English under /en, mixes SSR/prerender/SWR for public pages, and keeps product routes language-neutral with CSR rendering.",
-        "next": "If you are evaluating a Nuxt public-site template, start with the README quick start, then replace copy, content, and backend integrations for your product."
+        "origin": "starter มาจากความต้องการซ้ำ ๆ บนเว็บ SaaS และ frontend ผลิตภัณฑ์: หน้าแรกการตลาด ราคา ความช่วยเหลือ ข่าว login/register และตัวอย่าง workspace กับ editor หลัง login",
+        "practice": "ค่าเริ่มต้นเป็นภาษาจีน อังกฤษอยู่ที่ /en ผสม SSR/prerender/SWR สำหรับหน้าสาธารณะ และ route ผลิตภัณฑ์เป็นกลางภาษาด้วย CSR",
+        "next": "หากกำลังประเมิน template Nuxt สำหรับเว็บสาธารณะ เริ่มจาก README quick start แล้วแทนที่ข้อความ เนื้อหา และการเชื่อม backend"
       }
     }
   },
   "help": {
-    "eyebrow": "Help center",
-    "title": "Learn how to use Nuxt Modern Starter",
-    "lead": "This page collects common questions about project setup, i18n, auth, SEO, and deployment. Quick-start steps and resource lists come from i18n; FAQ comes from local config and can later move to a CMS or backend API.",
-    "faqTitle": "FAQ",
+    "eyebrow": "ศูนย์ช่วยเหลือ",
+    "title": "เรียนรู้การใช้ Nuxt Modern Starter",
+    "lead": "หน้านี้รวมคำถามทั่วไปเกี่ยวกับ setup i18n auth SEO และ deploy ขั้นตอน quick start และรายการทรัพยากรมาจาก i18n FAQ มาจาก local config ย้ายไป CMS หรือ backend API ได้ภายหลัง",
+    "faqTitle": "คำถามที่พบบ่อย",
     "quickStart": {
-      "title": "Get running in 30 minutes",
+      "title": "เริ่มใช้งานใน 30 นาที",
       "steps": {
-        "install": "Enable Corepack, then run pnpm install.",
-        "dev": "Run pnpm dev and browse default Chinese routes plus /en English routes.",
-        "explore": "Review home, pricing, about, help, and news pages to understand the public-site structure.",
-        "extend": "Follow docs/usage.md to add pages, requests, SEO, and optional auth."
+        "install": "เปิด Corepack แล้วรัน pnpm install",
+        "dev": "รัน pnpm dev และดู route จีนเริ่มต้นกับ /en ภาษาอังกฤษ",
+        "explore": "ดูหน้าแรก ราคา เกี่ยวกับ ความช่วยเหลือ และข่าว เพื่อเข้าใจโครงสร้างเว็บสาธารณะ",
+        "extend": "ทำตาม docs/usage.md เพื่อเพิ่มหน้า request SEO และ auth แบบเลือกได้"
       }
     },
     "resources": {
-      "title": "Recommended reading",
-      "architecture": "docs/architecture.md — directory responsibilities, rendering strategy, feature modules, and runtime flow",
-      "usage": "docs/usage.md — pages, requests, SEO, languages, workspace/editor/account flows, and auth",
-      "conventions": "docs/conventions.md — config boundaries, request layering, and coding conventions",
-      "deployment": "docs/deployment.md — local, Docker, and Nginx deployment validation"
+      "title": "แนะนำให้อ่าน",
+      "architecture": "docs/architecture.md — ความรับผิดชอบของไดเรกทอรี กลยุทธ์ rendering โมดูล และ runtime flow",
+      "usage": "docs/usage.md — หน้า request SEO ภาษา workspace/editor/บัญชี และ auth",
+      "conventions": "docs/conventions.md — ขอบเขต config ชั้น request และข้อตกลงการเขียนโค้ด",
+      "deployment": "docs/deployment.md — ตรวจสอบ deploy แบบ local Docker และ Nginx"
     }
   },
   "news": {
-    "eyebrow": "Project updates",
-    "title": "Nuxt Modern Starter releases and notes",
-    "lead": "Track starter releases, deployment practices, and extension guidance. These pages also demonstrate news list/detail layouts, detail-page Article JSON-LD, and SWR cache rules.",
-    "notFound": "This news article was not found"
+    "eyebrow": "อัปเดตโปรเจกต์",
+    "title": "รีลีสและบันทึก Nuxt Modern Starter",
+    "lead": "ติดตามรีลีส starter แนวทาง deploy และคำแนะนำการขยาย หน้าเหล่านี้ยังสาธิตรายการ/รายละเอียดข่าว Article JSON-LD และกฎ cache SWR",
+    "notFound": "ไม่พบบทความข่าวนี้"
   }
 }

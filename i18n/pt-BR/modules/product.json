@@ -1,90 +1,90 @@
 {
   "auth": {
     "header": {
-      "signIn": "Sign in",
-      "signUp": "Sign up",
-      "enterWorkspace": "Enter workspace"
+      "signIn": "Entrar",
+      "signUp": "Cadastrar",
+      "enterWorkspace": "Entrar na área de trabalho"
     },
     "form": {
-      "username": "Username",
-      "password": "Password",
-      "confirmPassword": "Confirm password"
+      "username": "Nome de usuário",
+      "password": "Senha",
+      "confirmPassword": "Confirmar senha"
     },
     "login": {
-      "title": "Log in",
-      "submit": "Log in",
-      "success": "Logged in successfully",
-      "noAccount": "No account yet?"
+      "title": "Entrar",
+      "submit": "Entrar",
+      "success": "Login realizado com sucesso",
+      "noAccount": "Ainda não tem conta?"
     },
     "register": {
-      "title": "Register",
-      "submit": "Register",
-      "success": "Registered successfully. Please log in.",
-      "hasAccount": "Already have an account?"
+      "title": "Cadastrar",
+      "submit": "Cadastrar",
+      "success": "Cadastro realizado. Faça login.",
+      "hasAccount": "Já tem conta?"
     },
     "logout": {
-      "submit": "Log out",
-      "success": "Logged out"
+      "submit": "Sair",
+      "success": "Sessão encerrada"
     },
     "account": {
-      "eyebrow": "Protected page",
-      "title": "Account",
-      "lead": "This page is protected by the named auth middleware and shows the current user profile.",
-      "avatar": "Profile photo",
-      "sessionTitle": "Session",
-      "profileTitle": "Extended profile",
-      "userId": "User ID",
-      "nickname": "Nickname",
-      "roles": "Roles",
-      "permissions": "Permissions",
-      "none": "None",
-      "emptyProfile": "No extended profile yet"
+      "eyebrow": "Página protegida",
+      "title": "Conta",
+      "lead": "Esta página é protegida pelo middleware auth nomeado e mostra o perfil do usuário atual.",
+      "avatar": "Foto de perfil",
+      "sessionTitle": "Sessão",
+      "profileTitle": "Perfil estendido",
+      "userId": "ID do usuário",
+      "nickname": "Apelido",
+      "roles": "Papéis",
+      "permissions": "Permissões",
+      "none": "Nenhum",
+      "emptyProfile": "Sem perfil estendido ainda"
     },
     "validation": {
-      "usernameRequired": "Please enter a username",
-      "passwordRequired": "Please enter a password",
-      "confirmPasswordRequired": "Please confirm your password",
-      "passwordMin": "Password must be at least 6 characters",
-      "passwordMismatch": "The two passwords do not match"
+      "usernameRequired": "Informe um nome de usuário",
+      "passwordRequired": "Informe uma senha",
+      "confirmPasswordRequired": "Confirme sua senha",
+      "passwordMin": "A senha deve ter pelo menos 6 caracteres",
+      "passwordMismatch": "As duas senhas não coincidem"
     },
     "errors": {
-      "loginFailed": "Login failed. Check the username or password.",
-      "registerFailed": "Registration failed. Please try again later.",
-      "unauthorized": "Missing or invalid login credentials"
+      "loginFailed": "Falha no login. Verifique usuário ou senha.",
+      "registerFailed": "Falha no cadastro. Tente novamente mais tarde.",
+      "unauthorized": "Credenciais de login ausentes ou inválidas"
     }
   },
   "editor": {
     "eyebrow": "Yaniv Editor",
-    "title": "Content editor",
-    "placeholder": "Start writing your content...",
+    "title": "Editor de conteúdo",
+    "placeholder": "Comece a escrever seu conteúdo...",
     "metaTitle": "Editor",
     "autosave": {
-      "saving": "Saving…",
-      "saved": "Auto-saved · {time}",
-      "failed": "Auto-save failed, will retry on next edit"
+      "saving": "Salvando…",
+      "saved": "Salvo automaticamente · {time}",
+      "failed": "Falha no salvamento automático, nova tentativa na próxima edição"
     },
     "rename": {
-      "failed": "Failed to rename, please try again"
+      "failed": "Falha ao renomear, tente novamente"
     }
   },
   "workspace": {
-    "nav": "Workspace",
-    "title": "Manage your PPT projects",
-    "defaultTitle": "Untitled project",
-    "empty": "No projects yet. Use the button above to create one.",
-    "projectNotFound": "Project not found or access denied",
-    "create": "New blank PPT",
-    "edit": "Edit",
-    "delete": "Delete",
-    "deleteCancel": "Cancel",
-    "deleteConfirm": "Delete \"{title}\"? This action cannot be undone.",
-    "deleteSuccess": "Project deleted",
-    "save": "Save",
-    "projectName": "Project name",
-    "backToWorkspace": "Back to workspace",
-    "browse": "View",
-    "share": "Share",
-    "download": "Download",
-    "more": "More actions"
+    "nav": "Área de trabalho",
+    "title": "Gerencie seus projetos PPT",
+    "defaultTitle": "Projeto sem título",
+    "empty": "Ainda não há projetos. Use o botão acima para criar um.",
+    "projectNotFound": "Projeto não encontrado ou acesso negado",
+    "create": "Novo PPT em branco",
+    "edit": "Editar",
+    "delete": "Excluir",
+    "deleteCancel": "Cancelar",
+    "deleteConfirm": "Excluir \"{title}\"? Esta ação não pode ser desfeita.",
+    "deleteSuccess": "Projeto excluído",
+    "save": "Salvar",
+    "projectName": "Nome do projeto",
+    "backToWorkspace": "Voltar à área de trabalho",
+    "browse": "Visualizar",
+    "share": "Compartilhar",
+    "download": "Baixar",
+    "more": "Mais ações"
   }
 }

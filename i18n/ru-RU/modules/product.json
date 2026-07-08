@@ -1,90 +1,90 @@
 {
   "auth": {
     "header": {
-      "signIn": "Sign in",
-      "signUp": "Sign up",
-      "enterWorkspace": "Enter workspace"
+      "signIn": "Войти",
+      "signUp": "Регистрация",
+      "enterWorkspace": "Перейти в рабочую область"
     },
     "form": {
-      "username": "Username",
-      "password": "Password",
-      "confirmPassword": "Confirm password"
+      "username": "Имя пользователя",
+      "password": "Пароль",
+      "confirmPassword": "Подтвердите пароль"
     },
     "login": {
-      "title": "Log in",
-      "submit": "Log in",
-      "success": "Logged in successfully",
-      "noAccount": "No account yet?"
+      "title": "Вход",
+      "submit": "Войти",
+      "success": "Вход выполнен успешно",
+      "noAccount": "Ещё нет аккаунта?"
     },
     "register": {
-      "title": "Register",
-      "submit": "Register",
-      "success": "Registered successfully. Please log in.",
-      "hasAccount": "Already have an account?"
+      "title": "Регистрация",
+      "submit": "Зарегистрироваться",
+      "success": "Регистрация успешна. Войдите в систему.",
+      "hasAccount": "Уже есть аккаунт?"
     },
     "logout": {
-      "submit": "Log out",
-      "success": "Logged out"
+      "submit": "Выйти",
+      "success": "Вы вышли из системы"
     },
     "account": {
-      "eyebrow": "Protected page",
-      "title": "Account",
-      "lead": "This page is protected by the named auth middleware and shows the current user profile.",
-      "avatar": "Profile photo",
-      "sessionTitle": "Session",
-      "profileTitle": "Extended profile",
-      "userId": "User ID",
-      "nickname": "Nickname",
-      "roles": "Roles",
-      "permissions": "Permissions",
-      "none": "None",
-      "emptyProfile": "No extended profile yet"
+      "eyebrow": "Защищённая страница",
+      "title": "Аккаунт",
+      "lead": "Эта страница защищена named auth middleware и показывает текущий профиль пользователя.",
+      "avatar": "Фото профиля",
+      "sessionTitle": "Сессия",
+      "profileTitle": "Расширенный профиль",
+      "userId": "ID пользователя",
+      "nickname": "Никнейм",
+      "roles": "Роли",
+      "permissions": "Разрешения",
+      "none": "Нет",
+      "emptyProfile": "Расширенный профиль пока отсутствует"
     },
     "validation": {
-      "usernameRequired": "Please enter a username",
-      "passwordRequired": "Please enter a password",
-      "confirmPasswordRequired": "Please confirm your password",
-      "passwordMin": "Password must be at least 6 characters",
-      "passwordMismatch": "The two passwords do not match"
+      "usernameRequired": "Введите имя пользователя",
+      "passwordRequired": "Введите пароль",
+      "confirmPasswordRequired": "Подтвердите пароль",
+      "passwordMin": "Пароль должен содержать не менее 6 символов",
+      "passwordMismatch": "Пароли не совпадают"
     },
     "errors": {
-      "loginFailed": "Login failed. Check the username or password.",
-      "registerFailed": "Registration failed. Please try again later.",
-      "unauthorized": "Missing or invalid login credentials"
+      "loginFailed": "Ошибка входа. Проверьте имя пользователя или пароль.",
+      "registerFailed": "Ошибка регистрации. Попробуйте позже.",
+      "unauthorized": "Отсутствуют или недействительны учётные данные"
     }
   },
   "editor": {
     "eyebrow": "Yaniv Editor",
-    "title": "Content editor",
-    "placeholder": "Start writing your content...",
-    "metaTitle": "Editor",
+    "title": "Редактор контента",
+    "placeholder": "Начните писать контент...",
+    "metaTitle": "Редактор",
     "autosave": {
-      "saving": "Saving…",
-      "saved": "Auto-saved · {time}",
-      "failed": "Auto-save failed, will retry on next edit"
+      "saving": "Сохранение…",
+      "saved": "Автосохранено · {time}",
+      "failed": "Автосохранение не удалось, повтор при следующем редактировании"
     },
     "rename": {
-      "failed": "Failed to rename, please try again"
+      "failed": "Не удалось переименовать, попробуйте снова"
     }
   },
   "workspace": {
-    "nav": "Workspace",
-    "title": "Manage your PPT projects",
-    "defaultTitle": "Untitled project",
-    "empty": "No projects yet. Use the button above to create one.",
-    "projectNotFound": "Project not found or access denied",
-    "create": "New blank PPT",
-    "edit": "Edit",
-    "delete": "Delete",
-    "deleteCancel": "Cancel",
-    "deleteConfirm": "Delete \"{title}\"? This action cannot be undone.",
-    "deleteSuccess": "Project deleted",
-    "save": "Save",
-    "projectName": "Project name",
-    "backToWorkspace": "Back to workspace",
-    "browse": "View",
-    "share": "Share",
-    "download": "Download",
-    "more": "More actions"
+    "nav": "Рабочая область",
+    "title": "Управление PPT-проектами",
+    "defaultTitle": "Проект без названия",
+    "empty": "Проектов пока нет. Используйте кнопку выше для создания.",
+    "projectNotFound": "Проект не найден или доступ запрещён",
+    "create": "Новый пустой PPT",
+    "edit": "Редактировать",
+    "delete": "Удалить",
+    "deleteCancel": "Отмена",
+    "deleteConfirm": "Удалить «{title}»? Это действие необратимо.",
+    "deleteSuccess": "Проект удалён",
+    "save": "Сохранить",
+    "projectName": "Название проекта",
+    "backToWorkspace": "В рабочую область",
+    "browse": "Просмотр",
+    "share": "Поделиться",
+    "download": "Скачать",
+    "more": "Другие действия"
   }
 }

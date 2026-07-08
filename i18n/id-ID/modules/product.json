@@ -1,90 +1,90 @@
 {
   "auth": {
     "header": {
-      "signIn": "Sign in",
-      "signUp": "Sign up",
-      "enterWorkspace": "Enter workspace"
+      "signIn": "Masuk",
+      "signUp": "Daftar",
+      "enterWorkspace": "Masuk ruang kerja"
     },
     "form": {
-      "username": "Username",
-      "password": "Password",
-      "confirmPassword": "Confirm password"
+      "username": "Nama pengguna",
+      "password": "Kata sandi",
+      "confirmPassword": "Konfirmasi kata sandi"
     },
     "login": {
-      "title": "Log in",
-      "submit": "Log in",
-      "success": "Logged in successfully",
-      "noAccount": "No account yet?"
+      "title": "Masuk",
+      "submit": "Masuk",
+      "success": "Berhasil masuk",
+      "noAccount": "Belum punya akun?"
     },
     "register": {
-      "title": "Register",
-      "submit": "Register",
-      "success": "Registered successfully. Please log in.",
-      "hasAccount": "Already have an account?"
+      "title": "Daftar",
+      "submit": "Daftar",
+      "success": "Registrasi berhasil. Silakan masuk.",
+      "hasAccount": "Sudah punya akun?"
     },
     "logout": {
-      "submit": "Log out",
-      "success": "Logged out"
+      "submit": "Keluar",
+      "success": "Telah keluar"
     },
     "account": {
-      "eyebrow": "Protected page",
-      "title": "Account",
-      "lead": "This page is protected by the named auth middleware and shows the current user profile.",
-      "avatar": "Profile photo",
-      "sessionTitle": "Session",
-      "profileTitle": "Extended profile",
-      "userId": "User ID",
-      "nickname": "Nickname",
-      "roles": "Roles",
-      "permissions": "Permissions",
-      "none": "None",
-      "emptyProfile": "No extended profile yet"
+      "eyebrow": "Halaman terlindungi",
+      "title": "Akun",
+      "lead": "Halaman ini dilindungi middleware auth bernama dan menampilkan profil pengguna saat ini.",
+      "avatar": "Foto profil",
+      "sessionTitle": "Sesi",
+      "profileTitle": "Profil lanjutan",
+      "userId": "ID pengguna",
+      "nickname": "Nama panggilan",
+      "roles": "Peran",
+      "permissions": "Izin",
+      "none": "Tidak ada",
+      "emptyProfile": "Belum ada profil lanjutan"
     },
     "validation": {
-      "usernameRequired": "Please enter a username",
-      "passwordRequired": "Please enter a password",
-      "confirmPasswordRequired": "Please confirm your password",
-      "passwordMin": "Password must be at least 6 characters",
-      "passwordMismatch": "The two passwords do not match"
+      "usernameRequired": "Masukkan nama pengguna",
+      "passwordRequired": "Masukkan kata sandi",
+      "confirmPasswordRequired": "Konfirmasi kata sandi",
+      "passwordMin": "Kata sandi minimal 6 karakter",
+      "passwordMismatch": "Kedua kata sandi tidak cocok"
     },
     "errors": {
-      "loginFailed": "Login failed. Check the username or password.",
-      "registerFailed": "Registration failed. Please try again later.",
-      "unauthorized": "Missing or invalid login credentials"
+      "loginFailed": "Gagal masuk. Periksa nama pengguna atau kata sandi.",
+      "registerFailed": "Registrasi gagal. Coba lagi nanti.",
+      "unauthorized": "Kredensial login tidak ada atau tidak valid"
     }
   },
   "editor": {
     "eyebrow": "Yaniv Editor",
-    "title": "Content editor",
-    "placeholder": "Start writing your content...",
+    "title": "Editor konten",
+    "placeholder": "Mulai menulis konten Anda...",
     "metaTitle": "Editor",
     "autosave": {
-      "saving": "Saving…",
-      "saved": "Auto-saved · {time}",
-      "failed": "Auto-save failed, will retry on next edit"
+      "saving": "Menyimpan…",
+      "saved": "Tersimpan otomatis · {time}",
+      "failed": "Penyimpanan otomatis gagal, akan dicoba lagi saat edit berikutnya"
     },
     "rename": {
-      "failed": "Failed to rename, please try again"
+      "failed": "Gagal mengganti nama, coba lagi"
     }
   },
   "workspace": {
-    "nav": "Workspace",
-    "title": "Manage your PPT projects",
-    "defaultTitle": "Untitled project",
-    "empty": "No projects yet. Use the button above to create one.",
-    "projectNotFound": "Project not found or access denied",
-    "create": "New blank PPT",
+    "nav": "Ruang kerja",
+    "title": "Kelola proyek PPT Anda",
+    "defaultTitle": "Proyek tanpa judul",
+    "empty": "Belum ada proyek. Gunakan tombol di atas untuk membuat.",
+    "projectNotFound": "Proyek tidak ditemukan atau akses ditolak",
+    "create": "PPT kosong baru",
     "edit": "Edit",
-    "delete": "Delete",
-    "deleteCancel": "Cancel",
-    "deleteConfirm": "Delete \"{title}\"? This action cannot be undone.",
-    "deleteSuccess": "Project deleted",
-    "save": "Save",
-    "projectName": "Project name",
-    "backToWorkspace": "Back to workspace",
-    "browse": "View",
-    "share": "Share",
-    "download": "Download",
-    "more": "More actions"
+    "delete": "Hapus",
+    "deleteCancel": "Batal",
+    "deleteConfirm": "Hapus \"{title}\"? Tindakan ini tidak dapat dibatalkan.",
+    "deleteSuccess": "Proyek dihapus",
+    "save": "Simpan",
+    "projectName": "Nama proyek",
+    "backToWorkspace": "Kembali ke ruang kerja",
+    "browse": "Lihat",
+    "share": "Bagikan",
+    "download": "Unduh",
+    "more": "Tindakan lainnya"
   }
 }
