@@ -55,6 +55,13 @@
     },
     "rename": {
       "failed": "Umbenennen fehlgeschlagen, bitte erneut versuchen"
+    },
+    "upload": {
+      "imageFailed": "Bild-Upload fehlgeschlagen",
+      "videoFailed": "Video-Upload fehlgeschlagen",
+      "videoUploading": "Video wird hochgeladen…",
+      "videoSuccess": "Video hochgeladen",
+      "videoTypeInvalid": "Nur Videodateien werden unterstützt"
     }
   },
   "workspace": {

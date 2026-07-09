@@ -55,6 +55,13 @@
     },
     "rename": {
       "failed": "Error al renombrar, inténtalo de nuevo"
+    },
+    "upload": {
+      "imageFailed": "Error al subir la imagen",
+      "videoFailed": "Error al subir el vídeo",
+      "videoUploading": "Subiendo vídeo…",
+      "videoSuccess": "Vídeo subido",
+      "videoTypeInvalid": "Solo se admiten archivos de vídeo"
     }
   },
   "workspace": {

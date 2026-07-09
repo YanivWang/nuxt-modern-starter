@@ -55,6 +55,13 @@
     },
     "rename": {
       "failed": "Hindi ma-rename, subukang muli"
+    },
+    "upload": {
+      "imageFailed": "Nabigo ang pag-upload ng larawan",
+      "videoFailed": "Nabigo ang pag-upload ng video",
+      "videoUploading": "Ina-upload ang video…",
+      "videoSuccess": "Na-upload ang video",
+      "videoTypeInvalid": "Mga video file lang ang suportado"
     }
   },
   "workspace": {

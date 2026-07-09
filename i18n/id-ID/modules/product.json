@@ -55,6 +55,13 @@
     },
     "rename": {
       "failed": "Gagal mengganti nama, coba lagi"
+    },
+    "upload": {
+      "imageFailed": "Unggah gambar gagal",
+      "videoFailed": "Unggah video gagal",
+      "videoUploading": "Mengunggah video…",
+      "videoSuccess": "Video berhasil diunggah",
+      "videoTypeInvalid": "Hanya file video yang didukung"
     }
   },
   "workspace": {

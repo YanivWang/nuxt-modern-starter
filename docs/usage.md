@@ -63,6 +63,7 @@ Choose the request entrypoint by page and data ownership:
 - Sign-in, sign-up, refresh, logout, `/me`, and profile requests belong in `~/api/auth` (`fetchProfileApi()`, `updateProfileApi()`).
 - Workspace project requests belong in `~/features/workspace/api.ts` via `fetchWorkspaceProjects()`, `createWorkspaceProject()`, `fetchWorkspaceProject()`, `updateWorkspaceProject()`, and `deleteWorkspaceProject()` (paths `/projects`, `/projects/:projectId`). Use `getWorkspaceDocPath(projectId)` or `getWorkspaceNewDocPath()` when linking to the editor route.
 - Editor document requests belong in `~/features/editor/api.ts` via `fetchEditorDocument()` and `saveEditorDocument()` (paths `/documents/:documentId`). These call `createProductApiClient()` from `~/api/auth`.
+- Editor media uploads belong in `~/features/editor/upload-api.ts`: images via `uploadImages()` (`POST /uploads`), videos via large-file chunked upload (`/uploads/large/*`). Wire them into `YanivEditor` through `useEditorMediaUpload()` as `:upload-image` / `:upload-video`. Returned `/uploads/...` paths are resolved to absolute URLs against the API origin (strip `/api` from `NUXT_PUBLIC_API_BASE`).
 - Do not add a generic catch-all request composable. Add a named public, auth, product, editor, or feature client when a new request scenario appears.
 
 All request helpers use `runtimeConfig.public.apiBase` in both SSR and browser code, so `NUXT_PUBLIC_API_BASE` should point directly to the real backend API origin, for example `https://api.example.com/api`.

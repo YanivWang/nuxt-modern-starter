@@ -55,6 +55,13 @@
     },
     "rename": {
       "failed": "Échec du renommage, veuillez réessayer"
+    },
+    "upload": {
+      "imageFailed": "Échec du téléversement de l'image",
+      "videoFailed": "Échec du téléversement de la vidéo",
+      "videoUploading": "Téléversement de la vidéo…",
+      "videoSuccess": "Vidéo téléversée",
+      "videoTypeInvalid": "Seuls les fichiers vidéo sont pris en charge"
     }
   },
   "workspace": {

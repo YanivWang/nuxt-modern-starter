@@ -55,6 +55,13 @@
     },
     "rename": {
       "failed": "重命名失败，请重试"
+    },
+    "upload": {
+      "imageFailed": "图片上传失败",
+      "videoFailed": "视频上传失败",
+      "videoUploading": "视频上传中…",
+      "videoSuccess": "视频上传成功",
+      "videoTypeInvalid": "仅支持视频文件"
     }
   },
   "workspace": {

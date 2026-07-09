@@ -9,17 +9,18 @@
     EditorWorkspace；emit project-created / project-updated
 
   【依赖关系】
-    - 依赖：useEditorWorkspace、EditorWorkspaceHeader、@yanivjs/yaniv-editor
+    - 依赖：useEditorWorkspace、useEditorMediaUpload、EditorWorkspaceHeader、@yanivjs/yaniv-editor
     - 被引用：app/pages/docs/[id].vue
 
   【渲染 / 数据】
-    CSR；业务逻辑见 composables/useEditorWorkspace.ts。
+    CSR；业务逻辑见 composables/useEditorWorkspace.ts；图片/视频上传见 useEditorMediaUpload。
 -->
 <script setup lang="ts">
 import { YanivEditor } from '@yanivjs/yaniv-editor'
 import '@yanivjs/yaniv-editor/style.css'
 import type { WorkspaceProject } from '~/features/workspace'
 import { EDITOR_Z_INDEX_BASE, editorCustomAppearanceVars } from '../editor-appearance'
+import { useEditorMediaUpload } from '../composables/useEditorMediaUpload'
 import { useEditorWorkspace } from '../composables/useEditorWorkspace'
 import type { EditorProjectContext } from '../types'
 import EditorWorkspaceHeader from './EditorWorkspaceHeader.vue'
@@ -65,6 +66,8 @@ const {
 
 bindEditorLifecycle()
 
+const { handleUploadImage, handleUploadVideo } = useEditorMediaUpload()
+
 // YanivEditor 固定 edit/full/custom；appearance 映射 --app-* → --ye-*
 const EDITOR_MODE = 'edit' as const
 const EDITOR_PRESET = 'full' as const
@@ -105,6 +108,8 @@ const EDITOR_APPEARANCE = 'custom' as const
           :color-mode="resolvedMode"
           :locale="languageStore.currentLanguage"
           :initial-content="editorInitialContent"
+          :upload-image="handleUploadImage"
+          :upload-video="handleUploadVideo"
           @update="onEditorUpdate"
         />
       </div>

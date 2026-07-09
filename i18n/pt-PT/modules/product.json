@@ -55,6 +55,13 @@
     },
     "rename": {
       "failed": "Falha ao renomear, tente novamente"
+    },
+    "upload": {
+      "imageFailed": "Falha no carregamento da imagem",
+      "videoFailed": "Falha no carregamento do vídeo",
+      "videoUploading": "A carregar vídeo…",
+      "videoSuccess": "Vídeo carregado",
+      "videoTypeInvalid": "Apenas ficheiros de vídeo são suportados"
     }
   },
   "workspace": {
