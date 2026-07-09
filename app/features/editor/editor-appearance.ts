@@ -6,15 +6,19 @@
   【架构位置】
     登录产品区 — app/features/editor，EditorWorkspace 消费。
 */
+// 与 --app-z-index-dropdown 对齐；浮层层级由 zIndexBase → --ye-z-base 派生（见 yaniv-editor z-index 文档）
+export const EDITOR_Z_INDEX_BASE = 1000
+
 // CSS var 链式引用 --app-*，主题切换时 YanivEditor 自动跟随站点色板
 export const editorCustomAppearanceVars: Record<string, string> = {
   '--ye-primary': 'var(--app-color-primary)',
   '--ye-primary-hover': 'var(--app-color-primary-hover)',
   '--ye-primary-light': 'var(--app-color-primary-subtle)',
+  // 纸面(--ye-bg) 与画布(--ye-bg-secondary) 必须分层，否则文档区与背景糊成一片
   '--ye-bg': 'var(--app-color-bg)',
-  '--ye-bg-hover': 'var(--app-color-elevated)',
-  '--ye-bg-secondary': 'var(--app-color-surface)',
-  '--ye-bg-tertiary': 'var(--app-color-fill-secondary)',
+  '--ye-bg-hover': 'var(--app-color-fill-secondary)',
+  '--ye-bg-secondary': 'var(--app-color-fill-secondary)',
+  '--ye-bg-tertiary': 'var(--app-color-fill-tertiary)',
   '--ye-page-bg': 'var(--app-color-bg-canvas)',
   '--ye-text': 'var(--app-color-text)',
   '--ye-text-secondary': 'var(--app-color-muted)',
@@ -56,9 +60,5 @@ export const editorCustomAppearanceVars: Record<string, string> = {
   '--ye-radius-lg': 'var(--app-radius-large)',
   '--ye-shadow-sm': 'var(--app-shadow-elevation-1)',
   '--ye-shadow-md': 'var(--app-shadow-elevation-2)',
-  '--ye-shadow-lg': 'var(--app-shadow-elevation-3)',
-  '--ye-z-toolbar': 'var(--app-z-index-sticky)',
-  '--ye-z-dropdown': 'var(--app-z-index-dropdown)',
-  '--ye-z-bubble': 'var(--app-z-index-popover)',
-  '--ye-z-modal': 'var(--app-z-index-modal)'
+  '--ye-shadow-lg': 'var(--app-shadow-elevation-3)'
 }

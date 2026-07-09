@@ -19,7 +19,7 @@
 import { YanivEditor } from '@yanivjs/yaniv-editor'
 import '@yanivjs/yaniv-editor/style.css'
 import type { WorkspaceProject } from '~/features/workspace'
-import { editorCustomAppearanceVars } from '../editor-appearance'
+import { EDITOR_Z_INDEX_BASE, editorCustomAppearanceVars } from '../editor-appearance'
 import { useEditorWorkspace } from '../composables/useEditorWorkspace'
 import type { EditorProjectContext } from '../types'
 import EditorWorkspaceHeader from './EditorWorkspaceHeader.vue'
@@ -101,10 +101,11 @@ const EDITOR_APPEARANCE = 'custom' as const
           :preset="EDITOR_PRESET"
           :appearance="EDITOR_APPEARANCE"
           :custom-appearance-vars="editorCustomAppearanceVars"
+          :z-index-base="EDITOR_Z_INDEX_BASE"
           :color-mode="resolvedMode"
           :locale="languageStore.currentLanguage"
           :initial-content="editorInitialContent"
-          @update:content="onEditorUpdate"
+          @update="onEditorUpdate"
         />
       </div>
     </main>
