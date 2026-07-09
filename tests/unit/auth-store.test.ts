@@ -21,7 +21,11 @@
 import { createPinia, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { useAuthStore } from '../../app/stores/auth'
-import { getAccessTokenCookie, getRefreshTokenCookie } from '../../app/utils/auth-session'
+import {
+  getAccessTokenCookie,
+  getRefreshTokenCookie,
+  tokenCookieOptions
+} from '../../app/utils/auth-session'
 
 const apiMocks = vi.hoisted(() => ({
   loginApi: vi.fn(),
@@ -99,6 +103,14 @@ describe('auth store', () => {
     expect(authStore.user?.username).toBe('alice')
     expect(authStore.isAuthenticated).toBe(true)
     expect(apiMocks.fetchMeApi).toHaveBeenCalledWith('access-token')
+  })
+
+  it('uses strict same-site cookies for token persistence', () => {
+    expect(tokenCookieOptions(60)).toMatchObject({
+      maxAge: 60,
+      path: '/',
+      sameSite: 'strict'
+    })
   })
 
   it('clears tokens and user on logout', async () => {

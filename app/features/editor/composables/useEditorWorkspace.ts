@@ -6,9 +6,8 @@
     登录产品区 — app/features/editor/composables，被 EditorWorkspace 消费。
 */
 import { message } from 'ant-design-vue'
-import { computed, ref, type Ref } from 'vue'
+import { computed, ref, type ComponentPublicInstance, type Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import type { YanivEditor } from '@yanivjs/yaniv-editor'
 import {
   createWorkspaceProject,
   getWorkspaceDocPath,
@@ -29,6 +28,10 @@ export type UseEditorWorkspaceOptions = {
   onProjectUpdated: (project: Pick<WorkspaceProject, 'id' | 'title'>) => void
 }
 
+type EditorInstance = ComponentPublicInstance & {
+  getHTML?: () => string
+}
+
 export const useEditorWorkspace = ({
   documentId,
   project,
@@ -39,7 +42,7 @@ export const useEditorWorkspace = ({
   const { localePath } = useLocalePath()
   const router = useRouter()
 
-  const editorRef = ref<InstanceType<typeof YanivEditor> | null>(null)
+  const editorRef = ref<EditorInstance | null>(null)
   const draftDocumentId = ref<string | null>(null)
 
   const effectiveDocumentId = computed(() => documentId.value ?? draftDocumentId.value)
@@ -48,7 +51,7 @@ export const useEditorWorkspace = ({
     useEditorDocument(effectiveDocumentId)
 
   const defaultTitleText = computed(() => t('workspace.defaultTitle'))
-  const getEditorContentHtml = () => editorRef.value?.getHTML()?.trim() ?? ''
+  const getEditorContentHtml = () => editorRef.value?.getHTML?.()?.trim() ?? ''
 
   const {
     localTitle,

@@ -8,13 +8,16 @@
   【边界与注意】
     Ant Design Vue 暂无 Filipino 语言包，ph-PH 回退 en_US；其余 locale 使用对应或最接近的官方包。
 */
+import enUS from 'ant-design-vue/es/locale/en_US'
 import type { SupportedLocale } from './site'
 
-export type AntdLocale = typeof import('ant-design-vue/es/locale/en_US').default
+export type AntdLocale = typeof enUS
+
+const resolveEnUSLocale = () => Promise.resolve(enUS)
 
 const ANTD_LOCALE_LOADERS = {
   'zh-CN': () => import('ant-design-vue/es/locale/zh_CN').then((module) => module.default),
-  'en-US': () => import('ant-design-vue/es/locale/en_US').then((module) => module.default),
+  'en-US': resolveEnUSLocale,
   'pt-PT': () => import('ant-design-vue/es/locale/pt_PT').then((module) => module.default),
   'es-ES': () => import('ant-design-vue/es/locale/es_ES').then((module) => module.default),
   'ko-KR': () => import('ant-design-vue/es/locale/ko_KR').then((module) => module.default),
@@ -22,7 +25,7 @@ const ANTD_LOCALE_LOADERS = {
   'ms-MY': () => import('ant-design-vue/es/locale/ms_MY').then((module) => module.default),
   'id-ID': () => import('ant-design-vue/es/locale/id_ID').then((module) => module.default),
   // Ant Design 无 Filipino 官方包，ph-PH 回退 en_US
-  'ph-PH': () => import('ant-design-vue/es/locale/en_US').then((module) => module.default),
+  'ph-PH': resolveEnUSLocale,
   'ja-JP': () => import('ant-design-vue/es/locale/ja_JP').then((module) => module.default),
   'de-DE': () => import('ant-design-vue/es/locale/de_DE').then((module) => module.default),
   'fr-FR': () => import('ant-design-vue/es/locale/fr_FR').then((module) => module.default),

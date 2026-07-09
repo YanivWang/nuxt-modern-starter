@@ -167,12 +167,24 @@ for (const ref of docRefs.references) {
     }
     case 'version': {
       const [name, ver] = value.split('=')
+      const packageNameByDocName = {
+        Node: 'node',
+        pnpm: 'pnpm',
+        Nuxt: 'nuxt',
+        Vue: 'vue',
+        TypeScript: 'typescript',
+        Pinia: 'pinia',
+        Vitest: 'vitest'
+      }
+      const packageName = packageNameByDocName[name] ?? name
       let actual
       if (name === 'Node') actual = index.engines.node
       else if (name === 'pnpm')
         actual = index.engines.pnpm ?? index.pkg.packageManager?.replace('pnpm@', '')
-      else actual = index.deps[name]?.replace(/^[\^~]/, '')
-      if (actual && ver !== actual && !actual.startsWith(ver)) {
+      else actual = index.deps[packageName]?.replace(/^[\^~]/, '')
+
+      const pattern = new RegExp(`^${ver.replace(/\./g, '\\.').replace(/x/g, '\\d+')}(?:\\.|$)`)
+      if (actual && ver !== actual && !pattern.test(actual)) {
         pushError('doc-reference', {
           docFile,
           line,

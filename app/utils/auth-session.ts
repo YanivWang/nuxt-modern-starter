@@ -32,7 +32,7 @@ export const tokenCookieOptions = (maxAge: number) => {
 
   return {
     maxAge,
-    sameSite: 'lax' as const,
+    sameSite: 'strict' as const,
     path: '/',
     // production 环境启用 secure，与 HTTPS 部署一致
     secure: config.public.appEnv === 'production'

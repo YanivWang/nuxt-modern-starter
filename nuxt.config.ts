@@ -25,6 +25,47 @@ import { csrRouteRules, prerenderRoutes, swrRouteRules } from './config/routes'
 
 const isTest = process.env.NODE_ENV === 'test' || process.env.VITEST
 
+const resolveVendorChunk = (id: string) => {
+  if (!id.includes('node_modules')) {
+    return undefined
+  }
+
+  if (id.includes('ant-design-vue') || id.includes('@ant-design/icons-vue')) {
+    return 'vendor-ant-design'
+  }
+
+  if (
+    id.includes('@yanivjs/yaniv-editor') ||
+    id.includes('@tiptap/') ||
+    id.includes('/prosemirror-') ||
+    id.includes('/rope-sequence/') ||
+    id.includes('/docx/') ||
+    id.includes('/file-saver/') ||
+    id.includes('/hotkeys-js/') ||
+    id.includes('/katex/') ||
+    id.includes('/linkifyjs/') ||
+    id.includes('/lowlight/') ||
+    id.includes('/mammoth/')
+  ) {
+    return 'vendor-editor-document'
+  }
+
+  if (
+    id.includes('/vue/') ||
+    id.includes('/@vue/') ||
+    id.includes('/pinia/') ||
+    id.includes('/vue-router/')
+  ) {
+    return 'vendor-vue'
+  }
+
+  if (id.includes('/spark-md5/')) {
+    return 'vendor-upload'
+  }
+
+  return undefined
+}
+
 export default defineNuxtConfig({
   compatibilityDate: '2026-07-04',
   devtools: { enabled: true },
@@ -37,6 +78,15 @@ export default defineNuxtConfig({
   components: [{ path: '~/components', pathPrefix: false }],
   css: ['~/assets/styles/main.scss'],
   vite: {
+    build: {
+      // 默认 500KB 不适合内置富文本/幻灯片编辑器的 CSR 路由；预算仍由显式 manualChunks 管住。
+      chunkSizeWarningLimit: 3000,
+      rollupOptions: {
+        output: {
+          manualChunks: resolveVendorChunk
+        }
+      }
+    },
     css: {
       preprocessorOptions: {
         scss: {

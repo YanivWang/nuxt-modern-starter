@@ -1,6 +1,6 @@
 <!--
   【文件职责】
-    全屏编辑器容器：YanivEditor + useEditorWorkspace 编排。
+    全屏编辑器容器：异步加载 YanivEditor，并由 useEditorWorkspace 编排。
 
   【架构位置】
     登录产品区 — app/features/editor，由 app/pages/docs/[id].vue 挂载（editor layout）。
@@ -9,21 +9,25 @@
     EditorWorkspace；emit project-created / project-updated
 
   【依赖关系】
-    - 依赖：useEditorWorkspace、useEditorMediaUpload、EditorWorkspaceHeader、@yanivjs/yaniv-editor
+    - 依赖：useEditorWorkspace、useEditorMediaUpload、EditorWorkspaceHeader、@yanivjs/yaniv-editor（异步组件）
     - 被引用：app/pages/docs/[id].vue
 
   【渲染 / 数据】
     CSR；业务逻辑见 composables/useEditorWorkspace.ts；图片/视频上传见 useEditorMediaUpload。
 -->
 <script setup lang="ts">
-import { YanivEditor } from '@yanivjs/yaniv-editor'
 import '@yanivjs/yaniv-editor/style.css'
+import { defineAsyncComponent } from 'vue'
 import type { WorkspaceProject } from '~/features/workspace'
 import { EDITOR_Z_INDEX_BASE, editorCustomAppearanceVars } from '../editor-appearance'
 import { useEditorMediaUpload } from '../composables/useEditorMediaUpload'
 import { useEditorWorkspace } from '../composables/useEditorWorkspace'
 import type { EditorProjectContext } from '../types'
 import EditorWorkspaceHeader from './EditorWorkspaceHeader.vue'
+
+const YanivEditor = defineAsyncComponent(() =>
+  import('@yanivjs/yaniv-editor').then((module) => module.YanivEditor)
+)
 
 const props = defineProps<{
   documentId?: string | null

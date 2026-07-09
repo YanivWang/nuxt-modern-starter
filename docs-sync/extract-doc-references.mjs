@@ -537,14 +537,31 @@ const extractFromDoc = (docFile, content) => {
       addRef(docFile, lineNum, 'test-count', `${testCount[1]}/${testCount[2]}`, stripped)
     }
 
-    // Version table rows | Node | 22.22.3 |
-    const versionRow = stripped.match(
-      /^\|\s*(Node|pnpm|Nuxt|vue-i18n|Vitest|ant-design-vue|@pinia\/nuxt|@ant-design-vue\/nuxt|@yanivjs\/yaniv-editor|@nuxt\/test-utils)\s*\|\s*([^|]+)\|/
-    )
+    // Version table rows | Node | 22.22.3 |, including Markdown links/code in package cells.
+    const versionRow = stripped.match(/^\|\s*([^|]+?)\s*\|\s*([^|]+)\|/)
     if (versionRow) {
+      const name = versionRow[1]
+        .trim()
+        .replace(/`/g, '')
+        .replace(/^\[([^\]]+)\]\([^)]+\)$/, '$1')
       const ver = versionRow[2].trim().replace(/`/g, '')
-      if (/^[\d.]+(?:\.\d+)*$/.test(ver)) {
-        addRef(docFile, lineNum, 'version', `${versionRow[1]}=${ver}`, stripped)
+      const versionNames = new Set([
+        'Node',
+        'pnpm',
+        'Nuxt',
+        'Vue',
+        'TypeScript',
+        'Pinia',
+        'vue-i18n',
+        'Vitest',
+        'ant-design-vue',
+        '@pinia/nuxt',
+        '@ant-design-vue/nuxt',
+        '@yanivjs/yaniv-editor',
+        '@nuxt/test-utils'
+      ])
+      if (versionNames.has(name) && /^[\dx.]+(?:\.[\dx]+)*$/.test(ver)) {
+        addRef(docFile, lineNum, 'version', `${name}=${ver}`, stripped)
       }
     }
   })
@@ -574,5 +591,5 @@ const out = {
   references: unique
 }
 
-fs.writeFileSync(OUT, JSON.stringify(out, null, 2))
+fs.writeFileSync(OUT, `${JSON.stringify(out, null, 2)}\n`)
 console.log(`extracted ${unique.length} references from ${manifest.docFiles.length} docs`)

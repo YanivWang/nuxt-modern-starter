@@ -407,7 +407,7 @@
     {
       "id": "guide-ov-001",
       "docFile": "docs-site/guide/overview.md",
-      "claim": "Vitest 34 个测试文件、123 个用例",
+      "claim": "Vitest 35 个测试文件、126 个用例",
       "symbols": ["include"],
       "sourceFiles": ["vitest.config.ts"],
       "evidenceHint": "vitest.config.ts:19 (include)"
@@ -615,7 +615,7 @@
     {
       "id": "ts-ov-001",
       "docFile": "docs-site/tech-stack/overview.md",
-      "claim": "Nuxt 4.4.8 + @yanivjs/yaniv-editor 0.1.2",
+      "claim": "Nuxt 4.4.8 + @yanivjs/yaniv-editor 0.1.3",
       "symbols": ["nuxt", "@yanivjs/yaniv-editor"],
       "sourceFiles": ["package.json"],
       "evidenceHint": "package.json:2 (nuxt); package.json:62 (@yanivjs/yaniv-editor)"
