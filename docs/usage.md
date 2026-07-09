@@ -31,7 +31,7 @@ Do not add product pages beside public marketing pages under `app/pages/[[langua
 
 Register sidebar entries in `app/features/product-shell/config.ts` through `productNavItems` and `productFooterNavItems` before adding workspace links. Account settings use `app/features/account-shell/config.ts` through `accountNavItems` when extending the account layout. Do not create localized product links such as `/en/workspace`; locale middleware and server middleware redirect those back to canonical product paths. Account access belongs in `UserAccountMenu`, not the product sidebar.
 
-Keep the default product loop narrow: personal account -> personal workspace -> project -> editor -> autosave. Templates, AI generation, export, asset, membership, credit, order, and payment flows are optional consumer-product extensions. Do not introduce organization, team, invite, multi-tenant workspace permissions, collaboration, or enterprise publishing systems into the default architecture.
+Keep the default product loop narrow: account -> workspace -> project -> editor -> autosave. Templates, AI generation, export, asset, membership, credit, order, payment, and other domain-specific flows are optional product extensions. Do not introduce organization, team, invite, multi-tenant workspace permissions, collaboration, or enterprise publishing systems into the default architecture unless the project explicitly chooses that product direction.
 
 ## Add A Feature Module
 
@@ -53,7 +53,7 @@ Use the feature `index.ts` as the public export surface. Nuxt pages and other fe
 
 Keep top-level `app/components`, `app/composables`, and `app/stores` for shared primitives only.
 
-For this starter, new feature modules should serve the C-end personal creator workflow. Good optional examples are `generation`, `exports`, `assets`, richer `templates`, or consumer monetization modules such as `membership`, `credits`, `orders`, and `payments` when they are needed by the product loop. Avoid using team, organization, invite, collaboration, or enterprise permission modules as default examples.
+For this starter, new feature modules should serve the chosen SaaS product workflow. Good optional examples are `generation`, `exports`, `assets`, richer `templates`, or monetization modules such as `membership`, `credits`, `orders`, and `payments` when they are needed by the product loop. Avoid using team, organization, invite, collaboration, or enterprise permission modules as default examples.
 
 ## Add Requests
 
@@ -296,7 +296,7 @@ Current UI scope:
 - The header create button navigates to `/docs/new` (does not call the API immediately). `WorkspaceDashboard` prefetches the editor route and `~/features/editor` chunk on idle or hover/focus for faster first paint.
 - The editor creates the project on first non-blank save through `createWorkspaceProject()` with the default title from i18n (`workspace.defaultTitle`), then saves initial content and replaces the route with `/docs/:id`.
 - Project cards link to the editor through `getWorkspaceDocPath()`. Cards show decorative accent thumbnails and formatted `updatedAt`. Share, download, and favorite buttons on cards are UI-only placeholders without backend APIs.
-- Templates, AI generation, export, asset management, membership, credits, orders, and payments should remain optional C-end product extensions until the editor loop or monetization path actually needs them.
+- Templates, AI generation, export, asset management, membership, credits, orders, and payments should remain optional product extensions until the chosen SaaS workflow or monetization path actually needs them.
 
 Editor behavior:
 

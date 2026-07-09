@@ -407,7 +407,7 @@
     {
       "id": "guide-ov-001",
       "docFile": "docs-site/guide/overview.md",
-      "claim": "Vitest 32 个测试文件、117 个用例",
+      "claim": "Vitest 34 个测试文件、123 个用例",
       "symbols": ["include"],
       "sourceFiles": ["vitest.config.ts"],
       "evidenceHint": "vitest.config.ts:19 (include)"
@@ -631,10 +631,10 @@
     {
       "id": "http-doc-001",
       "docFile": "docs-site/tech-stack/http.md",
-      "claim": "非信封 JSON 跳过 assertApiSuccess",
-      "symbols": ["isApiEnvelope", "assertApiSuccess"],
+      "claim": "HTTP client 强制标准 API 信封并校验 assertApiSuccess",
+      "symbols": ["assertApiEnvelope", "assertApiSuccess"],
       "sourceFiles": ["app/lib/http/client.ts"],
-      "evidenceHint": "app/lib/http/client.ts:28 (isApiEnvelope); app/lib/http/client.ts:20 (assertApiSuccess)"
+      "evidenceHint": "app/lib/http/client.ts:35 (assertApiEnvelope); app/lib/http/client.ts:23 (assertApiSuccess)"
     },
     {
       "id": "http-doc-002",

@@ -1,11 +1,11 @@
 # Architecture
 
-`nuxt-modern-starter` is organized as a reusable frontend foundation for consumer-facing personal creator SaaS products. Public acquisition pages and logged-in personal product pages share Nuxt infrastructure, but they have separate route, rendering, data, and module boundaries. The default product loop is intentionally narrow: account -> personal workspace -> project -> editor -> autosave. Pages stay thin: public pages compose content and SEO, while product pages mount feature modules under `app/features/*`.
+`nuxt-modern-starter` is organized as a general-purpose Nuxt 4 frontend foundation for SaaS products. It provides a public website, SEO, i18n, sign-in/sign-up, user workspace, project management, account center, editor workflow, request layer, theme system, and deployment samples. Public acquisition pages and logged-in product pages share Nuxt infrastructure, but they have separate route, rendering, data, and module boundaries. The default product loop is intentionally narrow: account -> workspace -> project -> editor -> autosave. Pages stay thin: public pages compose content and SEO, while product pages mount feature modules under `app/features/*`.
 
 ## Directory Responsibilities
 
 - `app/pages/[[language]]`: localized public route entries. Default language has no prefix, English public pages use `/en`. Current pages include home, pricing, about, help, news list/detail, sign-in, sign-up, and the catch-all 404 handler.
-- `app/pages/workspace`: logged-in personal workspace routes. `index.vue` maps to `/workspace`; `templates/index.vue` maps to `/workspace/templates` (optional template placeholder, no API).
+- `app/pages/workspace`: logged-in workspace routes. `index.vue` maps to `/workspace`; `templates/index.vue` maps to `/workspace/templates` (optional template placeholder, no API).
 - `app/pages/docs/[id].vue`: full-screen editor at `/docs/:id` or `/docs/new` (`:id` is the project id, or `new` via `WORKSPACE_NEW_PROJECT_ID`). The page loads project metadata, keeps a `cachedProject` to avoid flicker on route changes, and mounts `EditorWorkspace`.
 - `app/pages/account.vue`: account settings at `/account`, reached from `UserAccountMenu`.
 - Product URLs stay language-neutral (`/workspace`, `/docs/:id`, `/account`); localized product URLs such as `/en/workspace` redirect to the canonical path without a locale prefix.
@@ -15,7 +15,7 @@
 - `app/features/workspace`: workspace dashboard UI (`WorkspaceDashboard`, `WorkspaceProjectCard`) and project API adapters in `api.ts`. Create navigates to `/docs/new`; cards use decorative accent thumbnails; share/download/favorite actions are UI-only placeholders. Dashboard prefetches editor route and feature chunk on idle.
 - `app/features/editor`: PPT-style editor UI (`EditorWorkspace`, `EditorWorkspaceHeader`) built on `@yanivjs/yaniv-editor` (`mode: edit`, `preset: full`). Content autosaves after 2s debounce; title edits sync to both document and project APIs; route leave flushes pending saves.
 - `app/features/templates`: optional theme templates placeholder UI (`ThemeTemplatesPage`).
-- `app/features`: other consumer creator product modules. Complex product UI, feature composables, feature stores, feature types, and feature API adapters grow here instead of top-level Nuxt folders.
+- `app/features`: other SaaS product modules. Complex product UI, feature composables, feature stores, feature types, and feature API adapters grow here instead of top-level Nuxt folders.
 - `app/lib/http`: shared HTTP wrapper, response types, header helpers, envelope validation (`assertApiSuccess`), error normalization, and typed `$fetch` client creation.
 - `app/api`: cross-feature request adapters (`public.ts`, `auth.ts`) plus scenario client factories in `clients.ts` (`createPublicApiClient`, `createAuthApiClient`); `createProductApiClient()` lives in `auth.ts`.
 - `app/composables`: shared runtime APIs — `useAuth`, `useLocalePath`, `usePageSeo`, `useTheme`, `useLanguageSwitch`, and `useUserAvatar`. Feature-specific composables belong under `app/features/<feature>/composables`; feature-only request adapters belong under `app/features/<feature>/api.ts`.
@@ -54,7 +54,7 @@ Route rendering is centralized in `nuxt.config.ts` through `config/routes.ts`:
 
 News SWR pages can also be invalidated on demand through `POST /api/revalidate` when `NUXT_REVALIDATE_SECRET` is configured. This avoids waiting for the 1-hour TTL after CMS/API content changes.
 
-This keeps SEO pages cache-friendly while personal product pages stay session-aware and interaction-heavy.
+This keeps SEO pages cache-friendly while logged-in product pages stay session-aware and interaction-heavy.
 
 ## Runtime Flow
 
@@ -72,6 +72,6 @@ Business requests use the app-level `{ code, message, data }` contract through s
 - Editor document requests use `~/features/editor/api.ts` through `fetchEditorDocument()` and `saveEditorDocument()` with `createProductApiClient()`.
 - Logged-in product pages mount feature modules under `app/features/*`. `/workspace` and `/workspace/templates` use the `product` layout with `ProductShell` sidebar navigation (`productNavItems`, `productFooterNavItems` with pricing link) and `AppShellHeader`. `/docs/[id].vue` uses the minimal `editor` layout (full-screen slot only). For existing projects it loads by route `:id`, requires a linked `documentId`, then mounts `EditorWorkspace`. For `/docs/new`, the editor stays in draft mode until first non-blank save triggers `createWorkspaceProject()` and `router.replace()` to `/docs/:id`. Autosave debounces 2 seconds, title edits call both `saveEditorDocument()` and `updateWorkspaceProject()`, and `onBeforeRouteLeave` flushes pending saves. `/account` uses the `account` layout with `AccountShell` and loads extended profile via `fetchProfileApi()`. These routes are CSR by default; requests attach Bearer tokens and retry once after a single-flight refresh.
 
-Templates, AI generation, export, asset, membership, credit, order, and payment flows are treated as optional consumer-product extensions. They should plug into this same feature/API pattern when the single-user creation loop or C-end monetization needs them. Organization, team, invite, multi-tenant workspace permissions, collaboration, and enterprise publishing systems are intentionally outside the default architecture.
+Templates, AI generation, export, asset, membership, credit, order, payment, and other domain-specific flows are treated as optional product extensions. They should plug into this same feature/API pattern when the target SaaS product needs them. Organization, team, invite, multi-tenant workspace permissions, collaboration, and enterprise publishing systems are intentionally outside the default architecture; add them only when the project explicitly chooses that product direction.
 
 Page components should call domain adapters such as `fetchNewsArticles()`, `fetchLocalizedNewsArticle()`, `fetchPricingPage()`, `fetchWorkspaceProjects()`, `createWorkspaceProject()`, `fetchWorkspaceProject()`, `updateWorkspaceProject()`, `deleteWorkspaceProject()`, `fetchEditorDocument()`, or `saveEditorDocument()`, not raw backend URLs. This keeps backend contract changes localized to `~/api/*` and `~/features/*/api.ts`.

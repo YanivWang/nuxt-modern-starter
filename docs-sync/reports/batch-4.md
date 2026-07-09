@@ -26,7 +26,7 @@ Generated: 2026-07-09（深度审阅 + doc-claims 证据）
 - app/stores/language.ts
 - app/stores/theme.ts
 
-## 旧说法 → 新说法（文档漂移修正）
+## 代码-文档对齐说明
 
 - 「config 目录缺 antd-locale」→ directory.md 配置表补 `config/antd-locale.ts`
 - 「Base 组件无职责说明」→ BaseButton/BaseLogo/BasePicture 补内联注释与头注释

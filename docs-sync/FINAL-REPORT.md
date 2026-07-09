@@ -38,7 +38,7 @@ Generated: 2026-07-09（全量引用校验落地）
 | env-var                        | nuxt.config.ts runtimeConfig 映射                      |
 | version                        | package.json engines/deps 精确匹配                     |
 | css-var / css-class / scss-var | styles 目录实存                                        |
-| test-count                     | vitest 实测 32 文件 / 117 用例                         |
+| test-count                     | vitest 实测 34 文件 / 123 用例                         |
 | header-export                  | 每个 export 须在【主要导出】或内联注释中               |
 
 **跳过（模板/外部，非漂移）**：`path-pattern`（`<feature>`、`**`）、`route-template`（`` `/news/${slug}` ``）、`external-script`（`pnpm install`、后端仓 `docker:dev`）
@@ -55,7 +55,7 @@ pnpm docs:sync:check     # 头注释 + claims + 严格 100% 全量校验
 
 | 项             | 修正                                                                                             |
 | -------------- | ------------------------------------------------------------------------------------------------ |
-| `guide-ov-001` | 测试规模 31/111 → **32/117**（与 vitest 实测一致）                                               |
+| `guide-ov-001` | 测试规模 31/111 → **34/123**（与 vitest 实测一致）                                               |
 | 严格校验器     | 新增 `docs-sync/lib/source-index.mjs`、`extract-doc-references.mjs`、`verify-full-alignment.mjs` |
 | 门禁集成       | `check-docs-sync.mjs` 步骤 9 强制跑全量校验                                                      |
 | 单测           | `doc-claims.test.ts` 新增 strict alignment 用例                                                  |

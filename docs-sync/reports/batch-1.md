@@ -15,7 +15,7 @@ Generated: 2026-07-09（深度审阅 + doc-claims 证据）
 - config/theme.ts
 - nuxt.config.ts
 
-## 旧说法 → 新说法（文档漂移修正）
+## 代码-文档对齐说明
 
 - 「API 地址未写默认值」→ `nuxt.config.ts` `runtimeConfig.public.apiBase` = `http://localhost:2026/api`，`siteUrl` = `http://localhost:3000`
 - 「Node/pnpm 版本未标明 engines」→ `package.json` `engines` 要求 Node 22.22.3、pnpm 11.5.2

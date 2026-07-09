@@ -12,7 +12,7 @@ Generated: 2026-07-09（深度审阅 + doc-claims 证据）
 - app/lib/http/headers.ts
 - app/lib/http/types.ts
 
-## 旧说法 → 新说法（文档漂移修正）
+## 代码-文档对齐说明
 
 - 「信封仅描述 JSON 形状」→ 补充 `ApiResponse<T>`、`assertApiSuccess`（`app/lib/http/types.ts`）
 - 「NUXT_PUBLIC_API_BASE 拼接」→ 改为 `runtimeConfig.public.apiBase`（已含 `/api` 前缀）
@@ -21,14 +21,14 @@ Generated: 2026-07-09（深度审阅 + doc-claims 证据）
 
 ## 文档变更
 
-- docs-site/tech-stack/http.md → 非信封 JSON 跳过 assertApiSuccess
+- docs-site/tech-stack/http.md → 响应必须符合标准信封并执行 assertApiSuccess
 - docs-site/architecture/data-flow.md → refreshAccessTokenOnce 单飞；ApiResponse/assertApiSuccess；apiBase；revalidateSecret
 - docs/architecture.md → createProductApiClient 在 auth.ts
 
 ## 注释变更
 
 - app/api/auth.ts: refreshAccessTokenOnce 单飞、retryOnUnauthorized 适用 API
-- app/lib/http/client.ts: isApiEnvelope 跳过非信封 JSON、401 单次重试
+- app/lib/http/client.ts: assertApiEnvelope 强制标准信封、401 单次重试
 
 ## doc-claims 证据（本批源码关联 13 条）
 
@@ -43,7 +43,7 @@ Generated: 2026-07-09（深度审阅 + doc-claims 证据）
 | addapi-001     | `docs-site/development/add-api.md`     | app/api/clients.ts:4 (createPublicApiClient)                                                                                              |
 | addapi-002     | `docs-site/development/add-api.md`     | app/api/auth.ts:4 (createProductApiClient)                                                                                                |
 | ts-ov-002      | `docs-site/tech-stack/overview.md`     | app/lib/http/types.ts:3 (ApiResponse)                                                                                                     |
-| http-doc-001   | `docs-site/tech-stack/http.md`         | app/lib/http/client.ts:28 (isApiEnvelope); app/lib/http/client.ts:20 (assertApiSuccess)                                                   |
+| http-doc-001   | `docs-site/tech-stack/http.md`         | app/lib/http/client.ts:35 (assertApiEnvelope); app/lib/http/client.ts:23 (assertApiSuccess)                                               |
 | http-doc-002   | `docs-site/tech-stack/http.md`         | app/api/auth.ts:4 (createProductApiClient)                                                                                                |
 | docs-conv-001  | `docs/conventions.md`                  | app/api/auth.ts:4 (createProductApiClient)                                                                                                |
 | docs-usage-002 | `docs/usage.md`                        | app/api/public.ts:10 (getFaqItems); app/api/public.ts:24 (faqItems)                                                                       |

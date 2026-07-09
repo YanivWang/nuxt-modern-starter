@@ -15,9 +15,9 @@ app/lib/http/
 核心能力：
 
 1. 合并 baseURL + headers
-2. 检测 `{ code, message, data }` 信封并 `assertApiSuccess`
+2. 要求响应必须是 `{ code, message, data }` 标准信封并 `assertApiSuccess`
 3. 401 时调用 `onUnauthorized` 获取新 headers 并重试 **一次**
-4. 响应**不含** `{ code, message, data }` 信封时跳过 `assertApiSuccess`，原样返回（兼容裸 JSON）
+4. 响应不符合标准信封时直接抛出契约错误
 
 ```ts
 const client = createApiClient({

@@ -20,7 +20,7 @@ const changeNotes = {
   ],
   2: [
     'app/api/auth.ts: refreshAccessTokenOnce 单飞、retryOnUnauthorized 适用 API',
-    'app/lib/http/client.ts: isApiEnvelope 跳过非信封 JSON、401 单次重试'
+    'app/lib/http/client.ts: assertApiEnvelope 强制标准信封、401 单次重试'
   ],
   3: [
     'app/middleware/locale.global.ts: resolveLocaleRouteDecision 五步决策树',
@@ -74,7 +74,7 @@ const docChanges = {
     'docs-site/guide/getting-started.md → 补充 engines、apiBase 对应 nuxt.config'
   ],
   2: [
-    'docs-site/tech-stack/http.md → 非信封 JSON 跳过 assertApiSuccess',
+    'docs-site/tech-stack/http.md → 响应必须符合标准信封并执行 assertApiSuccess',
     'docs-site/architecture/data-flow.md → refreshAccessTokenOnce 单飞；ApiResponse/assertApiSuccess；apiBase；revalidateSecret',
     'docs/architecture.md → createProductApiClient 在 auth.ts'
   ],
@@ -97,8 +97,8 @@ const docChanges = {
   ]
 }
 
-/** 旧文档说法 → 与代码对齐后的说法（逐条对照） */
-const driftFixes = {
+/** 文档 claim 与代码对齐后的证据说明 */
+const alignmentNotes = {
   1: [
     '「API 地址未写默认值」→ `nuxt.config.ts` `runtimeConfig.public.apiBase` = `http://localhost:2026/api`，`siteUrl` = `http://localhost:3000`',
     '「Node/pnpm 版本未标明 engines」→ `package.json` `engines` 要求 Node 22.22.3、pnpm 11.5.2',
@@ -157,7 +157,7 @@ for (const batch of batches.batches) {
 
   const commentSection = (changeNotes[batch.id] ?? ['头注释已存在']).map((n) => `- ${n}`).join('\n')
 
-  const driftSection = (driftFixes[batch.id] ?? ['本批无文档漂移；claim 证据与源码一致'])
+  const alignmentSection = (alignmentNotes[batch.id] ?? ['本批 claim 证据与源码一致'])
     .map((d) => `- ${d}`)
     .join('\n')
 
@@ -169,9 +169,9 @@ Generated: ${new Date().toISOString().slice(0, 10)}（深度审阅 + doc-claims 
 
 ${fileList}
 
-## 旧说法 → 新说法（文档漂移修正）
+## 代码-文档对齐说明
 
-${driftSection}
+${alignmentSection}
 
 ## 文档变更
 

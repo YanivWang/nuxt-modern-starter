@@ -23,7 +23,7 @@ Generated: 2026-07-09（深度审阅 + doc-claims 证据）
 - app/utils/load-script.ts
 - app/utils/safe-redirect.ts
 
-## 旧说法 → 新说法（文档漂移修正）
+## 代码-文档对齐说明
 
 - 「locale 前缀表缺示例」→ `SITE_LOCALE_PREFIX_MAP` 含非直观前缀（如 ph → fil-PH）
 - 「middleware 决策未文档化」→ `resolveLocaleRouteDecision` 五步树写入 i18n 架构文

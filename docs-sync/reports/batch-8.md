@@ -10,7 +10,7 @@ Generated: 2026-07-09（深度审阅 + doc-claims 证据）
 - docker/nginx/gateway.docker.conf
 - vitest.config.ts
 
-## 旧说法 → 新说法（文档漂移修正）
+## 代码-文档对齐说明
 
 - 「Vitest 仅写 nuxt 环境」→ `defineVitestConfig` + `include: tests/**/*.{test,spec}.ts`
 - 「Article SEO 缺实现函数名」→ `buildPageSeoScripts`（`usePageSeo.ts`）

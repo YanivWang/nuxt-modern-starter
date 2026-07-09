@@ -58,9 +58,9 @@ export const faqItems: FaqItem[] = [
     },
     answer: {
       'zh-CN':
-        'Nuxt Modern Starter 面向 C 端个人创作者 SaaS：公开获客页面、登录账号、个人工作台、项目管理和单人编辑器流程。它预置首页、价格、关于、帮助、新闻、登录注册，以及 `/workspace`、`/docs/:id`、`/account` 等个人产品联调路径，并附带 SEO、i18n、主题切换和部署样例。',
+        'Nuxt Modern Starter 是一个通用 SaaS 前端基座，基于 Nuxt 4 提供公开官网、SEO、多语言、登录注册、用户工作台、项目管理、账号中心、编辑器流程、请求层、主题系统和部署样例。它不绑定具体业务形态，适合在此基础上扩展 AI 应用、内容工具、生产力工具、创作者工具或轻量业务系统。',
       'en-US':
-        'Nuxt Modern Starter targets consumer-facing personal creator SaaS products: public acquisition pages, account flows, a personal workspace, project management, and a single-user editor workflow. It ships home, pricing, about, help, news, auth pages, and personal product routes such as `/workspace`, `/docs/:id`, and `/account`, plus SEO, i18n, theme switching, and deployment samples.'
+        'Nuxt Modern Starter is a general-purpose SaaS frontend foundation built on Nuxt 4. It provides a public website, SEO, i18n, sign-in/sign-up, user workspace, project management, account center, editor workflow, request layer, theme system, and deployment samples. It is not tied to one business domain, and can be extended into AI apps, content tools, productivity products, creator tools, or lightweight business systems.'
     }
   },
   {

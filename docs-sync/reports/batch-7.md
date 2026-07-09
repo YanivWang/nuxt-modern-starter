@@ -22,7 +22,7 @@ Generated: 2026-07-09（深度审阅 + doc-claims 证据）
 - server/utils/revalidate.ts
 - server/utils/seo.ts
 
-## 旧说法 → 新说法（文档漂移修正）
+## 代码-文档对齐说明
 
 - 「revalidate 503 未指 runtimeConfig」→ `docs/deployment.md` 写明 `revalidateSecret` 未设则 503
 - 「SCSS token 无头注释」→ tokens/patterns 六文件补【文件职责】

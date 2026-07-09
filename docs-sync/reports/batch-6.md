@@ -15,7 +15,7 @@ Generated: 2026-07-09（深度审阅 + doc-claims 证据）
 - app/features/templates/components/ThemeTemplatesPage.vue
 - app/features/templates/index.ts
 
-## 旧说法 → 新说法（文档漂移修正）
+## 代码-文档对齐说明
 
 - 「product-shell 与 account-shell 混述」→ 分拆 footer/nav 职责；product-shell footer 链公开定价页
 

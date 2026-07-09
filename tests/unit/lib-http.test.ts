@@ -86,6 +86,21 @@ describe('lib/http', () => {
     })
   })
 
+  it('rejects responses that do not use the standard API envelope', async () => {
+    const fetcher = vi.fn().mockResolvedValue({
+      id: 'legacy_raw_payload'
+    })
+    const client = createApiClient({
+      baseURL: 'https://api.example.com',
+      fetcher
+    })
+
+    await expect(client.request('/legacy')).rejects.toMatchObject({
+      statusCode: 500,
+      message: 'Invalid API response envelope'
+    })
+  })
+
   it('creates typed fetch clients with default baseURL and headers', async () => {
     const fetcher = vi.fn().mockResolvedValue({ code: 200, message: 'ok', data: { id: 'doc_1' } })
     const client = createApiClient({

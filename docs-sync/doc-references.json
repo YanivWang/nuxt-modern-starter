@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-09T04:14:53.669Z",
+  "generatedAt": "2026-07-09T14:53:12.649Z",
   "docFileCount": 33,
-  "referenceCount": 1105,
+  "referenceCount": 1109,
   "pathAllowlist": [
     "app/features/my-feature/",
     "app/features/my-feature/components/",
@@ -2317,6 +2317,27 @@
       "context": "| 5    | `/account`              | `fetchProfileApi` 展示扩展资料；UserAccountMenu 退出清归因                                       "
     },
     {
+      "docFile": "docs-site/deployment/overview.md",
+      "line": 74,
+      "type": "path-pattern",
+      "value": "docs-site/**",
+      "context": "2. 推送 `main` 上 `docs-site/**` 变更，或手动 **Actions → Deploy Docs → Run workflow**"
+    },
+    {
+      "docFile": "docs-site/deployment/overview.md",
+      "line": 77,
+      "type": "script",
+      "value": "docs:dev",
+      "context": "本地构建仍用根路径：`pnpm docs:dev` / `pnpm docs:build`。"
+    },
+    {
+      "docFile": "docs-site/deployment/overview.md",
+      "line": 77,
+      "type": "script",
+      "value": "docs:build",
+      "context": "本地构建仍用根路径：`pnpm docs:dev` / `pnpm docs:build`。"
+    },
+    {
       "docFile": "docs-site/development/add-api.md",
       "line": 19,
       "type": "path-pattern",
@@ -2678,14 +2699,14 @@
       "line": 6,
       "type": "script",
       "value": "test",
-      "context": "pnpm test          # Vitest 一次运行（32 文件 / 117 测试）"
+      "context": "pnpm test          # Vitest 一次运行（34 文件 / 123 测试）"
     },
     {
       "docFile": "docs-site/development/testing.md",
       "line": 6,
       "type": "test-count",
-      "value": "32/117",
-      "context": "pnpm test          # Vitest 一次运行（32 文件 / 117 测试）"
+      "value": "34/123",
+      "context": "pnpm test          # Vitest 一次运行（34 文件 / 123 测试）"
     },
     {
       "docFile": "docs-site/development/testing.md",
@@ -2892,212 +2913,212 @@
     },
     {
       "docFile": "docs-site/guide/overview.md",
-      "line": 38,
+      "line": 39,
       "type": "file-path",
       "value": "config/routes.ts",
       "context": "- `config/routes.ts` 中 `productRoutePatterns` 定义产品区路径；`csrRouteRules` 供 `nuxt.config.ts` `routeRules` 设置 `ssr: false`"
     },
     {
       "docFile": "docs-site/guide/overview.md",
-      "line": 38,
+      "line": 39,
       "type": "file-path",
       "value": "nuxt.config.ts",
       "context": "- `config/routes.ts` 中 `productRoutePatterns` 定义产品区路径；`csrRouteRules` 供 `nuxt.config.ts` `routeRules` 设置 `ssr: false`"
     },
     {
       "docFile": "docs-site/guide/overview.md",
-      "line": 38,
+      "line": 39,
       "type": "symbol",
       "value": "productRoutePatterns",
       "context": "- `config/routes.ts` 中 `productRoutePatterns` 定义产品区路径；`csrRouteRules` 供 `nuxt.config.ts` `routeRules` 设置 `ssr: false`"
     },
     {
       "docFile": "docs-site/guide/overview.md",
-      "line": 38,
+      "line": 39,
       "type": "symbol",
       "value": "csrRouteRules",
       "context": "- `config/routes.ts` 中 `productRoutePatterns` 定义产品区路径；`csrRouteRules` 供 `nuxt.config.ts` `routeRules` 设置 `ssr: false`"
     },
     {
       "docFile": "docs-site/guide/overview.md",
-      "line": 38,
+      "line": 39,
       "type": "symbol",
       "value": "routeRules",
       "context": "- `config/routes.ts` 中 `productRoutePatterns` 定义产品区路径；`csrRouteRules` 供 `nuxt.config.ts` `routeRules` 设置 `ssr: false`"
     },
     {
       "docFile": "docs-site/guide/overview.md",
-      "line": 42,
+      "line": 43,
       "type": "path-pattern",
       "value": "app/pages/*",
       "context": "Nuxt 页面文件（`app/pages/*`）只做："
     },
     {
       "docFile": "docs-site/guide/overview.md",
-      "line": 45,
+      "line": 46,
       "type": "symbol",
       "value": "usePageSeo",
       "context": "- `usePageSeo`（公开页）"
     },
     {
       "docFile": "docs-site/guide/overview.md",
-      "line": 46,
+      "line": 47,
       "type": "path-pattern",
       "value": "app/features/*",
       "context": "- 挂载 `app/features/*` 里的业务组件"
     },
     {
       "docFile": "docs-site/guide/overview.md",
-      "line": 64,
+      "line": 65,
       "type": "route",
       "value": "/en",
       "context": "| 首页     | `/`、`/en`                      | **prerender**   | 营销落地页五段式 + WebPage/Organization JSON-LD    |"
     },
     {
       "docFile": "docs-site/guide/overview.md",
-      "line": 65,
+      "line": 66,
       "type": "route",
       "value": "/about",
       "context": "| 关于     | `/about`、`/en/about`           | **prerender**   | 使命 / 价值观 / 背景；纯 i18n                      |"
     },
     {
       "docFile": "docs-site/guide/overview.md",
-      "line": 65,
+      "line": 66,
       "type": "route",
       "value": "/en/about",
       "context": "| 关于     | `/about`、`/en/about`           | **prerender**   | 使命 / 价值观 / 背景；纯 i18n                      |"
     },
     {
       "docFile": "docs-site/guide/overview.md",
-      "line": 66,
+      "line": 67,
       "type": "route",
       "value": "/help",
       "context": "| 帮助     | `/help`、`/en/help`             | **prerender**   | 快速上手 + 资源清单 + FAQ 折叠                     |"
     },
     {
       "docFile": "docs-site/guide/overview.md",
-      "line": 66,
+      "line": 67,
       "type": "route",
       "value": "/en/help",
       "context": "| 帮助     | `/help`、`/en/help`             | **prerender**   | 快速上手 + 资源清单 + FAQ 折叠                     |"
     },
     {
       "docFile": "docs-site/guide/overview.md",
-      "line": 67,
+      "line": 68,
       "type": "route",
       "value": "/pricing",
       "context": "| 定价     | `/pricing`、`/en/pricing`       | **SSR**（默认） | 三档方案 + Includes；内容来自 API                  |"
     },
     {
       "docFile": "docs-site/guide/overview.md",
-      "line": 67,
+      "line": 68,
       "type": "route",
       "value": "/en/pricing",
       "context": "| 定价     | `/pricing`、`/en/pricing`       | **SSR**（默认） | 三档方案 + Includes；内容来自 API                  |"
     },
     {
       "docFile": "docs-site/guide/overview.md",
-      "line": 68,
+      "line": 69,
       "type": "route",
       "value": "/news",
       "context": "| 新闻列表 | `/news`、`/en/news`             | **SWR 3600s**   | 卡片列表；摘要来自 API；支持按需 revalidate        |"
     },
     {
       "docFile": "docs-site/guide/overview.md",
-      "line": 68,
+      "line": 69,
       "type": "route",
       "value": "/en/news",
       "context": "| 新闻列表 | `/news`、`/en/news`             | **SWR 3600s**   | 卡片列表；摘要来自 API；支持按需 revalidate        |"
     },
     {
       "docFile": "docs-site/guide/overview.md",
-      "line": 69,
+      "line": 70,
       "type": "route",
       "value": "/news/:slug",
       "context": "| 新闻详情 | `/news/:slug`、`/en/news/:slug` | **SWR 3600s**   | 正文来自 API；Article JSON-LD；支持按需 revalidate |"
     },
     {
       "docFile": "docs-site/guide/overview.md",
-      "line": 69,
+      "line": 70,
       "type": "route",
       "value": "/en/news/:slug",
       "context": "| 新闻详情 | `/news/:slug`、`/en/news/:slug` | **SWR 3600s**   | 正文来自 API；Article JSON-LD；支持按需 revalidate |"
     },
     {
       "docFile": "docs-site/guide/overview.md",
-      "line": 70,
+      "line": 71,
       "type": "route",
       "value": "/sign-in",
       "context": "| 登录     | `/sign-in`、`/en/sign-in`       | **SSR**（默认） | noindex；安全 redirect，默认进工作台               |"
     },
     {
       "docFile": "docs-site/guide/overview.md",
-      "line": 70,
+      "line": 71,
       "type": "route",
       "value": "/en/sign-in",
       "context": "| 登录     | `/sign-in`、`/en/sign-in`       | **SSR**（默认） | noindex；安全 redirect，默认进工作台               |"
     },
     {
       "docFile": "docs-site/guide/overview.md",
-      "line": 71,
+      "line": 72,
       "type": "route",
       "value": "/sign-up",
       "context": "| 注册     | `/sign-up`、`/en/sign-up`       | **SSR**（默认） | noindex；不自动登录，跳转登录预填用户名            |"
     },
     {
       "docFile": "docs-site/guide/overview.md",
-      "line": 71,
+      "line": 72,
       "type": "route",
       "value": "/en/sign-up",
       "context": "| 注册     | `/sign-up`、`/en/sign-up`       | **SSR**（默认） | noindex；不自动登录，跳转登录预填用户名            |"
     },
     {
       "docFile": "docs-site/guide/overview.md",
-      "line": 73,
+      "line": 74,
       "type": "route",
       "value": "/workspace",
       "context": "| 工作台   | `/workspace`                    | **CSR**         | 列表/删除；创建走 `/docs/new`；路由预加载          |"
     },
     {
       "docFile": "docs-site/guide/overview.md",
-      "line": 73,
+      "line": 74,
       "type": "route",
       "value": "/docs/new",
       "context": "| 工作台   | `/workspace`                    | **CSR**         | 列表/删除；创建走 `/docs/new`；路由预加载          |"
     },
     {
       "docFile": "docs-site/guide/overview.md",
-      "line": 74,
+      "line": 75,
       "type": "route",
       "value": "/workspace/templates",
       "context": "| 模板     | `/workspace/templates`          | **CSR**         | 可选模板入口：6 张占位卡片 + 空状态                |"
     },
     {
       "docFile": "docs-site/guide/overview.md",
-      "line": 75,
+      "line": 76,
       "type": "route",
       "value": "/docs/:id",
       "context": "| 编辑器   | `/docs/:id`、`/docs/new`        | **CSR**         | PPT 编辑器；草稿首次保存创建项目；2s 自动保存      |"
     },
     {
       "docFile": "docs-site/guide/overview.md",
-      "line": 76,
+      "line": 77,
       "type": "route",
       "value": "/account",
       "context": "| 账户     | `/account`                      | **CSR**         | profile 展示 + 退出回首页                          |"
     },
     {
       "docFile": "docs-site/guide/overview.md",
-      "line": 91,
+      "line": 92,
       "type": "file-path",
       "value": "vitest.config.ts",
       "context": "| 测试   | Vitest 4.1.9 + @nuxt/test-utils 4.0.3                  | `vitest.config.ts` `defineVitestConfig` + `include: te"
     },
     {
       "docFile": "docs-site/guide/overview.md",
-      "line": 91,
+      "line": 92,
       "type": "test-count",
-      "value": "32/117",
+      "value": "34/123",
       "context": "| 测试   | Vitest 4.1.9 + @nuxt/test-utils 4.0.3                  | `vitest.config.ts` `defineVitestConfig` + `include: te"
     },
     {
@@ -3105,7 +3126,7 @@
       "line": 37,
       "type": "symbol",
       "value": "EDITOR_AUTOSAVE_DEBOUNCE_MS",
-      "context": "    details: 个人项目列表/删除、/docs/new 草稿创建、YanivEditor PPT 编辑器（`EDITOR_AUTOSAVE_DEBOUNCE_MS` 2s 自动保存）、账户中心与可选主题模板占位。"
+      "context": "    details: 项目列表/删除、/docs/new 草稿创建、YanivEditor 编辑器（`EDITOR_AUTOSAVE_DEBOUNCE_MS` 2s 自动保存）、账户中心与可选主题模板占位。"
     },
     {
       "docFile": "docs-site/index.md",
@@ -3637,7 +3658,7 @@
       "line": 50,
       "type": "script",
       "value": "docs:build",
-      "context": "| `pnpm docs:build`        | 构建静态文档                                               |"
+      "context": "| `pnpm docs:build`        | 构建静态文档（CI 会注入 `VITEPRESS_BASE=/<repo>/`）        |"
     },
     {
       "docFile": "docs-site/reference/scripts.md",
@@ -3889,7 +3910,7 @@
       "line": 18,
       "type": "symbol",
       "value": "assertApiSuccess",
-      "context": "2. 检测 `{ code, message, data }` 信封并 `assertApiSuccess`"
+      "context": "2. 要求响应必须是 `{ code, message, data }` 标准信封并 `assertApiSuccess`"
     },
     {
       "docFile": "docs-site/tech-stack/http.md",
@@ -5345,7 +5366,7 @@
       "line": 3,
       "type": "path-pattern",
       "value": "app/features/*",
-      "context": "`nuxt-modern-starter` is organized as a reusable frontend foundation for consumer-facing personal creator SaaS products."
+      "context": "`nuxt-modern-starter` is organized as a general-purpose Nuxt 4 frontend foundation for SaaS products. It provides a publ"
     },
     {
       "docFile": "docs/architecture.md",
@@ -5366,21 +5387,21 @@
       "line": 8,
       "type": "file-path",
       "value": "app/pages/workspace",
-      "context": "- `app/pages/workspace`: logged-in personal workspace routes. `index.vue` maps to `/workspace`; `templates/index.vue` ma"
+      "context": "- `app/pages/workspace`: logged-in workspace routes. `index.vue` maps to `/workspace`; `templates/index.vue` maps to `/w"
     },
     {
       "docFile": "docs/architecture.md",
       "line": 8,
       "type": "route",
       "value": "/workspace",
-      "context": "- `app/pages/workspace`: logged-in personal workspace routes. `index.vue` maps to `/workspace`; `templates/index.vue` ma"
+      "context": "- `app/pages/workspace`: logged-in workspace routes. `index.vue` maps to `/workspace`; `templates/index.vue` maps to `/w"
     },
     {
       "docFile": "docs/architecture.md",
       "line": 8,
       "type": "route",
       "value": "/workspace/templates",
-      "context": "- `app/pages/workspace`: logged-in personal workspace routes. `index.vue` maps to `/workspace`; `templates/index.vue` ma"
+      "context": "- `app/pages/workspace`: logged-in workspace routes. `index.vue` maps to `/workspace`; `templates/index.vue` maps to `/w"
     },
     {
       "docFile": "docs/architecture.md",
@@ -5555,7 +5576,7 @@
       "line": 18,
       "type": "file-path",
       "value": "app/features",
-      "context": "- `app/features`: other consumer creator product modules. Complex product UI, feature composables, feature stores, featu"
+      "context": "- `app/features`: other SaaS product modules. Complex product UI, feature composables, feature stores, feature types, an"
     },
     {
       "docFile": "docs/architecture.md",
@@ -6973,658 +6994,665 @@
     },
     {
       "docFile": "docs/usage.md",
-      "line": 68,
+      "line": 66,
       "type": "env-var",
       "value": "NUXT_PUBLIC_API_BASE",
-      "context": "All request helpers use `runtimeConfig.public.apiBase` in both SSR and browser code, so `NUXT_PUBLIC_API_BASE` should po"
+      "context": "- Editor media uploads belong in `~/features/editor/upload-api.ts`: images via `uploadImages()` (`POST /uploads`), video"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 68,
+      "line": 66,
+      "type": "symbol",
+      "value": "YanivEditor",
+      "context": "- Editor media uploads belong in `~/features/editor/upload-api.ts`: images via `uploadImages()` (`POST /uploads`), video"
+    },
+    {
+      "docFile": "docs/usage.md",
+      "line": 66,
       "type": "symbol",
       "value": "NUXT_PUBLIC_API_BASE",
-      "context": "All request helpers use `runtimeConfig.public.apiBase` in both SSR and browser code, so `NUXT_PUBLIC_API_BASE` should po"
+      "context": "- Editor media uploads belong in `~/features/editor/upload-api.ts`: images via `uploadImages()` (`POST /uploads`), video"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 74,
+      "line": 75,
       "type": "symbol",
       "value": "CORS_ORIGINS",
       "context": "- Backend `CORS_ORIGINS` must include the Nuxt origin, for example `http://localhost:3000`."
     },
     {
       "docFile": "docs/usage.md",
-      "line": 84,
+      "line": 85,
       "type": "symbol",
       "value": "SUPPORTED_LOCALES",
       "context": "Use `usePageSeo({ path, title, description })`. The composable adds title, description, canonical, Open Graph metadata, "
     },
     {
       "docFile": "docs/usage.md",
-      "line": 89,
+      "line": 90,
       "type": "symbol",
       "value": "SITE_NAME",
       "context": "- Open Graph: `og:type` (`website` by default, `article` when `article` is passed), and `og:site_name` from `SITE_NAME`."
     },
     {
       "docFile": "docs/usage.md",
-      "line": 91,
+      "line": 92,
       "type": "file-path",
       "value": "public/og-default.png",
       "context": "- Default OG image: `public/og-default.png` via `DEFAULT_SEO.ogImage` in `config/site.ts`."
     },
     {
       "docFile": "docs/usage.md",
-      "line": 124,
+      "line": 125,
       "type": "route-template",
       "value": "/news/:param",
       "context": "  path: `/news/${slug}`,"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 135,
+      "line": 136,
       "type": "symbol",
       "value": "WebPage",
       "context": "`WebPage` and `Organization` JSON-LD are implemented. `WebSite` JSON-LD remains a future addition when a real brand doma"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 135,
+      "line": 136,
       "type": "symbol",
       "value": "Organization",
       "context": "`WebPage` and `Organization` JSON-LD are implemented. `WebSite` JSON-LD remains a future addition when a real brand doma"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 135,
+      "line": 136,
       "type": "symbol",
       "value": "WebSite",
       "context": "`WebPage` and `Organization` JSON-LD are implemented. `WebSite` JSON-LD remains a future addition when a real brand doma"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 139,
+      "line": 140,
       "type": "file-path",
       "value": "server/routes/sitemap.xml.ts",
       "context": "`server/routes/sitemap.xml.ts` and `server/routes/robots.txt.ts` are generated from public route/content configuration. "
     },
     {
       "docFile": "docs/usage.md",
-      "line": 139,
+      "line": 140,
       "type": "file-path",
       "value": "server/routes/robots.txt.ts",
       "context": "`server/routes/sitemap.xml.ts` and `server/routes/robots.txt.ts` are generated from public route/content configuration. "
     },
     {
       "docFile": "docs/usage.md",
-      "line": 144,
+      "line": 145,
       "type": "env-var",
       "value": "NUXT_PUBLIC_GOOGLE_SITE_VERIFICATION",
       "context": "NUXT_PUBLIC_GOOGLE_SITE_VERIFICATION="
     },
     {
       "docFile": "docs/usage.md",
-      "line": 145,
+      "line": 146,
       "type": "env-var",
       "value": "NUXT_PUBLIC_BAIDU_SITE_VERIFICATION",
       "context": "NUXT_PUBLIC_BAIDU_SITE_VERIFICATION="
     },
     {
       "docFile": "docs/usage.md",
-      "line": 148,
+      "line": 149,
       "type": "symbol",
       "value": "usePageSeo",
       "context": "Read these from `runtimeConfig.public` and pass them into `usePageSeo`. Do not hardcode verification tokens in page sour"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 152,
+      "line": 153,
       "type": "file-path",
       "value": "app/utils/attribution-params.ts",
       "context": "The starter persists marketing attribution parameters in `localStorage` through `app/utils/attribution-params.ts` and `a"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 152,
+      "line": 153,
       "type": "file-path",
       "value": "app/plugins/attribution.client.ts",
       "context": "The starter persists marketing attribution parameters in `localStorage` through `app/utils/attribution-params.ts` and `a"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 154,
+      "line": 155,
       "type": "symbol",
       "value": "bd_vid",
       "context": "Supported keys include `utm_*`, `bd_vid`, `clickid`, `gclid`, `msclkid`, `fbclid`, and `ttclid`. Fork projects can appen"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 154,
+      "line": 155,
       "type": "symbol",
       "value": "ATTRIBUTION_KEY_PATTERNS",
       "context": "Supported keys include `utm_*`, `bd_vid`, `clickid`, `gclid`, `msclkid`, `fbclid`, and `ttclid`. Fork projects can appen"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 165,
+      "line": 166,
       "type": "symbol",
       "value": "utm_source",
       "context": "3. Storage contains `utm_source`, `utm_medium`, and `gclid`"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 165,
+      "line": 166,
       "type": "symbol",
       "value": "utm_medium",
       "context": "3. Storage contains `utm_source`, `utm_medium`, and `gclid`"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 199,
+      "line": 200,
       "type": "file-path",
       "value": "app/plugins/analytics.client.ts",
       "context": "Analytics is disabled by default and loaded only on the client through `app/plugins/analytics.client.ts`."
     },
     {
       "docFile": "docs/usage.md",
-      "line": 204,
+      "line": 205,
       "type": "env-var",
       "value": "NUXT_PUBLIC_ANALYTICS_ENABLED",
       "context": "NUXT_PUBLIC_ANALYTICS_ENABLED=false"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 205,
+      "line": 206,
       "type": "env-var",
       "value": "NUXT_PUBLIC_ANALYTICS_SCRIPT_SRC",
       "context": "NUXT_PUBLIC_ANALYTICS_SCRIPT_SRC="
     },
     {
       "docFile": "docs/usage.md",
-      "line": 206,
+      "line": 207,
       "type": "env-var",
       "value": "NUXT_PUBLIC_ANALYTICS_DEFER_MS",
       "context": "NUXT_PUBLIC_ANALYTICS_DEFER_MS=3000"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 209,
+      "line": 210,
       "type": "symbol",
       "value": "dataLayer",
       "context": "v1 supports one external script URL injected after a timeout defer. It does **not** support a full GTM container bootstr"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 216,
+      "line": 217,
       "type": "symbol",
       "value": "analyticsScriptSrc",
       "context": "| enabled but `analyticsScriptSrc` is blank       | Silent skip                           |"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 217,
+      "line": 218,
       "type": "symbol",
       "value": "analyticsDeferMs",
       "context": "| enabled with a valid script URL and relaxed CSP | Script loads after `analyticsDeferMs` |"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 219,
+      "line": 220,
       "type": "file-path",
       "value": "nuxt.config.ts",
       "context": "When enabling analytics, update `script-src` in `nuxt.config.ts`. The default CSP blocks external scripts:"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 225,
+      "line": 226,
       "type": "symbol",
       "value": "NUXT_PUBLIC_ANALYTICS_SCRIPT_SRC",
       "context": "Single-file GA4 scripts such as `https://www.googletagmanager.com/gtag/js?id=...` can use `NUXT_PUBLIC_ANALYTICS_SCRIPT_"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 231,
+      "line": 232,
       "type": "file-path",
       "value": "i18n/index.ts",
       "context": "The starter ships all locales listed in `SUPPORTED_LOCALES`. To add a language, update `SUPPORTED_LOCALES`, `SITE_LOCALE"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 231,
+      "line": 232,
       "type": "path-pattern",
       "value": "i18n/<locale>/modules/*.json",
       "context": "The starter ships all locales listed in `SUPPORTED_LOCALES`. To add a language, update `SUPPORTED_LOCALES`, `SITE_LOCALE"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 231,
+      "line": 232,
       "type": "symbol",
       "value": "SITE_LOCALE_PREFIX_MAP",
       "context": "The starter ships all locales listed in `SUPPORTED_LOCALES`. To add a language, update `SUPPORTED_LOCALES`, `SITE_LOCALE"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 231,
+      "line": 232,
       "type": "symbol",
       "value": "SITE_HREFLANG_MAP",
       "context": "The starter ships all locales listed in `SUPPORTED_LOCALES`. To add a language, update `SUPPORTED_LOCALES`, `SITE_LOCALE"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 231,
+      "line": 232,
       "type": "symbol",
       "value": "SITE_LOCALE_OPTIONS",
       "context": "The starter ships all locales listed in `SUPPORTED_LOCALES`. To add a language, update `SUPPORTED_LOCALES`, `SITE_LOCALE"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 233,
+      "line": 234,
       "type": "route",
       "value": "/en",
       "context": "Do not install `@nuxtjs/i18n` for this template. Language routing is intentionally handled by `locale.global.ts` and `us"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 233,
+      "line": 234,
       "type": "symbol",
       "value": "useLanguageSwitch",
       "context": "Do not install `@nuxtjs/i18n` for this template. Language routing is intentionally handled by `locale.global.ts` and `us"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 241,
+      "line": 242,
       "type": "file-path",
       "value": "config/theme-palette.json",
       "context": "| Palette source   | `config/theme-palette.json`                          | Single source for brand and semantic colors "
     },
     {
       "docFile": "docs/usage.md",
-      "line": 242,
+      "line": 243,
       "type": "file-path",
       "value": "config/theme.ts",
       "context": "| Ant Design       | `config/theme.ts`                                    | `getAntdThemeToken()` for ConfigProvider (re"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 243,
+      "line": 244,
       "type": "file-path",
       "value": "app/assets/styles/tokens/_root.scss",
       "context": "| Page CSS vars    | `app/assets/styles/tokens/_root.scss` + `_dark.scss` | `--app-*` variables for pages and components"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 244,
+      "line": 245,
       "type": "file-path",
       "value": "app/assets/styles/tokens/_variables.scss",
       "context": "| Sass build-time  | `app/assets/styles/tokens/_variables.scss`           | `$spacing-*`, `$color-*` for SCSS (generated"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 245,
+      "line": 246,
       "type": "file-path",
       "value": "app/assets/styles/tokens.ts",
       "context": "| Runtime JS       | `app/assets/styles/tokens.ts`                        | `cssVarTokens`, `getCssVar`, `setCssVar`    "
     },
     {
       "docFile": "docs/usage.md",
-      "line": 245,
+      "line": 246,
       "type": "symbol",
       "value": "cssVarTokens",
       "context": "| Runtime JS       | `app/assets/styles/tokens.ts`                        | `cssVarTokens`, `getCssVar`, `setCssVar`    "
     },
     {
       "docFile": "docs/usage.md",
-      "line": 245,
+      "line": 246,
       "type": "symbol",
       "value": "getCssVar",
       "context": "| Runtime JS       | `app/assets/styles/tokens.ts`                        | `cssVarTokens`, `getCssVar`, `setCssVar`    "
     },
     {
       "docFile": "docs/usage.md",
-      "line": 245,
+      "line": 246,
       "type": "symbol",
       "value": "setCssVar",
       "context": "| Runtime JS       | `app/assets/styles/tokens.ts`                        | `cssVarTokens`, `getCssVar`, `setCssVar`    "
     },
     {
       "docFile": "docs/usage.md",
-      "line": 246,
+      "line": 247,
       "type": "file-path",
       "value": "app/assets/styles/patterns/_page.scss",
       "context": "| Public patterns  | `app/assets/styles/patterns/_page.scss`              | `.page-panel`, `.page-faq`, etc.            "
     },
     {
       "docFile": "docs/usage.md",
-      "line": 246,
+      "line": 247,
       "type": "css-class",
       "value": ".page-panel",
       "context": "| Public patterns  | `app/assets/styles/patterns/_page.scss`              | `.page-panel`, `.page-faq`, etc.            "
     },
     {
       "docFile": "docs/usage.md",
-      "line": 246,
+      "line": 247,
       "type": "css-class",
       "value": ".page-faq",
       "context": "| Public patterns  | `app/assets/styles/patterns/_page.scss`              | `.page-panel`, `.page-faq`, etc.            "
     },
     {
       "docFile": "docs/usage.md",
-      "line": 247,
+      "line": 248,
       "type": "file-path",
       "value": "app/assets/styles/patterns/_product.scss",
       "context": "| Product patterns | `app/assets/styles/patterns/_product.scss`           | `.workspace-card`, `.app-shell-nav`, etc.   "
     },
     {
       "docFile": "docs/usage.md",
-      "line": 247,
+      "line": 248,
       "type": "css-class",
       "value": ".workspace-card",
       "context": "| Product patterns | `app/assets/styles/patterns/_product.scss`           | `.workspace-card`, `.app-shell-nav`, etc.   "
     },
     {
       "docFile": "docs/usage.md",
-      "line": 247,
+      "line": 248,
       "type": "css-class",
       "value": ".app-shell-nav",
       "context": "| Product patterns | `app/assets/styles/patterns/_product.scss`           | `.workspace-card`, `.app-shell-nav`, etc.   "
     },
     {
       "docFile": "docs/usage.md",
-      "line": 249,
+      "line": 250,
       "type": "file-path",
       "value": "app/features",
       "context": "When changing colors, edit `config/theme-palette.json` and run `pnpm generate:theme`. Do not hand-edit `_variables.scss`"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 249,
+      "line": 250,
       "type": "file-path",
       "value": "app/pages",
       "context": "When changing colors, edit `config/theme-palette.json` and run `pnpm generate:theme`. Do not hand-edit `_variables.scss`"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 249,
+      "line": 250,
       "type": "file-path",
       "value": "app/layouts",
       "context": "When changing colors, edit `config/theme-palette.json` and run `pnpm generate:theme`. Do not hand-edit `_variables.scss`"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 249,
+      "line": 250,
       "type": "script",
       "value": "generate:theme",
       "context": "When changing colors, edit `config/theme-palette.json` and run `pnpm generate:theme`. Do not hand-edit `_variables.scss`"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 251,
+      "line": 252,
       "type": "file-path",
       "value": "app/assets/styles/main.scss",
       "context": "Theme mode is applied with `html[data-theme='light'|'dark']` via `useTheme()`. On the client, `useTheme()` also calls `a"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 253,
+      "line": 254,
       "type": "file-path",
       "value": "docs-site/tech-stack/styles.md",
       "context": "See `docs-site/tech-stack/styles.md` for the full `--app-*` token catalog and product pattern guide."
     },
     {
       "docFile": "docs/usage.md",
-      "line": 255,
+      "line": 256,
       "type": "symbol",
       "value": "DEFAULT_THEME_MODE",
       "context": "To disable dark mode, remove dark overrides from `tokens/index.scss`, set `DEFAULT_THEME_MODE` to `light`, and remove th"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 259,
+      "line": 260,
       "type": "env-file",
       "value": ".env.dev",
       "context": "Committed dotenv layers (`.env.dev`, `.env.test`, `.env.prod`) provide non-secret defaults. Runtime platforms should ove"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 259,
+      "line": 260,
       "type": "env-file",
       "value": ".env.test",
       "context": "Committed dotenv layers (`.env.dev`, `.env.test`, `.env.prod`) provide non-secret defaults. Runtime platforms should ove"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 263,
+      "line": 264,
       "type": "env-var",
       "value": "NUXT_PUBLIC_SITE_URL",
       "context": "| `NUXT_PUBLIC_SITE_URL`                 | Canonical site origin for SEO, sitemap, and robots                           "
     },
     {
       "docFile": "docs/usage.md",
-      "line": 263,
+      "line": 264,
       "type": "symbol",
       "value": "NUXT_PUBLIC_SITE_URL",
       "context": "| `NUXT_PUBLIC_SITE_URL`                 | Canonical site origin for SEO, sitemap, and robots                           "
     },
     {
       "docFile": "docs/usage.md",
-      "line": 265,
+      "line": 266,
       "type": "symbol",
       "value": "NUXT_PUBLIC_GOOGLE_SITE_VERIFICATION",
       "context": "| `NUXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | Google Search Console verification token                                     "
     },
     {
       "docFile": "docs/usage.md",
-      "line": 266,
+      "line": 267,
       "type": "symbol",
       "value": "NUXT_PUBLIC_BAIDU_SITE_VERIFICATION",
       "context": "| `NUXT_PUBLIC_BAIDU_SITE_VERIFICATION`  | Baidu verification token                                                     "
     },
     {
       "docFile": "docs/usage.md",
-      "line": 267,
+      "line": 268,
       "type": "symbol",
       "value": "NUXT_PUBLIC_ANALYTICS_ENABLED",
       "context": "| `NUXT_PUBLIC_ANALYTICS_ENABLED`        | Must be exactly `true` to enable analytics                                   "
     },
     {
       "docFile": "docs/usage.md",
-      "line": 269,
+      "line": 270,
       "type": "symbol",
       "value": "NUXT_PUBLIC_ANALYTICS_DEFER_MS",
       "context": "| `NUXT_PUBLIC_ANALYTICS_DEFER_MS`       | Client defer before loading analytics script                                 "
     },
     {
       "docFile": "docs/usage.md",
-      "line": 270,
+      "line": 271,
       "type": "env-var",
       "value": "NUXT_APP_ENV",
       "context": "| `NUXT_APP_ENV`                         | Controls auth cookie `secure` flag; Docker Compose sets `production` or `dev`"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 270,
+      "line": 271,
       "type": "symbol",
       "value": "NUXT_APP_ENV",
       "context": "| `NUXT_APP_ENV`                         | Controls auth cookie `secure` flag; Docker Compose sets `production` or `dev`"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 272,
+      "line": 273,
       "type": "file-path",
       "value": "docs/deployment.md",
       "context": "See `docs/deployment.md` for deployment-specific notes and full-stack pairing defaults."
     },
     {
       "docFile": "docs/usage.md",
-      "line": 280,
+      "line": 281,
       "type": "route",
       "value": "/docs/new",
       "context": "| `/workspace`           | `product` | Project list, loading/empty states, create button to `/docs/new`, delete, and nav"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 281,
+      "line": 282,
       "type": "route",
       "value": "/workspace/templates",
       "context": "| `/workspace/templates` | `product` | Optional theme templates placeholder (no API)                                    "
     },
     {
       "docFile": "docs/usage.md",
-      "line": 282,
+      "line": 283,
       "type": "symbol",
       "value": "documentId",
       "context": "| `/docs/:id`            | `editor`  | Load project by `:id` (project id), resolve `documentId`, then load/save editor c"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 288,
+      "line": 289,
       "type": "file-path",
       "value": "app/features/workspace/api.ts",
       "context": "- Workspace adapters in `app/features/workspace/api.ts`: `fetchWorkspaceProjects()`, `createWorkspaceProject()`, `fetchW"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 289,
+      "line": 290,
       "type": "file-path",
       "value": "app/features/editor/api.ts",
       "context": "- Editor adapters in `app/features/editor/api.ts`: `fetchEditorDocument()` and `saveEditorDocument()` via `createProduct"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 295,
+      "line": 296,
       "type": "symbol",
       "value": "WorkspaceDashboard",
       "context": "- The header create button navigates to `/docs/new` (does not call the API immediately). `WorkspaceDashboard` prefetches"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 297,
+      "line": 298,
       "type": "symbol",
       "value": "updatedAt",
       "context": "- Project cards link to the editor through `getWorkspaceDocPath()`. Cards show decorative accent thumbnails and formatte"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 302,
+      "line": 303,
       "type": "symbol",
       "value": "EditorWorkspace",
       "context": "- `/docs/:id` and `/docs/new` use the minimal `editor` layout and mount `EditorWorkspace` with `@yanivjs/yaniv-editor` ("
     },
     {
       "docFile": "docs/usage.md",
-      "line": 302,
+      "line": 303,
       "type": "symbol",
       "value": "languageStore",
       "context": "- `/docs/:id` and `/docs/new` use the minimal `editor` layout and mount `EditorWorkspace` with `@yanivjs/yaniv-editor` ("
     },
     {
       "docFile": "docs/usage.md",
-      "line": 303,
+      "line": 304,
       "type": "symbol",
       "value": "WORKSPACE_NEW_PROJECT_ID",
       "context": "- Route param `:id` is the **project id** (or `new` via `WORKSPACE_NEW_PROJECT_ID`). The page keeps `cachedProject` to a"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 303,
+      "line": 304,
       "type": "symbol",
       "value": "cachedProject",
       "context": "- Route param `:id` is the **project id** (or `new` via `WORKSPACE_NEW_PROJECT_ID`). The page keeps `cachedProject` to a"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 305,
+      "line": 306,
       "type": "symbol",
       "value": "onBeforeRouteLeave",
       "context": "- Content autosaves after a 2-second debounce and flushes on route leave (`onBeforeRouteLeave`). Title edits persist thr"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 306,
+      "line": 307,
       "type": "symbol",
       "value": "EditorWorkspaceHeader",
       "context": "- The editor header (`EditorWorkspaceHeader`) includes back-to-workspace, inline title editing, autosave status, languag"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 310,
+      "line": 311,
       "type": "symbol",
       "value": "AccountShell",
       "context": "- `/account` uses the `account` layout with `AccountShell` and mounts `AccountPage`."
     },
     {
       "docFile": "docs/usage.md",
-      "line": 310,
+      "line": 311,
       "type": "symbol",
       "value": "AccountPage",
       "context": "- `/account` uses the `account` layout with `AccountShell` and mounts `AccountPage`."
     },
     {
       "docFile": "docs/usage.md",
-      "line": 326,
+      "line": 327,
       "type": "file-path",
       "value": "config/auth.ts",
       "context": "- HTTP endpoint paths are centralized in `config/auth.ts`: `/register`, `/login`, `/refresh`, `/logout`, `/me`, and `/me"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 326,
+      "line": 327,
       "type": "route",
       "value": "/sign-in",
       "context": "- HTTP endpoint paths are centralized in `config/auth.ts`: `/register`, `/login`, `/refresh`, `/logout`, `/me`, and `/me"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 326,
+      "line": 327,
       "type": "route",
       "value": "/sign-up",
       "context": "- HTTP endpoint paths are centralized in `config/auth.ts`: `/register`, `/login`, `/refresh`, `/logout`, `/me`, and `/me"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 328,
+      "line": 329,
       "type": "symbol",
       "value": "accessToken",
       "context": "- `POST /api/login` and `POST /api/refresh` return `accessToken` and `refreshToken`. Tokens are stored in JS-readable Nu"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 328,
+      "line": 329,
       "type": "symbol",
       "value": "refreshToken",
       "context": "- `POST /api/login` and `POST /api/refresh` return `accessToken` and `refreshToken`. Tokens are stored in JS-readable Nu"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 330,
+      "line": 331,
       "type": "file-path",
       "value": "app/stores/auth.ts",
       "context": "- `app/stores/auth.ts` owns `user`, token cookies, `status`, `login`, `register`, `logout`, `fetchMe`, `refresh`, and `r"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 330,
+      "line": 331,
       "type": "symbol",
       "value": "fetchMe",
       "context": "- `app/stores/auth.ts` owns `user`, token cookies, `status`, `login`, `register`, `logout`, `fetchMe`, `refresh`, and `r"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 331,
+      "line": 332,
       "type": "file-path",
       "value": "app/composables/useAuth.ts",
       "context": "- `app/composables/useAuth.ts` exposes the store plus `ensureSession()`, `can()`, and `hasRole()` for pages and middlewa"
     },
     {
       "docFile": "docs/usage.md",
-      "line": 332,
+      "line": 333,
       "type": "file-path",
       "value": "app/plugins/auth.ts",
       "context": "- `app/plugins/auth.ts` hydrates `/api/me` on startup when token cookies are present."
     },
     {
       "docFile": "docs/usage.md",
-      "line": 334,
+      "line": 335,
       "type": "file-path",
       "value": "app/utils/safe-redirect.ts",
       "context": "- Login redirect targets must stay on same-origin relative paths. Use `resolveSafeRedirectPath()` from `app/utils/safe-r"
@@ -7717,8 +7745,8 @@
       "docFile": "README.md",
       "line": 28,
       "type": "version",
-      "value": "@yanivjs/yaniv-editor=0.1.2",
-      "context": "| @yanivjs/yaniv-editor | 0.1.2   |"
+      "value": "@yanivjs/yaniv-editor=0.1.3",
+      "context": "| @yanivjs/yaniv-editor | 0.1.3   |"
     },
     {
       "docFile": "README.md",

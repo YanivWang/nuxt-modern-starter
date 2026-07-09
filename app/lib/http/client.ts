@@ -1,6 +1,6 @@
 /*
   【文件职责】
-    通用 API client 工厂：基于 $fetch 封装请求、信封校验、401 时可选重试一次。
+    通用 API client 工厂：基于 $fetch 封装请求、标准信封校验、401 时可选重试一次。
     createApiClient 是所有 Public / Auth / Product client 的底层实现。
 
   【架构位置】
@@ -17,21 +17,32 @@
     SSR 与 CSR 均可使用；401 重试逻辑由 onUnauthorized 回调提供新 headers。
 
   【边界与注意】
-    仅当响应为 ApiResponse 信封时才 assertApiSuccess；非信封 JSON 原样返回。
+    所有业务 API 响应必须为 ApiResponse 信封；非信封响应直接视为后端契约错误。
     401 重试仅执行一次，避免 refresh 死循环。
 */
 import type { ApiClientOptions, ApiRequestOptions, ApiResponse } from './types'
 import { createHeaders } from './headers'
-import { assertApiSuccess, isUnauthorizedError } from './error'
+import { assertApiSuccess, createApiFailure, isUnauthorizedError } from './error'
 
-/** 判断响应是否为 { code: number, ... } 业务信封；非信封 JSON 跳过 assertApiSuccess */
+/** 判断响应是否为 { code, message, data } 标准业务信封 */
 const isApiEnvelope = (result: unknown): result is ApiResponse<unknown> =>
   Boolean(
     result &&
     typeof result === 'object' &&
     'code' in result &&
-    typeof (result as ApiResponse<unknown>).code === 'number'
+    typeof (result as ApiResponse<unknown>).code === 'number' &&
+    'message' in result &&
+    typeof (result as ApiResponse<unknown>).message === 'string' &&
+    'data' in result
   )
+
+const assertApiEnvelope = (result: unknown): ApiResponse<unknown> => {
+  if (!isApiEnvelope(result)) {
+    throw createApiFailure({ message: 'Invalid API response envelope' })
+  }
+
+  return result
+}
 
 type FetchRequest = Parameters<typeof $fetch>[0]
 
@@ -64,10 +75,7 @@ export const createApiClient = ({
     try {
       const result = await fetcher<T>(path, toFetchOptions(fetchOptions))
 
-      // 仅信封响应校验 code === 200；裸 JSON / 非 JSON 原样返回
-      if (isApiEnvelope(result)) {
-        assertApiSuccess(result)
-      }
+      assertApiSuccess(assertApiEnvelope(result))
 
       return result
     } catch (error) {
@@ -98,9 +106,7 @@ export const createApiClient = ({
         })
       )
 
-      if (isApiEnvelope(result)) {
-        assertApiSuccess(result)
-      }
+      assertApiSuccess(assertApiEnvelope(result))
 
       return result
     }

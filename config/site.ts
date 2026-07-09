@@ -28,7 +28,7 @@
 export const SITE_NAME = 'Nuxt Modern Starter'
 
 export const SITE_DESCRIPTION =
-  'A Nuxt 4 frontend foundation for consumer-facing personal creator SaaS products with public pages, accounts, workspace, projects, and a single-user editor.'
+  'A general-purpose Nuxt 4 SaaS frontend foundation with public pages, SEO, i18n, auth, workspace, projects, editor workflow, requests, theming, and deployment samples.'
 
 export const DEFAULT_SITE_URL = 'https://example.com'
 
@@ -73,7 +73,7 @@ export const SITE_LOCALE_PREFIX_MAP: Record<SupportedLocale, string> = {
   'pt-BR': 'pt-br'
 }
 
-/** hreflang 属性值；单语言市场用语言码，区域变体保留完整码（对齐 aippt / Duolingo 等主流站） */
+/** hreflang 属性值；单语言市场用语言码，区域变体保留完整码（对齐主流国际化站点） */
 export const SITE_HREFLANG_MAP: Record<SupportedLocale, string> = {
   'zh-CN': 'zh',
   'en-US': 'en',

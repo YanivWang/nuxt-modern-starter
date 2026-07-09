@@ -1,10 +1,12 @@
 import { readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import prettier from 'prettier'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const tokensDir = join(__dirname, '../app/assets/styles/tokens')
 const palette = JSON.parse(readFileSync(join(__dirname, '../config/theme-palette.json'), 'utf8'))
+const prettierConfig = (await prettier.resolveConfig(join(__dirname, '../.prettierrc'))) ?? {}
 
 const { colorPalettes, layoutTokens, radiusTokens, spacingTokens, typographyTokens, zIndexTokens } =
   palette
@@ -46,6 +48,13 @@ const cssVarMap = {
 }
 
 const light = colorPalettes.light
+
+const fontSansScssValue = typographyTokens.fontSans
+  .split(', ')
+  .map((font) => `  ${font}`)
+  .join(',\n')
+
+const formatScss = (source) => prettier.format(source, { ...prettierConfig, parser: 'scss' })
 
 const variablesHeader = `/*
   【文件职责】
@@ -144,7 +153,8 @@ $header-bg-scrolled: ${light.headerBgScrolled};
 $radius-lg: ${light.borderRadius}px;
 
 // Typography
-$font-sans: ${typographyTokens.fontSans};
+$font-sans:
+${fontSansScssValue};
 $text-xs: ${typographyTokens.textXs};
 $text-sm: ${typographyTokens.textSm};
 $text-base: ${typographyTokens.textBase};
@@ -267,13 +277,13 @@ ${darkColorLines}
 }
 `
 
-writeFileSync(join(tokensDir, '_variables.scss'), variables)
+writeFileSync(join(tokensDir, '_variables.scss'), await formatScss(variables))
 writeFileSync(
   join(tokensDir, '_dark.scss'),
-  `${darkHeader}// AUTO-GENERATED — 请勿手改。编辑 config/theme-palette.json 后运行 pnpm generate:theme
+  await formatScss(`${darkHeader}// AUTO-GENERATED — 请勿手改。编辑 config/theme-palette.json 后运行 pnpm generate:theme
 // 暗黑模式 — 色值覆盖（渐变/阴影语义项见下方）
 
-${dark}\n`
+${dark}`)
 )
 
 console.log('Generated app/assets/styles/tokens/_variables.scss')

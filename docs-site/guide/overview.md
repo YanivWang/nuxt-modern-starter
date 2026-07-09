@@ -2,14 +2,15 @@
 
 ## 这是什么？
 
-**Nuxt Modern Starter** 是一个可复用的 **Nuxt 4 C 端个人创作者 SaaS 前端基础框架**，面向：
+**Nuxt Modern Starter** 是一个可复用的 **Nuxt 4 通用 SaaS 前端基座**，面向：
 
 - 营销官网、落地页
 - SEO 内容站（新闻、帮助、定价）
 - 多语言公开页面
-- C 端个人创作者 SaaS 前台（账号、个人工作台、项目、编辑器、自动保存、后续商业化）
+- SaaS 产品前台（账号、用户工作台、项目、编辑器、自动保存、后续商业化）
+- AI 应用、内容工具、生产力工具、创作者工具或轻量业务系统
 
-它不是「全栈框架」，也不是团队型企业 SaaS 平台骨架，而是把 **公开获客页 + 登录后个人产品区** 的边界、渲染策略、请求分层、SEO、i18n、鉴权、部署样例都预置好，让你专注个人创作主链路。会员、额度、订单、支付等商业化能力可以后续作为 C 端扩展接入，但组织、团队、邀请和协作权限不进入默认架构。
+它不是「全栈框架」，也不绑定某一种业务形态，而是把 **公开官网 + 登录后产品区** 的边界、渲染策略、请求分层、SEO、i18n、鉴权、主题系统和部署样例都预置好，让你专注具体 SaaS 业务。会员、额度、订单、支付等商业化能力可以后续作为产品扩展接入；组织、团队、邀请和协作权限不进入默认架构，只有在项目明确选择团队协作方向时再补。
 
 ## 核心设计思想
 
@@ -27,7 +28,7 @@
 │  登录产品区（语言中性 URL）                               │
 │  /workspace  /workspace/templates  /docs/:id  /account  │
 │  渲染：CSR（客户端）                                      │
-│  数据：Bearer Token，个人项目与编辑器会话感知              │
+│  数据：Bearer Token，项目与编辑器会话感知                  │
 └─────────────────────────────────────────────────────────┘
 ```
 
@@ -88,7 +89,7 @@ Nuxt 页面文件（`app/pages/*`）只做：
 | 样式   | SCSS 分层 token（`tokens/` + `patterns/` + `--app-*`） |
 | i18n   | vue-i18n（自建路由，不用 @nuxtjs/i18n）                |
 | 编辑器 | @yanivjs/yaniv-editor                                  | PPT/幻灯片编辑器（`mode: edit`, `preset: full`）                                              |
-| 测试   | Vitest 4.1.9 + @nuxt/test-utils 4.0.3                  | `vitest.config.ts` `defineVitestConfig` + `include: tests/**/*.test.ts`（32 文件 / 117 用例） |
+| 测试   | Vitest 4.1.9 + @nuxt/test-utils 4.0.3                  | `vitest.config.ts` `defineVitestConfig` + `include: tests/**/*.test.ts`（34 文件 / 123 用例） |
 | 部署   | Nitro node-server + Docker + Nginx 样例                |
 
 详见 [技术栈总览](/tech-stack/overview)。

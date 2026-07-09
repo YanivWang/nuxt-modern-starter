@@ -38,7 +38,7 @@ Generated: 2026-07-09（深度审阅 + doc-claims 证据）
 - app/pages/workspace/index.vue
 - app/pages/workspace/templates/index.vue
 
-## 旧说法 → 新说法（文档漂移修正）
+## 代码-文档对齐说明
 
 - 「/docs/new 仅写首次保存创建」→ 补充 `WORKSPACE_NEW_PROJECT_ID`、`ensureDraftProject` 草稿流程
 - 「2s 自动保存无常量名」→ `EDITOR_AUTOSAVE_DEBOUNCE_MS` = 2000 写入 routing/deployment/index
