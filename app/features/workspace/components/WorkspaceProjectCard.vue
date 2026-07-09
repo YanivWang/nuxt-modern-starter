@@ -27,7 +27,7 @@ import {
   StarOutlined
 } from '~/utils/antdIcon'
 import { formatWorkspaceDateTime } from '~/utils/formatDate'
-import type { WorkspaceProject } from '../api'
+import type { WorkspaceProject } from '../types'
 
 const props = defineProps<{
   project: WorkspaceProject

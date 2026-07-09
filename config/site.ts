@@ -28,7 +28,7 @@
 export const SITE_NAME = 'Nuxt Modern Starter'
 
 export const SITE_DESCRIPTION =
-  'A reusable Nuxt 4 starter for marketing sites, SEO pages, and lightweight SaaS frontends.'
+  'A Nuxt 4 frontend foundation for consumer-facing personal creator SaaS products with public pages, accounts, workspace, projects, and a single-user editor.'
 
 export const DEFAULT_SITE_URL = 'https://example.com'
 

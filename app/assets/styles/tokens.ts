@@ -1,7 +1,7 @@
 /*
   【文件职责】
     Design Token 运行时 API：CSS 变量名常量、getCssVar / setCssVar。
-    与 config/theme-palette.mjs、tokens/_root.scss 对齐。
+    与 config/theme-palette.json、tokens/_root.scss 对齐。
 
   【架构位置】
     共享层 — app/assets/styles，供 TS/图表/Canvas 等运行时读取主题变量。

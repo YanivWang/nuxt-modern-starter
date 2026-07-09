@@ -31,6 +31,8 @@ Do not add product pages beside public marketing pages under `app/pages/[[langua
 
 Register sidebar entries in `app/features/product-shell/config.ts` through `productNavItems` and `productFooterNavItems` before adding workspace links. Account settings use `app/features/account-shell/config.ts` through `accountNavItems` when extending the account layout. Do not create localized product links such as `/en/workspace`; locale middleware and server middleware redirect those back to canonical product paths. Account access belongs in `UserAccountMenu`, not the product sidebar.
 
+Keep the default product loop narrow: personal account -> personal workspace -> project -> editor -> autosave. Templates, AI generation, export, asset, membership, credit, order, and payment flows are optional consumer-product extensions. Do not introduce organization, team, invite, multi-tenant workspace permissions, collaboration, or enterprise publishing systems into the default architecture.
+
 ## Add A Feature Module
 
 Create complex product behavior under `app/features/<feature>`.
@@ -50,6 +52,8 @@ app/features/editor/
 Use the feature `index.ts` as the public export surface. Nuxt pages and other features should import from `app/features/<feature>` instead of importing internal files from another feature.
 
 Keep top-level `app/components`, `app/composables`, and `app/stores` for shared primitives only.
+
+For this starter, new feature modules should serve the C-end personal creator workflow. Good optional examples are `generation`, `exports`, `assets`, richer `templates`, or consumer monetization modules such as `membership`, `credits`, `orders`, and `payments` when they are needed by the product loop. Avoid using team, organization, invite, collaboration, or enterprise permission modules as default examples.
 
 ## Add Requests
 
@@ -274,7 +278,7 @@ The starter ships a real product flow when paired with `nuxt-modern-starter-api`
 | Route                  | Layout    | Purpose                                                                                                  |
 | ---------------------- | --------- | -------------------------------------------------------------------------------------------------------- |
 | `/workspace`           | `product` | Project list, loading/empty states, create button to `/docs/new`, delete, and navigation into the editor |
-| `/workspace/templates` | `product` | Theme templates placeholder (no API)                                                                     |
+| `/workspace/templates` | `product` | Optional theme templates placeholder (no API)                                                            |
 | `/docs/:id`            | `editor`  | Load project by `:id` (project id), resolve `documentId`, then load/save editor content with autosave    |
 | `/docs/new`            | `editor`  | Draft editor route; creates project and document on first save, then replaces route with `/docs/:id`     |
 | `/account`             | `account` | Profile payload, avatar, extended profile fields, and logout (via user menu)                             |
@@ -291,6 +295,7 @@ Current UI scope:
 - The header create button navigates to `/docs/new` (does not call the API immediately). `WorkspaceDashboard` prefetches the editor route and `~/features/editor` chunk on idle or hover/focus for faster first paint.
 - The editor creates the project on first non-blank save through `createWorkspaceProject()` with the default title from i18n (`workspace.defaultTitle`), then saves initial content and replaces the route with `/docs/:id`.
 - Project cards link to the editor through `getWorkspaceDocPath()`. Cards show decorative accent thumbnails and formatted `updatedAt`. Share, download, and favorite buttons on cards are UI-only placeholders without backend APIs.
+- Templates, AI generation, export, asset management, membership, credits, orders, and payments should remain optional C-end product extensions until the editor loop or monetization path actually needs them.
 
 Editor behavior:
 

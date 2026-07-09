@@ -1,23 +1,18 @@
 /*
   【文件职责】
-    editor feature 对外导出面：EditorWorkspace 与文档 API adapter。
+    editor feature 对外导出面：EditorWorkspace。
 
   【架构位置】
     登录产品区 — app/features/editor barrel。
 
   【主要导出 / 路由】
-    EditorWorkspace、fetchEditorDocument、saveEditorDocument
+    EditorWorkspace
 
   【依赖关系】
-    - 依赖：./api.ts、./components/EditorWorkspace.vue
+    - 依赖：./components/EditorWorkspace.vue
     - 被引用：app/pages/docs/[id].vue、WorkspaceDashboard prefetch
 
   【渲染 / 数据】
-    无 — 纯 re-export。
-
-  【边界与注意】
-    页面须从 ~/features/editor 导入；与 workspace api 协同完成新建 / 编辑流程。
+    无 — 页面仅导入 EditorWorkspace；其余逻辑留在 feature 内部 composables。
 */
-export * from './api'
-export { editorCustomAppearanceVars } from './editor-appearance'
 export { default as EditorWorkspace } from './components/EditorWorkspace.vue'

@@ -11,8 +11,8 @@
     updateWorkspaceProject、deleteWorkspaceProject、getWorkspaceDocPath、WORKSPACE_NEW_PROJECT_ID
 
   【依赖关系】
-    - 依赖：app/api/auth.ts createProductApiClient
-    - 被引用：WorkspaceDashboard、docs/[id].vue、EditorWorkspace、tests/unit/workspace-api.test.ts
+    - 依赖：app/api/auth.ts createProductApiClient、~/types/document、./types
+    - 被引用：workspace composables、editor composables、tests/unit/workspace-api.test.ts
 
   【渲染 / 数据】
     adapter 相对路径：/projects、/projects/:id（base NUXT_PUBLIC_API_BASE 已含 /api）。
@@ -24,36 +24,12 @@
 */
 import type { ApiResponse } from '~/lib/http/types'
 import { createProductApiClient } from '~/api/auth'
-
-export type WorkspaceProjectAccent = 'blue' | 'green' | 'violet' | 'amber' | 'cyan' | 'rose'
-
-export type WorkspaceProject = {
-  id: string
-  workspaceId: string
-  documentId: string | null
-  title: string
-  description: string | null
-  updatedAt: string
-  accent: WorkspaceProjectAccent
-}
-
-export type CreateWorkspaceProjectPayload = {
-  title: string
-  description?: string
-}
-
-export type UpdateWorkspaceProjectPayload = {
-  title?: string
-  description?: string
-}
-
-export type WorkspaceDocument = {
-  id: string
-  projectId: string
-  title: string
-  content: string
-  updatedAt: string
-}
+import type { EditorDocument } from '~/types/document'
+import type {
+  CreateWorkspaceProjectPayload,
+  UpdateWorkspaceProjectPayload,
+  WorkspaceProject
+} from './types'
 
 export const WORKSPACE_NEW_PROJECT_ID = 'new'
 
@@ -78,7 +54,7 @@ export const fetchWorkspaceProject = (projectId: string) =>
 
 export const createWorkspaceProject = (payload: CreateWorkspaceProjectPayload) =>
   createProductApiClient().request<
-    ApiResponse<{ project: WorkspaceProject; document: WorkspaceDocument }>
+    ApiResponse<{ project: WorkspaceProject; document: EditorDocument }>
   >('/projects', {
     method: 'POST',
     body: payload

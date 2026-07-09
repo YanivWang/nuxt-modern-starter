@@ -20,4 +20,5 @@
     WORKSPACE_NEW_PROJECT_ID = 'new' 对应 /docs/new，与 editor 首次保存流程耦合。
 */
 export { default as WorkspaceDashboard } from './components/WorkspaceDashboard.vue'
+export * from './types'
 export * from './api'

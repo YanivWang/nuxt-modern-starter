@@ -10,33 +10,25 @@
     WorkspaceDashboard；创建 → /docs/new，卡片 → /docs/:id
 
   【依赖关系】
-    - 依赖：../api、WorkspaceProjectCard、useLocalePath
+    - 依赖：../composables/useWorkspaceProjects、WorkspaceProjectCard、useLocalePath
     - 被引用：app/pages/workspace/index.vue
 
   【渲染 / 数据】
-    CSR；useAsyncData workspace-projects 拉取 GET /projects。
-    handleCreateProject 仅 navigateTo，不在此创建 API 项目（由 editor 首次保存触发）。
+    CSR；列表与删除逻辑见 useWorkspaceProjects；创建仅 navigateTo /docs/new。
 
   【边界与注意】
     仅顶部「创建项目」按钮创建；无空白卡片入口。
 -->
 <script setup lang="ts">
-import { message } from 'ant-design-vue'
-import { useI18n } from 'vue-i18n'
 import { PlusOutlined } from '~/utils/antdIcon'
-import {
-  deleteWorkspaceProject,
-  fetchWorkspaceProjects,
-  getWorkspaceDocPath,
-  getWorkspaceNewDocPath
-} from '../api'
+import { getWorkspaceDocPath, getWorkspaceNewDocPath } from '../api'
+import { useWorkspaceProjects } from '../composables/useWorkspaceProjects'
 import WorkspaceProjectCard from './WorkspaceProjectCard.vue'
 
 const { localePath } = useLocalePath()
-const { t } = useI18n()
-const deletingProjectId = ref<string | null>(null)
-const creatingProject = ref(false)
+const { projects, pending, error, refresh, deleteProject } = useWorkspaceProjects()
 
+const navigatingToNewDoc = ref(false)
 const newDocPath = computed(() => localePath(getWorkspaceNewDocPath()))
 
 let editorRoutePrefetched = false
@@ -60,42 +52,18 @@ onMounted(() => {
   setTimeout(prefetchEditorRoute, 200)
 })
 
-const {
-  data: projects,
-  pending,
-  error,
-  refresh
-} = await useAsyncData('workspace-projects', async () => {
-  const response = await fetchWorkspaceProjects()
-  return response.data.projects
-})
-
 const handleCreateProject = async () => {
-  if (creatingProject.value) {
+  if (navigatingToNewDoc.value) {
     return
   }
 
-  creatingProject.value = true
+  navigatingToNewDoc.value = true
   prefetchEditorRoute()
 
   try {
     await navigateTo(newDocPath.value)
   } catch {
-    creatingProject.value = false
-  }
-}
-
-const handleDeleteProject = async (projectId: string) => {
-  deletingProjectId.value = projectId
-
-  try {
-    await deleteWorkspaceProject(projectId)
-    await refresh()
-    message.success(t('workspace.deleteSuccess'))
-  } catch {
-    message.error(t('common.error'))
-  } finally {
-    deletingProjectId.value = null
+    navigatingToNewDoc.value = false
   }
 }
 </script>
@@ -107,7 +75,7 @@ const handleDeleteProject = async (projectId: string) => {
       <a-button
         type="primary"
         size="large"
-        :loading="creatingProject"
+        :loading="navigatingToNewDoc"
         @mouseenter="prefetchEditorRoute"
         @focus="prefetchEditorRoute"
         @click="handleCreateProject"
@@ -145,7 +113,7 @@ const handleDeleteProject = async (projectId: string) => {
         :key="project.id"
         :project="project"
         :doc-path="localePath(getWorkspaceDocPath(project.id))"
-        @delete="handleDeleteProject(project.id)"
+        @delete="deleteProject(project.id)"
       />
     </div>
   </section>

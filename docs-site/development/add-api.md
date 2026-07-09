@@ -16,33 +16,33 @@ flowchart TD
 
 ## 示例：Feature 私有 API
 
-`app/features/billing/api.ts`：
+`app/features/exports/api.ts`：
 
 ```ts
 import type { ApiResponse } from '~/lib/http/types'
 import { createProductApiClient } from '~/api/auth'
 
-export type Invoice = { id: string; amount: number }
+export type ExportTask = { id: string; status: 'queued' | 'running' | 'done' | 'failed' }
 
-export const fetchInvoices = () =>
-  createProductApiClient().request<ApiResponse<{ invoices: Invoice[] }>>('/invoices', {
+export const fetchExportTasks = () =>
+  createProductApiClient().request<ApiResponse<{ tasks: ExportTask[] }>>('/exports', {
     method: 'GET'
   })
 ```
 
-`app/features/billing/index.ts`：
+`app/features/exports/index.ts`：
 
 ```ts
 export * from './api'
-export { default as BillingDashboard } from './components/BillingDashboard.vue'
+export { default as ExportTasksPanel } from './components/ExportTasksPanel.vue'
 ```
 
 组件中使用：
 
 ```ts
-import { fetchInvoices } from '~/features/billing'
+import { fetchExportTasks } from '~/features/exports'
 
-const { data, error, refresh } = await useAsyncData('invoices', () => fetchInvoices())
+const { data, error, refresh } = await useAsyncData('export-tasks', () => fetchExportTasks())
 ```
 
 ## 示例：公开内容 API
@@ -60,7 +60,7 @@ export const fetchCaseStudies = (locale: SupportedLocale) =>
 import { getApiErrorMessage } from '~/lib/http/error'
 
 try {
-  await fetchInvoices()
+  await fetchExportTasks()
 } catch (error) {
   message.error(getApiErrorMessage(error, t('common.loadFailed')))
 }
