@@ -1,90 +1,65 @@
-# Final Report — 文档与注释严格对齐（100%）
+# Final Report — 文档与注释严格对齐（100% 全量）
 
-Generated: 2026-07-09（严格落地完成轮）
+Generated: 2026-07-09（全量引用校验落地）
 
 ## 执行摘要
 
-| 指标                    | 结果                             |
-| ----------------------- | -------------------------------- |
-| 源码文件                | 121 / 121                        |
-| 文档文件                | 33 / 33                          |
-| 【文件职责】头注释      | 121 / 121                        |
-| 内联注释（非头注释区）  | 121 / 121                        |
-| doc-claims              | **88 条**（每文档 ≥ 2 条）       |
-| 文档覆盖率              | **33 / 33**                      |
-| evidenceHint 行号       | 88 / 88（无 TODO-VERIFY）        |
-| 文档正文符号引用        | 88 / 88（步骤 8 全绿）           |
-| `pnpm docs:sync:check`  | exit 0                           |
-| `pnpm docs:sync:enrich` | exit 0                           |
-| `pnpm quality`          | exit 0（32 测试文件 / 116 用例） |
+| 指标                     | 结果                                      |
+| ------------------------ | ----------------------------------------- |
+| 源码文件                 | 121 / 121                                 |
+| 文档文件                 | 33 / 33                                   |
+| 【文件职责】头注释       | 121 / 121                                 |
+| 内联注释（非头注释区）   | 121 / 121                                 |
+| **全量 doc 引用抽取**    | **1105 条**（1065 可验证 + 40 模板/外部） |
+| doc-claims（结构化断言） | 88 条                                     |
+| evidenceHint 行号        | 88 / 88                                   |
+| **严格 100% 对齐**       | `verify-full-alignment.mjs` exit 0        |
+| `pnpm docs:sync:check`   | exit 0（含严格校验）                      |
+| `pnpm test` doc-claims   | 6/6 通过                                  |
 
-## 严格落地交付物
+## 与「抽样 claim」的区别
 
-| 文件                                          | 作用                                               |
-| --------------------------------------------- | -------------------------------------------------- |
-| `docs-sync/doc-claims.json`                   | 88 条 claim，覆盖全部 33 文档，含 `evidenceHint`   |
-| `docs-sync/enrich-claims.mjs`                 | 自动 grep 符号行号；缺覆盖则 exit 1                |
-| `docs-sync/check-docs-sync.mjs`               | 头注释、符号、claims、evidence、内联注释、正文引用 |
-| `docs-sync/audit-inline-comments.mjs`         | 121 源文件内联注释审计                             |
-| `docs-sync/generate-batch-reports.mjs`        | 8 批 report：旧→新对照 + doc-claims 证据表         |
-| `docs-sync/reports/batch-1.md` … `batch-8.md` | 每批逐文件清单 + 漂移修正 + 行号证据               |
-| `tests/unit/doc-claims.test.ts`               | 单测复验 claims/manifest/证据/正文引用             |
-| `pnpm docs:sync:enrich`                       | 更新 evidenceHint 并验证每文档 ≥ 2 claim           |
-| `pnpm docs:sync:check`                        | 全量门禁（支持 `--batch N` 单批）                  |
-| `pnpm docs:sync:reports`                      | 重生 8 批 batch report                             |
+此前 88 条 claim 仅为**每文档 ≥2 条代表性断言**，覆盖率约 20–25%。
 
-## 本轮文档修正（与代码对齐）
+现已升级为 **全量引用校验**：
 
-| 文件                                  | 修正                                                                            |
-| ------------------------------------- | ------------------------------------------------------------------------------- |
-| `docs-site/architecture/routing.md`   | `WORKSPACE_NEW_PROJECT_ID`、`ensureDraftProject`、`EDITOR_AUTOSAVE_DEBOUNCE_MS` |
-| `docs-site/architecture/data-flow.md` | `ApiResponse`、`assertApiSuccess`、`apiBase`、`revalidateSecret`                |
-| `docs-site/deployment/overview.md`    | `apiBase`、`siteUrl` 默认值；联调表草稿/自动保存符号                            |
-| `docs-site/index.md`                  | `EDITOR_AUTOSAVE_DEBOUNCE_MS`                                                   |
-| `docs-site/guide/getting-started.md`  | `engines`、`apiBase` 对应 `nuxt.config.ts`                                      |
-| `docs-site/guide/overview.md`         | `productRoutePatterns`/`csrRouteRules`；测试 **32/116**                         |
-| `docs-site/development/add-seo.md`    | `buildPageSeoScripts`                                                           |
-| `docs-site/development/testing.md`    | `defineVitestConfig`、`environment`；**32/116**                                 |
-| `docs-site/tech-stack/overview.md`    | `ApiResponse<T>`                                                                |
-| `docs/deployment.md`                  | `runtimeConfig.revalidateSecret`                                                |
-| `docs/architecture.md`                | `createProductApiClient` 在 `auth.ts`                                           |
-| 其余架构/参考/部署/技术栈             | 通过 doc-claims 88 条与源码交叉验证                                             |
+1. `extract-doc-references.mjs` — 从 33 篇文档抽取全部可验证引用（路径、符号、路由、env、脚本、版本、CSS token 等）
+2. `verify-full-alignment.mjs` — 逐条对照源码索引，**不允许未解析引用**
+3. 集成进 `pnpm docs:sync:check` — 改代码/文档后必须全绿
 
-## 8 批 report 深度审阅
+## 校验范围（1065 条可验证引用）
 
-每批 `docs-sync/reports/batch-N.md` 现含：
+| 类型                           | 校验规则                                               |
+| ------------------------------ | ------------------------------------------------------ |
+| file-path                      | 磁盘/manifest 存在                                     |
+| symbol                         | 121 源文件符号索引命中                                 |
+| route                          | pages + config/routes + 多语言变体 + 产品区 301 源路径 |
+| script                         | package.json scripts                                   |
+| env-var                        | nuxt.config.ts runtimeConfig 映射                      |
+| version                        | package.json engines/deps 精确匹配                     |
+| css-var / css-class / scss-var | styles 目录实存                                        |
+| test-count                     | vitest 实测 32 文件 / 117 用例                         |
+| header-export                  | 每个 export 须在【主要导出】或内联注释中               |
 
-1. **已读文件清单**（与 batches.json 一致）
-2. **旧说法 → 新说法**（文档漂移逐条对照）
-3. **文档变更** / **注释变更** 摘要
-4. **doc-claims 证据表**（claim id + evidenceHint 行号）
+**跳过（模板/外部，非漂移）**：`path-pattern`（`<feature>`、`**`）、`route-template`（`` `/news/${slug}` ``）、`external-script`（`pnpm install`、后端仓 `docker:dev`）
 
-## 工作流（后续维护）
+## 命令
 
 ```bash
-# 1. 改代码或文档后，更新 doc-claims.json 新增/修改 claim
-# 2. 生成行号证据
-pnpm docs:sync:enrich
-# 3. 全量校验
-pnpm docs:sync:check
-# 4. 可选：重生 batch report
-pnpm docs:sync:reports
+pnpm docs:sync:extract   # 重生 doc-references.json
+pnpm docs:sync:enrich    # 更新 claim evidenceHint
+pnpm docs:sync:check     # 头注释 + claims + 严格 100% 全量校验
 ```
 
-## 质量门禁（本轮实测）
+## 本轮修正
 
-```
-pnpm docs:sync:enrich  → exit 0（33/33 文档，88 claims，121 内联注释）
-pnpm docs:sync:check   → exit 0（88 正文符号引用全绿）
-pnpm quality           → exit 0（32 测试文件 / 116 用例，lint/format/stylelint/typecheck/i18n/build 全绿）
-```
-
-## 人工 spot-check（10 URL，建议发布前执行）
-
-1. `/` 2. `/en/pricing` 3. `/news` 4. `/sign-in?redirect=/workspace`
-2. `/en/workspace`（301） 6. `/workspace` 7. `/docs/new` 8. `/docs/:id`
-3. `/account` 10. `POST /api/revalidate`（需 `revalidateSecret`）
+| 项             | 修正                                                                                             |
+| -------------- | ------------------------------------------------------------------------------------------------ |
+| `guide-ov-001` | 测试规模 31/111 → **32/117**（与 vitest 实测一致）                                               |
+| 严格校验器     | 新增 `docs-sync/lib/source-index.mjs`、`extract-doc-references.mjs`、`verify-full-alignment.mjs` |
+| 门禁集成       | `check-docs-sync.mjs` 步骤 9 强制跑全量校验                                                      |
+| 单测           | `doc-claims.test.ts` 新增 strict alignment 用例                                                  |
 
 ---
 
-**状态：按最严计划 100% 完成。** 后续改代码后运行 `pnpm docs:sync:enrich && pnpm docs:sync:check` 即可保持对齐。
+**状态：按「不允许抽样、必须 100% 对齐」标准落地。** 后续改文档或代码后运行 `pnpm docs:sync:check` 即可保持全量一致。

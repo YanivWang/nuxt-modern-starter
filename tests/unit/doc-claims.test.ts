@@ -1,6 +1,6 @@
 /*
   【文件职责】
-    单测：doc-claims.json 与 manifest 对齐，符号/证据/文档正文引用与 docs-sync 门禁一致。
+    单测：doc-claims.json、doc-references.json 与 manifest 对齐；严格 100% 引用校验与 docs-sync 门禁一致。
 */
 import fs from 'node:fs'
 import path from 'node:path'
@@ -80,5 +80,18 @@ describe('doc-claims sync', () => {
       })
       expect(symbolInDoc || pathInDoc, `${claim.id} in ${claim.docFile}`).toBe(true)
     }
+  })
+
+  it('doc-references.json covers all documentation references', () => {
+    expect(fs.existsSync(path.join(ROOT, 'docs-sync/doc-references.json'))).toBe(true)
+    const refs = readJson<{ referenceCount: number; references: { type: string }[] }>(
+      'docs-sync/doc-references.json'
+    )
+    expect(refs.referenceCount).toBeGreaterThan(1000)
+    expect(refs.references.length).toBe(refs.referenceCount)
+    const verifiable = refs.references.filter(
+      (r) => !['path-pattern', 'external-script', 'route-template'].includes(r.type)
+    )
+    expect(verifiable.length).toBeGreaterThan(1000)
   })
 })

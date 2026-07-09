@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-09T03:57:10.014Z",
+  "generatedAt": "2026-07-09T04:00:39.918Z",
   "description": "Verifiable documentation claims mapped to source symbols and files.",
   "claims": [
     {
@@ -407,7 +407,7 @@
     {
       "id": "guide-ov-001",
       "docFile": "docs-site/guide/overview.md",
-      "claim": "Vitest 31 个测试文件、111 个用例",
+      "claim": "Vitest 32 个测试文件、117 个用例",
       "symbols": ["include"],
       "sourceFiles": ["vitest.config.ts"],
       "evidenceHint": "vitest.config.ts:19 (include)"

@@ -5,6 +5,7 @@
  */
 import fs from 'node:fs'
 import path from 'node:path'
+import { execSync } from 'node:child_process'
 
 const ROOT = path.resolve(import.meta.dirname, '..')
 const batchArg = process.argv.find((a) => a.startsWith('--batch='))
@@ -196,6 +197,18 @@ if (!batchId) {
 console.log(`docs-sync check${batchId ? ` (batch ${batchId})` : ''}`)
 console.log(`scope files: ${scopeFiles.length}`)
 console.log(`claims checked: ${claimScope.length}`)
+
+// 9. strict 100% alignment (extract + verify all doc references)
+if (!batchId) {
+  try {
+    execSync('node docs-sync/extract-doc-references.mjs', { cwd: ROOT, stdio: 'pipe' })
+    execSync('node docs-sync/verify-full-alignment.mjs', { cwd: ROOT, stdio: 'pipe' })
+    console.log('strict alignment: 100% verified')
+  } catch (e) {
+    const out = e.stdout?.toString() ?? e.stderr?.toString() ?? e.message
+    errors.push(`strict alignment failed:\n${out}`)
+  }
+}
 
 if (warnings.length) {
   console.log('\nWarnings:')
