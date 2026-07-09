@@ -9,7 +9,7 @@ pnpm build
 node .output/server/index.mjs
 ```
 
-监听端口默认 **3000**。
+监听端口默认 **3000**。`nuxt.config.ts` 默认 `runtimeConfig.public.apiBase` = `http://localhost:2026/api`、`siteUrl` = `http://localhost:3000`。
 
 ## 部署架构
 
@@ -58,13 +58,13 @@ pnpm docker:up       # 可选 Compose 栈
 
 ## 产品区工作流（联调参考）
 
-| 步骤 | 路由                    | 行为                                                                         |
-| ---- | ----------------------- | ---------------------------------------------------------------------------- |
-| 1    | `/sign-up` → `/sign-in` | 注册不自动登录；登录写 cookie 并 fetchMe                                     |
-| 2    | `/workspace`            | 列表/删除项目；创建按钮跳转 `/docs/new`（预加载 editor chunk）               |
-| 3    | `/docs/new`             | 草稿模式；首次非空内容触发 `createWorkspaceProject` + replace 到 `/docs/:id` |
-| 4    | `/docs/:id`             | 加载项目 + documentId；2s debounce 自动保存；标题双写 document/project       |
-| 5    | `/account`              | `fetchProfileApi` 展示扩展资料；UserAccountMenu 退出清归因                   |
+| 步骤 | 路由                    | 行为                                                                                                     |
+| ---- | ----------------------- | -------------------------------------------------------------------------------------------------------- |
+| 1    | `/sign-up` → `/sign-in` | 注册不自动登录；登录写 cookie 并 fetchMe                                                                 |
+| 2    | `/workspace`            | 列表/删除项目；创建按钮跳转 `/docs/new`（预加载 editor chunk）                                           |
+| 3    | `/docs/new`             | 草稿模式；`WORKSPACE_NEW_PROJECT_ID` + `ensureDraftProject`；`EDITOR_AUTOSAVE_DEBOUNCE_MS`（2s）自动保存 |
+| 4    | `/docs/:id`             | 加载项目 + documentId；debounce 自动保存；标题双写 document/project                                      |
+| 5    | `/account`              | `fetchProfileApi` 展示扩展资料；UserAccountMenu 退出清归因                                               |
 
 ## 下一步
 

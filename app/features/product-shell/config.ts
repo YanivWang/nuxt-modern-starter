@@ -33,5 +33,6 @@ export const productNavItems: ProductNavItem[] = [
 ]
 
 export const productFooterNavItems: ProductNavItem[] = [
+  // 定价为公开 SEO 页；localePath 会加 /en 前缀，产品 path 本身保持语言中性
   { path: '/pricing', labelKey: 'productNav.pricing', icon: 'TagOutlined' }
 ]

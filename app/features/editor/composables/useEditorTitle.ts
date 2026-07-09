@@ -54,6 +54,7 @@ export const useEditorTitle = ({
   watch(
     [() => project.value?.title, () => document.value?.title],
     () => {
+      // 编辑/保存标题期间不覆盖用户输入
       if (isEditingTitle.value || titleSaving.value) {
         return
       }
@@ -91,6 +92,7 @@ export const useEditorTitle = ({
         lastSavedAt.value = Date.now()
       }
 
+      // 同步更新 workspace project 标题，保持侧栏/列表与文档一致
       if (project.value?.id) {
         const response = await updateProject(project.value.id, { title: trimmed })
         onProjectUpdated({

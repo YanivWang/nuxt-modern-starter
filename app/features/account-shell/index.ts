@@ -18,4 +18,5 @@
   【边界与注意】
     与 product-shell 分离；账户侧栏 config 在 ./config.ts。
 */
+// layouts/account.vue 唯一消费方
 export { default as AccountShell } from './components/AccountShell.vue'

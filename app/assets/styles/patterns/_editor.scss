@@ -7,6 +7,7 @@
     登录产品区 — app/assets/styles/patterns，由 index.scss @use 引入。
 */
 
+// 全屏编辑器布局；--ye-* token 由 editor-appearance.ts 映射
 .editor-workspace {
   display: flex;
   flex-direction: column;

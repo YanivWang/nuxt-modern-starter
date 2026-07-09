@@ -18,4 +18,5 @@
   【边界与注意】
     退出逻辑在 AccountPage handleLogout，非 auth store。
 */
+// pages/account.vue 挂载；logout 跳转在 AccountPage 内
 export { default as AccountPage } from './components/AccountPage.vue'

@@ -29,6 +29,7 @@
 <script setup lang="ts">
 const appConfig = useAppConfig()
 const { localePath } = useLocalePath()
+// 品牌名来自 app.config.ts，非 i18n；链接回当前语言首页
 </script>
 
 <style scoped lang="scss">

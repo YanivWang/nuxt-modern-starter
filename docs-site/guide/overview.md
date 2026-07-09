@@ -35,6 +35,7 @@
 
 - SEO 页需要 SSR/静态化/SWR，HTML 可被爬虫和 CDN 缓存
 - 产品页强交互、依赖登录态，适合 CSR，且 URL 不应随 UI 语言变化
+- `config/routes.ts` 中 `productRoutePatterns` 定义产品区路径；`csrRouteRules` 供 `nuxt.config.ts` `routeRules` 设置 `ssr: false`
 
 ### 2. 页面薄、功能厚
 
@@ -86,8 +87,8 @@ Nuxt 页面文件（`app/pages/*`）只做：
 | UI     | Ant Design Vue 4                                       |
 | 样式   | SCSS 分层 token（`tokens/` + `patterns/` + `--app-*`） |
 | i18n   | vue-i18n（自建路由，不用 @nuxtjs/i18n）                |
-| 编辑器 | @yanivjs/yaniv-editor                                  | PPT/幻灯片编辑器（`mode: edit`, `preset: full`） |
-| 测试   | Vitest 4.1.9 + @nuxt/test-utils 4.0.3                  | Nuxt 环境 + 单元测试（23 文件 / 84 用例）        |
+| 编辑器 | @yanivjs/yaniv-editor                                  | PPT/幻灯片编辑器（`mode: edit`, `preset: full`）                                              |
+| 测试   | Vitest 4.1.9 + @nuxt/test-utils 4.0.3                  | `vitest.config.ts` `defineVitestConfig` + `include: tests/**/*.test.ts`（32 文件 / 116 用例） |
 | 部署   | Nitro node-server + Docker + Nginx 样例                |
 
 详见 [技术栈总览](/tech-stack/overview)。

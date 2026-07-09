@@ -47,7 +47,25 @@ const cssVarMap = {
 
 const light = colorPalettes.light
 
-const variables = `// AUTO-GENERATED — 请勿手改。编辑 config/theme-palette.json 后运行 pnpm generate:theme
+const variablesHeader = `/*
+  【文件职责】
+    Sass 设计 token 变量源（$color-*、$spacing-* 等），由 pnpm generate:theme 从 config/theme-palette.json 生成。
+
+  【架构位置】
+    共享层 — app/assets/styles/tokens，被 _root.scss / _dark.scss @use 消费。
+*/
+`
+
+const darkHeader = `/*
+  【文件职责】
+    暗黑模式 --app-* CSS 变量覆盖，由 :root[data-theme='dark'] 选择器生效。
+
+  【架构位置】
+    共享层 — app/assets/styles/tokens，与 _root.scss 配对；由 tokens/index.scss @use。
+*/
+`
+
+const variables = `${variablesHeader}// AUTO-GENERATED — 请勿手改。编辑 config/theme-palette.json 后运行 pnpm generate:theme
 
 // Brand — interactive
 $color-primary: ${light.colorPrimary};
@@ -252,7 +270,7 @@ ${darkColorLines}
 writeFileSync(join(tokensDir, '_variables.scss'), variables)
 writeFileSync(
   join(tokensDir, '_dark.scss'),
-  `// AUTO-GENERATED — 请勿手改。编辑 config/theme-palette.json 后运行 pnpm generate:theme
+  `${darkHeader}// AUTO-GENERATED — 请勿手改。编辑 config/theme-palette.json 后运行 pnpm generate:theme
 // 暗黑模式 — 色值覆盖（渐变/阴影语义项见下方）
 
 ${dark}\n`

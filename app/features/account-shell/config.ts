@@ -24,6 +24,7 @@ export type AccountNavItem = {
   icon: string
 }
 
+// 账户侧栏仅 /account；扩展子页在此追加
 export const accountNavItems: AccountNavItem[] = [
   { path: '/account', labelKey: 'accountNav.settings', icon: 'UserOutlined' }
 ]

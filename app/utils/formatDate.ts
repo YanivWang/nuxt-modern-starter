@@ -36,6 +36,7 @@ export const formatDateOnly = (isoDate: string) => {
 }
 
 export const formatPublishedDate = (isoDate: string, locale: SupportedLocale) =>
+  // 新闻发布日期固定 UTC，避免用户时区导致「同一天」显示不一致
   new Intl.DateTimeFormat(locale, {
     year: 'numeric',
     month: 'long',

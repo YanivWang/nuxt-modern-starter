@@ -21,6 +21,7 @@
 import { EditorWorkspace } from '~/features/editor'
 import { useEditorPage } from '~/features/editor/composables/useEditorPage'
 
+// editor layout + auth middleware；key 固定避免 /docs/:id 切换时整页 remount 丢编辑器状态
 definePageMeta({
   layout: 'editor',
   middleware: 'auth',

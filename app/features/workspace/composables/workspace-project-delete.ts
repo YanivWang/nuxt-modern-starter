@@ -24,6 +24,7 @@ export const performWorkspaceProjectDelete = async ({
   notifyDeleteSuccess,
   notifyDeleteError
 }: PerformWorkspaceProjectDeleteOptions) => {
+  // deletingProjectId 驱动卡片 loading/disabled，finally 中无论成败都清空
   deletingProjectId.value = projectId
 
   try {

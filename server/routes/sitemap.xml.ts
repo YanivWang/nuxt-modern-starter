@@ -27,5 +27,6 @@ export default defineEventHandler(async (event) => {
   setHeader(event, 'content-type', 'application/xml; charset=utf-8')
   const runtimeConfig = useRuntimeConfig(event)
 
+  // apiBase 拉取新闻 slug 动态收录；失败时 seo.ts 回退 FALLBACK_NEWS_SLUGS
   return buildSitemapXmlAsync(runtimeConfig.public.siteUrl, runtimeConfig.public.apiBase)
 })

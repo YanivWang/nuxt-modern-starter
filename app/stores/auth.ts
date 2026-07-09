@@ -43,6 +43,7 @@ export const useAuthStore = defineStore('auth', () => {
   const user = ref<AuthUser | null>(null)
   const status = ref<AuthStatus>('idle')
 
+  // 须 accessToken 与 user 同时存在；仅有 cookie 无 user 时 middleware 会走 ensureSession
   const isAuthenticated = computed(() => Boolean(accessToken.value && user.value))
   const hasRole = (role: Role) => Boolean(user.value?.roles.includes(role))
   const hasPermission = (permission: Permission) =>
@@ -102,6 +103,7 @@ export const useAuthStore = defineStore('auth', () => {
     return user.value
   }
 
+  // register 仅调 API，不 setTokens / fetchMe；登录由 sign-in 页 login 完成
   const register = (payload: RegisterPayload) => registerApi(payload)
 
   const logout = async () => {

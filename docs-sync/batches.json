@@ -1,0 +1,174 @@
+{
+  "batches": [
+    {
+      "id": 1,
+      "name": "config + nuxt.config",
+      "files": [
+        "app/app.config.ts",
+        "app/shims.d.ts",
+        "app/types/document.ts",
+        "config/antd-locale.ts",
+        "config/auth.ts",
+        "config/content/faq.ts",
+        "config/routes.ts",
+        "config/site.ts",
+        "config/theme.ts",
+        "nuxt.config.ts"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "app/lib/http + app/api",
+      "files": [
+        "app/api/auth.ts",
+        "app/api/clients.ts",
+        "app/api/public.ts",
+        "app/lib/http/client.ts",
+        "app/lib/http/error.ts",
+        "app/lib/http/headers.ts",
+        "app/lib/http/types.ts"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "middleware + plugins + composables + utils",
+      "files": [
+        "app/composables/useAuth.ts",
+        "app/composables/useLanguageSwitch.ts",
+        "app/composables/useLocalePath.ts",
+        "app/composables/usePageSeo.ts",
+        "app/composables/useTheme.ts",
+        "app/composables/useUserAvatar.ts",
+        "app/middleware/auth.ts",
+        "app/middleware/locale.global.ts",
+        "app/plugins/analytics.client.ts",
+        "app/plugins/attribution.client.ts",
+        "app/plugins/auth.ts",
+        "app/plugins/i18n.ts",
+        "app/utils/antdIcon.ts",
+        "app/utils/attribution-params.ts",
+        "app/utils/auth-session.ts",
+        "app/utils/formatDate.ts",
+        "app/utils/load-script.ts",
+        "app/utils/safe-redirect.ts"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "stores + layouts + components + app-root",
+      "files": [
+        "app/app.vue",
+        "app/components/base/AppContainer.vue",
+        "app/components/base/BaseButton.vue",
+        "app/components/base/BaseLogo.vue",
+        "app/components/base/BasePicture.vue",
+        "app/components/base/PageContainer.vue",
+        "app/components/layout/AppFooter.vue",
+        "app/components/layout/AppHeader.vue",
+        "app/components/layout/AppShellHeader.vue",
+        "app/components/layout/LanguageSwitcher.vue",
+        "app/components/layout/ThemeSwitch.vue",
+        "app/components/layout/UserAccountMenu.vue",
+        "app/error.vue",
+        "app/layouts/account.vue",
+        "app/layouts/default.vue",
+        "app/layouts/editor.vue",
+        "app/layouts/empty.vue",
+        "app/layouts/product.vue",
+        "app/stores/auth.ts",
+        "app/stores/language.ts",
+        "app/stores/theme.ts"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "pages + feature-workspace + feature-editor",
+      "files": [
+        "app/features/editor/api.ts",
+        "app/features/editor/components/EditorWorkspace.vue",
+        "app/features/editor/components/EditorWorkspaceHeader.vue",
+        "app/features/editor/composables/editor-content.ts",
+        "app/features/editor/composables/useDraftProject.ts",
+        "app/features/editor/composables/useEditorAutosave.ts",
+        "app/features/editor/composables/useEditorDocument.ts",
+        "app/features/editor/composables/useEditorPage.ts",
+        "app/features/editor/composables/useEditorTitle.ts",
+        "app/features/editor/composables/useEditorWorkspace.ts",
+        "app/features/editor/editor-appearance.ts",
+        "app/features/editor/index.ts",
+        "app/features/editor/types.ts",
+        "app/features/workspace/api.ts",
+        "app/features/workspace/components/WorkspaceDashboard.vue",
+        "app/features/workspace/components/WorkspaceProjectCard.vue",
+        "app/features/workspace/composables/useWorkspaceProjects.ts",
+        "app/features/workspace/composables/workspace-project-delete.ts",
+        "app/features/workspace/index.ts",
+        "app/features/workspace/types.ts",
+        "app/pages/[[language]]/[...slug].vue",
+        "app/pages/[[language]]/about.vue",
+        "app/pages/[[language]]/help.vue",
+        "app/pages/[[language]]/index.vue",
+        "app/pages/[[language]]/news/[slug].vue",
+        "app/pages/[[language]]/news/index.vue",
+        "app/pages/[[language]]/pricing.vue",
+        "app/pages/[[language]]/sign-in.vue",
+        "app/pages/[[language]]/sign-up.vue",
+        "app/pages/account.vue",
+        "app/pages/docs/[id].vue",
+        "app/pages/workspace/index.vue",
+        "app/pages/workspace/templates/index.vue"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "feature-account + product-shell + templates",
+      "files": [
+        "app/features/account-shell/components/AccountShell.vue",
+        "app/features/account-shell/config.ts",
+        "app/features/account-shell/index.ts",
+        "app/features/account/components/AccountPage.vue",
+        "app/features/account/index.ts",
+        "app/features/product-shell/components/ProductShell.vue",
+        "app/features/product-shell/config.ts",
+        "app/features/product-shell/index.ts",
+        "app/features/templates/components/ThemeTemplatesPage.vue",
+        "app/features/templates/index.ts"
+      ]
+    },
+    {
+      "id": 7,
+      "name": "server + assets/styles",
+      "files": [
+        "app/assets/styles/main.scss",
+        "app/assets/styles/patterns/_editor.scss",
+        "app/assets/styles/patterns/_home.scss",
+        "app/assets/styles/patterns/_page.scss",
+        "app/assets/styles/patterns/_product.scss",
+        "app/assets/styles/patterns/index.scss",
+        "app/assets/styles/tokens.ts",
+        "app/assets/styles/tokens/_dark.scss",
+        "app/assets/styles/tokens/_root.scss",
+        "app/assets/styles/tokens/_variables.scss",
+        "app/assets/styles/tokens/index.scss",
+        "server/api/revalidate.post.ts",
+        "server/middleware/product-canonical.ts",
+        "server/routes/robots.txt.ts",
+        "server/routes/sitemap.xml.ts",
+        "server/utils/revalidate.ts",
+        "server/utils/seo.ts"
+      ]
+    },
+    {
+      "id": 8,
+      "name": "docker + vitest.config + doc-review",
+      "files": [
+        "docker/docker-compose.base.yaml",
+        "docker/docker-compose.dev.yaml",
+        "docker/docker-compose.yaml",
+        "docker/nginx/gateway.docker.conf",
+        "vitest.config.ts"
+      ]
+    }
+  ],
+  "totalFiles": 121
+}

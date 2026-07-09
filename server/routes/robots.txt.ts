@@ -25,5 +25,6 @@ import { buildRobotsTxt } from '../utils/seo'
 
 export default defineEventHandler((event) => {
   setHeader(event, 'content-type', 'text/plain; charset=utf-8')
+  // Disallow 产品区/鉴权页；Sitemap 指向同域 /sitemap.xml
   return buildRobotsTxt(useRuntimeConfig(event).public.siteUrl)
 })

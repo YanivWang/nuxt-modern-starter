@@ -7,6 +7,7 @@
     公开 SEO 区 — app/assets/styles/patterns，由 index.scss @use 引入。
 */
 
+// 首页 Hero/Features/Workflow；纯 i18n 文案 + 本 patterns 样式
 .home-page {
   --home-block-gap: clamp(72px, 9vw, 116px);
 

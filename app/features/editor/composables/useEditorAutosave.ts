@@ -83,11 +83,13 @@ export const useEditorAutosave = ({
       return
     }
 
+    // 草稿尚无 documentId 且内容仍为空时不调度 timer，避免 /docs/new 空页触发创建
     if (!effectiveDocumentId.value && isBlankEditorContent(getContentHtml())) {
       return
     }
 
     clearAutosaveTimer()
+    // debounceMs 由 useEditorWorkspace 传入 EDITOR_AUTOSAVE_DEBOUNCE_MS（2000）
     autosaveTimer = setTimeout(() => {
       autosaveTimer = null
       void persistDocument()
@@ -107,6 +109,7 @@ export const useEditorAutosave = ({
     try {
       let documentId = effectiveDocumentId.value
 
+      // 草稿模式：首次非空保存走 ensureDraftProject（创建 project + 初始 document + replace 路由）
       if (!documentId) {
         documentId = await ensureDraftProject()
         if (!documentId) {
@@ -128,6 +131,7 @@ export const useEditorAutosave = ({
 
       const currentContent = getContentHtml()
       initialSnapshot.value = currentContent
+      // 保存期间若用户继续输入，dirty 仍为 true，需重新调度 autosave
       dirty.value = currentContent !== contentToSave
 
       if (dirty.value) {
@@ -144,6 +148,7 @@ export const useEditorAutosave = ({
   const flushAutosave = async () => {
     clearAutosaveTimer()
 
+    // onBeforeRouteLeave 调用：取消 pending timer 并同步落盘
     if (dirty.value) {
       await persistDocument()
     }

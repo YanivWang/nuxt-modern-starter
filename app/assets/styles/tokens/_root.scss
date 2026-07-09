@@ -1,3 +1,10 @@
+/*
+  【文件职责】
+    将 Sass token 变量映射为 :root / light 主题的 --app-* CSS 自定义属性。
+
+  【架构位置】
+    共享层 — app/assets/styles/tokens，由 tokens/index.scss @use 输出。
+*/
 // Design Token — :root CSS 自定义属性（--app-* 命名，避免与 Ant Design 冲突）
 
 @use './variables' as *;

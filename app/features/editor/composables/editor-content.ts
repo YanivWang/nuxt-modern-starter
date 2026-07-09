@@ -6,6 +6,7 @@
     登录产品区 — app/features/editor/composables，被 EditorWorkspace 与单测消费。
 */
 export const isBlankEditorContent = (html: string) => {
+  // 剥离空段落、<br>、&nbsp; 后无可见文本视为空白（与 autosave 空草稿 guard 对齐）
   const normalized = html
     .replace(/<br\s*\/?>/gi, '')
     .replace(/<\/?p[^>]*>/gi, '')

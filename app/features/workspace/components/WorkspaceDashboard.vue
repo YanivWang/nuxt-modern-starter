@@ -44,6 +44,7 @@ const prefetchEditorRoute = () => {
 }
 
 onMounted(() => {
+  // idle 时预加载 /docs/new 路由组件与 editor feature chunk，缩短首次进入编辑器耗时
   if (typeof requestIdleCallback !== 'undefined') {
     requestIdleCallback(() => prefetchEditorRoute())
     return

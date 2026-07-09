@@ -35,6 +35,7 @@ const languageStore = useLanguageStore()
 const { localePath } = useLocalePath()
 const { t } = useI18n()
 
+// 公开区 catch-all：HTTP 404 + noindex（不支持语言前缀的 404 由 locale middleware 处理）
 setResponseStatus(404)
 
 usePageSeo({

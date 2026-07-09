@@ -49,11 +49,13 @@ export const useEditorDocument = (effectiveDocumentId: Ref<string | null>) => {
     watch(
       document,
       (nextDocument) => {
+        // 编辑器已 ready 时仅同步 lastSavedAt，不覆盖用户正在编辑的内容
         if (editorReady.value) {
           syncLastSavedAt(nextDocument, lastSavedAt)
           return
         }
 
+        // 首屏加载：将远端 content 写入 editorInitialContent 供 YanivEditor 初始化
         editorInitialContent.value = nextDocument?.content?.trim() || EMPTY_EDITOR_HTML
         syncLastSavedAt(nextDocument, lastSavedAt)
       },

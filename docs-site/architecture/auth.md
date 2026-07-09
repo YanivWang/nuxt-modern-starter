@@ -51,7 +51,7 @@ sequenceDiagram
 ```
 
 - access token 默认 15 分钟（`ACCESS_TOKEN_MAX_AGE = 900`）
-- refresh token 默认 30 天
+- refresh token 默认 30 天（`REFRESH_TOKEN_MAX_AGE = 2_592_000`）
 - 生产环境 cookie `secure: true`（`NUXT_APP_ENV=production`）
 
 ## 保护路由

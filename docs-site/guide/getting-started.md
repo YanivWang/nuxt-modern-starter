@@ -7,6 +7,8 @@
 | Node | 22.22.3 |
 | pnpm | 11.5.2  |
 
+`package.json` `engines` 要求 Node **22.22.3**、pnpm **11.5.2**。
+
 ```bash
 corepack enable
 node -v   # 应 >= 22.22.3
@@ -39,6 +41,8 @@ pnpm dev
 ```bash
 NUXT_PUBLIC_API_BASE=http://localhost:2026/api
 ```
+
+对应 `nuxt.config.ts` `runtimeConfig.public.apiBase` 默认值。
 
 3. 后端 `CORS_ORIGINS` 包含 `http://localhost:3000`
 4. 登录后验证 `/workspace`（列表/删除）、从创建按钮进入 `/docs/new`、编辑器自动保存与标题编辑、`/workspace/templates` 占位页、`/account` 资料展示与退出

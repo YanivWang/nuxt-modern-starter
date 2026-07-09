@@ -6,11 +6,22 @@
 | ----------------------------------- | ------------------------------------ |
 | `modules`                           | Pinia、Ant Design Vue、ESLint        |
 | `runtimeConfig`                     | 服务端 `revalidateSecret`            |
-| `runtimeConfig.public`              | 公开环境变量映射                     |
+| `runtimeConfig.public`              | 公开环境变量映射（见下表默认值）     |
 | `routeRules`                        | prerender / SWR / CSR / CSP headers  |
 | `css`                               | 全局 SCSS（`main.scss`）             |
 | `vite.css.preprocessorOptions.scss` | 向 SFC 注入 `tokens/_variables.scss` |
 | `typescript.strict`                 | 严格模式 + typeCheck                 |
+
+### `runtimeConfig.public` 默认值（`nuxt.config.ts`）
+
+| 键                 | 默认                        | 说明                                                          |
+| ------------------ | --------------------------- | ------------------------------------------------------------- |
+| `apiBase`          | `http://localhost:2026/api` | 已含 `/api` 前缀；adapter 写 `/projects` 而非 `/api/projects` |
+| `siteUrl`          | `http://localhost:3000`     | canonical / sitemap 基础 URL                                  |
+| `analyticsEnabled` | `false`                     | 启用第三方脚本需同步放宽 CSP `script-src`                     |
+| `analyticsDeferMs` | `3000`                      | 无效或非数字时回退 3000                                       |
+
+`routeRules` 由 `config/routes.ts` 展开：`prerenderRoutes`（6 条）、`swrRouteRules`（`swr: 3600`）、`csrRouteRules`（`ssr: false`）。
 
 ## config/site.ts
 
@@ -47,8 +58,8 @@ publicLocalizedPaths() // 多语言公开页展开
 AUTH_API_ENDPOINTS // /login /register /refresh ...
 AUTH_COOKIE_KEYS
 AUTH_REDIRECTS // login: '/sign-in'
-ACCESS_TOKEN_MAX_AGE // 900s
-REFRESH_TOKEN_MAX_AGE // 30d
+ACCESS_TOKEN_MAX_AGE // 900s（15 分钟）
+REFRESH_TOKEN_MAX_AGE // 2_592_000s（30 天）
 AuthUser / AuthRouteMeta // 类型
 ```
 
@@ -58,6 +69,31 @@ AuthUser / AuthRouteMeta // 类型
 | ------------------------------- | ------------------------------------------------ | ------------------------- |
 | `app/features/workspace/api.ts` | `WORKSPACE_NEW_PROJECT_ID`                       | `'new'`，对应 `/docs/new` |
 | `app/features/workspace/api.ts` | `getWorkspaceDocPath` / `getWorkspaceNewDocPath` | 编辑器链接 helper         |
+
+## config/antd-locale.ts
+
+将 `SupportedLocale` 映射为 Ant Design Vue 内置语言包，由 `app/app.vue` 的 `a-config-provider` 按需 `import()`：
+
+```ts
+loadAntdLocale(locale) // 动态加载对应 ant-design-vue/es/locale/*
+```
+
+| 特例    | 行为                                    |
+| ------- | --------------------------------------- |
+| `ph-PH` | Ant Design 无 Filipino 包，回退 `en_US` |
+
+其余 14 种语言各对应官方 locale 文件（见 `ANTD_LOCALE_LOADERS`）。
+
+## config/content/faq.ts
+
+帮助页 FAQ 静态内容单一来源：
+
+```ts
+faqItems // FaqItem[]，每条含 key + 多语言 question/answer
+resolveLocalizedContent(content, locale) // 回退 en-US → zh-CN
+```
+
+由 `app/api/public.ts` 的 `getFaqItems()` 按当前语言读取；不经远程 API。
 
 ## config/theme-palette.json
 

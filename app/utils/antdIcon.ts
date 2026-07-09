@@ -46,6 +46,7 @@ import UserOutlinedSvg from '@ant-design/icons-svg/es/asn/UserOutlined'
 import type { IconDefinition } from '@ant-design/icons-svg/es/types'
 import { defineComponent, h } from 'vue'
 
+/** 将 icons-svg 定义包装为 Vue 组件；inheritAttrs: false 避免 attrs 与 icon prop 冲突 */
 export const createAntdIcon = (displayName: string, icon: IconDefinition) =>
   defineComponent({
     name: displayName,
@@ -55,6 +56,7 @@ export const createAntdIcon = (displayName: string, icon: IconDefinition) =>
     }
   })
 
+// 具名导出供 tree-shaking；新增图标须同步在此 import + export
 export const AppstoreOutlined = createAntdIcon('AppstoreOutlined', AppstoreOutlinedSvg)
 export const ArrowLeftOutlined = createAntdIcon('ArrowLeftOutlined', ArrowLeftOutlinedSvg)
 export const ArrowRightOutlined = createAntdIcon('ArrowRightOutlined', ArrowRightOutlinedSvg)

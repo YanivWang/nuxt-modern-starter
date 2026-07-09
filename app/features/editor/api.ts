@@ -29,6 +29,7 @@ export type SaveEditorDocumentPayload = {
 
 const editorDocumentPath = (documentId: string) => `/documents/${documentId}`
 
+// 相对路径 /documents/:id；base NUXT_PUBLIC_API_BASE 已含 /api
 export const fetchEditorDocument = (documentId: string) =>
   createProductApiClient().request<ApiResponse<{ document: EditorDocument }>>(
     editorDocumentPath(documentId),

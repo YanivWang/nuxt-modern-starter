@@ -134,6 +134,7 @@ export const useEditorWorkspace = ({
       clearAutosaveTimer()
     })
 
+    // 路由离开前同步落盘：取消 debounce timer 并 flush dirty（见 useEditorAutosave.flushAutosave）
     onBeforeRouteLeave(async () => {
       if (saving.value) {
         return true

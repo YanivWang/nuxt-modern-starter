@@ -26,5 +26,6 @@
 </template>
 
 <script setup lang="ts">
+// 薄 layout：仅挂载 AccountShell，业务在 pages/account + features/account
 import { AccountShell } from '~/features/account-shell'
 </script>

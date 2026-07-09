@@ -20,6 +20,7 @@
     产品区使用 product / account / editor layout，不用 default。
 -->
 <template>
+  <!-- 公开 SEO 区默认壳：AppHeader + main + AppFooter -->
   <div class="app-shell">
     <AppHeader />
     <main class="app-main">

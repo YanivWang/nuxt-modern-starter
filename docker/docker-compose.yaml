@@ -22,6 +22,7 @@ name: nuxt-modern-starter-prod
 
 services:
   gateway:
+    # 生产栈：gateway healthy 依赖 nuxt healthcheck
     image: nginx:alpine
     container_name: nuxt-modern-starter-gateway
     volumes:
@@ -30,6 +31,7 @@ services:
       - '${GATEWAY_HOST_PORT:-3000}:3000'
     depends_on:
       nuxt:
+        # Nuxt 健康后再对外暴露 gateway，避免 502
         condition: service_healthy
     restart: unless-stopped
 

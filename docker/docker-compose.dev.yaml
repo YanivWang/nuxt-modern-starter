@@ -22,6 +22,7 @@ name: nuxt-modern-starter-dev
 
 services:
   gateway:
+    # 对外唯一入口 :3000；TLS 在更外层 ingress 终止
     image: nginx:alpine
     container_name: nuxt-modern-starter-gateway-dev
     volumes:

@@ -20,6 +20,7 @@
 */
 declare module '*.css'
 
+// 为 useNuxtApp().$i18nContext 提供类型（由 app/plugins/i18n.ts 注入）
 declare module '#app' {
   interface NuxtApp {
     $i18nContext: import('../i18n').AppI18nContext

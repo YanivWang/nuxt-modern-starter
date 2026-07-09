@@ -26,6 +26,7 @@
 </template>
 
 <script setup lang="ts">
+// 公开页 CTA 默认 primary + large；产品区可直接用 a-button
 withDefaults(
   defineProps<{
     type?: 'default' | 'primary' | 'dashed' | 'link' | 'text'

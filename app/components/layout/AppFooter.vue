@@ -33,6 +33,7 @@
 
 <script setup lang="ts">
 const { localePath } = useLocalePath()
+// 次要导航 about/help；链接须 localePath 以支持 /en 前缀
 </script>
 
 <style scoped lang="scss">

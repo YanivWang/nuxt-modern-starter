@@ -65,6 +65,7 @@ export const useEditorPage = () => {
 
   const cachedProject = ref<WorkspaceProject | null>(null)
 
+  // 路由 id 切换或刷新时保留上一份 project，避免 EditorWorkspace 标题/壳闪烁
   watch(project, (nextProject) => {
     if (nextProject) {
       cachedProject.value = nextProject
@@ -73,6 +74,7 @@ export const useEditorPage = () => {
 
   const resolvedProject = computed(() => project.value ?? cachedProject.value)
   const editorDocumentId = computed(() => resolvedProject.value?.documentId ?? null)
+  // /docs/new 无 project 拉取；已有 cachedProject 时不显示全页 loading
   const showLoading = computed(() => pending.value && !isNewDraft.value && !cachedProject.value)
 
   const onProjectCreated = (createdProject: WorkspaceProject) => {

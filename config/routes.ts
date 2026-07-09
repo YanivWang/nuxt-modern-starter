@@ -83,6 +83,7 @@ const nonDefaultLocalePrefixes = SUPPORTED_LOCALES.filter(
   (locale) => locale !== DEFAULT_LOCALE
 ).map((locale) => SITE_LOCALE_PREFIX_MAP[locale])
 
+// 仅 zh-CN / en-US 六条营销页做 prerender；其余语言公开页走默认 SSR
 export const prerenderRoutes = publicLocalizedPaths(['zh-CN', 'en-US']).filter(
   (path) =>
     path === '/' ||

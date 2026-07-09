@@ -22,8 +22,10 @@ import { defineVitestConfig } from '@nuxt/test-utils/config'
 
 export default defineVitestConfig({
   test: {
+    // Nuxt 测试环境：自动注入 @nuxt/test-utils，可 import composable / plugin
     environment: 'nuxt',
     globals: true,
+    // 仅扫描 tests/；E2E 不在此范围
     include: ['tests/**/*.{test,spec}.ts']
   }
 })

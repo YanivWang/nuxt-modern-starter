@@ -17,7 +17,7 @@
 - `app/features/templates`: optional theme templates placeholder UI (`ThemeTemplatesPage`).
 - `app/features`: other consumer creator product modules. Complex product UI, feature composables, feature stores, feature types, and feature API adapters grow here instead of top-level Nuxt folders.
 - `app/lib/http`: shared HTTP wrapper, response types, header helpers, envelope validation (`assertApiSuccess`), error normalization, and typed `$fetch` client creation.
-- `app/api`: cross-feature request adapters (`public.ts`, `auth.ts`) plus scenario client factories in `clients.ts`.
+- `app/api`: cross-feature request adapters (`public.ts`, `auth.ts`) plus scenario client factories in `clients.ts` (`createPublicApiClient`, `createAuthApiClient`); `createProductApiClient()` lives in `auth.ts`.
 - `app/composables`: shared runtime APIs — `useAuth`, `useLocalePath`, `usePageSeo`, `useTheme`, `useLanguageSwitch`, and `useUserAvatar`. Feature-specific composables belong under `app/features/<feature>/composables`; feature-only request adapters belong under `app/features/<feature>/api.ts`.
 - `app/api/public.ts`: SEO-safe public content adapters. Public adapters must not depend on auth state or trigger token refresh.
 - `app/api/auth.ts`: Bearer Token auth adapter. It owns login, register, refresh, logout, `/me`, profile requests, response normalization, single-flight token refresh, and `createProductApiClient()`.

@@ -63,6 +63,7 @@ export type PricingPageContent = {
 }
 
 export const getFaqItems = (locale: SupportedLocale) =>
+  // FAQ 不经远程 API；从 config/content/faq.ts 按 locale 回退 en-US → zh-CN
   faqItems.map((item) => ({
     key: item.key,
     question: resolveLocalizedContent(item.question, locale),

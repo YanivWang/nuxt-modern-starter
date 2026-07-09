@@ -36,6 +36,7 @@ useHead({
   script: [
     {
       key: 'theme-init',
+      // hydration 前设置 data-theme，避免亮色/暗色闪烁（与 useTheme localStorage 键一致）
       innerHTML: `(() => { try { const saved = localStorage.getItem('${THEME_STORAGE_KEY}'); const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches; const mode = saved || 'system'; document.documentElement.dataset.theme = mode === 'dark' || (mode === 'system' && systemDark) ? 'dark' : 'light'; } catch {} })();`,
       tagPosition: 'head'
     }
@@ -53,6 +54,7 @@ watch(
     const requestId = ++antdLocaleRequestId
     const nextLocale = await loadAntdLocale(locale)
 
+    // 快速连续切换语言时丢弃过期 import() 结果，避免 locale 回退错乱
     if (requestId === antdLocaleRequestId) {
       antdLocale.value = nextLocale
     }

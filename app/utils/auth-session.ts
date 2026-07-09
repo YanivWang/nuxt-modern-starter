@@ -34,6 +34,7 @@ export const tokenCookieOptions = (maxAge: number) => {
     maxAge,
     sameSite: 'lax' as const,
     path: '/',
+    // production 环境启用 secure，与 HTTPS 部署一致
     secure: config.public.appEnv === 'production'
   }
 }

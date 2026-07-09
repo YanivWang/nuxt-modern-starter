@@ -28,6 +28,7 @@ import {
 
 export const useThemeStore = defineStore('theme', () => {
   const mode = ref<ThemeMode>(DEFAULT_THEME_MODE)
+  // resolvedMode 为实际渲染色板（system 解析后写入 light/dark）
   const resolvedMode = ref<ResolvedThemeMode>('light')
 
   const setMode = (nextMode: ThemeMode) => {

@@ -18,4 +18,5 @@
   【边界与注意】
     占位 UI，无 API；可整 feature 替换为真实模板选择。
 */
+// workspace/templates 占位页；无 API
 export { default as ThemeTemplatesPage } from './components/ThemeTemplatesPage.vue'

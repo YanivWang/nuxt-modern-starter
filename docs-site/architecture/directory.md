@@ -106,13 +106,15 @@ app/
 
 ## `config/` — 静态配置
 
-| 文件             | 内容                                                           |
-| ---------------- | -------------------------------------------------------------- |
-| `site.ts`        | 站点名、语言列表、`PUBLIC_PAGE_PATHS`、导航                    |
-| `routes.ts`      | prerender/SWR/CSR 规则、路径 helper                            |
-| `auth.ts`        | 鉴权端点、cookie 键、token 过期时间                            |
-| `theme.ts`       | Ant Design token 映射；与 `app/assets/styles/tokens/` 色板对齐 |
-| `content/faq.ts` | 帮助页 FAQ 本地数据                                            |
+| 文件                 | 内容                                                           |
+| -------------------- | -------------------------------------------------------------- |
+| `site.ts`            | 站点名、语言列表、`PUBLIC_PAGE_PATHS`、导航                    |
+| `routes.ts`          | prerender/SWR/CSR 规则、路径 helper                            |
+| `auth.ts`            | 鉴权端点、cookie 键、token 过期时间                            |
+| `antd-locale.ts`     | Ant Design Vue locale 动态加载；`ph-PH` 回退 `en_US`           |
+| `theme.ts`           | Ant Design token 映射；与 `app/assets/styles/tokens/` 色板对齐 |
+| `theme-palette.json` | 色值唯一编辑源；`pnpm generate:theme` 生成 SCSS                |
+| `content/faq.ts`     | 帮助页 FAQ 本地数据                                            |
 
 ## `server/` — 服务端
 

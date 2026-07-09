@@ -24,6 +24,7 @@ import { createAppI18n, resolvePreferredLocale, STORAGE_KEY_LANGUAGE } from '../
 export default defineNuxtPlugin(async (nuxtApp) => {
   const route = useRoute()
   const languageCookie = useCookie<string | undefined>(STORAGE_KEY_LANGUAGE)
+  // 产品页无 language 路由参数时，优先读 cookie 中的 UI locale
   const locale = resolvePreferredLocale(route.path, languageCookie.value)
   const i18nContext = createAppI18n()
 

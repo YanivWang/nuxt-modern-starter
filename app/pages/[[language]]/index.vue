@@ -110,6 +110,7 @@ usePageSeo({
   locale: languageStore.currentLanguage,
   title: t('home.title'),
   description: t('home.lead'),
+  // 首页输出 WebPage + Organization JSON-LD；站点验证 token 来自 runtimeConfig
   webPage: true,
   includeOrganization: true,
   siteVerification: {

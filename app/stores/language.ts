@@ -49,6 +49,7 @@ export const useLanguageStore = defineStore('language', () => {
     const { $i18nContext } = useNuxtApp()
 
     currentLanguage.value = locale
+    // cookie 持久化 UI 语言；产品区刷新 /workspace 等仍保持上次选择
     languageCookie.value = locale
 
     await $i18nContext.loadLocaleMessages(locale)

@@ -65,6 +65,7 @@ const {
 
 bindEditorLifecycle()
 
+// YanivEditor 固定 edit/full/custom；appearance 映射 --app-* → --ye-*
 const EDITOR_MODE = 'edit' as const
 const EDITOR_PRESET = 'full' as const
 const EDITOR_APPEARANCE = 'custom' as const

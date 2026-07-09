@@ -34,7 +34,7 @@ features:
     details: Nitro node-server、Docker、Compose、Nginx 样例与完整环境变量说明。
   - icon: 📝
     title: 工作台与编辑器
-    details: 个人项目列表/删除、/docs/new 草稿创建、YanivEditor PPT 编辑器 2s 自动保存、账户中心与可选主题模板占位。
+    details: 个人项目列表/删除、/docs/new 草稿创建、YanivEditor PPT 编辑器（`EDITOR_AUTOSAVE_DEBOUNCE_MS` 2s 自动保存）、账户中心与可选主题模板占位。
 ---
 
 ## 文档适合谁读？
@@ -62,4 +62,5 @@ pnpm docs:dev
 ```bash
 pnpm docs:build
 pnpm docs:preview
+pnpm docs:sync:check   # 校验文档 claim 与源码一致
 ```

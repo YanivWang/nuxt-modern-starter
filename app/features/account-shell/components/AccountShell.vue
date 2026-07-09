@@ -26,6 +26,7 @@ import { accountNavItems } from '../config'
 
 const { localePath } = useLocalePath()
 
+// 账户 shell 与 product-shell 分离；侧栏仅 accountNavItems，无工作台导航
 const navIconMap = {
   UserOutlined
 } as const

@@ -1,3 +1,10 @@
+/*
+  【文件职责】
+    Sass 设计 token 变量源（$color-*、$spacing-* 等），由 pnpm generate:theme 从 config/theme-palette.json 生成。
+
+  【架构位置】
+    共享层 — app/assets/styles/tokens，被 _root.scss / _dark.scss @use 消费。
+*/
 // AUTO-GENERATED — 请勿手改。编辑 config/theme-palette.json 后运行 pnpm generate:theme
 
 // Brand — interactive

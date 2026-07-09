@@ -25,6 +25,7 @@ import { productFooterNavItems, productNavItems } from '../config'
 
 const { localePath } = useLocalePath()
 
+// config icon 字段 → 具名图标组件；新增 nav 项须同步扩展
 const navIconMap = {
   FolderOutlined,
   LayoutOutlined,

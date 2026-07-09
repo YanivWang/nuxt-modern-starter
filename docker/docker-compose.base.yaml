@@ -21,6 +21,7 @@
 # 开发和生产 Compose 都复用这里的 Nuxt 构建、运行环境和健康检查。
 services:
   nuxt:
+    # BUILD_ENV 控制 Dockerfile 多阶段目标（prod/dev）
     build:
       context: ..
       dockerfile: docker/Dockerfile
@@ -32,6 +33,7 @@ services:
       HOST: 0.0.0.0
       PORT: '3000'
     healthcheck:
+      # gateway depends_on condition: service_healthy 依赖此探活
       test:
         [
           'CMD-SHELL',

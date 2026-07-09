@@ -47,6 +47,7 @@ export function buildRouteCacheKey(path: string) {
 export function getNewsRevalidatePaths(slug: string) {
   const normalizedSlug = slug.trim()
 
+  // slug 快捷方式展开为 15 语言 ×（列表 + 详情）共 30 条新闻路径
   return SUPPORTED_LOCALES.flatMap((locale) => [
     localizedPath('/news', locale),
     localizedPath(`/news/${normalizedSlug}`, locale)

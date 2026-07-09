@@ -13,6 +13,7 @@ import { purgeRouteCaches, resolveRevalidatePaths } from '../utils/revalidate'
 export default defineEventHandler(async (event) => {
   const { revalidateSecret } = useRuntimeConfig()
 
+  // 未配置 NUXT_REVALIDATE_SECRET 时拒绝服务，避免无鉴权缓存清除
   if (!revalidateSecret) {
     throw createError({
       statusCode: 503,
@@ -22,6 +23,7 @@ export default defineEventHandler(async (event) => {
 
   const providedSecret = getHeader(event, 'x-revalidate-secret')
 
+  // Header 缺失或与 runtimeConfig 不一致 → 401
   if (!providedSecret || providedSecret !== revalidateSecret) {
     throw createError({
       statusCode: 401,

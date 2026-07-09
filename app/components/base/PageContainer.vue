@@ -34,6 +34,7 @@ withDefaults(
 </script>
 
 <template>
+  <!-- layout=prose|compact 时收窄内容宽度，配合 patterns/_page.scss -->
   <section class="page-container app-container" :class="`page-container--${layout}`">
     <slot />
   </section>

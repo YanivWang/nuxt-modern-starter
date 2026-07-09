@@ -62,7 +62,7 @@
 ## 与后端契约
 
 - REST JSON API
-- 统一 `{ code, message, data }`
+- 统一 `{ code, message, data }`；类型 `ApiResponse<T>`（`app/lib/http/types.ts`）
 - Bearer Token 鉴权
 - 联调项目：`nuxt-modern-starter-api`
 

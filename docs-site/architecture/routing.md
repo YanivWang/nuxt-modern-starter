@@ -70,12 +70,12 @@ SWR 默认最长 1 小时才后台刷新。新闻等内容变更后，后端可 
 
 ### 登录产品区（语言中性 URL，不带 `/en` 前缀）
 
-| 页面   | 路由                     | 页面文件                        | 渲染方式 | 说明                                              |
-| ------ | ------------------------ | ------------------------------- | -------- | ------------------------------------------------- |
-| 工作台 | `/workspace`             | `workspace/index.vue`           | **CSR**  | 需 `auth` 中间件；列表/删除；创建跳转 `/docs/new` |
-| 模板   | `/workspace/templates`   | `workspace/templates/index.vue` | **CSR**  | 占位 UI                                           |
-| 编辑器 | `/docs/:id`、`/docs/new` | `docs/[id].vue`                 | **CSR**  | YanivEditor PPT 编辑器 + 2s 自动保存              |
-| 账户   | `/account`               | `account.vue`                   | **CSR**  | profile + 退出                                    |
+| 页面   | 路由                     | 页面文件                        | 渲染方式 | 说明                                                                                                                  |
+| ------ | ------------------------ | ------------------------------- | -------- | --------------------------------------------------------------------------------------------------------------------- |
+| 工作台 | `/workspace`             | `workspace/index.vue`           | **CSR**  | 需 `auth` 中间件；列表/删除；创建跳转 `/docs/new`                                                                     |
+| 模板   | `/workspace/templates`   | `workspace/templates/index.vue` | **CSR**  | 占位 UI                                                                                                               |
+| 编辑器 | `/docs/:id`、`/docs/new` | `docs/[id].vue`                 | **CSR**  | YanivEditor；`WORKSPACE_NEW_PROJECT_ID`（`/docs/new`）+ `ensureDraftProject`；`EDITOR_AUTOSAVE_DEBOUNCE_MS`（2000ms） |
+| 账户   | `/account`               | `account.vue`                   | **CSR**  | profile + 退出                                                                                                        |
 
 > 未单独配置 `routeRules` 的公开路由均走 **SSR（默认）**；产品区由 `csrRouteRules` 统一设为 **CSR**。
 

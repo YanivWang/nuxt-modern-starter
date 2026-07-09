@@ -10,6 +10,7 @@ export type WorkspaceProjectAccent = 'blue' | 'green' | 'violet' | 'amber' | 'cy
 export type WorkspaceProject = {
   id: string
   workspaceId: string
+  /** 关联编辑器文档 id；列表卡片跳转 /docs/:documentId */
   documentId: string | null
   title: string
   description: string | null

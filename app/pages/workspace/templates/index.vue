@@ -35,6 +35,7 @@
 import { useI18n } from 'vue-i18n'
 import { ThemeTemplatesPage } from '~/features/templates'
 
+// 占位页：无模板 API，可整页替换为真实选择器
 definePageMeta({
   layout: 'product',
   middleware: 'auth'

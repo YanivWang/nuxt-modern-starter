@@ -41,6 +41,7 @@ export const useWorkspaceProjects = ({
     return response.data.projects
   })
 
+  // deleteProject 委托 performWorkspaceProjectDelete，统一 loading/refresh/通知
   const deleteProject = (projectId: string) =>
     performWorkspaceProjectDelete({
       projectId,

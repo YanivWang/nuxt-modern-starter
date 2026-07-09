@@ -40,6 +40,7 @@ const emit = defineEmits<{
 
 const languageStore = useLanguageStore()
 
+// updatedAt 按当前 UI locale 格式化为工作台卡片时间
 const formattedUpdatedAt = computed(() =>
   formatWorkspaceDateTime(props.project.updatedAt, languageStore.currentLanguage)
 )

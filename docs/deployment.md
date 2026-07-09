@@ -42,7 +42,7 @@ Committed env files should only contain non-secret defaults. Override them with 
 
 Production auth cookies are marked `secure` when `NUXT_APP_ENV=production`, so real login flows must be served over HTTPS.
 
-`NUXT_REVALIDATE_SECRET` is not exposed to the client. If it is unset, `/api/revalidate` returns 503 so unauthenticated cache purge is not available in production.
+`NUXT_REVALIDATE_SECRET` is not exposed to the client (`runtimeConfig.revalidateSecret`). If it is unset, `/api/revalidate` returns 503 so unauthenticated cache purge is not available in production.
 
 ## Local Full-Stack Verification
 

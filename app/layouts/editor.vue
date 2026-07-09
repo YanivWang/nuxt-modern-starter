@@ -20,5 +20,6 @@
     与 product layout 不同，编辑器不显示 product-shell 侧边栏。
 -->
 <template>
+  <!-- 全屏编辑器：无 product-shell，chrome 由 EditorWorkspace 承担 -->
   <slot />
 </template>

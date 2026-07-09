@@ -1,3 +1,10 @@
+/*
+  【文件职责】
+    页面 UI 模式聚合入口：公开页、产品区、编辑器样式 patterns。
+
+  【架构位置】
+    共享层 — app/assets/styles/patterns，由 main.scss 引入。
+*/
 // 公开页 + 产品区 + 编辑器 UI 模式
 
 @use './page';

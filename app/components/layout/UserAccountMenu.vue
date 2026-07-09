@@ -195,6 +195,7 @@ const handleDocumentClick = (event: MouseEvent) => {
 }
 
 onMounted(() => {
+  // 触控/粗指针设备用 click 切换语言子面板；桌面 hover 打开
   isCoarsePointer.value = window.matchMedia('(hover: none), (pointer: coarse)').matches
 })
 
@@ -242,6 +243,7 @@ const openLanguagePanel = () => {
     languagePanelCloseTimer = null
   }
 
+  // 桌面 hover 打开；触控设备仅 click（toggleLanguagePanel）切换
   if (!isCoarsePointer.value) {
     isLanguageOpen.value = true
   }
@@ -267,6 +269,7 @@ const toggleLanguagePanel = () => {
 }
 
 const handleLanguageSelect = async (locale: SupportedLocale) => {
+  // 产品区 switchLanguage 不改 URL path，仅换 UI locale + cookie
   await switchLanguage(locale)
   closeMenu()
 }

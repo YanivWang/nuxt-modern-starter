@@ -62,6 +62,7 @@ usePageSeo({
 })
 
 const redirectTarget = computed(() =>
+  // middleware auth 附带的 ?redirect= 须经 resolveSafeRedirectPath 过滤开放重定向
   resolveSafeRedirectPath(
     typeof route.query.redirect === 'string' ? route.query.redirect : undefined,
     localePath('/workspace')

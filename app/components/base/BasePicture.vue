@@ -39,6 +39,7 @@ const props = withDefaults(defineProps<BasePictureProps>(), {
   fetchpriority: 'auto',
   sizes: undefined
 })
+// 首页 hero 可设 loading=eager + fetchpriority=high 优化 LCP
 </script>
 
 <template>

@@ -21,6 +21,7 @@ const ANTD_LOCALE_LOADERS = {
   'th-TH': () => import('ant-design-vue/es/locale/th_TH').then((module) => module.default),
   'ms-MY': () => import('ant-design-vue/es/locale/ms_MY').then((module) => module.default),
   'id-ID': () => import('ant-design-vue/es/locale/id_ID').then((module) => module.default),
+  // Ant Design 无 Filipino 官方包，ph-PH 回退 en_US
   'ph-PH': () => import('ant-design-vue/es/locale/en_US').then((module) => module.default),
   'ja-JP': () => import('ant-design-vue/es/locale/ja_JP').then((module) => module.default),
   'de-DE': () => import('ant-design-vue/es/locale/de_DE').then((module) => module.default),

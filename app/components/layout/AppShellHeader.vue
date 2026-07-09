@@ -36,6 +36,7 @@
 
 <script setup lang="ts">
 import UserAccountMenu from './UserAccountMenu.vue'
+// 默认 actions-after 为 UserAccountMenu；产品区无 AppHeader
 </script>
 
 <style scoped lang="scss">

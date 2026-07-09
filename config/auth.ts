@@ -40,7 +40,9 @@ export const AUTH_REDIRECTS = {
   logout: '/'
 } as const
 
+/** access token cookie max-age：900 秒 = 15 分钟 */
 export const ACCESS_TOKEN_MAX_AGE = 900
+/** refresh token cookie max-age：2_592_000 秒 = 30 天 */
 export const REFRESH_TOKEN_MAX_AGE = 2_592_000
 
 export type Role = string

@@ -19,6 +19,7 @@
   【边界与注意】
     产品 feature 私有样式放 feature 目录；公开页复用 .page-title / .page-lead 等于此或 patterns/。
 */
+// 全局入口：tokens 变量 + patterns 公开页/产品页样式块
 @use './tokens/index' as app-tokens;
 @use './patterns/index' as app-patterns;
 

@@ -33,6 +33,7 @@ import { CheckOutlined } from '~/utils/antdIcon'
 const languageStore = useLanguageStore()
 const { t } = useI18n()
 
+// 纯 i18n 静态内容；prerender 六条之一（/、/about、/help 及 /en 变体）
 const valueKeys = ['focus', 'quality', 'openness'] as const
 const storyKeys = ['origin', 'practice', 'next'] as const
 

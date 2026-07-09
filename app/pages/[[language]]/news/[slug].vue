@@ -57,6 +57,7 @@ const { data: article, error } = await useAsyncData(
 )
 
 if (error.value || !article.value) {
+  // slug 不存在或 API 失败 → 404（非 500），与 SEO 死链处理一致
   throw createError({
     statusCode: 404,
     statusMessage: 'news.notFound'
@@ -68,6 +69,7 @@ usePageSeo({
   locale: languageStore.currentLanguage,
   title: article.value.title,
   description: article.value.description,
+  // article 参数触发 Article JSON-LD 与 og:type=article
   article: {
     title: article.value.title,
     description: article.value.description,

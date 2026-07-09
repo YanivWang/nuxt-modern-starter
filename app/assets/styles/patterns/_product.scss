@@ -1,3 +1,10 @@
+/*
+  【文件职责】
+    产品区 UI 模式：工作台、账户、侧栏导航、数据卡片等 .app-product-* 样式。
+
+  【架构位置】
+    登录产品区 — app/assets/styles/patterns，被 patterns/index.scss @use。
+*/
 // 产品区 UI 模式 — 工作台、账户、侧栏导航、数据卡片
 
 .app-product-page {

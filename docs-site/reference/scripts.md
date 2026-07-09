@@ -20,16 +20,16 @@
 
 ## 质量
 
-| 命令                | 说明                       |
-| ------------------- | -------------------------- |
-| `pnpm lint`         | ESLint，`--max-warnings 0` |
-| `pnpm format`       | Prettier 写入              |
-| `pnpm format:check` | Prettier 检查              |
-| `pnpm stylelint`    | SCSS/Vue 样式              |
-| `pnpm typecheck`    | Nuxt + vue-tsc             |
-| `pnpm test`         | Vitest                     |
-| `pnpm test:watch`   | Vitest 监听                |
-| `pnpm quality`      | 上述全部 + build           |
+| 命令                | 说明                                                                    |
+| ------------------- | ----------------------------------------------------------------------- |
+| `pnpm lint`         | ESLint，`--max-warnings 0`                                              |
+| `pnpm format`       | Prettier 写入                                                           |
+| `pnpm format:check` | Prettier 检查                                                           |
+| `pnpm stylelint`    | SCSS/Vue 样式                                                           |
+| `pnpm typecheck`    | Nuxt + vue-tsc                                                          |
+| `pnpm test`         | Vitest                                                                  |
+| `pnpm test:watch`   | Vitest 监听                                                             |
+| `pnpm quality`      | lint + format:check + stylelint + typecheck + i18n:check + test + build |
 
 ## Docker
 
@@ -44,11 +44,14 @@
 
 ## 文档站
 
-| 命令                | 说明               |
-| ------------------- | ------------------ |
-| `pnpm docs:dev`     | VitePress 开发预览 |
-| `pnpm docs:build`   | 构建静态文档       |
-| `pnpm docs:preview` | 预览文档 build     |
+| 命令                     | 说明                                                       |
+| ------------------------ | ---------------------------------------------------------- |
+| `pnpm docs:dev`          | VitePress 开发预览                                         |
+| `pnpm docs:build`        | 构建静态文档                                               |
+| `pnpm docs:preview`      | 预览文档 build                                             |
+| `pnpm docs:sync:check`   | 校验 manifest / 头注释 / doc-claims 与源码一致             |
+| `pnpm docs:sync:enrich`  | 为 doc-claims 生成 evidenceHint 行号并验证 33 文档覆盖     |
+| `pnpm docs:sync:reports` | 从 batches + doc-claims 生成 8 份带行号证据的 batch report |
 
 ## 多语言
 

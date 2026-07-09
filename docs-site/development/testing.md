@@ -3,13 +3,15 @@
 ## 命令
 
 ```bash
-pnpm test          # Vitest 一次运行（23 文件 / 84 测试）
+pnpm test          # Vitest 一次运行（32 文件 / 116 测试）
 pnpm test:watch    # 监听模式
 pnpm typecheck     # vue-tsc + Nuxt 类型
 pnpm lint            # ESLint
 pnpm stylelint       # 样式
 pnpm quality         # 发布全量门禁
 ```
+
+`vitest.config.ts` 使用 `defineVitestConfig`，`environment: 'nuxt'`，`include: ['tests/**/*.{test,spec}.ts']`。
 
 ## quality 门禁内容
 

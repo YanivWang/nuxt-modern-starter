@@ -21,6 +21,7 @@
 */
 import { DEFAULT_THEME_MODE } from '../config/theme'
 
+// brand.name 供 BaseLogo；tagline 走 i18n，不读 appConfig
 export default defineAppConfig({
   brand: {
     name: 'Nuxt Modern Starter',

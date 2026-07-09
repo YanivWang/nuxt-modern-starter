@@ -48,6 +48,7 @@ const { data: pricing } = await useAsyncData(
   () => fetchPricingPage(languageStore.currentLanguage).then((response) => response.data.pricing),
   {
     watch: [() => languageStore.currentLanguage],
+    // SSR payload 水合复用，避免客户端重复请求 /content/pricing
     getCachedData(key) {
       return nuxtApp.payload.data[key] ?? nuxtApp.static.data[key]
     }

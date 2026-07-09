@@ -19,8 +19,9 @@
   【边界与注意】
     修改规则需同步 tests/unit/safe-redirect.test.ts。
 */
-const UNSAFE_REDIRECT_PATTERN = /^\/[/\\]|[:\\]/
+const UNSAFE_REDIRECT_PATTERN = /^\/[/\\]|[:\\]/ // 拒绝 //evil.com、反斜杠、带协议的路径
 
+// 仅允许站内相对 path；// 开头或含协议一律拒绝
 export const isSafeRedirectPath = (path: string) =>
   path.startsWith('/') && !path.startsWith('//') && !UNSAFE_REDIRECT_PATTERN.test(path)
 

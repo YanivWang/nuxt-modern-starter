@@ -15,4 +15,5 @@
   【渲染 / 数据】
     无 — 页面仅导入 EditorWorkspace；其余逻辑留在 feature 内部 composables。
 */
+// 页面仅导入 EditorWorkspace；composables 不对外 re-export
 export { default as EditorWorkspace } from './components/EditorWorkspace.vue'

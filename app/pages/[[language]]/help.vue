@@ -39,6 +39,7 @@ import { getFaqItems } from '~/api/public'
 
 const languageStore = useLanguageStore()
 const { t } = useI18n()
+// FAQ 从 config/content/faq.ts 按 locale 解析，不经远程 API
 const faqItems = computed(() => getFaqItems(languageStore.currentLanguage))
 
 const quickStartStepKeys = ['install', 'dev', 'explore', 'extend'] as const

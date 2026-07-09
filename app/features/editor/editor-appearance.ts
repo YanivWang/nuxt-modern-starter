@@ -6,6 +6,7 @@
   【架构位置】
     登录产品区 — app/features/editor，EditorWorkspace 消费。
 */
+// CSS var 链式引用 --app-*，主题切换时 YanivEditor 自动跟随站点色板
 export const editorCustomAppearanceVars: Record<string, string> = {
   '--ye-primary': 'var(--app-color-primary)',
   '--ye-primary-hover': 'var(--app-color-primary-hover)',

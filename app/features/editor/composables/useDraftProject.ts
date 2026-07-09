@@ -48,6 +48,7 @@ export const useDraftProject = ({
 
     const contentToSave = getContentHtml()
 
+    // 空白内容不创建项目，与 scheduleAutosave 的空草稿 guard 对齐
     if (isBlankEditorContent(contentToSave)) {
       return null
     }
@@ -56,6 +57,7 @@ export const useDraftProject = ({
     const response = await createProject({ title })
     const { project, document: createdDocument } = response.data
 
+    // 创建后立即 PATCH 初始内容，再 replace 到 /docs/:projectId
     await saveDocument(createdDocument.id, {
       title,
       content: contentToSave

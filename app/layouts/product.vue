@@ -26,5 +26,6 @@
 </template>
 
 <script setup lang="ts">
+// product layout 统一 CSR + auth；侧栏与 header 由 ProductShell 提供
 import { ProductShell } from '~/features/product-shell'
 </script>

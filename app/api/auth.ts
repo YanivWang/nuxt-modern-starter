@@ -120,6 +120,7 @@ const sendAuthApiRequest = async <T>(
     method?: 'GET' | 'POST' | 'PATCH'
     body?: unknown
     accessToken?: string | null
+    /** true 时 401 走 refreshAccessTokenOnce 并重试一次（用于 /me、/me/profile） */
     retryOnUnauthorized?: boolean
   } = {}
 ) => {

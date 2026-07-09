@@ -1,0 +1,989 @@
+{
+  "generatedAt": "2026-07-09T03:06:49.274Z",
+  "findCommand": "find app server config docker nuxt.config.ts vitest.config.ts -type f \\( -name \"*.ts\" -o -name \"*.vue\" -o -name \"*.js\" -o -name \"*.scss\" -o -name \"*.yaml\" -o -name \"*.conf\" \\) 2>/dev/null | sort",
+  "sourceFileCount": 121,
+  "docFileCount": 33,
+  "sourceFiles": [
+    {
+      "path": "app/api/auth.ts",
+      "type": "ts",
+      "module": "api",
+      "batch": 2,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/api/clients.ts",
+      "type": "ts",
+      "module": "api",
+      "batch": 2,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/api/public.ts",
+      "type": "ts",
+      "module": "api",
+      "batch": 2,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/app.config.ts",
+      "type": "ts",
+      "module": "app-root",
+      "batch": 1,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/app.vue",
+      "type": "vue",
+      "module": "app-root",
+      "batch": 4,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/assets/styles/main.scss",
+      "type": "scss",
+      "module": "assets-styles",
+      "batch": 7,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/assets/styles/patterns/_editor.scss",
+      "type": "scss",
+      "module": "assets-styles",
+      "batch": 7,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/assets/styles/patterns/_home.scss",
+      "type": "scss",
+      "module": "assets-styles",
+      "batch": 7,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/assets/styles/patterns/_page.scss",
+      "type": "scss",
+      "module": "assets-styles",
+      "batch": 7,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/assets/styles/patterns/_product.scss",
+      "type": "scss",
+      "module": "assets-styles",
+      "batch": 7,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/assets/styles/patterns/index.scss",
+      "type": "scss",
+      "module": "assets-styles",
+      "batch": 7,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/assets/styles/tokens.ts",
+      "type": "ts",
+      "module": "assets-styles",
+      "batch": 7,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/assets/styles/tokens/_dark.scss",
+      "type": "scss",
+      "module": "assets-styles",
+      "batch": 7,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/assets/styles/tokens/_root.scss",
+      "type": "scss",
+      "module": "assets-styles",
+      "batch": 7,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/assets/styles/tokens/_variables.scss",
+      "type": "scss",
+      "module": "assets-styles",
+      "batch": 7,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/assets/styles/tokens/index.scss",
+      "type": "scss",
+      "module": "assets-styles",
+      "batch": 7,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/components/base/AppContainer.vue",
+      "type": "vue",
+      "module": "components",
+      "batch": 4,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/components/base/BaseButton.vue",
+      "type": "vue",
+      "module": "components",
+      "batch": 4,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/components/base/BaseLogo.vue",
+      "type": "vue",
+      "module": "components",
+      "batch": 4,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/components/base/BasePicture.vue",
+      "type": "vue",
+      "module": "components",
+      "batch": 4,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/components/base/PageContainer.vue",
+      "type": "vue",
+      "module": "components",
+      "batch": 4,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/components/layout/AppFooter.vue",
+      "type": "vue",
+      "module": "components",
+      "batch": 4,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/components/layout/AppHeader.vue",
+      "type": "vue",
+      "module": "components",
+      "batch": 4,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/components/layout/AppShellHeader.vue",
+      "type": "vue",
+      "module": "components",
+      "batch": 4,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/components/layout/LanguageSwitcher.vue",
+      "type": "vue",
+      "module": "components",
+      "batch": 4,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/components/layout/ThemeSwitch.vue",
+      "type": "vue",
+      "module": "components",
+      "batch": 4,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/components/layout/UserAccountMenu.vue",
+      "type": "vue",
+      "module": "components",
+      "batch": 4,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/composables/useAuth.ts",
+      "type": "ts",
+      "module": "composables",
+      "batch": 3,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/composables/useLanguageSwitch.ts",
+      "type": "ts",
+      "module": "composables",
+      "batch": 3,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/composables/useLocalePath.ts",
+      "type": "ts",
+      "module": "composables",
+      "batch": 3,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/composables/usePageSeo.ts",
+      "type": "ts",
+      "module": "composables",
+      "batch": 3,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/composables/useTheme.ts",
+      "type": "ts",
+      "module": "composables",
+      "batch": 3,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/composables/useUserAvatar.ts",
+      "type": "ts",
+      "module": "composables",
+      "batch": 3,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/error.vue",
+      "type": "vue",
+      "module": "app-root",
+      "batch": 4,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/features/account-shell/components/AccountShell.vue",
+      "type": "vue",
+      "module": "feature-account",
+      "batch": 6,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/features/account-shell/config.ts",
+      "type": "ts",
+      "module": "feature-account",
+      "batch": 6,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/features/account-shell/index.ts",
+      "type": "ts",
+      "module": "feature-account",
+      "batch": 6,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/features/account/components/AccountPage.vue",
+      "type": "vue",
+      "module": "feature-account",
+      "batch": 6,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/features/account/index.ts",
+      "type": "ts",
+      "module": "feature-account",
+      "batch": 6,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/features/editor/api.ts",
+      "type": "ts",
+      "module": "feature-editor",
+      "batch": 5,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/features/editor/components/EditorWorkspace.vue",
+      "type": "vue",
+      "module": "feature-editor",
+      "batch": 5,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/features/editor/components/EditorWorkspaceHeader.vue",
+      "type": "vue",
+      "module": "feature-editor",
+      "batch": 5,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/features/editor/composables/editor-content.ts",
+      "type": "ts",
+      "module": "feature-editor",
+      "batch": 5,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/features/editor/composables/useDraftProject.ts",
+      "type": "ts",
+      "module": "feature-editor",
+      "batch": 5,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/features/editor/composables/useEditorAutosave.ts",
+      "type": "ts",
+      "module": "feature-editor",
+      "batch": 5,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/features/editor/composables/useEditorDocument.ts",
+      "type": "ts",
+      "module": "feature-editor",
+      "batch": 5,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/features/editor/composables/useEditorPage.ts",
+      "type": "ts",
+      "module": "feature-editor",
+      "batch": 5,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/features/editor/composables/useEditorTitle.ts",
+      "type": "ts",
+      "module": "feature-editor",
+      "batch": 5,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/features/editor/composables/useEditorWorkspace.ts",
+      "type": "ts",
+      "module": "feature-editor",
+      "batch": 5,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/features/editor/editor-appearance.ts",
+      "type": "ts",
+      "module": "feature-editor",
+      "batch": 5,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/features/editor/index.ts",
+      "type": "ts",
+      "module": "feature-editor",
+      "batch": 5,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/features/editor/types.ts",
+      "type": "ts",
+      "module": "feature-editor",
+      "batch": 5,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/features/product-shell/components/ProductShell.vue",
+      "type": "vue",
+      "module": "feature-product-shell",
+      "batch": 6,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/features/product-shell/config.ts",
+      "type": "ts",
+      "module": "feature-product-shell",
+      "batch": 6,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/features/product-shell/index.ts",
+      "type": "ts",
+      "module": "feature-product-shell",
+      "batch": 6,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/features/templates/components/ThemeTemplatesPage.vue",
+      "type": "vue",
+      "module": "feature-templates",
+      "batch": 6,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/features/templates/index.ts",
+      "type": "ts",
+      "module": "feature-templates",
+      "batch": 6,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/features/workspace/api.ts",
+      "type": "ts",
+      "module": "feature-workspace",
+      "batch": 5,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/features/workspace/components/WorkspaceDashboard.vue",
+      "type": "vue",
+      "module": "feature-workspace",
+      "batch": 5,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/features/workspace/components/WorkspaceProjectCard.vue",
+      "type": "vue",
+      "module": "feature-workspace",
+      "batch": 5,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/features/workspace/composables/useWorkspaceProjects.ts",
+      "type": "ts",
+      "module": "feature-workspace",
+      "batch": 5,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/features/workspace/composables/workspace-project-delete.ts",
+      "type": "ts",
+      "module": "feature-workspace",
+      "batch": 5,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/features/workspace/index.ts",
+      "type": "ts",
+      "module": "feature-workspace",
+      "batch": 5,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/features/workspace/types.ts",
+      "type": "ts",
+      "module": "feature-workspace",
+      "batch": 5,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/layouts/account.vue",
+      "type": "vue",
+      "module": "layouts",
+      "batch": 4,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/layouts/default.vue",
+      "type": "vue",
+      "module": "layouts",
+      "batch": 4,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/layouts/editor.vue",
+      "type": "vue",
+      "module": "layouts",
+      "batch": 4,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/layouts/empty.vue",
+      "type": "vue",
+      "module": "layouts",
+      "batch": 4,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/layouts/product.vue",
+      "type": "vue",
+      "module": "layouts",
+      "batch": 4,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/lib/http/client.ts",
+      "type": "ts",
+      "module": "lib-http",
+      "batch": 2,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/lib/http/error.ts",
+      "type": "ts",
+      "module": "lib-http",
+      "batch": 2,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/lib/http/headers.ts",
+      "type": "ts",
+      "module": "lib-http",
+      "batch": 2,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/lib/http/types.ts",
+      "type": "ts",
+      "module": "lib-http",
+      "batch": 2,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/middleware/auth.ts",
+      "type": "ts",
+      "module": "middleware",
+      "batch": 3,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/middleware/locale.global.ts",
+      "type": "ts",
+      "module": "middleware",
+      "batch": 3,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/pages/[[language]]/[...slug].vue",
+      "type": "vue",
+      "module": "pages",
+      "batch": 5,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/pages/[[language]]/about.vue",
+      "type": "vue",
+      "module": "pages",
+      "batch": 5,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/pages/[[language]]/help.vue",
+      "type": "vue",
+      "module": "pages",
+      "batch": 5,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/pages/[[language]]/index.vue",
+      "type": "vue",
+      "module": "pages",
+      "batch": 5,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/pages/[[language]]/news/[slug].vue",
+      "type": "vue",
+      "module": "pages",
+      "batch": 5,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/pages/[[language]]/news/index.vue",
+      "type": "vue",
+      "module": "pages",
+      "batch": 5,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/pages/[[language]]/pricing.vue",
+      "type": "vue",
+      "module": "pages",
+      "batch": 5,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/pages/[[language]]/sign-in.vue",
+      "type": "vue",
+      "module": "pages",
+      "batch": 5,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/pages/[[language]]/sign-up.vue",
+      "type": "vue",
+      "module": "pages",
+      "batch": 5,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/pages/account.vue",
+      "type": "vue",
+      "module": "pages",
+      "batch": 5,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/pages/docs/[id].vue",
+      "type": "vue",
+      "module": "pages",
+      "batch": 5,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/pages/workspace/index.vue",
+      "type": "vue",
+      "module": "pages",
+      "batch": 5,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/pages/workspace/templates/index.vue",
+      "type": "vue",
+      "module": "pages",
+      "batch": 5,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/plugins/analytics.client.ts",
+      "type": "ts",
+      "module": "plugins",
+      "batch": 3,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/plugins/attribution.client.ts",
+      "type": "ts",
+      "module": "plugins",
+      "batch": 3,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/plugins/auth.ts",
+      "type": "ts",
+      "module": "plugins",
+      "batch": 3,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/plugins/i18n.ts",
+      "type": "ts",
+      "module": "plugins",
+      "batch": 3,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/shims.d.ts",
+      "type": "ts",
+      "module": "app-root",
+      "batch": 1,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/stores/auth.ts",
+      "type": "ts",
+      "module": "stores",
+      "batch": 4,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/stores/language.ts",
+      "type": "ts",
+      "module": "stores",
+      "batch": 4,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/stores/theme.ts",
+      "type": "ts",
+      "module": "stores",
+      "batch": 4,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/types/document.ts",
+      "type": "ts",
+      "module": "types",
+      "batch": 1,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/utils/antdIcon.ts",
+      "type": "ts",
+      "module": "utils",
+      "batch": 3,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/utils/attribution-params.ts",
+      "type": "ts",
+      "module": "utils",
+      "batch": 3,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/utils/auth-session.ts",
+      "type": "ts",
+      "module": "utils",
+      "batch": 3,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/utils/formatDate.ts",
+      "type": "ts",
+      "module": "utils",
+      "batch": 3,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/utils/load-script.ts",
+      "type": "ts",
+      "module": "utils",
+      "batch": 3,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/utils/safe-redirect.ts",
+      "type": "ts",
+      "module": "utils",
+      "batch": 3,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "config/antd-locale.ts",
+      "type": "ts",
+      "module": "config",
+      "batch": 1,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "config/auth.ts",
+      "type": "ts",
+      "module": "config",
+      "batch": 1,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "config/content/faq.ts",
+      "type": "ts",
+      "module": "config",
+      "batch": 1,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "config/routes.ts",
+      "type": "ts",
+      "module": "config",
+      "batch": 1,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "config/site.ts",
+      "type": "ts",
+      "module": "config",
+      "batch": 1,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "config/theme.ts",
+      "type": "ts",
+      "module": "config",
+      "batch": 1,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "docker/docker-compose.base.yaml",
+      "type": "yaml",
+      "module": "docker",
+      "batch": 8,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "docker/docker-compose.dev.yaml",
+      "type": "yaml",
+      "module": "docker",
+      "batch": 8,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "docker/docker-compose.yaml",
+      "type": "yaml",
+      "module": "docker",
+      "batch": 8,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "docker/nginx/gateway.docker.conf",
+      "type": "conf",
+      "module": "docker",
+      "batch": 8,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "nuxt.config.ts",
+      "type": "ts",
+      "module": "config",
+      "batch": 1,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "server/api/revalidate.post.ts",
+      "type": "ts",
+      "module": "server",
+      "batch": 7,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "server/middleware/product-canonical.ts",
+      "type": "ts",
+      "module": "server",
+      "batch": 7,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "server/routes/robots.txt.ts",
+      "type": "ts",
+      "module": "server",
+      "batch": 7,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "server/routes/sitemap.xml.ts",
+      "type": "ts",
+      "module": "server",
+      "batch": 7,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "server/utils/revalidate.ts",
+      "type": "ts",
+      "module": "server",
+      "batch": 7,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "server/utils/seo.ts",
+      "type": "ts",
+      "module": "server",
+      "batch": 7,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "vitest.config.ts",
+      "type": "ts",
+      "module": "config",
+      "batch": 8,
+      "hasHeaderComment": true
+    }
+  ],
+  "docFiles": [
+    {
+      "path": "docs-site/architecture/auth.md",
+      "type": "md"
+    },
+    {
+      "path": "docs-site/architecture/data-flow.md",
+      "type": "md"
+    },
+    {
+      "path": "docs-site/architecture/directory.md",
+      "type": "md"
+    },
+    {
+      "path": "docs-site/architecture/i18n.md",
+      "type": "md"
+    },
+    {
+      "path": "docs-site/architecture/overview.md",
+      "type": "md"
+    },
+    {
+      "path": "docs-site/architecture/routing.md",
+      "type": "md"
+    },
+    {
+      "path": "docs-site/architecture/seo.md",
+      "type": "md"
+    },
+    {
+      "path": "docs-site/deployment/docker.md",
+      "type": "md"
+    },
+    {
+      "path": "docs-site/deployment/env.md",
+      "type": "md"
+    },
+    {
+      "path": "docs-site/deployment/nginx.md",
+      "type": "md"
+    },
+    {
+      "path": "docs-site/deployment/overview.md",
+      "type": "md"
+    },
+    {
+      "path": "docs-site/development/add-api.md",
+      "type": "md"
+    },
+    {
+      "path": "docs-site/development/add-feature.md",
+      "type": "md"
+    },
+    {
+      "path": "docs-site/development/add-page.md",
+      "type": "md"
+    },
+    {
+      "path": "docs-site/development/add-seo.md",
+      "type": "md"
+    },
+    {
+      "path": "docs-site/development/conventions.md",
+      "type": "md"
+    },
+    {
+      "path": "docs-site/development/testing.md",
+      "type": "md"
+    },
+    {
+      "path": "docs-site/guide/getting-started.md",
+      "type": "md"
+    },
+    {
+      "path": "docs-site/guide/overview.md",
+      "type": "md"
+    },
+    {
+      "path": "docs-site/index.md",
+      "type": "md"
+    },
+    {
+      "path": "docs-site/reference/config.md",
+      "type": "md"
+    },
+    {
+      "path": "docs-site/reference/scripts.md",
+      "type": "md"
+    },
+    {
+      "path": "docs-site/tech-stack/ant-design-vue.md",
+      "type": "md"
+    },
+    {
+      "path": "docs-site/tech-stack/http.md",
+      "type": "md"
+    },
+    {
+      "path": "docs-site/tech-stack/nuxt.md",
+      "type": "md"
+    },
+    {
+      "path": "docs-site/tech-stack/overview.md",
+      "type": "md"
+    },
+    {
+      "path": "docs-site/tech-stack/pinia.md",
+      "type": "md"
+    },
+    {
+      "path": "docs-site/tech-stack/styles.md",
+      "type": "md"
+    },
+    {
+      "path": "docs/architecture.md",
+      "type": "md"
+    },
+    {
+      "path": "docs/conventions.md",
+      "type": "md"
+    },
+    {
+      "path": "docs/deployment.md",
+      "type": "md"
+    },
+    {
+      "path": "docs/usage.md",
+      "type": "md"
+    },
+    {
+      "path": "README.md",
+      "type": "md"
+    }
+  ]
+}

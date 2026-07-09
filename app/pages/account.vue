@@ -39,6 +39,7 @@
 import { useI18n } from 'vue-i18n'
 import { AccountPage } from '~/features/account'
 
+// account layout + auth；profile 加载在 AccountPage 内
 definePageMeta({
   layout: 'account',
   middleware: 'auth'

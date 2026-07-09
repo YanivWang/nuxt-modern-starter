@@ -20,6 +20,7 @@
     公开页主内容通常用 PageContainer（含 padding-block），shell 用 AppContainer。
 -->
 <template>
+  <!-- 水平居中容器；公开页主内容区用 PageContainer（含 padding-block） -->
   <div class="app-container">
     <slot />
   </div>

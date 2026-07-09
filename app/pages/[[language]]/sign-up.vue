@@ -77,6 +77,7 @@ const handleSubmit = async () => {
   loading.value = true
 
   try {
+    // register 不自动登录；成功后跳转 sign-in 并预填 username
     await register({
       username: form.username,
       password: form.password

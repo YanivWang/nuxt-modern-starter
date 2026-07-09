@@ -20,5 +20,6 @@
     使用 empty 时页面须自行处理 SEO、导航与 noindex。
 -->
 <template>
+  <!-- 无 header/footer；页面须自行处理 SEO 与导航 -->
   <slot />
 </template>

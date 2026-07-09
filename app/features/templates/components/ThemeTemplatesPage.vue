@@ -19,6 +19,7 @@
     product-shell config 侧栏有入口；实现真实模板时替换本组件即可。
 -->
 <template>
+  <!-- 6 张虚线卡片为装饰；真实模板选择待产品实现 -->
   <section class="theme-templates-page">
     <header class="app-product-page__header theme-templates-page__header">
       <div>

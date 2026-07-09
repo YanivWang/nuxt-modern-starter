@@ -33,6 +33,7 @@ import type {
 
 export const WORKSPACE_NEW_PROJECT_ID = 'new'
 
+// 语言中性产品 URL；新建 id='new' → /docs/new
 export const getWorkspaceDocPath = (id: string) => `/docs/${id}`
 
 export const getWorkspaceNewDocPath = () => getWorkspaceDocPath(WORKSPACE_NEW_PROJECT_ID)

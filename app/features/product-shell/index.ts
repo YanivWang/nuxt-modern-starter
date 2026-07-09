@@ -19,6 +19,7 @@
   【边界与注意】
     新增产品侧栏入口改 config.ts，并同步 navIconMap（ProductShell.vue）。
 */
+// layouts/product.vue 消费 ProductShell；导航改 config.ts + navIconMap
 export { default as ProductShell } from './components/ProductShell.vue'
 export { productFooterNavItems, productNavItems } from './config'
 export type { ProductNavItem } from './config'

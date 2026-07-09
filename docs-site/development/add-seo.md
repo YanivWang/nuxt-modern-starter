@@ -32,6 +32,8 @@ usePageSeo({
 
 ## 新闻详情 Article
 
+传入 `article` 时，`usePageSeo` 经 `buildPageSeoScripts` 输出 Article JSON-LD 并设置 `og:type=article`：
+
 ```ts
 usePageSeo({
   path: `/news/${slug}`,

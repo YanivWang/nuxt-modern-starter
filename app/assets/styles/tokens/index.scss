@@ -1,3 +1,10 @@
+/*
+  【文件职责】
+    Design tokens 聚合入口：@forward variables 供 SFC @use；@use root/dark 输出 CSS。
+
+  【架构位置】
+    共享层 — app/assets/styles/tokens，由 main.scss 引入。
+*/
 // Design tokens — 应用入口（@forward variables 供 SFC @use；@use root/dark 输出 CSS）
 
 @forward './variables';

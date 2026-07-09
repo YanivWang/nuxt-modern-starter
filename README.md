@@ -67,6 +67,7 @@ Full architecture handbook (VitePress, recommended for newcomers):
 pnpm docs:dev      # http://localhost:5173
 pnpm docs:build
 pnpm docs:preview
+pnpm docs:sync:check   # 校验 manifest / 头注释 / doc-claims 与源码一致
 ```
 
 Source lives in `docs-site/`.
@@ -97,6 +98,7 @@ pnpm typecheck
 pnpm test
 pnpm test:watch
 pnpm quality
+pnpm docs:sync:check
 pnpm docker:build
 pnpm docker:run
 pnpm docker:up

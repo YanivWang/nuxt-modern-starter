@@ -1,3 +1,10 @@
+/*
+  【文件职责】
+    暗黑模式 --app-* CSS 变量覆盖，由 :root[data-theme='dark'] 选择器生效。
+
+  【架构位置】
+    共享层 — app/assets/styles/tokens，与 _root.scss 配对；由 tokens/index.scss @use。
+*/
 // AUTO-GENERATED — 请勿手改。编辑 config/theme-palette.json 后运行 pnpm generate:theme
 // 暗黑模式 — 色值覆盖（渐变/阴影语义项见下方）
 

@@ -41,6 +41,7 @@ const emit = defineEmits<{
 const { localePath } = useLocalePath()
 const titleInputRef = ref<HTMLInputElement | null>(null)
 
+// 进入标题编辑态后 focus input，便于立即键盘输入
 watch(
   () => props.isEditingTitle,
   async (isEditing) => {

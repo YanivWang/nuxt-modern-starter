@@ -38,6 +38,7 @@ import { MoonOutlined, SunOutlined } from '../../utils/antdIcon'
 
 const { resolvedMode, toggleTheme } = useTheme()
 
+// toggleTheme 写入显式 light/dark（非 system），并同步 localStorage + document dataset
 const isDark = computed(() => resolvedMode.value === 'dark')
 </script>
 

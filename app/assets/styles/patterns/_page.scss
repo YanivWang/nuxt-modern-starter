@@ -19,6 +19,7 @@
   【边界与注意】
     Ant Design 组件样式覆盖（如 .page-faq .ant-collapse）集中在此，避免散落页面 scoped。
 */
+// 营销/内容页通用块；与 PageContainer --prose/--compact 变体配合
 .page-badge {
   display: inline-flex;
   align-self: flex-start;

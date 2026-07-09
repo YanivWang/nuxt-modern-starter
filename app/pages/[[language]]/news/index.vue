@@ -47,6 +47,7 @@ const { data: articles } = await useAsyncData(
   () => fetchNewsArticles(languageStore.currentLanguage).then((response) => response.data.articles),
   {
     watch: [() => languageStore.currentLanguage],
+    // 列表页走 SWR 1h；客户端导航复用 SSR payload
     getCachedData(key) {
       return nuxtApp.payload.data[key] ?? nuxtApp.static.data[key]
     }

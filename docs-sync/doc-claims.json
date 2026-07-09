@@ -1,0 +1,735 @@
+{
+  "generatedAt": "2026-07-09T03:57:10.014Z",
+  "description": "Verifiable documentation claims mapped to source symbols and files.",
+  "claims": [
+    {
+      "id": "routing-001",
+      "docFile": "docs-site/architecture/routing.md",
+      "claim": "产品路由为语言中性 URL：/workspace、/workspace/templates、/docs/:id、/docs/new、/account",
+      "symbols": ["isProductPath", "productRoutePatterns"],
+      "sourceFiles": ["config/routes.ts", "app/features/workspace/api.ts"],
+      "evidenceHint": "config/routes.ts:11 (isProductPath); config/routes.ts:10 (productRoutePatterns)"
+    },
+    {
+      "id": "routing-002",
+      "docFile": "docs-site/architecture/routing.md",
+      "claim": "访问 /en/workspace 等产品 URL 时 middleware 301 重定向到无语言前缀 canonical 路径",
+      "symbols": ["localizedProductPathToCanonical", "resolveLocaleRouteDecision"],
+      "sourceFiles": ["config/routes.ts", "app/middleware/locale.global.ts"],
+      "evidenceHint": "config/routes.ts:11 (localizedProductPathToCanonical); app/middleware/locale.global.ts:4 (resolveLocaleRouteDecision)"
+    },
+    {
+      "id": "routing-003",
+      "docFile": "docs-site/architecture/routing.md",
+      "claim": "CSR 路由（ssr: false）覆盖 /workspace/**、/docs/**、/account",
+      "symbols": ["productRoutePatterns", "csrRouteRules"],
+      "sourceFiles": ["config/routes.ts", "nuxt.config.ts"],
+      "evidenceHint": "config/routes.ts:10 (productRoutePatterns); config/routes.ts:10 (csrRouteRules)"
+    },
+    {
+      "id": "routing-004",
+      "docFile": "docs-site/architecture/routing.md",
+      "claim": "prerender 路由为 /、/about、/help 及 /en、/en/about、/en/help",
+      "symbols": ["prerenderRoutes", "publicLocalizedPaths"],
+      "sourceFiles": ["config/routes.ts", "nuxt.config.ts"],
+      "evidenceHint": "config/routes.ts:10 (prerenderRoutes); config/routes.ts:4 (publicLocalizedPaths)"
+    },
+    {
+      "id": "routing-005",
+      "docFile": "docs-site/architecture/routing.md",
+      "claim": "SWR 3600s 路由为 /news/** 及非默认语言前缀变体",
+      "symbols": ["swrRouteRules"],
+      "sourceFiles": ["config/routes.ts", "nuxt.config.ts"],
+      "evidenceHint": "config/routes.ts:10 (swrRouteRules)"
+    },
+    {
+      "id": "routing-006",
+      "docFile": "docs-site/architecture/routing.md",
+      "claim": "/pricing 走默认 SSR，不在 prerender 或 SWR 列表中",
+      "symbols": ["PUBLIC_PAGE_PATHS", "prerenderRoutes", "swrRouteRules"],
+      "sourceFiles": ["config/site.ts", "config/routes.ts", "nuxt.config.ts"],
+      "evidenceHint": "config/site.ts:4 (PUBLIC_PAGE_PATHS); config/routes.ts:10 (prerenderRoutes); config/routes.ts:10 (swrRouteRules)"
+    },
+    {
+      "id": "routing-007",
+      "docFile": "docs-site/architecture/routing.md",
+      "claim": "PUBLIC_PAGE_PATHS 不含 /sign-in、/sign-up",
+      "symbols": ["PUBLIC_PAGE_PATHS"],
+      "sourceFiles": ["config/site.ts"],
+      "evidenceHint": "config/site.ts:4 (PUBLIC_PAGE_PATHS)"
+    },
+    {
+      "id": "routing-008",
+      "docFile": "docs-site/architecture/routing.md",
+      "claim": "默认语言 zh-CN 公开页无前缀，en-US 使用 /en 前缀",
+      "symbols": ["DEFAULT_LOCALE", "SITE_LOCALE_PREFIX_MAP", "localizedPath"],
+      "sourceFiles": ["config/site.ts", "config/routes.ts"],
+      "evidenceHint": "config/site.ts:11 (DEFAULT_LOCALE); config/site.ts:12 (SITE_LOCALE_PREFIX_MAP); config/routes.ts:11 (localizedPath)"
+    },
+    {
+      "id": "routing-009",
+      "docFile": "docs-site/architecture/routing.md",
+      "claim": "编辑器 /docs/new 草稿模式，首次非空保存后 replace 到 /docs/:realId",
+      "symbols": ["WORKSPACE_NEW_PROJECT_ID", "ensureDraftProject"],
+      "sourceFiles": [
+        "app/features/workspace/api.ts",
+        "app/features/editor/composables/useDraftProject.ts"
+      ],
+      "evidenceHint": "app/features/workspace/api.ts:11 (WORKSPACE_NEW_PROJECT_ID); app/features/editor/composables/useDraftProject.ts:44 (ensureDraftProject)"
+    },
+    {
+      "id": "routing-010",
+      "docFile": "docs-site/architecture/routing.md",
+      "claim": "编辑器自动保存 debounce 为 2 秒（EDITOR_AUTOSAVE_DEBOUNCE_MS = 2000）",
+      "symbols": ["EDITOR_AUTOSAVE_DEBOUNCE_MS"],
+      "sourceFiles": [
+        "app/features/editor/types.ts",
+        "app/features/editor/composables/useEditorWorkspace.ts"
+      ],
+      "evidenceHint": "app/features/editor/types.ts:13 (EDITOR_AUTOSAVE_DEBOUNCE_MS)"
+    },
+    {
+      "id": "dataflow-001",
+      "docFile": "docs-site/architecture/data-flow.md",
+      "claim": "业务 API 统一返回 { code, message, data } 信封",
+      "symbols": ["ApiResponse", "assertApiSuccess"],
+      "sourceFiles": ["app/lib/http/types.ts", "app/lib/http/error.ts"],
+      "evidenceHint": "app/lib/http/types.ts:3 (ApiResponse); app/lib/http/types.ts:17 (assertApiSuccess)"
+    },
+    {
+      "id": "dataflow-002",
+      "docFile": "docs-site/architecture/data-flow.md",
+      "claim": "三类 HTTP 客户端：createPublicApiClient、createAuthApiClient、createProductApiClient",
+      "symbols": ["createPublicApiClient", "createAuthApiClient", "createProductApiClient"],
+      "sourceFiles": ["app/api/clients.ts", "app/api/auth.ts", "app/api/public.ts"],
+      "evidenceHint": "app/api/clients.ts:4 (createPublicApiClient); app/api/clients.ts:10 (createAuthApiClient); app/api/clients.ts:20 (createProductApiClient)"
+    },
+    {
+      "id": "dataflow-003",
+      "docFile": "docs-site/architecture/data-flow.md",
+      "claim": "Product 客户端 401 时单飞 refresh 并重试一次",
+      "symbols": ["createProductApiClient", "refreshAccessTokenOnce"],
+      "sourceFiles": ["app/api/auth.ts", "app/lib/http/client.ts"],
+      "evidenceHint": "app/api/auth.ts:4 (createProductApiClient); app/api/auth.ts:4 (refreshAccessTokenOnce)"
+    },
+    {
+      "id": "dataflow-004",
+      "docFile": "docs-site/architecture/data-flow.md",
+      "claim": "WORKSPACE_NEW_PROJECT_ID = 'new'",
+      "symbols": ["WORKSPACE_NEW_PROJECT_ID", "getWorkspaceNewDocPath"],
+      "sourceFiles": ["app/features/workspace/api.ts"],
+      "evidenceHint": "app/features/workspace/api.ts:11 (WORKSPACE_NEW_PROJECT_ID); app/features/workspace/api.ts:39 (getWorkspaceNewDocPath)"
+    },
+    {
+      "id": "dataflow-005",
+      "docFile": "docs-site/architecture/data-flow.md",
+      "claim": "工作台 CRUD API 函数：fetchWorkspaceProjects、createWorkspaceProject、updateWorkspaceProject、deleteWorkspaceProject",
+      "symbols": [
+        "fetchWorkspaceProjects",
+        "createWorkspaceProject",
+        "updateWorkspaceProject",
+        "deleteWorkspaceProject"
+      ],
+      "sourceFiles": ["app/features/workspace/api.ts"],
+      "evidenceHint": "app/features/workspace/api.ts:10 (fetchWorkspaceProjects); app/features/workspace/api.ts:10 (createWorkspaceProject); app/features/workspace/api.ts:11 (updateWorkspaceProject); app/features/workspace/api.ts:11 (deleteWorkspaceProject)"
+    },
+    {
+      "id": "dataflow-006",
+      "docFile": "docs-site/architecture/data-flow.md",
+      "claim": "编辑器 API：fetchEditorDocument、saveEditorDocument",
+      "symbols": ["fetchEditorDocument", "saveEditorDocument"],
+      "sourceFiles": ["app/features/editor/api.ts"],
+      "evidenceHint": "app/features/editor/api.ts:9 (fetchEditorDocument); app/features/editor/api.ts:9 (saveEditorDocument)"
+    },
+    {
+      "id": "dataflow-007",
+      "docFile": "docs-site/architecture/data-flow.md",
+      "claim": "NUXT_PUBLIC_API_BASE 已含 /api 前缀",
+      "symbols": ["apiBase"],
+      "sourceFiles": ["nuxt.config.ts"],
+      "evidenceHint": "nuxt.config.ts:52 (apiBase)"
+    },
+    {
+      "id": "dataflow-008",
+      "docFile": "docs-site/architecture/data-flow.md",
+      "claim": "SWR 按需失效 POST /api/revalidate，Header x-revalidate-secret",
+      "symbols": ["revalidateSecret"],
+      "sourceFiles": ["nuxt.config.ts", "server/api/revalidate.post.ts"],
+      "evidenceHint": "nuxt.config.ts:49 (revalidateSecret)"
+    },
+    {
+      "id": "auth-001",
+      "docFile": "docs-site/architecture/auth.md",
+      "claim": "AUTH_REDIRECTS.login = '/sign-in'",
+      "symbols": ["AUTH_REDIRECTS"],
+      "sourceFiles": ["config/auth.ts"],
+      "evidenceHint": "config/auth.ts:10 (AUTH_REDIRECTS)"
+    },
+    {
+      "id": "auth-002",
+      "docFile": "docs-site/architecture/auth.md",
+      "claim": "ACCESS_TOKEN_MAX_AGE = 900，REFRESH_TOKEN_MAX_AGE = 2592000",
+      "symbols": ["ACCESS_TOKEN_MAX_AGE", "REFRESH_TOKEN_MAX_AGE"],
+      "sourceFiles": ["config/auth.ts"],
+      "evidenceHint": "config/auth.ts:10 (ACCESS_TOKEN_MAX_AGE); config/auth.ts:11 (REFRESH_TOKEN_MAX_AGE)"
+    },
+    {
+      "id": "auth-003",
+      "docFile": "docs-site/architecture/auth.md",
+      "claim": "Cookie 键 nuxt-modern-starter-access-token / nuxt-modern-starter-refresh-token",
+      "symbols": ["AUTH_COOKIE_KEYS"],
+      "sourceFiles": ["config/auth.ts"],
+      "evidenceHint": "config/auth.ts:10 (AUTH_COOKIE_KEYS)"
+    },
+    {
+      "id": "auth-004",
+      "docFile": "docs-site/architecture/auth.md",
+      "claim": "鉴权 API 端点 /register、/login、/refresh、/logout、/me、/me/profile",
+      "symbols": ["AUTH_API_ENDPOINTS"],
+      "sourceFiles": ["config/auth.ts"],
+      "evidenceHint": "config/auth.ts:4 (AUTH_API_ENDPOINTS)"
+    },
+    {
+      "id": "auth-005",
+      "docFile": "docs-site/architecture/auth.md",
+      "claim": "未登录访问产品页 redirect 到 /sign-in?redirect=<fullPath>",
+      "symbols": ["buildAuthLoginRedirect", "resolveAuthMiddlewareDecision"],
+      "sourceFiles": ["app/middleware/auth.ts"],
+      "evidenceHint": "app/middleware/auth.ts:11 (buildAuthLoginRedirect); app/middleware/auth.ts:4 (resolveAuthMiddlewareDecision)"
+    },
+    {
+      "id": "auth-006",
+      "docFile": "docs-site/architecture/auth.md",
+      "claim": "RBAC：roles 任一命中，permissions 须全部满足",
+      "symbols": ["isAuthorized"],
+      "sourceFiles": ["app/middleware/auth.ts"],
+      "evidenceHint": "app/middleware/auth.ts:11 (isAuthorized)"
+    },
+    {
+      "id": "arch-001",
+      "docFile": "docs/architecture.md",
+      "claim": "WORKSPACE_NEW_PROJECT_ID = 'new' 对应 /docs/new",
+      "symbols": ["WORKSPACE_NEW_PROJECT_ID"],
+      "sourceFiles": ["app/features/workspace/api.ts"],
+      "evidenceHint": "app/features/workspace/api.ts:11 (WORKSPACE_NEW_PROJECT_ID)"
+    },
+    {
+      "id": "arch-002",
+      "docFile": "docs/architecture.md",
+      "claim": "编辑器 autosave debounce 2 秒，路由离开 flush",
+      "symbols": ["EDITOR_AUTOSAVE_DEBOUNCE_MS", "flushAutosave", "onBeforeRouteLeave"],
+      "sourceFiles": [
+        "app/features/editor/types.ts",
+        "app/features/editor/composables/useEditorWorkspace.ts"
+      ],
+      "evidenceHint": "app/features/editor/types.ts:13 (EDITOR_AUTOSAVE_DEBOUNCE_MS); app/features/editor/composables/useEditorWorkspace.ts:98 (flushAutosave); app/features/editor/composables/useEditorWorkspace.ts:138 (onBeforeRouteLeave)"
+    },
+    {
+      "id": "arch-003",
+      "docFile": "docs/architecture.md",
+      "claim": "DEFAULT_LOCALE = zh-CN，SUPPORTED_LOCALES 15 种语言",
+      "symbols": ["DEFAULT_LOCALE", "SUPPORTED_LOCALES"],
+      "sourceFiles": ["config/site.ts"],
+      "evidenceHint": "config/site.ts:11 (DEFAULT_LOCALE); config/site.ts:11 (SUPPORTED_LOCALES)"
+    },
+    {
+      "id": "arch-004",
+      "docFile": "docs/architecture.md",
+      "claim": "getWorkspaceDocPath 返回 /docs/:id",
+      "symbols": ["getWorkspaceDocPath", "getWorkspaceNewDocPath"],
+      "sourceFiles": ["app/features/workspace/api.ts"],
+      "evidenceHint": "app/features/workspace/api.ts:11 (getWorkspaceDocPath); app/features/workspace/api.ts:39 (getWorkspaceNewDocPath)"
+    },
+    {
+      "id": "deploy-001",
+      "docFile": "docs-site/deployment/overview.md",
+      "claim": "默认 Node server 端口 3000，API base http://localhost:2026/api",
+      "symbols": ["apiBase", "siteUrl"],
+      "sourceFiles": ["nuxt.config.ts"],
+      "evidenceHint": "nuxt.config.ts:52 (apiBase); nuxt.config.ts:53 (siteUrl)"
+    },
+    {
+      "id": "config-001",
+      "docFile": "docs-site/reference/config.md",
+      "claim": "productRoutePatterns CSR 列表",
+      "symbols": ["productRoutePatterns", "csrRouteRules"],
+      "sourceFiles": ["config/routes.ts"],
+      "evidenceHint": "config/routes.ts:10 (productRoutePatterns); config/routes.ts:10 (csrRouteRules)"
+    },
+    {
+      "id": "feature-001",
+      "docFile": "docs-site/development/add-feature.md",
+      "claim": "feature API 放 app/features/<feature>/api.ts，使用 createProductApiClient",
+      "symbols": ["createProductApiClient"],
+      "sourceFiles": ["app/api/auth.ts", "app/features/workspace/api.ts"],
+      "evidenceHint": "app/api/auth.ts:4 (createProductApiClient)"
+    },
+    {
+      "id": "seo-001",
+      "docFile": "docs-site/architecture/seo.md",
+      "claim": "sitemap 含公开页，排除 sign-in/sign-up 与产品路由",
+      "symbols": ["PUBLIC_PAGE_PATHS", "isProductPath"],
+      "sourceFiles": ["config/site.ts", "config/routes.ts", "server/routes/sitemap.xml.ts"],
+      "evidenceHint": "config/site.ts:4 (PUBLIC_PAGE_PATHS); config/routes.ts:11 (isProductPath)"
+    },
+    {
+      "id": "config-002",
+      "docFile": "docs-site/reference/config.md",
+      "claim": "ph-PH Ant Design locale 回退 en_US",
+      "symbols": ["loadAntdLocale", "ANTD_LOCALE_LOADERS"],
+      "sourceFiles": ["config/antd-locale.ts"],
+      "evidenceHint": "config/antd-locale.ts:34 (loadAntdLocale); config/antd-locale.ts:15 (ANTD_LOCALE_LOADERS)"
+    },
+    {
+      "id": "config-003",
+      "docFile": "docs-site/reference/config.md",
+      "claim": "prerenderRoutes 仅 6 条：/、/about、/help 及 /en 变体",
+      "symbols": ["prerenderRoutes"],
+      "sourceFiles": ["config/routes.ts"],
+      "evidenceHint": "config/routes.ts:10 (prerenderRoutes)"
+    },
+    {
+      "id": "config-004",
+      "docFile": "docs-site/reference/config.md",
+      "claim": "runtimeConfig.public.apiBase 默认 http://localhost:2026/api",
+      "symbols": ["apiBase"],
+      "sourceFiles": ["nuxt.config.ts"],
+      "evidenceHint": "nuxt.config.ts:52 (apiBase)"
+    },
+    {
+      "id": "i18n-001",
+      "docFile": "docs-site/architecture/i18n.md",
+      "claim": "产品 URL 语言中性，localizedPath 对 isProductPath 不加前缀",
+      "symbols": ["localizedPath", "isProductPath"],
+      "sourceFiles": ["config/routes.ts"],
+      "evidenceHint": "config/routes.ts:11 (localizedPath); config/routes.ts:11 (isProductPath)"
+    },
+    {
+      "id": "i18n-002",
+      "docFile": "docs-site/architecture/i18n.md",
+      "claim": "SUPPORTED_LOCALES 共 15 种语言，DEFAULT_LOCALE = zh-CN",
+      "symbols": ["SUPPORTED_LOCALES", "DEFAULT_LOCALE"],
+      "sourceFiles": ["config/site.ts"],
+      "evidenceHint": "config/site.ts:11 (SUPPORTED_LOCALES); config/site.ts:11 (DEFAULT_LOCALE)"
+    },
+    {
+      "id": "seo-002",
+      "docFile": "docs-site/architecture/seo.md",
+      "claim": "usePageSeo noindex 时不生成 alternate hreflang",
+      "symbols": ["buildPageSeoLinks", "noindex"],
+      "sourceFiles": ["app/composables/usePageSeo.ts"],
+      "evidenceHint": "app/composables/usePageSeo.ts:4 (buildPageSeoLinks); app/composables/usePageSeo.ts:4 (noindex)"
+    },
+    {
+      "id": "deploy-002",
+      "docFile": "docs-site/deployment/overview.md",
+      "claim": "联调验证 /workspace → /docs/new → /docs/:id 自动保存",
+      "symbols": ["WORKSPACE_NEW_PROJECT_ID", "EDITOR_AUTOSAVE_DEBOUNCE_MS"],
+      "sourceFiles": ["app/features/workspace/api.ts", "app/features/editor/types.ts"],
+      "evidenceHint": "app/features/workspace/api.ts:11 (WORKSPACE_NEW_PROJECT_ID); app/features/editor/types.ts:13 (EDITOR_AUTOSAVE_DEBOUNCE_MS)"
+    },
+    {
+      "id": "feature-002",
+      "docFile": "docs-site/development/add-feature.md",
+      "claim": "工作台 idle 预加载 editor route 与 feature chunk",
+      "symbols": ["preloadRouteComponents", "prefetchEditorRoute"],
+      "sourceFiles": ["app/features/workspace/components/WorkspaceDashboard.vue"],
+      "evidenceHint": "app/features/workspace/components/WorkspaceDashboard.vue:42 (preloadRouteComponents); app/features/workspace/components/WorkspaceDashboard.vue:36 (prefetchEditorRoute)"
+    },
+    {
+      "id": "overview-001",
+      "docFile": "docs-site/architecture/overview.md",
+      "claim": "createProductApiClient 定义在 app/api/auth.ts，经 createAuthApiClient 组合",
+      "symbols": ["createProductApiClient", "createAuthApiClient"],
+      "sourceFiles": ["app/api/auth.ts", "app/api/clients.ts"],
+      "evidenceHint": "app/api/auth.ts:4 (createProductApiClient); app/api/auth.ts:27 (createAuthApiClient)"
+    },
+    {
+      "id": "overview-002",
+      "docFile": "docs-site/architecture/overview.md",
+      "claim": "中间件顺序：server product-canonical → locale.global → 命名 auth",
+      "symbols": ["localizedProductPathToCanonical", "resolveLocaleRouteDecision"],
+      "sourceFiles": [
+        "server/middleware/product-canonical.ts",
+        "app/middleware/locale.global.ts",
+        "app/middleware/auth.ts"
+      ],
+      "evidenceHint": "server/middleware/product-canonical.ts:4 (localizedProductPathToCanonical); app/middleware/locale.global.ts:4 (resolveLocaleRouteDecision)"
+    },
+    {
+      "id": "directory-001",
+      "docFile": "docs-site/architecture/directory.md",
+      "claim": "公开页在 app/pages/[[language]]，产品页在 workspace/docs/account.vue",
+      "symbols": ["PUBLIC_PAGE_PATHS", "isProductPath"],
+      "sourceFiles": ["config/site.ts", "config/routes.ts"],
+      "evidenceHint": "config/site.ts:4 (PUBLIC_PAGE_PATHS); config/routes.ts:11 (isProductPath)"
+    },
+    {
+      "id": "directory-002",
+      "docFile": "docs-site/architecture/directory.md",
+      "claim": "feature 对外导出面为 index.ts，禁止跨 feature 深入 components",
+      "symbols": ["productNavItems"],
+      "sourceFiles": ["app/features/product-shell/config.ts", "app/features/workspace/index.ts"],
+      "evidenceHint": "app/features/product-shell/config.ts:10 (productNavItems)"
+    },
+    {
+      "id": "index-001",
+      "docFile": "docs-site/index.md",
+      "claim": "帮助页 FAQ 数据来自 config/content/faq.ts",
+      "symbols": ["faqItems", "getFaqItems"],
+      "sourceFiles": ["config/content/faq.ts", "app/api/public.ts"],
+      "evidenceHint": "config/content/faq.ts:10 (faqItems); config/content/faq.ts:14 (getFaqItems)"
+    },
+    {
+      "id": "index-002",
+      "docFile": "docs-site/index.md",
+      "claim": "编辑器自动保存 debounce 2 秒",
+      "symbols": ["EDITOR_AUTOSAVE_DEBOUNCE_MS"],
+      "sourceFiles": ["app/features/editor/types.ts"],
+      "evidenceHint": "app/features/editor/types.ts:13 (EDITOR_AUTOSAVE_DEBOUNCE_MS)"
+    },
+    {
+      "id": "guide-gs-001",
+      "docFile": "docs-site/guide/getting-started.md",
+      "claim": "Node 22.22.3、pnpm 11.5.2 为 engines 要求",
+      "symbols": ["engines"],
+      "sourceFiles": ["package.json"],
+      "evidenceHint": "package.json:6 (engines)"
+    },
+    {
+      "id": "guide-gs-002",
+      "docFile": "docs-site/guide/getting-started.md",
+      "claim": "联调默认 NUXT_PUBLIC_API_BASE=http://localhost:2026/api",
+      "symbols": ["apiBase"],
+      "sourceFiles": ["nuxt.config.ts"],
+      "evidenceHint": "nuxt.config.ts:52 (apiBase)"
+    },
+    {
+      "id": "guide-ov-001",
+      "docFile": "docs-site/guide/overview.md",
+      "claim": "Vitest 31 个测试文件、111 个用例",
+      "symbols": ["include"],
+      "sourceFiles": ["vitest.config.ts"],
+      "evidenceHint": "vitest.config.ts:19 (include)"
+    },
+    {
+      "id": "guide-ov-002",
+      "docFile": "docs-site/guide/overview.md",
+      "claim": "产品区 CSR：/workspace、/docs/**、/account",
+      "symbols": ["csrRouteRules", "productRoutePatterns"],
+      "sourceFiles": ["config/routes.ts"],
+      "evidenceHint": "config/routes.ts:10 (csrRouteRules); config/routes.ts:10 (productRoutePatterns)"
+    },
+    {
+      "id": "addpage-001",
+      "docFile": "docs-site/development/add-page.md",
+      "claim": "新公开页须加入 PUBLIC_PAGE_PATHS",
+      "symbols": ["PUBLIC_PAGE_PATHS"],
+      "sourceFiles": ["config/site.ts"],
+      "evidenceHint": "config/site.ts:4 (PUBLIC_PAGE_PATHS)"
+    },
+    {
+      "id": "addpage-002",
+      "docFile": "docs-site/development/add-page.md",
+      "claim": "内部链接使用 localePath() 而非手写 /en",
+      "symbols": ["localePath", "isProductPath"],
+      "sourceFiles": ["app/composables/useLocalePath.ts"],
+      "evidenceHint": "app/composables/useLocalePath.ts:3 (localePath); app/composables/useLocalePath.ts:13 (isProductPath)"
+    },
+    {
+      "id": "addapi-001",
+      "docFile": "docs-site/development/add-api.md",
+      "claim": "公开 adapter 使用 createPublicApiClient，剥离 authorization/cookie",
+      "symbols": ["createPublicApiClient"],
+      "sourceFiles": ["app/api/clients.ts"],
+      "evidenceHint": "app/api/clients.ts:4 (createPublicApiClient)"
+    },
+    {
+      "id": "addapi-002",
+      "docFile": "docs-site/development/add-api.md",
+      "claim": "feature 私有 API 使用 createProductApiClient",
+      "symbols": ["createProductApiClient"],
+      "sourceFiles": ["app/api/auth.ts"],
+      "evidenceHint": "app/api/auth.ts:4 (createProductApiClient)"
+    },
+    {
+      "id": "addseo-001",
+      "docFile": "docs-site/development/add-seo.md",
+      "claim": "产品页 usePageSeo({ noindex: true })",
+      "symbols": ["usePageSeo"],
+      "sourceFiles": ["app/composables/usePageSeo.ts"],
+      "evidenceHint": "app/composables/usePageSeo.ts:10 (usePageSeo)"
+    },
+    {
+      "id": "addseo-002",
+      "docFile": "docs-site/development/add-seo.md",
+      "claim": "新闻详情可传 article 触发 Article JSON-LD",
+      "symbols": ["buildPageSeoScripts"],
+      "sourceFiles": ["app/composables/usePageSeo.ts"],
+      "evidenceHint": "app/composables/usePageSeo.ts:10 (buildPageSeoScripts)"
+    },
+    {
+      "id": "conv-001",
+      "docFile": "docs-site/development/conventions.md",
+      "claim": "pnpm quality 含 i18n:check",
+      "symbols": ["i18n:check"],
+      "sourceFiles": ["package.json"],
+      "evidenceHint": "package.json:38 (i18n:check)"
+    },
+    {
+      "id": "conv-002",
+      "docFile": "docs-site/development/conventions.md",
+      "claim": "登录 redirect 使用 resolveSafeRedirectPath",
+      "symbols": ["resolveSafeRedirectPath"],
+      "sourceFiles": ["app/utils/safe-redirect.ts"],
+      "evidenceHint": "app/utils/safe-redirect.ts:4 (resolveSafeRedirectPath)"
+    },
+    {
+      "id": "test-001",
+      "docFile": "docs-site/development/testing.md",
+      "claim": "Vitest environment: nuxt，扫描 tests/**/*.test.ts",
+      "symbols": ["defineVitestConfig", "environment"],
+      "sourceFiles": ["vitest.config.ts"],
+      "evidenceHint": "vitest.config.ts:9 (defineVitestConfig); vitest.config.ts:3 (environment)"
+    },
+    {
+      "id": "test-002",
+      "docFile": "docs-site/development/testing.md",
+      "claim": "quality 门禁：lint → format:check → stylelint → typecheck → i18n:check → test → build",
+      "symbols": ["quality"],
+      "sourceFiles": ["package.json"],
+      "evidenceHint": "package.json:46 (quality)"
+    },
+    {
+      "id": "scripts-001",
+      "docFile": "docs-site/reference/scripts.md",
+      "claim": "engines node 22.22.3 pnpm 11.5.2",
+      "symbols": ["engines"],
+      "sourceFiles": ["package.json"],
+      "evidenceHint": "package.json:6 (engines)"
+    },
+    {
+      "id": "scripts-002",
+      "docFile": "docs-site/reference/scripts.md",
+      "claim": "pnpm docs:sync:check 校验 manifest 与 doc-claims",
+      "symbols": ["docs:sync:check"],
+      "sourceFiles": ["package.json"],
+      "evidenceHint": "package.json:28 (docs:sync:check)"
+    },
+    {
+      "id": "env-001",
+      "docFile": "docs-site/deployment/env.md",
+      "claim": "auth cookie secure 当 appEnv === production",
+      "symbols": ["tokenCookieOptions", "appEnv"],
+      "sourceFiles": ["app/utils/auth-session.ts", "nuxt.config.ts"],
+      "evidenceHint": "app/utils/auth-session.ts:4 (tokenCookieOptions); app/utils/auth-session.ts:4 (appEnv)"
+    },
+    {
+      "id": "env-002",
+      "docFile": "docs-site/deployment/env.md",
+      "claim": "未配置 revalidateSecret 时 POST /api/revalidate 返回 503",
+      "symbols": ["revalidateSecret"],
+      "sourceFiles": ["server/api/revalidate.post.ts", "nuxt.config.ts"],
+      "evidenceHint": "server/api/revalidate.post.ts:14 (revalidateSecret)"
+    },
+    {
+      "id": "docker-001",
+      "docFile": "docs-site/deployment/docker.md",
+      "claim": "生产启动 node .output/server/index.mjs",
+      "symbols": [".output/server/index.mjs"],
+      "sourceFiles": ["docker/Dockerfile"],
+      "evidenceHint": "docker/Dockerfile:8 (.output/server/index.mjs)"
+    },
+    {
+      "id": "docker-002",
+      "docFile": "docs-site/deployment/docker.md",
+      "claim": "pnpm docker:up 使用 .env.prod",
+      "symbols": ["docker:up"],
+      "sourceFiles": ["package.json"],
+      "evidenceHint": "package.json:23 (docker:up)"
+    },
+    {
+      "id": "nginx-001",
+      "docFile": "docs-site/deployment/nginx.md",
+      "claim": "Nginx 样例 gateway.docker.conf 代理 /_nuxt/ 长缓存",
+      "symbols": ["/_nuxt/"],
+      "sourceFiles": ["docker/nginx/gateway.docker.conf"],
+      "evidenceHint": "docker/nginx/gateway.docker.conf:2 (/_nuxt/)"
+    },
+    {
+      "id": "nginx-002",
+      "docFile": "docs-site/deployment/nginx.md",
+      "claim": "gateway 反向代理至 Nuxt node-server 3000",
+      "symbols": ["proxy_pass"],
+      "sourceFiles": ["docker/nginx/gateway.docker.conf"],
+      "evidenceHint": "docker/nginx/gateway.docker.conf:8 (proxy_pass)"
+    },
+    {
+      "id": "nuxt-001",
+      "docFile": "docs-site/tech-stack/nuxt.md",
+      "claim": "测试环境追加 @nuxt/test-utils/module",
+      "symbols": ["@nuxt/test-utils/module"],
+      "sourceFiles": ["nuxt.config.ts"],
+      "evidenceHint": "nuxt.config.ts:21 (@nuxt/test-utils/module)"
+    },
+    {
+      "id": "nuxt-002",
+      "docFile": "docs-site/tech-stack/nuxt.md",
+      "claim": "SFC 自动注入 tokens/_variables.scss",
+      "symbols": ["additionalData"],
+      "sourceFiles": ["nuxt.config.ts"],
+      "evidenceHint": "nuxt.config.ts:43 (additionalData)"
+    },
+    {
+      "id": "pinia-001",
+      "docFile": "docs-site/tech-stack/pinia.md",
+      "claim": "auth store logout 调用 clearAttributionParams",
+      "symbols": ["clearAttributionParams"],
+      "sourceFiles": ["app/stores/auth.ts"],
+      "evidenceHint": "app/stores/auth.ts:35 (clearAttributionParams)"
+    },
+    {
+      "id": "pinia-002",
+      "docFile": "docs-site/tech-stack/pinia.md",
+      "claim": "ensureSession 恢复链在 useAuth composable",
+      "symbols": ["ensureSession"],
+      "sourceFiles": ["app/composables/useAuth.ts"],
+      "evidenceHint": "app/composables/useAuth.ts:3 (ensureSession)"
+    },
+    {
+      "id": "styles-001",
+      "docFile": "docs-site/tech-stack/styles.md",
+      "claim": "色值唯一源 config/theme-palette.json，pnpm generate:theme 生成 SCSS",
+      "symbols": ["generate:theme"],
+      "sourceFiles": ["package.json", "scripts/generate-theme-scss.mjs"],
+      "evidenceHint": "package.json:33 (generate:theme)"
+    },
+    {
+      "id": "styles-002",
+      "docFile": "docs-site/tech-stack/styles.md",
+      "claim": "useTheme 调用 applyThemeCssVariables 同步 --app-*",
+      "symbols": ["applyThemeCssVariables"],
+      "sourceFiles": ["config/theme.ts", "app/composables/useTheme.ts"],
+      "evidenceHint": "config/theme.ts:149 (applyThemeCssVariables)"
+    },
+    {
+      "id": "ts-ov-001",
+      "docFile": "docs-site/tech-stack/overview.md",
+      "claim": "Nuxt 4.4.8 + @yanivjs/yaniv-editor 0.1.2",
+      "symbols": ["nuxt", "@yanivjs/yaniv-editor"],
+      "sourceFiles": ["package.json"],
+      "evidenceHint": "package.json:2 (nuxt); package.json:62 (@yanivjs/yaniv-editor)"
+    },
+    {
+      "id": "ts-ov-002",
+      "docFile": "docs-site/tech-stack/overview.md",
+      "claim": "统一 API 信封 { code, message, data }",
+      "symbols": ["ApiResponse"],
+      "sourceFiles": ["app/lib/http/types.ts"],
+      "evidenceHint": "app/lib/http/types.ts:3 (ApiResponse)"
+    },
+    {
+      "id": "http-doc-001",
+      "docFile": "docs-site/tech-stack/http.md",
+      "claim": "非信封 JSON 跳过 assertApiSuccess",
+      "symbols": ["isApiEnvelope", "assertApiSuccess"],
+      "sourceFiles": ["app/lib/http/client.ts"],
+      "evidenceHint": "app/lib/http/client.ts:28 (isApiEnvelope); app/lib/http/client.ts:20 (assertApiSuccess)"
+    },
+    {
+      "id": "http-doc-002",
+      "docFile": "docs-site/tech-stack/http.md",
+      "claim": "createProductApiClient 在 app/api/auth.ts",
+      "symbols": ["createProductApiClient"],
+      "sourceFiles": ["app/api/auth.ts"],
+      "evidenceHint": "app/api/auth.ts:4 (createProductApiClient)"
+    },
+    {
+      "id": "antd-doc-001",
+      "docFile": "docs-site/tech-stack/ant-design-vue.md",
+      "claim": "antd extractStyle: true 用于 SSR",
+      "symbols": ["extractStyle"],
+      "sourceFiles": ["nuxt.config.ts"],
+      "evidenceHint": "nuxt.config.ts:65 (extractStyle)"
+    },
+    {
+      "id": "antd-doc-002",
+      "docFile": "docs-site/tech-stack/ant-design-vue.md",
+      "claim": "ph-PH 回退 en_US Ant Design locale",
+      "symbols": ["ph-PH"],
+      "sourceFiles": ["config/antd-locale.ts"],
+      "evidenceHint": "config/antd-locale.ts:9 (ph-PH)"
+    },
+    {
+      "id": "docs-conv-001",
+      "docFile": "docs/conventions.md",
+      "claim": "createProductApiClient 在 app/api/auth.ts 而非 clients.ts",
+      "symbols": ["createProductApiClient"],
+      "sourceFiles": ["app/api/auth.ts"],
+      "evidenceHint": "app/api/auth.ts:4 (createProductApiClient)"
+    },
+    {
+      "id": "docs-conv-002",
+      "docFile": "docs/conventions.md",
+      "claim": "产品路由 csrRouteRules 语言中性",
+      "symbols": ["csrRouteRules"],
+      "sourceFiles": ["config/routes.ts"],
+      "evidenceHint": "config/routes.ts:10 (csrRouteRules)"
+    },
+    {
+      "id": "docs-usage-001",
+      "docFile": "docs/usage.md",
+      "claim": "pnpm quality 含 i18n:check 与 build",
+      "symbols": ["quality"],
+      "sourceFiles": ["package.json"],
+      "evidenceHint": "package.json:46 (quality)"
+    },
+    {
+      "id": "docs-usage-002",
+      "docFile": "docs/usage.md",
+      "claim": "getFaqItems 读取 config/content/faq.ts",
+      "symbols": ["getFaqItems", "faqItems"],
+      "sourceFiles": ["app/api/public.ts", "config/content/faq.ts"],
+      "evidenceHint": "app/api/public.ts:10 (getFaqItems); app/api/public.ts:24 (faqItems)"
+    },
+    {
+      "id": "docs-deploy-001",
+      "docFile": "docs/deployment.md",
+      "claim": "默认部署 Nitro node-server，启动 .output/server/index.mjs",
+      "symbols": ["node .output/server/index.mjs"],
+      "sourceFiles": ["docker/Dockerfile", "docs/deployment.md"],
+      "evidenceHint": "docker/Dockerfile:8 (node .output/server/index.mjs)"
+    },
+    {
+      "id": "docs-deploy-002",
+      "docFile": "docs/deployment.md",
+      "claim": "NUXT_REVALIDATE_SECRET 未配置时 revalidate 503",
+      "symbols": ["revalidateSecret"],
+      "sourceFiles": ["server/api/revalidate.post.ts"],
+      "evidenceHint": "server/api/revalidate.post.ts:14 (revalidateSecret)"
+    },
+    {
+      "id": "readme-001",
+      "docFile": "README.md",
+      "claim": "Verified Nuxt 4.4.8 Node 22.22.3",
+      "symbols": ["nuxt"],
+      "sourceFiles": ["package.json", "README.md"],
+      "evidenceHint": "package.json:2 (nuxt)"
+    },
+    {
+      "id": "readme-002",
+      "docFile": "README.md",
+      "claim": "pnpm docs:sync:check 文档与代码一致性校验",
+      "symbols": ["docs:sync:check"],
+      "sourceFiles": ["package.json"],
+      "evidenceHint": "package.json:28 (docs:sync:check)"
+    }
+  ],
+  "requiredClaimsPerDoc": 2,
+  "claimCount": 88,
+  "docCoverage": {
+    "total": 33,
+    "covered": 33,
+    "missing": []
+  }
+}

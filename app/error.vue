@@ -37,6 +37,7 @@ const handleError = () => clearError({ redirect: '/' })
 const errorTitle = computed(() => {
   const { statusCode, statusMessage } = props.error
 
+  // statusMessage 为 i18n key（如 error.forbidden）时优先 te/t 翻译
   if (statusMessage && te(statusMessage)) {
     return t(statusMessage)
   }
@@ -54,6 +55,7 @@ const errorTitle = computed(() => {
 
 useHead({
   title: computed(() => `${errorTitle.value} · ${SITE_NAME}`),
+  // 全局错误页一律 noindex，避免搜索引擎收录中间件 403/404
   meta: [{ name: 'robots', content: 'noindex,nofollow' }]
 })
 </script>

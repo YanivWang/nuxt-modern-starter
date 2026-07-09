@@ -104,6 +104,7 @@ const handleLanguageSelect = async (locale: SupportedLocale) => {
   }
 
   await languageStore.chooseLanguage(locale)
+  // 公开页切换语言会改 URL（/ ↔ /en）；与产品区 UserAccountMenu 行为不同
   await router.push(switchLocalePath(locale))
   isOpen.value = false
 }

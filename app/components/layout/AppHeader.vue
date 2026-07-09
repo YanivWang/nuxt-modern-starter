@@ -57,6 +57,7 @@ import { NAV_ITEMS } from '../../../config/site'
 const { localePath } = useLocalePath()
 const { authStore } = useAuth()
 
+// 滚动后添加半透明背景；公开 header 不用于 product layout
 const isScrolled = ref(false)
 
 const updateScrollState = () => {

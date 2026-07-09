@@ -14,6 +14,7 @@
 
 - `code !== 200` → HTTP 客户端抛出错误，页面用 `getApiErrorMessage()` 展示 `message`
 - 业务数据 **只在 `data` 里**，不要混在顶层
+- 类型定义：`ApiResponse<T>`（`app/lib/http/types.ts`）；`assertApiSuccess` 校验 `code === 200`
 
 ## 分层架构
 
@@ -28,7 +29,7 @@ Page / Store / Feature Component
         ↓
   createApiClient（app/lib/http/client.ts）
         ↓
-  $fetch → NUXT_PUBLIC_API_BASE + path
+  $fetch → runtimeConfig.public.apiBase（`nuxt.config.ts` 默认 `apiBase`，已含 `/api` 前缀）+ path
 ```
 
 ## 三类客户端对比
@@ -66,7 +67,9 @@ export const getFaqItems = (locale) => faqItems.map(...)
 export const loginApi = (payload) => sendAuthApiRequest('/login', { method: 'POST', body: payload })
 ```
 
-`createProductApiClient()` 也在 `auth.ts` 导出，内部组合 `createAuthApiClient` + 单飞 refresh。
+`createProductApiClient()` 也在 `auth.ts` 导出，内部组合 `createAuthApiClient` + `refreshAccessTokenOnce` 单飞 refresh（并发 401 共享同一 `refreshPromise`）。
+
+`fetchMeApi` / `fetchProfileApi` / `updateProfileApi` 通过 `sendAuthApiRequest(..., { retryOnUnauthorized: true })` 启用 401 自动 refresh 重试。
 
 ### Product 客户端
 
@@ -109,7 +112,7 @@ server/utils/revalidate.ts → purgeRouteCaches()
 清除 nitro/routes 缓存条目 → 下次请求重新 SSR
 ```
 
-`slug` 快捷方式会展开为中英文新闻列表与详情四条路径。未配置 secret 时返回 503。
+`slug` 快捷方式会展开为中英文新闻列表与详情四条路径。未配置 `revalidateSecret`（`NUXT_REVALIDATE_SECRET`）时返回 503。
 
 ## API 端点地图
 

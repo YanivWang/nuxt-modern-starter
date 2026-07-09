@@ -42,6 +42,7 @@
 import { useI18n } from 'vue-i18n'
 import { WorkspaceDashboard } from '~/features/workspace'
 
+// CSR 产品页；列表/创建/删除逻辑在 WorkspaceDashboard + composables
 definePageMeta({
   layout: 'product',
   middleware: 'auth'

@@ -36,6 +36,14 @@ antd: {
 
 完整说明（含双轨分工与 `themeTokenCssVarMap`）见 [样式体系](/tech-stack/styles#主题切换与运行时同步-已实现)。
 
+## Ant Design 语言包
+
+`config/antd-locale.ts` 的 `loadAntdLocale(locale)` 为每种 `SupportedLocale` 动态 `import()` 对应 `ant-design-vue/es/locale/*` 包，供 `app/app.vue` 的 `a-config-provider` 使用。
+
+| 特例    | 行为                                                                       |
+| ------- | -------------------------------------------------------------------------- |
+| `ph-PH` | Ant Design 无 Filipino 官方包，`ANTD_LOCALE_LOADERS['ph-PH']` 回退 `en_US` |
+
 ## 图标按需加载
 
 不要全量引入 `@ant-design/icons-vue`：
