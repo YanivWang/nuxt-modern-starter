@@ -70,7 +70,7 @@ pnpm docs:preview
 pnpm docs:sync:check   # 校验 manifest / 头注释 / doc-claims 与源码一致
 ```
 
-Source lives in `docs-site/`.
+Source lives in `docs-site/`. Pushing changes under `docs-site/` to `main` triggers `.github/workflows/deploy-docs.yml` and publishes to GitHub Pages (`Settings → Pages → Source: GitHub Actions`).
 
 Repository reference docs (linked from README / help page):
 

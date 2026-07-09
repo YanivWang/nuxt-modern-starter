@@ -47,7 +47,7 @@
 | 命令                     | 说明                                                       |
 | ------------------------ | ---------------------------------------------------------- |
 | `pnpm docs:dev`          | VitePress 开发预览                                         |
-| `pnpm docs:build`        | 构建静态文档                                               |
+| `pnpm docs:build`        | 构建静态文档（CI 会注入 `VITEPRESS_BASE=/<repo>/`）        |
 | `pnpm docs:preview`      | 预览文档 build                                             |
 | `pnpm docs:sync:check`   | 校验 manifest / 头注释 / doc-claims 与源码一致             |
 | `pnpm docs:sync:enrich`  | 为 doc-claims 生成 evidenceHint 行号并验证 33 文档覆盖     |

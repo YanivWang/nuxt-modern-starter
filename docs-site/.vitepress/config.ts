@@ -1,9 +1,13 @@
 import { defineConfig } from 'vitepress'
 
+// GitHub Pages 项目站需带仓库名路径；本地 `pnpm docs:dev` 仍用根路径
+const base = process.env.VITEPRESS_BASE || '/'
+
 export default defineConfig({
   title: 'Nuxt Modern Starter',
   description: 'Nuxt 4 公开站点与轻量 SaaS 前台 starter 完整架构文档',
   lang: 'zh-CN',
+  base,
   lastUpdated: true,
   cleanUrls: true,
   head: [['meta', { name: 'theme-color', content: '#1677ff' }]],

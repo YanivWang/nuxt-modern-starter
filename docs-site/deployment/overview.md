@@ -66,6 +66,16 @@ pnpm docker:up       # 可选 Compose 栈
 | 4    | `/docs/:id`             | 加载项目 + documentId；debounce 自动保存；标题双写 document/project                                      |
 | 5    | `/account`              | `fetchProfileApi` 展示扩展资料；UserAccountMenu 退出清归因                                               |
 
+## 文档站（GitHub Pages）
+
+VitePress 文档站由 `.github/workflows/deploy-docs.yml` 自动部署：
+
+1. 仓库 **Settings → Pages → Source** 选择 **GitHub Actions**
+2. 推送 `main` 上 `docs-site/**` 变更，或手动 **Actions → Deploy Docs → Run workflow**
+3. 访问 `https://<user>.github.io/nuxt-modern-starter/`（CI 注入 `VITEPRESS_BASE=/nuxt-modern-starter/`）
+
+本地构建仍用根路径：`pnpm docs:dev` / `pnpm docs:build`。
+
 ## 下一步
 
 - [环境变量](/deployment/env)

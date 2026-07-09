@@ -64,3 +64,5 @@ pnpm docs:build
 pnpm docs:preview
 pnpm docs:sync:check   # 校验文档 claim 与源码一致
 ```
+
+线上文档站由 GitHub Actions（`.github/workflows/deploy-docs.yml`）在 `main` 变更后自动构建并发布到 GitHub Pages。首次使用需在仓库 **Settings → Pages → Source** 选择 **GitHub Actions**；地址一般为 `https://<user>.github.io/nuxt-modern-starter/`。
