@@ -1,5 +1,27 @@
 /// <reference lib="webworker" />
 
+/*
+  【文件职责】
+    Web Worker 版文件 MD5 计算：并发读取文件分片，但按原始分片顺序 append 到 SparkMD5。
+    供 compute-file-md5.ts 在大文件上传 init 阶段 offload 主线程。
+
+  【架构位置】
+    登录产品区 — app/features/editor/upload，由 computeFileMd5 通过 new Worker(...) 启动。
+
+  【主要导出 / 路由】
+    无 ESM 导出；通过 self.onmessage 接收 init / abort，向主线程 postMessage done / error。
+
+  【依赖关系】
+    - 依赖：spark-md5、浏览器 File / Worker API
+    - 被引用：app/features/editor/upload/compute-file-md5.ts
+
+  【渲染 / 数据】
+    仅客户端 Worker；输入 File、partSize、readConcurrency，输出小写 hex md5 与耗时。
+
+  【边界与注意】
+    MD5 append 必须保持分片顺序；并发只用于 arrayBuffer 读取，不能并发 append。
+    AbortError 以字符串 message 回传，主线程再还原为 DOMException。
+*/
 import SparkMD5 from 'spark-md5'
 
 type WorkerInit = {
@@ -41,6 +63,7 @@ const runImpl = (init: WorkerInit, finishedRef: { v: boolean }) => {
   let inFlight = 0
 
   const tryAppend = () => {
+    // 读取可并发完成，但 MD5 必须按 chunk index 顺序 append，避免同一文件得到错误 hash。
     while (nextAppend < chunkCount && buffers.has(nextAppend)) {
       if (aborted) {
         throw new DOMException('aborted', 'AbortError')
@@ -92,6 +115,7 @@ const runImpl = (init: WorkerInit, finishedRef: { v: boolean }) => {
       inFlight++
       const start = i * partSize
       const end = Math.min(start + partSize, file.size)
+      // File.slice().arrayBuffer() 在 Worker 内并发读；完成后先进入 buffers，等待 tryAppend 顺序消费。
       void file
         .slice(start, end)
         .arrayBuffer()

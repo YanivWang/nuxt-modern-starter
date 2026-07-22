@@ -4,6 +4,20 @@
 
   【架构位置】
     登录产品区 — app/features/editor/composables，被 useEditorWorkspace 消费。
+
+  【主要导出 / 路由】
+    useDraftProject、UseDraftProjectOptions
+
+  【依赖关系】
+    - 依赖：workspace createProject、editor saveDocument、editor-content.ts
+    - 被引用：useEditorWorkspace.ts、tests/unit/editor-draft-project.test.ts
+
+  【渲染 / 数据】
+    CSR；/docs/new 没有后端 documentId，首次非空内容才创建 project + document。
+
+  【边界与注意】
+    createProject 返回初始 document 后仍会 PATCH 当前 HTML，确保用户首屏输入不丢。
+    navigateToProject 使用 replace，避免浏览器后退回到已消费的 /docs/new 草稿页。
 */
 import { computed, type Ref } from 'vue'
 import { isBlankEditorContent } from './editor-content'
@@ -57,7 +71,7 @@ export const useDraftProject = ({
     const response = await createProject({ title })
     const { project, document: createdDocument } = response.data
 
-    // 创建后立即 PATCH 初始内容，再 replace 到 /docs/:projectId
+    // createProject 只保证项目和初始文档存在；当前编辑器 HTML 要立即 PATCH，避免首段内容丢失。
     await saveDocument(createdDocument.id, {
       title,
       content: contentToSave

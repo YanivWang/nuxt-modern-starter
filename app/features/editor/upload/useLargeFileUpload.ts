@@ -14,6 +14,11 @@
 
   【渲染 / 数据】
     CSR；成功返回 { url }（绝对 /uploads/large/... URL）。
+
+  【边界与注意】
+    首次上传会先算整文件 MD5；API 若返回 instant=true 则走秒传，不再 PUT 分片。
+    localStorage 只保存 uploadId，真正续传前仍用 getStatus 校验文件名、大小与任务状态。
+    进度条 0~95 留给 MD5 + PUT，merge 固定从 96 到 100，避免上传完成前显示满格。
 */
 import { computed, ref, shallowRef } from 'vue'
 import { createLargeFileUploadApi } from '../upload-api'
@@ -190,6 +195,7 @@ export const useLargeFileUpload = (options: LargeFileUploadOptions = {}) => {
           if (status.fileName == null || status.fileSize == null || status.chunkSize == null) {
             throw new Error('无法续传：任务缺少文件元信息或已失效')
           }
+          // uploadId 来自本地缓存或 retryResume，必须再次校验文件元信息，防止错文件续传到旧任务。
           if (file.name !== status.fileName || file.size !== status.fileSize) {
             throw new Error('续传须使用与原任务相同的文件（名称与大小一致）')
           }
@@ -260,6 +266,7 @@ export const useLargeFileUpload = (options: LargeFileUploadOptions = {}) => {
         )
 
         const initialCompleted = chunkTotal - pending.length
+        // 续传任务把已收到分片折算进 0~95 区间；merge 前永远不显示 100。
         progress.value = Math.min(
           95,
           prepFloor + Math.round((initialCompleted / chunkTotal) * prepSpan)

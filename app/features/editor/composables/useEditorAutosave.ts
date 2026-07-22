@@ -4,6 +4,20 @@
 
   【架构位置】
     登录产品区 — app/features/editor/composables，被 useEditorWorkspace 消费。
+
+  【主要导出 / 路由】
+    useEditorAutosave、UseEditorAutosaveOptions
+
+  【依赖关系】
+    - 依赖：editor-content.ts、saveEditorDocument、useDraftProject.ensureDraftProject
+    - 被引用：useEditorWorkspace.ts、tests/unit/editor-autosave.test.ts
+
+  【渲染 / 数据】
+    CSR；保存 HTML content + title，lastSavedAt 只作为 UI 提示时间，不作为后端版本控制。
+
+  【边界与注意】
+    空 /docs/new 不创建项目；首次非空保存先 ensureDraftProject，再重置 dirty baseline。
+    保存期间继续输入会让 dirty 保持 true，并在保存完成后重新调度 autosave。
 */
 import { computed, ref, type Ref } from 'vue'
 import { isBlankEditorContent, formatEditorSavedAt } from './editor-content'

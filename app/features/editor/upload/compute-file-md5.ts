@@ -1,6 +1,23 @@
 /*
   【文件职责】
     按块计算文件 / 分片 MD5（小写 hex），供 large-upload init 与 X-Chunk-Md5 使用。
+
+  【架构位置】
+    登录产品区 — app/features/editor/upload，被 useLargeFileUpload 调用。
+
+  【主要导出 / 路由】
+    computeFileMd5、computeChunkMd5、md5ReadConcurrency、COMPUTE_FILE_MD5_PART_BYTES
+
+  【依赖关系】
+    - 依赖：spark-md5、compute-file-md5.worker.ts
+    - 被引用：useLargeFileUpload.ts
+
+  【渲染 / 数据】
+    仅客户端文件上传链路；整文件 MD5 优先 Worker，Worker 不可用时回退主线程。
+
+  【边界与注意】
+    Worker 读取可并发，但 append 顺序由 worker 保证；主线程 fallback 串行 append。
+    AbortSignal 在 Worker 与 fallback 两条路径都必须转换为 AbortError。
 */
 import SparkMD5 from 'spark-md5'
 
@@ -18,6 +35,7 @@ type WorkerToMain =
 export const md5ReadConcurrency = () => {
   if (typeof navigator === 'undefined') return 4
   const n = navigator.hardwareConcurrency ?? 4
+  // 限制在 1~16，避免高核心设备一次读取过多 ArrayBuffer 占用内存。
   return Math.min(Math.max(1, n), 16)
 }
 
@@ -68,6 +86,7 @@ export const computeFileMd5 = async (
     }
 
     const onAbort = () => {
+      // 先通知 Worker 停止，再 reject；settle 会 terminate，避免后台继续读大文件。
       worker.postMessage({ type: 'abort' })
       settle(() => reject(new DOMException('aborted', 'AbortError')))
     }

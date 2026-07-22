@@ -4,6 +4,19 @@
 
   【架构位置】
     登录产品区 — app/features/workspace/composables，被 WorkspaceDashboard 消费。
+
+  【主要导出 / 路由】
+    useWorkspaceProjects、UseWorkspaceProjectsOptions
+
+  【依赖关系】
+    - 依赖：workspace api、workspace-project-delete.ts、ant-design-vue message
+    - 被引用：WorkspaceDashboard.vue、tests/unit/workspace-projects.test.ts
+
+  【渲染 / 数据】
+    CSR；useAsyncData key 固定为 workspace-projects，删除成功后 refresh 列表。
+
+  【边界与注意】
+    删除流程委托 performWorkspaceProjectDelete，保证 loading 标记、刷新和通知在测试中可替换。
 */
 import { message } from 'ant-design-vue'
 import { ref } from 'vue'

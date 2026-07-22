@@ -4,6 +4,20 @@
 
   【架构位置】
     登录产品区 — app/features/editor/composables，被 EditorWorkspace 消费。
+
+  【主要导出 / 路由】
+    useEditorWorkspace、UseEditorWorkspaceOptions
+
+  【依赖关系】
+    - 依赖：useEditorDocument、useEditorTitle、useDraftProject、useEditorAutosave、workspace api
+    - 被引用：EditorWorkspace.vue
+
+  【渲染 / 数据】
+    CSR 编辑器会话；documentId 可能来自路由，也可能由 /docs/new 首次保存后产生。
+
+  【边界与注意】
+    editorRef 暴露的是第三方 YanivEditor 实例，只依赖 getHTML 这个最小契约。
+    路由离开前会 flush autosave；若正在 saving，保持放行，避免阻塞导航。
 */
 import { message } from 'ant-design-vue'
 import { computed, ref, type ComponentPublicInstance, type Ref } from 'vue'
@@ -29,6 +43,7 @@ export type UseEditorWorkspaceOptions = {
 }
 
 type EditorInstance = ComponentPublicInstance & {
+  // YanivEditor 未在本项目声明完整实例类型；这里只绑定 autosave 需要的最小方法。
   getHTML?: () => string
 }
 
