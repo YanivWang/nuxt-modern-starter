@@ -18,7 +18,7 @@ Generated: 2026-07-30（深度审阅 + doc-claims 证据）
 
 ## 代码-文档对齐说明
 
-- 「API 地址未写默认值」→ `nuxt.config.ts` `runtimeConfig.public.apiBase` = `http://localhost:2026/api`，`siteUrl` = `http://localhost:3000`
+- 「API 地址未写默认值」→ `nuxt.config.ts` `runtimeConfig.public.apiBase` = `http://localhost:2027/api`，`siteUrl` = `http://localhost:3000`
 - 「Node/pnpm 版本未标明 engines」→ `package.json` `engines` 要求 Node 22.22.3、pnpm 11.5.2
 - 「产品区 CSR 仅口头描述」→ `config/routes.ts` `productRoutePatterns` + `csrRouteRules` 写入 routing/overview 文档
 

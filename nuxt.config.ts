@@ -99,7 +99,7 @@ export default defineNuxtConfig({
     revalidateSecret: process.env.NUXT_REVALIDATE_SECRET || '',
     public: {
       appEnv: process.env.NUXT_APP_ENV || 'development',
-      apiBase: process.env.NUXT_PUBLIC_API_BASE || 'http://localhost:2026/api',
+      apiBase: process.env.NUXT_PUBLIC_API_BASE || 'http://localhost:2027/api',
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000',
       googleSiteVerification: process.env.NUXT_PUBLIC_GOOGLE_SITE_VERIFICATION || '',
       baiduSiteVerification: process.env.NUXT_PUBLIC_BAIDU_SITE_VERIFICATION || '',

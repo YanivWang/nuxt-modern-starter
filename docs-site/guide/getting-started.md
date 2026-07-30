@@ -39,7 +39,7 @@ pnpm dev
 2. 保持前端 `.env.dev`：
 
 ```bash
-NUXT_PUBLIC_API_BASE=http://localhost:2026/api
+NUXT_PUBLIC_API_BASE=http://localhost:2027/api
 ```
 
 对应 `nuxt.config.ts` `runtimeConfig.public.apiBase` 默认值。

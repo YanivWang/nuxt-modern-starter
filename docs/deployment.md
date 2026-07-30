@@ -31,7 +31,7 @@ The three env files are intentionally committed as starter baselines. Keep them 
 | Variable                               | Purpose                                                               | Local default                                                    |
 | -------------------------------------- | --------------------------------------------------------------------- | ---------------------------------------------------------------- |
 | `NUXT_PUBLIC_SITE_URL`                 | Canonical site origin for SEO, sitemap, and robots                    | `http://localhost:3000`                                          |
-| `NUXT_PUBLIC_API_BASE`                 | Backend API origin including `/api` prefix                            | `http://localhost:2026/api`                                      |
+| `NUXT_PUBLIC_API_BASE`                 | Backend API origin including `/api` prefix                            | `http://localhost:2027/api`                                      |
 | `NUXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | Google Search Console verification token                              | empty                                                            |
 | `NUXT_PUBLIC_BAIDU_SITE_VERIFICATION`  | Baidu verification token                                              | empty                                                            |
 | `NUXT_PUBLIC_ANALYTICS_ENABLED`        | Must be exactly `true` to enable analytics plugin                     | `false`                                                          |
@@ -49,7 +49,7 @@ Production auth cookies are marked `secure` when `NUXT_APP_ENV=production`, so r
 When pairing this frontend with `nuxt-modern-starter-api` in Docker:
 
 1. Start the API stack from the **`nuxt-modern-starter-api` backend repo** (commonly `pnpm docker:dev` there; this frontend uses `pnpm docker:up:dev` for its own Compose stack).
-2. Keep frontend `.env.dev` aligned with the API gateway: `NUXT_PUBLIC_API_BASE=http://localhost:2026/api`.
+2. Keep frontend `.env.dev` aligned with the API gateway: `NUXT_PUBLIC_API_BASE=http://localhost:2027/api`.
 3. Keep backend `.env.development` `CORS_ORIGINS` aligned with the Nuxt dev origin: `http://localhost:3000`.
 4. Run `pnpm dev` in this repo and verify sign-in, `/workspace` list/create/delete, `/docs/new` and `/docs/:id` editor load/autosave/title edit, `/workspace/templates` placeholder, and `/account` profile display and logout via the user menu. Route param `:id` is the project id; the page resolves `documentId` before calling editor APIs. Creating a project from the workspace navigates to `/docs/new` first; the API call happens on first non-blank editor save.
 

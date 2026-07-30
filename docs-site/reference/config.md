@@ -16,7 +16,7 @@
 
 | 键                 | 默认                        | 说明                                                          |
 | ------------------ | --------------------------- | ------------------------------------------------------------- |
-| `apiBase`          | `http://localhost:2026/api` | 已含 `/api` 前缀；adapter 写 `/projects` 而非 `/api/projects` |
+| `apiBase`          | `http://localhost:2027/api` | 已含 `/api` 前缀；adapter 写 `/projects` 而非 `/api/projects` |
 | `siteUrl`          | `http://localhost:3000`     | canonical / sitemap 基础 URL                                  |
 | `analyticsEnabled` | `false`                     | 启用第三方脚本需同步放宽 CSP `script-src`                     |
 | `analyticsDeferMs` | `3000`                      | 无效或非数字时回退 3000                                       |

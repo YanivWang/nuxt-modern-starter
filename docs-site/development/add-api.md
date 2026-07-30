@@ -70,7 +70,7 @@ try {
 
 ## 路径约定
 
-- `NUXT_PUBLIC_API_BASE` = `http://localhost:2026/api`
+- `NUXT_PUBLIC_API_BASE` = `http://localhost:2027/api`
 - 适配器内 path = `/projects`（**不要**重复 `/api`）
 
 ## 测试

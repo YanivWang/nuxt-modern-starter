@@ -71,7 +71,7 @@ All request helpers use `runtimeConfig.public.apiBase` in both SSR and browser c
 Local full-stack development with `nuxt-modern-starter-api` Docker defaults to:
 
 - Nuxt app: `http://localhost:3000`
-- API gateway: `http://localhost:2026/api`
+- API gateway: `http://localhost:2027/api`
 - Backend `CORS_ORIGINS` must include the Nuxt origin, for example `http://localhost:3000`.
 
 The app-level API contract uses `{ code, message, data }` for every business response. `message` is the only human-readable status field, and business payloads must live under `data`. The shared HTTP client validates `code === 200` through `assertApiSuccess()` and throws a normalized failure otherwise.
@@ -314,7 +314,7 @@ Account behavior:
 Local full-stack defaults:
 
 - Nuxt: `http://localhost:3000`
-- API gateway: `http://localhost:2026/api`
+- API gateway: `http://localhost:2027/api`
 - Backend `CORS_ORIGINS` must include `http://localhost:3000`
 
 For Docker and Nginx deployment validation, see `docs/deployment.md`.

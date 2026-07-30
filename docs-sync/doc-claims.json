@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-30T14:50:15.661Z",
+  "generatedAt": "2026-07-30T15:12:33.710Z",
   "description": "Verifiable documentation claims mapped to source symbols and files.",
   "claims": [
     {
@@ -243,7 +243,7 @@
     {
       "id": "deploy-001",
       "docFile": "docs-site/deployment/overview.md",
-      "claim": "默认 Node server 端口 3000，API base http://localhost:2026/api",
+      "claim": "默认 Node server 端口 3000，API base http://localhost:2027/api",
       "symbols": ["apiBase", "siteUrl"],
       "sourceFiles": ["nuxt.config.ts"],
       "evidenceHint": "nuxt.config.ts:102 (apiBase); nuxt.config.ts:103 (siteUrl)"
@@ -291,7 +291,7 @@
     {
       "id": "config-004",
       "docFile": "docs-site/reference/config.md",
-      "claim": "runtimeConfig.public.apiBase 默认 http://localhost:2026/api",
+      "claim": "runtimeConfig.public.apiBase 默认 http://localhost:2027/api",
       "symbols": ["apiBase"],
       "sourceFiles": ["nuxt.config.ts"],
       "evidenceHint": "nuxt.config.ts:102 (apiBase)"
@@ -399,7 +399,7 @@
     {
       "id": "guide-gs-002",
       "docFile": "docs-site/guide/getting-started.md",
-      "claim": "联调默认 NUXT_PUBLIC_API_BASE=http://localhost:2026/api",
+      "claim": "联调默认 NUXT_PUBLIC_API_BASE=http://localhost:2027/api",
       "symbols": ["apiBase"],
       "sourceFiles": ["nuxt.config.ts"],
       "evidenceHint": "nuxt.config.ts:102 (apiBase)"

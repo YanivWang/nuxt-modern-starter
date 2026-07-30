@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-30T15:02:58.932Z",
+  "generatedAt": "2026-07-30T15:13:37.683Z",
   "docFileCount": 33,
   "referenceCount": 1126,
   "pathAllowlist": [
@@ -1978,7 +1978,7 @@
       "line": 9,
       "type": "env-var",
       "value": "NUXT_PUBLIC_API_BASE",
-      "context": "NUXT_PUBLIC_API_BASE=http://localhost:2026/api"
+      "context": "NUXT_PUBLIC_API_BASE=http://localhost:2027/api"
     },
     {
       "docFile": "docs-site/deployment/env.md",
@@ -2167,14 +2167,14 @@
       "line": 12,
       "type": "file-path",
       "value": "nuxt.config.ts",
-      "context": "监听端口默认 **3000**。`nuxt.config.ts` 默认 `runtimeConfig.public.apiBase` = `http://localhost:2026/api`、`siteUrl` = `http://loc"
+      "context": "监听端口默认 **3000**。`nuxt.config.ts` 默认 `runtimeConfig.public.apiBase` = `http://localhost:2027/api`、`siteUrl` = `http://loc"
     },
     {
       "docFile": "docs-site/deployment/overview.md",
       "line": 12,
       "type": "symbol",
       "value": "siteUrl",
-      "context": "监听端口默认 **3000**。`nuxt.config.ts` 默认 `runtimeConfig.public.apiBase` = `http://localhost:2026/api`、`siteUrl` = `http://loc"
+      "context": "监听端口默认 **3000**。`nuxt.config.ts` 默认 `runtimeConfig.public.apiBase` = `http://localhost:2027/api`、`siteUrl` = `http://loc"
     },
     {
       "docFile": "docs-site/deployment/overview.md",
@@ -2391,14 +2391,14 @@
       "line": 73,
       "type": "env-var",
       "value": "NUXT_PUBLIC_API_BASE",
-      "context": "- `NUXT_PUBLIC_API_BASE` = `http://localhost:2026/api`"
+      "context": "- `NUXT_PUBLIC_API_BASE` = `http://localhost:2027/api`"
     },
     {
       "docFile": "docs-site/development/add-api.md",
       "line": 73,
       "type": "symbol",
       "value": "NUXT_PUBLIC_API_BASE",
-      "context": "- `NUXT_PUBLIC_API_BASE` = `http://localhost:2026/api`"
+      "context": "- `NUXT_PUBLIC_API_BASE` = `http://localhost:2027/api`"
     },
     {
       "docFile": "docs-site/development/add-api.md",
@@ -2860,7 +2860,7 @@
       "line": 42,
       "type": "env-var",
       "value": "NUXT_PUBLIC_API_BASE",
-      "context": "NUXT_PUBLIC_API_BASE=http://localhost:2026/api"
+      "context": "NUXT_PUBLIC_API_BASE=http://localhost:2027/api"
     },
     {
       "docFile": "docs-site/guide/getting-started.md",
@@ -3238,7 +3238,7 @@
       "line": 19,
       "type": "symbol",
       "value": "apiBase",
-      "context": "| `apiBase`          | `http://localhost:2026/api` | 已含 `/api` 前缀；adapter 写 `/projects` 而非 `/api/projects` |"
+      "context": "| `apiBase`          | `http://localhost:2027/api` | 已含 `/api` 前缀；adapter 写 `/projects` 而非 `/api/projects` |"
     },
     {
       "docFile": "docs-site/reference/config.md",
@@ -6787,7 +6787,7 @@
       "line": 52,
       "type": "env-file",
       "value": ".env.dev",
-      "context": "2. Keep frontend `.env.dev` aligned with the API gateway: `NUXT_PUBLIC_API_BASE=http://localhost:2026/api`."
+      "context": "2. Keep frontend `.env.dev` aligned with the API gateway: `NUXT_PUBLIC_API_BASE=http://localhost:2027/api`."
     },
     {
       "docFile": "docs/deployment.md",
