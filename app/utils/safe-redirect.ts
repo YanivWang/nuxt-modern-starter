@@ -1,6 +1,6 @@
 /*
   【文件职责】
-    登录 redirect 开放重定向防护：仅允许站内相对 path，拒绝 //、协议、反斜杠等。
+    登录 redirect 开放重定向防护：仅允许站内相对 path，拒绝 //、协议、反斜杠、控制字符与空白。
     resolveSafeRedirectPath 在非法 redirect 时回退 fallback。
 
   【架构位置】
@@ -19,11 +19,41 @@
   【边界与注意】
     修改规则需同步 tests/unit/safe-redirect.test.ts。
 */
-const UNSAFE_REDIRECT_PATTERN = /^\/[/\\]|[:\\]/ // 拒绝 //evil.com、反斜杠、带协议的路径
+const ENCODED_SLASH_OR_BACKSLASH_PATTERN = /%(?:2f|5c)/i
 
-// 仅允许站内相对 path；// 开头或含协议一律拒绝
-export const isSafeRedirectPath = (path: string) =>
-  path.startsWith('/') && !path.startsWith('//') && !UNSAFE_REDIRECT_PATTERN.test(path)
+const hasControlOrSpace = (path: string) => {
+  for (const char of path) {
+    const code = char.charCodeAt(0)
+    if (code <= 0x1f || code === 0x7f || char.trim() === '') {
+      return true
+    }
+  }
+
+  return false
+}
+
+const getFirstPathSegment = (path: string) => {
+  const pathOnly = path.split(/[?#]/, 1)[0] ?? ''
+  const [, firstSegment = ''] = pathOnly.split('/')
+  return firstSegment
+}
+
+// 仅允许站内相对 path；query/hash 可含冒号，path 首段不可含冒号，避免协议伪装。
+export const isSafeRedirectPath = (path: string) => {
+  if (!path.startsWith('/') || path[1] === '/' || path[1] === '\\') {
+    return false
+  }
+
+  if (
+    path.includes('\\') ||
+    hasControlOrSpace(path) ||
+    ENCODED_SLASH_OR_BACKSLASH_PATTERN.test(path)
+  ) {
+    return false
+  }
+
+  return !getFirstPathSegment(path).includes(':')
+}
 
 export const resolveSafeRedirectPath = (redirect: string | undefined, fallback: string) => {
   if (typeof redirect === 'string' && isSafeRedirectPath(redirect)) {

@@ -61,7 +61,7 @@ pnpm docker:up       # 可选 Compose 栈
 | 步骤 | 路由                    | 行为                                                                                                     |
 | ---- | ----------------------- | -------------------------------------------------------------------------------------------------------- |
 | 1    | `/sign-up` → `/sign-in` | 注册不自动登录；登录写 cookie 并 fetchMe                                                                 |
-| 2    | `/workspace`            | 列表/删除项目；创建按钮跳转 `/docs/new`（预加载 editor chunk）                                           |
+| 2    | `/workspace`            | 列表/删除项目；创建按钮跳转 `/docs/new`（预加载 editor route）                                           |
 | 3    | `/docs/new`             | 草稿模式；`WORKSPACE_NEW_PROJECT_ID` + `ensureDraftProject`；`EDITOR_AUTOSAVE_DEBOUNCE_MS`（2s）自动保存 |
 | 4    | `/docs/:id`             | 加载项目 + documentId；debounce 自动保存；标题双写 document/project                                      |
 | 5    | `/account`              | `fetchProfileApi` 展示扩展资料；UserAccountMenu 退出清归因                                               |

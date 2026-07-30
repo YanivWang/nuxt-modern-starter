@@ -44,7 +44,7 @@ const changeNotes = {
     'pages/help.vue、about.vue、[...slug].vue 404',
     'pages/pricing.vue、news/*、sign-in/sign-up、docs/[id].vue',
     'editor/workspace composables 状态机',
-    'WorkspaceDashboard.vue: idle 预加载 editor chunk'
+    'WorkspaceDashboard.vue: idle 预加载 editor route'
   ],
   6: [
     'product-shell/config.ts: footer 定价链公开页',

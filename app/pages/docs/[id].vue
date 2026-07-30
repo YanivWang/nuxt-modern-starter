@@ -18,8 +18,7 @@
     CSR + noindex；项目元数据与编辑器会话分别由 useEditorPage / useEditorWorkspace 管理。
 -->
 <script setup lang="ts">
-import { EditorWorkspace } from '~/features/editor'
-import { useEditorPage } from '~/features/editor/composables/useEditorPage'
+import { EditorWorkspace, useEditorPage } from '~/features/editor'
 
 // editor layout + auth middleware；key 固定避免 /docs/:id 切换时整页 remount 丢编辑器状态
 definePageMeta({

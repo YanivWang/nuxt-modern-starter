@@ -65,10 +65,10 @@ AuthUser / AuthRouteMeta // 类型
 
 ## Feature 常量
 
-| 位置                            | 导出                                             | 说明                      |
-| ------------------------------- | ------------------------------------------------ | ------------------------- |
-| `app/features/workspace/api.ts` | `WORKSPACE_NEW_PROJECT_ID`                       | `'new'`，对应 `/docs/new` |
-| `app/features/workspace/api.ts` | `getWorkspaceDocPath` / `getWorkspaceNewDocPath` | 编辑器链接 helper         |
+| 位置                           | 导出                                             | 说明                      |
+| ------------------------------ | ------------------------------------------------ | ------------------------- |
+| `app/api/workspace-project.ts` | `WORKSPACE_NEW_PROJECT_ID`                       | `'new'`，对应 `/docs/new` |
+| `app/api/workspace-project.ts` | `getWorkspaceDocPath` / `getWorkspaceNewDocPath` | 编辑器链接 helper         |
 
 ## config/antd-locale.ts
 

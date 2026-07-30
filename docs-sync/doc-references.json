@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-22T03:26:23.703Z",
+  "generatedAt": "2026-07-30T15:02:58.932Z",
   "docFileCount": 33,
-  "referenceCount": 1115,
+  "referenceCount": 1126,
   "pathAllowlist": [
     "app/features/my-feature/",
     "app/features/my-feature/components/",
@@ -929,6 +929,20 @@
       "type": "file-path",
       "value": "app/features/",
       "context": "### 功能模块 `app/features/`"
+    },
+    {
+      "docFile": "docs-site/architecture/directory.md",
+      "line": 75,
+      "type": "path-pattern",
+      "value": "app/api/*",
+      "context": "页面只能 `import from '~/features/xxx'`，不要深入 `~/features/xxx/components/...`。feature 之间不要互相 import；共享 API / 类型上移到 `app/api/*"
+    },
+    {
+      "docFile": "docs-site/architecture/directory.md",
+      "line": 75,
+      "type": "path-pattern",
+      "value": "app/types/*",
+      "context": "页面只能 `import from '~/features/xxx'`，不要深入 `~/features/xxx/components/...`。feature 之间不要互相 import；共享 API / 类型上移到 `app/api/*"
     },
     {
       "docFile": "docs-site/architecture/directory.md",
@@ -2272,7 +2286,7 @@
       "line": 64,
       "type": "route",
       "value": "/workspace",
-      "context": "| 2    | `/workspace`            | 列表/删除项目；创建按钮跳转 `/docs/new`（预加载 editor chunk）                                         "
+      "context": "| 2    | `/workspace`            | 列表/删除项目；创建按钮跳转 `/docs/new`（预加载 editor route）                                         "
     },
     {
       "docFile": "docs-site/deployment/overview.md",
@@ -2423,70 +2437,84 @@
     },
     {
       "docFile": "docs-site/development/add-feature.md",
-      "line": 62,
+      "line": 33,
+      "type": "file-path",
+      "value": "app/api/workspace-project.ts",
+      "context": "如果 API 或类型会被多个 feature 共用，例如 workspace project，请放到 `app/api/workspace-project.ts` 或 `app/types/*`，不要让 feature 互相导入。"
+    },
+    {
+      "docFile": "docs-site/development/add-feature.md",
+      "line": 33,
+      "type": "path-pattern",
+      "value": "app/types/*",
+      "context": "如果 API 或类型会被多个 feature 共用，例如 workspace project，请放到 `app/api/workspace-project.ts` 或 `app/types/*`，不要让 feature 互相导入。"
+    },
+    {
+      "docFile": "docs-site/development/add-feature.md",
+      "line": 64,
       "type": "file-path",
       "value": "app/features/product-shell/config.ts",
       "context": "`app/features/product-shell/config.ts`："
     },
     {
       "docFile": "docs-site/development/add-feature.md",
-      "line": 73,
+      "line": 75,
       "type": "file-path",
       "value": "config/routes.ts",
       "context": "若路径在 `/workspace/**` 下，**已自动 CSR**。若是新的 top-level 产品路径（如 `/generation`），需更新 `config/routes.ts`："
     },
     {
       "docFile": "docs-site/development/add-feature.md",
-      "line": 73,
+      "line": 75,
       "type": "route",
       "value": "/workspace",
       "context": "若路径在 `/workspace/**` 下，**已自动 CSR**。若是新的 top-level 产品路径（如 `/generation`），需更新 `config/routes.ts`："
     },
     {
       "docFile": "docs-site/development/add-feature.md",
-      "line": 105,
+      "line": 108,
       "type": "route",
       "value": "/docs/new",
       "context": "| 列表 + CRUD | `workspace`                  | 创建跳转 `/docs/new`；删除带 confirm；`onMounted` 用 `requestIdleCallback`（或 200ms fa"
     },
     {
       "docFile": "docs-site/development/add-feature.md",
-      "line": 105,
+      "line": 108,
       "type": "symbol",
       "value": "requestIdleCallback",
       "context": "| 列表 + CRUD | `workspace`                  | 创建跳转 `/docs/new`；删除带 confirm；`onMounted` 用 `requestIdleCallback`（或 200ms fa"
     },
     {
       "docFile": "docs-site/development/add-feature.md",
-      "line": 105,
+      "line": 108,
       "type": "symbol",
       "value": "preloadRouteComponents",
       "context": "| 列表 + CRUD | `workspace`                  | 创建跳转 `/docs/new`；删除带 confirm；`onMounted` 用 `requestIdleCallback`（或 200ms fa"
     },
     {
       "docFile": "docs-site/development/add-feature.md",
-      "line": 106,
+      "line": 109,
       "type": "symbol",
       "value": "cachedProject",
       "context": "| 全屏编辑器  | `editor` + `pages/docs/[id]` | 草稿首次保存创建项目；`cachedProject` 防闪烁；路由离开 flush                                     "
     },
     {
       "docFile": "docs-site/development/add-feature.md",
-      "line": 108,
+      "line": 111,
       "type": "symbol",
       "value": "fetchProfileApi",
       "context": "| 设置页      | `account` + `account-shell`  | `fetchProfileApi` + `useUserAvatar`                                         "
     },
     {
       "docFile": "docs-site/development/add-feature.md",
-      "line": 108,
+      "line": 111,
       "type": "symbol",
       "value": "useUserAvatar",
       "context": "| 设置页      | `account` + `account-shell`  | `fetchProfileApi` + `useUserAvatar`                                         "
     },
     {
       "docFile": "docs-site/development/add-feature.md",
-      "line": 109,
+      "line": 112,
       "type": "symbol",
       "value": "productNavItems",
       "context": "| 侧边栏壳    | `product-shell`              | `productNavItems` + footer 定价链接                                              "
@@ -2699,14 +2727,14 @@
       "line": 6,
       "type": "script",
       "value": "test",
-      "context": "pnpm test          # Vitest 一次运行（35 文件 / 126 测试）"
+      "context": "pnpm test          # Vitest 一次运行（35 文件 / 134 测试）"
     },
     {
       "docFile": "docs-site/development/testing.md",
       "line": 6,
       "type": "test-count",
-      "value": "35/126",
-      "context": "pnpm test          # Vitest 一次运行（35 文件 / 126 测试）"
+      "value": "35/134",
+      "context": "pnpm test          # Vitest 一次运行（35 文件 / 134 测试）"
     },
     {
       "docFile": "docs-site/development/testing.md",
@@ -3118,7 +3146,7 @@
       "docFile": "docs-site/guide/overview.md",
       "line": 92,
       "type": "test-count",
-      "value": "35/126",
+      "value": "35/134",
       "context": "| 测试   | Vitest 4.1.9 + @nuxt/test-utils 4.0.3                  | `vitest.config.ts` `defineVitestConfig` + `include: te"
     },
     {
@@ -3265,36 +3293,36 @@
       "docFile": "docs-site/reference/config.md",
       "line": 70,
       "type": "file-path",
-      "value": "app/features/workspace/api.ts",
-      "context": "| `app/features/workspace/api.ts` | `WORKSPACE_NEW_PROJECT_ID`                       | `'new'`，对应 `/docs/new` |"
+      "value": "app/api/workspace-project.ts",
+      "context": "| `app/api/workspace-project.ts` | `WORKSPACE_NEW_PROJECT_ID`                       | `'new'`，对应 `/docs/new` |"
     },
     {
       "docFile": "docs-site/reference/config.md",
       "line": 70,
       "type": "route",
       "value": "/docs/new",
-      "context": "| `app/features/workspace/api.ts` | `WORKSPACE_NEW_PROJECT_ID`                       | `'new'`，对应 `/docs/new` |"
+      "context": "| `app/api/workspace-project.ts` | `WORKSPACE_NEW_PROJECT_ID`                       | `'new'`，对应 `/docs/new` |"
     },
     {
       "docFile": "docs-site/reference/config.md",
       "line": 70,
       "type": "symbol",
       "value": "WORKSPACE_NEW_PROJECT_ID",
-      "context": "| `app/features/workspace/api.ts` | `WORKSPACE_NEW_PROJECT_ID`                       | `'new'`，对应 `/docs/new` |"
+      "context": "| `app/api/workspace-project.ts` | `WORKSPACE_NEW_PROJECT_ID`                       | `'new'`，对应 `/docs/new` |"
     },
     {
       "docFile": "docs-site/reference/config.md",
       "line": 71,
       "type": "symbol",
       "value": "getWorkspaceDocPath",
-      "context": "| `app/features/workspace/api.ts` | `getWorkspaceDocPath` / `getWorkspaceNewDocPath` | 编辑器链接 helper         |"
+      "context": "| `app/api/workspace-project.ts` | `getWorkspaceDocPath` / `getWorkspaceNewDocPath` | 编辑器链接 helper         |"
     },
     {
       "docFile": "docs-site/reference/config.md",
       "line": 71,
       "type": "symbol",
       "value": "getWorkspaceNewDocPath",
-      "context": "| `app/features/workspace/api.ts` | `getWorkspaceDocPath` / `getWorkspaceNewDocPath` | 编辑器链接 helper         |"
+      "context": "| `app/api/workspace-project.ts` | `getWorkspaceDocPath` / `getWorkspaceNewDocPath` | 编辑器链接 helper         |"
     },
     {
       "docFile": "docs-site/reference/config.md",
@@ -3602,7 +3630,7 @@
       "line": 32,
       "type": "script",
       "value": "quality",
-      "context": "| `pnpm quality`      | lint + format:check + stylelint + typecheck + i18n:check + test + build |"
+      "context": "| `pnpm quality`      | lint + format:check + stylelint + typecheck + i18n:check + build + test |"
     },
     {
       "docFile": "docs-site/reference/scripts.md",
@@ -5569,21 +5597,21 @@
       "line": 15,
       "type": "file-path",
       "value": "app/features/workspace",
-      "context": "- `app/features/workspace`: workspace dashboard UI (`WorkspaceDashboard`, `WorkspaceProjectCard`) and project API adapte"
+      "context": "- `app/features/workspace`: workspace dashboard UI (`WorkspaceDashboard`, `WorkspaceProjectCard`). Create navigates to `"
     },
     {
       "docFile": "docs/architecture.md",
       "line": 15,
       "type": "symbol",
       "value": "WorkspaceDashboard",
-      "context": "- `app/features/workspace`: workspace dashboard UI (`WorkspaceDashboard`, `WorkspaceProjectCard`) and project API adapte"
+      "context": "- `app/features/workspace`: workspace dashboard UI (`WorkspaceDashboard`, `WorkspaceProjectCard`). Create navigates to `"
     },
     {
       "docFile": "docs/architecture.md",
       "line": 15,
       "type": "symbol",
       "value": "WorkspaceProjectCard",
-      "context": "- `app/features/workspace`: workspace dashboard UI (`WorkspaceDashboard`, `WorkspaceProjectCard`) and project API adapte"
+      "context": "- `app/features/workspace`: workspace dashboard UI (`WorkspaceDashboard`, `WorkspaceProjectCard`). Create navigates to `"
     },
     {
       "docFile": "docs/architecture.md",
@@ -5639,466 +5667,473 @@
       "line": 20,
       "type": "file-path",
       "value": "app/api",
-      "context": "- `app/api`: cross-feature request adapters (`public.ts`, `auth.ts`) plus scenario client factories in `clients.ts` (`cr"
+      "context": "- `app/api`: cross-feature request adapters (`public.ts`, `auth.ts`, `workspace-project.ts`) plus scenario client factor"
     },
     {
       "docFile": "docs/architecture.md",
       "line": 20,
       "type": "symbol",
       "value": "createPublicApiClient",
-      "context": "- `app/api`: cross-feature request adapters (`public.ts`, `auth.ts`) plus scenario client factories in `clients.ts` (`cr"
+      "context": "- `app/api`: cross-feature request adapters (`public.ts`, `auth.ts`, `workspace-project.ts`) plus scenario client factor"
     },
     {
       "docFile": "docs/architecture.md",
       "line": 20,
       "type": "symbol",
       "value": "createAuthApiClient",
-      "context": "- `app/api`: cross-feature request adapters (`public.ts`, `auth.ts`) plus scenario client factories in `clients.ts` (`cr"
+      "context": "- `app/api`: cross-feature request adapters (`public.ts`, `auth.ts`, `workspace-project.ts`) plus scenario client factor"
     },
     {
       "docFile": "docs/architecture.md",
       "line": 21,
+      "type": "file-path",
+      "value": "app/types",
+      "context": "- `app/types`: shared domain types such as `document.ts` and `workspace-project.ts`. Types used by more than one feature"
+    },
+    {
+      "docFile": "docs/architecture.md",
+      "line": 22,
       "type": "file-path",
       "value": "app/composables",
       "context": "- `app/composables`: shared runtime APIs — `useAuth`, `useLocalePath`, `usePageSeo`, `useTheme`, `useLanguageSwitch`, an"
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 21,
+      "line": 22,
       "type": "path-pattern",
       "value": "app/features/<feature>/composables",
       "context": "- `app/composables`: shared runtime APIs — `useAuth`, `useLocalePath`, `usePageSeo`, `useTheme`, `useLanguageSwitch`, an"
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 21,
+      "line": 22,
       "type": "path-pattern",
       "value": "app/features/<feature>/api.ts",
       "context": "- `app/composables`: shared runtime APIs — `useAuth`, `useLocalePath`, `usePageSeo`, `useTheme`, `useLanguageSwitch`, an"
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 21,
+      "line": 22,
       "type": "symbol",
       "value": "useAuth",
       "context": "- `app/composables`: shared runtime APIs — `useAuth`, `useLocalePath`, `usePageSeo`, `useTheme`, `useLanguageSwitch`, an"
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 21,
+      "line": 22,
       "type": "symbol",
       "value": "useLocalePath",
       "context": "- `app/composables`: shared runtime APIs — `useAuth`, `useLocalePath`, `usePageSeo`, `useTheme`, `useLanguageSwitch`, an"
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 21,
+      "line": 22,
       "type": "symbol",
       "value": "usePageSeo",
       "context": "- `app/composables`: shared runtime APIs — `useAuth`, `useLocalePath`, `usePageSeo`, `useTheme`, `useLanguageSwitch`, an"
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 21,
+      "line": 22,
       "type": "symbol",
       "value": "useTheme",
       "context": "- `app/composables`: shared runtime APIs — `useAuth`, `useLocalePath`, `usePageSeo`, `useTheme`, `useLanguageSwitch`, an"
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 21,
+      "line": 22,
       "type": "symbol",
       "value": "useLanguageSwitch",
       "context": "- `app/composables`: shared runtime APIs — `useAuth`, `useLocalePath`, `usePageSeo`, `useTheme`, `useLanguageSwitch`, an"
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 21,
+      "line": 22,
       "type": "symbol",
       "value": "useUserAvatar",
       "context": "- `app/composables`: shared runtime APIs — `useAuth`, `useLocalePath`, `usePageSeo`, `useTheme`, `useLanguageSwitch`, an"
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 22,
+      "line": 23,
       "type": "file-path",
       "value": "app/api/public.ts",
       "context": "- `app/api/public.ts`: SEO-safe public content adapters. Public adapters must not depend on auth state or trigger token "
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 23,
+      "line": 24,
       "type": "file-path",
       "value": "app/api/auth.ts",
       "context": "- `app/api/auth.ts`: Bearer Token auth adapter. It owns login, register, refresh, logout, `/me`, profile requests, respo"
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 24,
+      "line": 25,
       "type": "file-path",
-      "value": "app/features/workspace/api.ts",
-      "context": "- `app/features/workspace/api.ts`: authenticated workspace project adapters."
+      "value": "app/api/workspace-project.ts",
+      "context": "- `app/api/workspace-project.ts`: authenticated workspace project adapters and editor route helpers."
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 25,
+      "line": 26,
       "type": "file-path",
       "value": "app/features/editor/api.ts",
       "context": "- `app/features/editor/api.ts`: authenticated editor document adapters."
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 26,
+      "line": 27,
       "type": "file-path",
       "value": "app/utils",
       "context": "- `app/utils`: small shared runtime utilities such as `antdIcon.ts` for on-demand Ant Design SVG icons, `auth-session.ts"
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 27,
+      "line": 28,
       "type": "file-path",
       "value": "app/stores",
       "context": "- `app/stores`: Pinia stores for language state, theme state, and opt-in auth state. Feature-specific stores belong unde"
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 27,
+      "line": 28,
       "type": "path-pattern",
       "value": "app/features/<feature>/stores",
       "context": "- `app/stores`: Pinia stores for language state, theme state, and opt-in auth state. Feature-specific stores belong unde"
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 28,
+      "line": 29,
       "type": "file-path",
       "value": "app/components/base",
       "context": "- `app/components/base`: reusable low-level examples such as `AppContainer`, `PageContainer`, `BaseLogo`, `BaseButton`, "
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 28,
+      "line": 29,
       "type": "symbol",
       "value": "AppContainer",
       "context": "- `app/components/base`: reusable low-level examples such as `AppContainer`, `PageContainer`, `BaseLogo`, `BaseButton`, "
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 28,
+      "line": 29,
       "type": "symbol",
       "value": "PageContainer",
       "context": "- `app/components/base`: reusable low-level examples such as `AppContainer`, `PageContainer`, `BaseLogo`, `BaseButton`, "
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 28,
+      "line": 29,
       "type": "symbol",
       "value": "BaseLogo",
       "context": "- `app/components/base`: reusable low-level examples such as `AppContainer`, `PageContainer`, `BaseLogo`, `BaseButton`, "
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 28,
+      "line": 29,
       "type": "symbol",
       "value": "BaseButton",
       "context": "- `app/components/base`: reusable low-level examples such as `AppContainer`, `PageContainer`, `BaseLogo`, `BaseButton`, "
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 28,
+      "line": 29,
       "type": "symbol",
       "value": "BasePicture",
       "context": "- `app/components/base`: reusable low-level examples such as `AppContainer`, `PageContainer`, `BaseLogo`, `BaseButton`, "
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 29,
+      "line": 30,
       "type": "file-path",
       "value": "app/components/layout",
       "context": "- `app/components/layout`: shell components including `AppHeader`, `AppFooter`, `AppShellHeader`, `LanguageSwitcher`, `T"
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 29,
+      "line": 30,
       "type": "symbol",
       "value": "AppHeader",
       "context": "- `app/components/layout`: shell components including `AppHeader`, `AppFooter`, `AppShellHeader`, `LanguageSwitcher`, `T"
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 29,
+      "line": 30,
       "type": "symbol",
       "value": "AppFooter",
       "context": "- `app/components/layout`: shell components including `AppHeader`, `AppFooter`, `AppShellHeader`, `LanguageSwitcher`, `T"
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 29,
+      "line": 30,
       "type": "symbol",
       "value": "AppShellHeader",
       "context": "- `app/components/layout`: shell components including `AppHeader`, `AppFooter`, `AppShellHeader`, `LanguageSwitcher`, `T"
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 29,
+      "line": 30,
       "type": "symbol",
       "value": "LanguageSwitcher",
       "context": "- `app/components/layout`: shell components including `AppHeader`, `AppFooter`, `AppShellHeader`, `LanguageSwitcher`, `T"
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 29,
+      "line": 30,
       "type": "symbol",
       "value": "ThemeSwitch",
       "context": "- `app/components/layout`: shell components including `AppHeader`, `AppFooter`, `AppShellHeader`, `LanguageSwitcher`, `T"
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 30,
+      "line": 31,
       "type": "file-path",
       "value": "app/layouts",
       "context": "- `app/layouts`: route-level shells. `default` for public pages, `product` for sidebar-backed workspace routes, `editor`"
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 31,
+      "line": 32,
       "type": "file-path",
       "value": "app/middleware/locale.global.ts",
       "context": "- `app/middleware/locale.global.ts`: global locale normalization before page rendering, including product canonical 301 "
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 31,
+      "line": 32,
       "type": "symbol",
       "value": "localizedProductPathToCanonical",
       "context": "- `app/middleware/locale.global.ts`: global locale normalization before page rendering, including product canonical 301 "
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 32,
+      "line": 33,
       "type": "file-path",
       "value": "app/middleware/auth.ts",
       "context": "- `app/middleware/auth.ts`: named auth middleware for protected product routes (session, login redirect, RBAC). Does not"
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 33,
+      "line": 34,
       "type": "file-path",
       "value": "app/plugins",
       "context": "- `app/plugins`: startup hooks such as `auth.ts` session hydration, `i18n.ts` setup, `attribution.client.ts` first-load "
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 34,
+      "line": 35,
       "type": "file-path",
       "value": "app/assets/styles",
       "context": "- `app/assets/styles`: global SCSS entry (`main.scss`), layered tokens (`tokens/_variables.scss`, `_root.scss`, `_dark.s"
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 34,
+      "line": 35,
       "type": "file-path",
       "value": "nuxt.config.ts",
       "context": "- `app/assets/styles`: global SCSS entry (`main.scss`), layered tokens (`tokens/_variables.scss`, `_root.scss`, `_dark.s"
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 36,
+      "line": 37,
       "type": "file-path",
       "value": "config/site.ts",
       "context": "- `config/site.ts`: site metadata, supported locales, navigation, and `PUBLIC_PAGE_PATHS` (`/`, `/pricing`, `/about`, `/"
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 36,
+      "line": 37,
       "type": "route",
       "value": "/pricing",
       "context": "- `config/site.ts`: site metadata, supported locales, navigation, and `PUBLIC_PAGE_PATHS` (`/`, `/pricing`, `/about`, `/"
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 36,
+      "line": 37,
       "type": "route",
       "value": "/about",
       "context": "- `config/site.ts`: site metadata, supported locales, navigation, and `PUBLIC_PAGE_PATHS` (`/`, `/pricing`, `/about`, `/"
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 36,
+      "line": 37,
       "type": "route",
       "value": "/help",
       "context": "- `config/site.ts`: site metadata, supported locales, navigation, and `PUBLIC_PAGE_PATHS` (`/`, `/pricing`, `/about`, `/"
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 36,
+      "line": 37,
       "type": "route",
       "value": "/news",
       "context": "- `config/site.ts`: site metadata, supported locales, navigation, and `PUBLIC_PAGE_PATHS` (`/`, `/pricing`, `/about`, `/"
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 36,
+      "line": 37,
       "type": "symbol",
       "value": "PUBLIC_PAGE_PATHS",
       "context": "- `config/site.ts`: site metadata, supported locales, navigation, and `PUBLIC_PAGE_PATHS` (`/`, `/pricing`, `/about`, `/"
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 37,
+      "line": 38,
       "type": "file-path",
       "value": "config/auth.ts",
       "context": "- `config/auth.ts`: auth endpoint paths, cookie keys, token max ages, auth route meta types, and frontend redirect const"
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 38,
+      "line": 39,
       "type": "file-path",
       "value": "config/routes.ts",
       "context": "- `config/routes.ts`: public/product path helpers, prerender/SWR/CSR route rule sources, and localized product URL canon"
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 38,
+      "line": 39,
       "type": "symbol",
       "value": "isProductPath",
       "context": "- `config/routes.ts`: public/product path helpers, prerender/SWR/CSR route rule sources, and localized product URL canon"
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 39,
+      "line": 40,
       "type": "file-path",
       "value": "config/content/faq.ts",
       "context": "- `config/content/faq.ts`: typed local FAQ content consumed by `~/api/public`."
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 40,
+      "line": 41,
       "type": "file-path",
       "value": "server/middleware/product-canonical.ts",
       "context": "- `server/middleware/product-canonical.ts`: early server-side 301 redirect for localized product URLs, for example `/en/"
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 41,
+      "line": 42,
       "type": "file-path",
       "value": "server/routes/robots.txt.ts",
       "context": "- `server/routes/robots.txt.ts` and `server/routes/sitemap.xml.ts`: SEO server routes. They include public localized pag"
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 41,
+      "line": 42,
       "type": "file-path",
       "value": "server/routes/sitemap.xml.ts",
       "context": "- `server/routes/robots.txt.ts` and `server/routes/sitemap.xml.ts`: SEO server routes. They include public localized pag"
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 42,
+      "line": 43,
       "type": "file-path",
       "value": "server/api/revalidate.post.ts",
       "context": "- `server/api/revalidate.post.ts` and `server/utils/revalidate.ts`: protected on-demand SWR cache invalidation. The back"
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 42,
+      "line": 43,
       "type": "file-path",
       "value": "server/utils/revalidate.ts",
       "context": "- `server/api/revalidate.post.ts` and `server/utils/revalidate.ts`: protected on-demand SWR cache invalidation. The back"
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 43,
+      "line": 44,
       "type": "symbol",
       "value": "i18n",
       "context": "- `i18n`: `vue-i18n` setup, locale message resolvers, and language-switch URL helpers. Locale metadata lives in `config/"
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 51,
+      "line": 52,
       "type": "symbol",
       "value": "prerenderRoutes",
       "context": "- `prerenderRoutes`: build-time static HTML for selected public pages such as `/`, `/about`, `/help`, and their `/en` va"
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 52,
+      "line": 53,
       "type": "route",
       "value": "/en/news",
       "context": "- `swrRouteRules`: SSR with 1-hour SWR cache for `/news/**` and `/en/news/**`. `/pricing` and `/en/pricing` use default "
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 52,
+      "line": 53,
       "type": "route",
       "value": "/en/pricing",
       "context": "- `swrRouteRules`: SSR with 1-hour SWR cache for `/news/**` and `/en/news/**`. `/pricing` and `/en/pricing` use default "
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 52,
+      "line": 53,
       "type": "symbol",
       "value": "swrRouteRules",
       "context": "- `swrRouteRules`: SSR with 1-hour SWR cache for `/news/**` and `/en/news/**`. `/pricing` and `/en/pricing` use default "
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 53,
+      "line": 54,
       "type": "route",
       "value": "/docs",
       "context": "- `csrRouteRules`: client-only rendering for product routes (`/workspace/**`, `/docs/**`, `/account`)."
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 53,
+      "line": 54,
       "type": "symbol",
       "value": "csrRouteRules",
       "context": "- `csrRouteRules`: client-only rendering for product routes (`/workspace/**`, `/docs/**`, `/account`)."
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 55,
+      "line": 56,
       "type": "env-var",
       "value": "NUXT_REVALIDATE_SECRET",
       "context": "News SWR pages can also be invalidated on demand through `POST /api/revalidate` when `NUXT_REVALIDATE_SECRET` is configu"
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 55,
+      "line": 56,
       "type": "symbol",
       "value": "NUXT_REVALIDATE_SECRET",
       "context": "News SWR pages can also be invalidated on demand through `POST /api/revalidate` when `NUXT_REVALIDATE_SECRET` is configu"
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 65,
+      "line": 66,
       "type": "symbol",
       "value": "routeRules",
       "context": "Pages call `usePageSeo` for canonical, alternate, OG, and noindex behavior. Public page paths are centralized in `config"
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 73,
+      "line": 74,
       "type": "symbol",
       "value": "ProductShell",
       "context": "- Logged-in product pages mount feature modules under `app/features/*`. `/workspace` and `/workspace/templates` use the "
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 73,
+      "line": 74,
       "type": "symbol",
       "value": "documentId",
       "context": "- Logged-in product pages mount feature modules under `app/features/*`. `/workspace` and `/workspace/templates` use the "
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 73,
+      "line": 74,
       "type": "symbol",
       "value": "onBeforeRouteLeave",
       "context": "- Logged-in product pages mount feature modules under `app/features/*`. `/workspace` and `/workspace/templates` use the "
     },
     {
       "docFile": "docs/architecture.md",
-      "line": 73,
+      "line": 74,
       "type": "symbol",
       "value": "AccountShell",
       "context": "- Logged-in product pages mount feature modules under `app/features/*`. `/workspace` and `/workspace/templates` use the "
@@ -6290,7 +6325,21 @@
       "line": 32,
       "type": "path-pattern",
       "value": "app/features/<feature>/index.ts",
-      "context": "Use `app/features/<feature>/index.ts` as the feature public surface. Other features should import from that index instea"
+      "context": "Use `app/features/<feature>/index.ts` as the feature public surface for pages. Features must not import other feature mo"
+    },
+    {
+      "docFile": "docs/conventions.md",
+      "line": 32,
+      "type": "path-pattern",
+      "value": "app/api/*",
+      "context": "Use `app/features/<feature>/index.ts` as the feature public surface for pages. Features must not import other feature mo"
+    },
+    {
+      "docFile": "docs/conventions.md",
+      "line": 32,
+      "type": "path-pattern",
+      "value": "app/types/*",
+      "context": "Use `app/features/<feature>/index.ts` as the feature public surface for pages. Features must not import other feature mo"
     },
     {
       "docFile": "docs/conventions.md",
@@ -6395,14 +6444,28 @@
       "line": 56,
       "type": "file-path",
       "value": "app/api/public.ts",
-      "context": "- `app/api/public.ts` and `app/api/auth.ts` hold cross-feature business adapters. Pages should import from `~/api/public"
+      "context": "- `app/api/public.ts`, `app/api/auth.ts`, and `app/api/workspace-project.ts` hold cross-feature business adapters. Pages"
+    },
+    {
+      "docFile": "docs/conventions.md",
+      "line": 56,
+      "type": "file-path",
+      "value": "app/api/workspace-project.ts",
+      "context": "- `app/api/public.ts`, `app/api/auth.ts`, and `app/api/workspace-project.ts` hold cross-feature business adapters. Pages"
     },
     {
       "docFile": "docs/conventions.md",
       "line": 57,
       "type": "path-pattern",
       "value": "app/features/<feature>/api.ts",
-      "context": "- Feature-only adapters live in `app/features/<feature>/api.ts` (for example workspace projects and editor documents)."
+      "context": "- Feature-only adapters live in `app/features/<feature>/api.ts` (for example editor documents). If two features need the"
+    },
+    {
+      "docFile": "docs/conventions.md",
+      "line": 63,
+      "type": "file-path",
+      "value": "app/features/editor/api.ts",
+      "context": "`createProductApiClient()` is the default for authenticated workspace and editor workflows. Workspace project adapters s"
     },
     {
       "docFile": "docs/conventions.md",
@@ -6514,14 +6577,14 @@
       "line": 94,
       "type": "script",
       "value": "lint",
-      "context": "| Husky          | `lint-staged` on commit, then full `pnpm lint`, `stylelint`, `typecheck`, and `test`         |"
+      "context": "| Husky          | `lint-staged` on commit, then full `pnpm lint`, `stylelint`, `typecheck`, and `test`                 "
     },
     {
       "docFile": "docs/conventions.md",
       "line": 95,
       "type": "script",
       "value": "quality",
-      "context": "| `pnpm quality` | Release gate: adds `format:check`, `i18n:check`, and `build` on top of the pre-commit subset |"
+      "context": "| `pnpm quality` | Release gate: adds `format:check`, `i18n:check`, and `build` before `test` so tests can inspect build"
     },
     {
       "docFile": "docs/deployment.md",
@@ -6857,14 +6920,14 @@
       "line": 20,
       "type": "env-file",
       "value": ".env.prod",
-      "context": "`pnpm build` reads committed `.env.prod` placeholder URLs. Sitemap generation falls back to local slugs when the content"
+      "context": "`pnpm build` reads the tracked `.env.prod` baseline. Sitemap generation falls back to local slugs when the content API i"
     },
     {
       "docFile": "docs/usage.md",
       "line": 20,
       "type": "script",
       "value": "build",
-      "context": "`pnpm build` reads committed `.env.prod` placeholder URLs. Sitemap generation falls back to local slugs when the content"
+      "context": "`pnpm build` reads the tracked `.env.prod` baseline. Sitemap generation falls back to local slugs when the content API i"
     },
     {
       "docFile": "docs/usage.md",
@@ -7005,6 +7068,20 @@
       "type": "path-pattern",
       "value": "app/features/<feature>",
       "context": "Create complex product behavior under `app/features/<feature>`."
+    },
+    {
+      "docFile": "docs/usage.md",
+      "line": 52,
+      "type": "path-pattern",
+      "value": "app/api/*",
+      "context": "Use the feature `index.ts` as the public export surface for Nuxt pages. Features should not import other feature modules"
+    },
+    {
+      "docFile": "docs/usage.md",
+      "line": 52,
+      "type": "path-pattern",
+      "value": "app/types/*",
+      "context": "Use the feature `index.ts` as the public export surface for Nuxt pages. Features should not import other feature modules"
     },
     {
       "docFile": "docs/usage.md",
@@ -7549,8 +7626,8 @@
       "docFile": "docs/usage.md",
       "line": 289,
       "type": "file-path",
-      "value": "app/features/workspace/api.ts",
-      "context": "- Workspace adapters in `app/features/workspace/api.ts`: `fetchWorkspaceProjects()`, `createWorkspaceProject()`, `fetchW"
+      "value": "app/api/workspace-project.ts",
+      "context": "- Workspace adapters in `app/api/workspace-project.ts`: `fetchWorkspaceProjects()`, `createWorkspaceProject()`, `fetchWo"
     },
     {
       "docFile": "docs/usage.md",

@@ -25,6 +25,7 @@ export const useEditorMediaUpload = () => {
   const { t } = useI18n()
   const { uploadFile, phase, progress } = useLargeFileUpload()
 
+  // API message 优先；非 API Error 也统一转成 YanivEditor 可感知的异常。
   const resolveErrorMessage = (e: unknown, fallback: string) => {
     const fromApi = getApiErrorMessage(e, '')
     if (fromApi) return fromApi

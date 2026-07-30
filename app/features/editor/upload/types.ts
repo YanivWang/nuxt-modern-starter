@@ -2,6 +2,7 @@
   【文件职责】
     大文件分片上传相关类型，与 API /uploads/large/* 响应体对齐。
 */
+// instant=true 表示后端秒传命中；instant=false 才需要客户端继续分片上传。
 export type LargeUploadInitResponse =
   | {
       instant: true

@@ -25,9 +25,9 @@ import { useI18n } from 'vue-i18n'
 import {
   createWorkspaceProject,
   getWorkspaceDocPath,
-  updateWorkspaceProject,
-  type WorkspaceProject
-} from '~/features/workspace'
+  updateWorkspaceProject
+} from '~/api/workspace-project'
+import type { WorkspaceProject } from '~/types/workspace-project'
 import { saveEditorDocument } from '../api'
 import { EDITOR_AUTOSAVE_DEBOUNCE_MS, type EditorProjectContext } from '../types'
 import { useDraftProject } from './useDraftProject'

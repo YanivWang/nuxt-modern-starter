@@ -24,7 +24,7 @@ pnpm build:test # .env.test
 pnpm build:prod # .env.prod
 ```
 
-Committed env files should only contain non-secret defaults. Override them with deployment-provided `NUXT_*` variables for real environments.
+The three env files are intentionally committed as starter baselines. Keep them limited to non-secret defaults; production secrets must still be supplied by the deployment platform, container runtime, or process manager.
 
 ### Runtime variables
 
@@ -38,7 +38,7 @@ Committed env files should only contain non-secret defaults. Override them with 
 | `NUXT_PUBLIC_ANALYTICS_SCRIPT_SRC`     | Single deferred third-party script URL                                | empty                                                            |
 | `NUXT_PUBLIC_ANALYTICS_DEFER_MS`       | Client defer before loading analytics script                          | `3000`                                                           |
 | `NUXT_APP_ENV`                         | Controls auth cookie `secure` flag via `runtimeConfig.public.appEnv`  | `development` locally; Docker Compose sets `production` or `dev` |
-| `NUXT_REVALIDATE_SECRET`               | Server-only secret for `POST /api/revalidate` (`x-revalidate-secret`) | placeholder in committed env files; replace in production        |
+| `NUXT_REVALIDATE_SECRET`               | Server-only secret for `POST /api/revalidate` (`x-revalidate-secret`) | placeholder in tracked `.env.*`; override in real environments   |
 
 Production auth cookies are marked `secure` when `NUXT_APP_ENV=production`, so real login flows must be served over HTTPS.
 
@@ -61,7 +61,7 @@ Run the full release gate:
 pnpm quality
 ```
 
-`pnpm quality` runs lint, format:check, stylelint, typecheck, i18n:check, test, and build. Husky pre-commit keeps the faster subset for everyday commits.
+`pnpm quality` runs lint, format:check, stylelint, typecheck, i18n:check, build, and test. Build runs before test so output-budget tests inspect the latest `.output` assets. Husky pre-commit keeps the faster subset for everyday commits.
 
 ## Docker Verification
 

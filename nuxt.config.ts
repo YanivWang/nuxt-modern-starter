@@ -123,6 +123,9 @@ export default defineNuxtConfig({
   // - prerenderRoutes：构建时生成静态 HTML
   // - swrRouteRules：SSR 结果缓存，并通过 stale-while-revalidate 后台刷新
   // - csrRouteRules：登录后的产品区仅客户端渲染，适合编辑器、账户中心等强交互页面
+  // CSP 保留 script-src 'unsafe-inline' 是 prerender/SWR 缓存策略下的显式约束：
+  // app/app.vue 的 theme-init 和 Nuxt runtime config 都会生成可执行内联脚本。
+  // nonce 需要每个响应唯一，会和缓存 HTML 冲突；若要移除 unsafe-inline，需单独实现构建期 hash 注入。
   routeRules: {
     ...Object.fromEntries(prerenderRoutes.map((route) => [route, { prerender: true }])),
     ...Object.fromEntries(swrRouteRules.map((route) => [route, { swr: 3600 }])),

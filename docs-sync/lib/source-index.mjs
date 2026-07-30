@@ -283,7 +283,7 @@ export const routeMatches = (value, routeIndex) => {
   if (normalized === '/docs/new') {
     return (
       routeIndex.has('/docs/:id') ||
-      readText('app/features/workspace/api.ts')?.includes("WORKSPACE_NEW_PROJECT_ID = 'new'")
+      readText('app/api/workspace-project.ts')?.includes("WORKSPACE_NEW_PROJECT_ID = 'new'")
     )
   }
 

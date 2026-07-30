@@ -1,6 +1,6 @@
 # Batch 7 Report: server + assets/styles
 
-Generated: 2026-07-09（深度审阅 + doc-claims 证据）
+Generated: 2026-07-30（深度审阅 + doc-claims 证据）
 
 ## 已读文件（17/17）
 
@@ -42,11 +42,11 @@ Generated: 2026-07-09（深度审阅 + doc-claims 证据）
 
 | claim           | 文档                                  | evidenceHint                                                                                                                               |
 | --------------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| dataflow-008    | `docs-site/architecture/data-flow.md` | nuxt.config.ts:49 (revalidateSecret)                                                                                                       |
+| dataflow-008    | `docs-site/architecture/data-flow.md` | nuxt.config.ts:99 (revalidateSecret)                                                                                                       |
 | seo-001         | `docs-site/architecture/seo.md`       | config/site.ts:4 (PUBLIC_PAGE_PATHS); config/routes.ts:11 (isProductPath)                                                                  |
 | overview-002    | `docs-site/architecture/overview.md`  | server/middleware/product-canonical.ts:4 (localizedProductPathToCanonical); app/middleware/locale.global.ts:4 (resolveLocaleRouteDecision) |
-| env-002         | `docs-site/deployment/env.md`         | server/api/revalidate.post.ts:14 (revalidateSecret)                                                                                        |
-| docs-deploy-002 | `docs/deployment.md`                  | server/api/revalidate.post.ts:14 (revalidateSecret)                                                                                        |
+| env-002         | `docs-site/deployment/env.md`         | server/api/revalidate.post.ts:65 (revalidateSecret)                                                                                        |
+| docs-deploy-002 | `docs/deployment.md`                  | server/api/revalidate.post.ts:65 (revalidateSecret)                                                                                        |
 
 ## 代码-文档不一致项
 

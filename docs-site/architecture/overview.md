@@ -49,7 +49,7 @@ flowchart TD
     Q1 -->|否| Q2{是否鉴权端点?}
     Q2 -->|是| Auth[~/api/auth + createAuthApiClient]
     Q2 -->|否| Q3{是否某 feature 私有?}
-    Q3 -->|是| Feat[~/features/xxx/api.ts + createProductApiClient]
+    Q3 -->|是| Feat[~/features/xxx/api.ts 或 ~/api/workspace-project + createProductApiClient]
     Q3 -->|否| New[新建场景客户端，不要 catch-all composable]
 
     Pub --> Client[app/lib/http/client.ts]

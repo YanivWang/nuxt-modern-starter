@@ -18,7 +18,7 @@
 <script setup lang="ts">
 import '@yanivjs/yaniv-editor/style.css'
 import { defineAsyncComponent } from 'vue'
-import type { WorkspaceProject } from '~/features/workspace'
+import type { WorkspaceProject } from '~/types/workspace-project'
 import { EDITOR_Z_INDEX_BASE, editorCustomAppearanceVars } from '../editor-appearance'
 import { useEditorMediaUpload } from '../composables/useEditorMediaUpload'
 import { useEditorWorkspace } from '../composables/useEditorWorkspace'

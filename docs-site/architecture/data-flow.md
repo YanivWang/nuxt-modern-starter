@@ -22,7 +22,7 @@
 Page / Store / Feature Component
         ↓
   业务适配器（命名函数）
-  ~/api/public.ts | ~/api/auth.ts | ~/features/*/api.ts
+  ~/api/public.ts | ~/api/auth.ts | ~/api/workspace-project.ts | ~/features/*/api.ts
         ↓
   场景客户端
   createPublicApiClient | createAuthApiClient | createProductApiClient
@@ -76,7 +76,7 @@ export const loginApi = (payload) => sendAuthApiRequest('/login', { method: 'POS
 工作台、编辑器 API 统一使用：
 
 ```ts
-// app/features/workspace/api.ts
+// app/api/workspace-project.ts
 export const fetchWorkspaceProjects = () =>
   createProductApiClient().request('/projects', { method: 'GET' })
 ```
@@ -137,7 +137,7 @@ server/utils/revalidate.ts → purgeRouteCaches()
 | `fetchProfileApi`  | GET   | `/me/profile` |
 | `updateProfileApi` | PATCH | `/me/profile` |
 
-### 工作台（`~/features/workspace/api`）
+### 工作台（`~/api/workspace-project`）
 
 | 函数                     | 方法   | 路径            |
 | ------------------------ | ------ | --------------- |

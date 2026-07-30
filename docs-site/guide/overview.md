@@ -56,7 +56,7 @@ Nuxt 页面文件（`app/pages/*`）只做：
 | 登录注册      | `createAuthApiClient()`    | 鉴权端点                |
 | 工作台/编辑器 | `createProductApiClient()` | 自动带 token + 401 刷新 |
 
-页面和 Store **不直接写后端 URL**，只调 `~/api/*` 或 `~/features/*/api.ts` 里的命名函数。
+页面和 Store **不直接写后端 URL**，只调 `~/api/*` 或 feature-local API 里的命名函数。
 
 ## 预置功能清单
 
@@ -89,7 +89,7 @@ Nuxt 页面文件（`app/pages/*`）只做：
 | 样式   | SCSS 分层 token（`tokens/` + `patterns/` + `--app-*`） |
 | i18n   | vue-i18n（自建路由，不用 @nuxtjs/i18n）                |
 | 编辑器 | @yanivjs/yaniv-editor                                  | PPT/幻灯片编辑器（`mode: edit`, `preset: full`）                                              |
-| 测试   | Vitest 4.1.9 + @nuxt/test-utils 4.0.3                  | `vitest.config.ts` `defineVitestConfig` + `include: tests/**/*.test.ts`（35 文件 / 126 用例） |
+| 测试   | Vitest 4.1.9 + @nuxt/test-utils 4.0.3                  | `vitest.config.ts` `defineVitestConfig` + `include: tests/**/*.test.ts`（35 文件 / 134 用例） |
 | 部署   | Nitro node-server + Docker + Nginx 样例                |
 
 详见 [技术栈总览](/tech-stack/overview)。

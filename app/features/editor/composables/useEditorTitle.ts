@@ -6,7 +6,7 @@
     登录产品区 — app/features/editor/composables，被 useEditorWorkspace 消费。
 */
 import { ref, watch, type Ref } from 'vue'
-import type { WorkspaceProject } from '~/features/workspace'
+import type { WorkspaceProject } from '~/types/workspace-project'
 import type { SaveEditorDocumentPayload } from '../api'
 import type { EditorProjectContext } from '../types'
 import type { EditorDocument } from '~/types/document'

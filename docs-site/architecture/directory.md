@@ -62,17 +62,17 @@ app/features/my-feature/
 
 **现有 feature：**
 
-| 目录             | 写什么代码                                                          |
-| ---------------- | ------------------------------------------------------------------- |
-| `product-shell/` | 产品区侧边栏、导航 config                                           |
-| `account-shell/` | 账户区壳层、导航 config                                             |
-| `workspace/`     | 项目列表 UI + `/projects` API；创建跳转 `/docs/new`；卡片装饰缩略图 |
-| `editor/`        | YanivEditor PPT 编辑器 UI + `/documents` API；2s 自动保存           |
-| `templates/`     | 模板占位页                                                          |
-| `account/`       | 账户设置 UI                                                         |
+| 目录             | 写什么代码                                                |
+| ---------------- | --------------------------------------------------------- |
+| `product-shell/` | 产品区侧边栏、导航 config                                 |
+| `account-shell/` | 账户区壳层、导航 config                                   |
+| `workspace/`     | 项目列表 UI；创建跳转 `/docs/new`；卡片装饰缩略图         |
+| `editor/`        | YanivEditor PPT 编辑器 UI + `/documents` API；2s 自动保存 |
+| `templates/`     | 模板占位页                                                |
+| `account/`       | 账户设置 UI                                               |
 
 ::: warning 跨 feature 引用
-其他模块只能 `import from '~/features/xxx'`，不要深入 `~/features/xxx/components/...`。
+页面只能 `import from '~/features/xxx'`，不要深入 `~/features/xxx/components/...`。feature 之间不要互相 import；共享 API / 类型上移到 `app/api/*` 或 `app/types/*`。
 :::
 
 ### 共享层（框架级）

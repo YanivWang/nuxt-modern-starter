@@ -21,7 +21,7 @@
 */
 import { computed, type Ref } from 'vue'
 import { isBlankEditorContent } from './editor-content'
-import type { CreateWorkspaceProjectPayload, WorkspaceProject } from '~/features/workspace'
+import type { CreateWorkspaceProjectPayload, WorkspaceProject } from '~/types/workspace-project'
 import type { SaveEditorDocumentPayload } from '../api'
 import type { EditorDocument } from '~/types/document'
 

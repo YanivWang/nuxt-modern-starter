@@ -5,7 +5,7 @@
   【架构位置】
     登录产品区 — app/features/editor/types.ts。
 */
-import type { WorkspaceProject } from '~/features/workspace'
+import type { WorkspaceProject } from '~/types/workspace-project'
 
 export type EditorProjectContext = Pick<WorkspaceProject, 'id' | 'title'>
 

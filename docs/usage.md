@@ -8,7 +8,7 @@ Before tagging, deploying, or running `pnpm docker:up`, run the full local quali
 pnpm quality
 ```
 
-`pnpm quality` runs `lint`, `format:check`, `stylelint`, `typecheck`, `i18n:check`, `test`, and `build`. Husky pre-commit still runs the faster subset (`lint-staged`, then `lint`, `stylelint`, `typecheck`, `test`) on every commit and intentionally skips `format:check`, `i18n:check`, and `build` to keep day-to-day commits fast.
+`pnpm quality` runs `lint`, `format:check`, `stylelint`, `typecheck`, `i18n:check`, `build`, and `test`. Build runs before test so output-budget tests inspect the latest `.output` assets. Husky pre-commit still runs the faster subset (`lint-staged`, then `lint`, `stylelint`, `typecheck`, `test`) on every commit and intentionally skips `format:check`, `i18n:check`, and `build` to keep day-to-day commits fast.
 
 Typical release flow:
 
@@ -17,7 +17,7 @@ pnpm quality
 pnpm docker:up
 ```
 
-`pnpm build` reads committed `.env.prod` placeholder URLs. Sitemap generation falls back to local slugs when the content API is unavailable, so the quality gate does not depend on a live backend.
+`pnpm build` reads the tracked `.env.prod` baseline. Sitemap generation falls back to local slugs when the content API is unavailable, so the quality gate does not depend on a live backend.
 
 ## Add a Page
 
@@ -49,7 +49,7 @@ app/features/editor/
   index.ts
 ```
 
-Use the feature `index.ts` as the public export surface. Nuxt pages and other features should import from `app/features/<feature>` instead of importing internal files from another feature.
+Use the feature `index.ts` as the public export surface for Nuxt pages. Features should not import other feature modules; cross-feature adapters and types belong in shared `app/api/*` and `app/types/*`.
 
 Keep top-level `app/components`, `app/composables`, and `app/stores` for shared primitives only.
 
@@ -61,7 +61,7 @@ Choose the request entrypoint by page and data ownership:
 
 - Public SEO, marketing, help, pricing, news, and FAQ data belongs in `~/api/public`. Use local typed content there (`getFaqItems()` reads `config/content/faq.ts`), or call `createPublicApiClient()` inside the adapter for token-free backend requests such as `fetchNewsArticles()`, `fetchLocalizedNewsArticle()`, and `fetchPricingPage()`.
 - Sign-in, sign-up, refresh, logout, `/me`, and profile requests belong in `~/api/auth` (`fetchProfileApi()`, `updateProfileApi()`).
-- Workspace project requests belong in `~/features/workspace/api.ts` via `fetchWorkspaceProjects()`, `createWorkspaceProject()`, `fetchWorkspaceProject()`, `updateWorkspaceProject()`, and `deleteWorkspaceProject()` (paths `/projects`, `/projects/:projectId`). Use `getWorkspaceDocPath(projectId)` or `getWorkspaceNewDocPath()` when linking to the editor route.
+- Workspace project requests belong in `~/api/workspace-project` via `fetchWorkspaceProjects()`, `createWorkspaceProject()`, `fetchWorkspaceProject()`, `updateWorkspaceProject()`, and `deleteWorkspaceProject()` (paths `/projects`, `/projects/:projectId`). Use `getWorkspaceDocPath(projectId)` or `getWorkspaceNewDocPath()` when linking to the editor route.
 - Editor document requests belong in `~/features/editor/api.ts` via `fetchEditorDocument()` and `saveEditorDocument()` (paths `/documents/:documentId`). These call `createProductApiClient()` from `~/api/auth`.
 - Editor media uploads belong in `~/features/editor/upload-api.ts`: images via `uploadImages()` (`POST /uploads`), videos via large-file chunked upload (`/uploads/large/*`). Wire them into `YanivEditor` through `useEditorMediaUpload()` as `:upload-image` / `:upload-video`. Returned `/uploads/...` paths are resolved to absolute URLs against the API origin (strip `/api` from `NUXT_PUBLIC_API_BASE`).
 - Do not add a generic catch-all request composable. Add a named public, auth, product, editor, or feature client when a new request scenario appears.
@@ -286,14 +286,14 @@ The starter ships a real product flow when paired with `nuxt-modern-starter-api`
 
 API boundaries:
 
-- Workspace adapters in `app/features/workspace/api.ts`: `fetchWorkspaceProjects()`, `createWorkspaceProject()`, `fetchWorkspaceProject()`, `updateWorkspaceProject()`, and `deleteWorkspaceProject()` via `createProductApiClient()`. `getWorkspaceDocPath(projectId)` returns `/docs/:id`; `getWorkspaceNewDocPath()` returns `/docs/new`.
+- Workspace adapters in `app/api/workspace-project.ts`: `fetchWorkspaceProjects()`, `createWorkspaceProject()`, `fetchWorkspaceProject()`, `updateWorkspaceProject()`, and `deleteWorkspaceProject()` via `createProductApiClient()`. `getWorkspaceDocPath(projectId)` returns `/docs/:id`; `getWorkspaceNewDocPath()` returns `/docs/new`.
 - Editor adapters in `app/features/editor/api.ts`: `fetchEditorDocument()` and `saveEditorDocument()` via `createProductApiClient()`.
 - Relative request paths are `/projects` and `/documents/:documentId`; `runtimeConfig.public.apiBase` already includes the `/api` prefix.
 - Both use the backend envelope `{ code, message, data }` and retry once after a single-flight refresh on 401.
 
 Current UI scope:
 
-- The header create button navigates to `/docs/new` (does not call the API immediately). `WorkspaceDashboard` prefetches the editor route and `~/features/editor` chunk on idle or hover/focus for faster first paint.
+- The header create button navigates to `/docs/new` (does not call the API immediately). `WorkspaceDashboard` prefetches the editor route on idle or hover/focus for faster first paint.
 - The editor creates the project on first non-blank save through `createWorkspaceProject()` with the default title from i18n (`workspace.defaultTitle`), then saves initial content and replaces the route with `/docs/:id`.
 - Project cards link to the editor through `getWorkspaceDocPath()`. Cards show decorative accent thumbnails and formatted `updatedAt`. Share, download, and favorite buttons on cards are UI-only placeholders without backend APIs.
 - Templates, AI generation, export, asset management, membership, credits, orders, and payments should remain optional product extensions until the chosen SaaS workflow or monetization path actually needs them.

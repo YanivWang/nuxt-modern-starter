@@ -11,9 +11,9 @@ import {
   fetchWorkspaceProject,
   getWorkspaceDocPath,
   getWorkspaceNewDocPath,
-  isNewWorkspaceProjectId,
-  type WorkspaceProject
-} from '~/features/workspace'
+  isNewWorkspaceProjectId
+} from '~/api/workspace-project'
+import type { WorkspaceProject } from '~/types/workspace-project'
 
 export const useEditorPage = () => {
   const route = useRoute()

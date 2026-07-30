@@ -9,7 +9,7 @@
     describe workspace api
 
   【依赖关系】
-    - 依赖：app/features/workspace/api.ts
+    - 依赖：app/api/workspace-project.ts
     - mock：createProductApiClient → { request }
 
   【渲染 / 数据】
@@ -32,7 +32,7 @@ vi.mock('../../app/api/auth', async (importOriginal) => {
 
 describe('workspace api', () => {
   it('lists workspace projects', async () => {
-    const { fetchWorkspaceProjects } = await import('../../app/features/workspace/api')
+    const { fetchWorkspaceProjects } = await import('../../app/api/workspace-project')
 
     await fetchWorkspaceProjects()
 
@@ -40,7 +40,7 @@ describe('workspace api', () => {
   })
 
   it('creates workspace projects', async () => {
-    const { createWorkspaceProject } = await import('../../app/features/workspace/api')
+    const { createWorkspaceProject } = await import('../../app/api/workspace-project')
 
     await createWorkspaceProject({ title: 'Demo' })
 
@@ -52,7 +52,7 @@ describe('workspace api', () => {
 
   it('builds editor links from project ids', async () => {
     const { getWorkspaceDocPath, getWorkspaceNewDocPath, isNewWorkspaceProjectId } =
-      await import('../../app/features/workspace/api')
+      await import('../../app/api/workspace-project')
 
     expect(getWorkspaceDocPath('proj_1')).toBe('/docs/proj_1')
     expect(getWorkspaceNewDocPath()).toBe('/docs/new')

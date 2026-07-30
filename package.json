@@ -44,7 +44,7 @@
     "postinstall": "nuxt prepare",
     "prepare": "husky",
     "preview": "nuxt preview",
-    "quality": "corepack pnpm lint && corepack pnpm format:check && corepack pnpm stylelint && corepack pnpm typecheck && corepack pnpm i18n:check && corepack pnpm test && corepack pnpm build",
+    "quality": "corepack pnpm lint && corepack pnpm format:check && corepack pnpm stylelint && corepack pnpm typecheck && corepack pnpm i18n:check && corepack pnpm build && corepack pnpm test",
     "stylelint": "stylelint \"**/*.{css,scss,vue}\"",
     "test": "vitest run",
     "test:watch": "vitest",

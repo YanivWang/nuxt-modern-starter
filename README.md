@@ -48,7 +48,7 @@ pnpm build
 - Separate public SEO routes and logged-in product routes. Product URLs stay language-neutral; `/en/workspace`, `/en/docs/**`, and `/en/account` redirect to canonical paths without a locale prefix.
 - Feature-first product modules under `app/features/*` for workspace, editor, product shell, account shell, templates, and future SaaS workflows.
 - Opt-in Bearer Token auth module with sign-in, sign-up, logout, user menu, safe redirect handling, and protected-route examples.
-- Product workspace at `/workspace`: list, create (navigate to `/docs/new`), and delete projects via `nuxt-modern-starter-api` (`GET/POST/PATCH/DELETE /api/projects`). Dashboard prefetches editor route and feature chunk on idle.
+- Product workspace at `/workspace`: list, create (navigate to `/docs/new`), and delete projects via `nuxt-modern-starter-api` (`GET/POST/PATCH/DELETE /api/projects`). Dashboard prefetches the editor route on idle.
 - Theme templates placeholder at `/workspace/templates` (6 dashed cards + empty state, no API). Templates, AI generation, export, monetization, and domain-specific workflows are optional product extensions, not default requirements for the SaaS foundation.
 - Editor at `/docs/:id` and `/docs/new` (`:id` is the project id or `new`): resolves `documentId`, loads content with `GET /api/documents/:documentId`, autosaves with `PATCH /api/documents/:documentId` (2s debounce, flush on route leave), and updates titles with `PATCH /api/projects/:projectId` through `@yanivjs/yaniv-editor` (PPT editor, `mode: edit`, `preset: full`).
 - Product account at `/account`: dedicated account layout, profile payload, and logout (via user menu).
@@ -115,7 +115,7 @@ Environment files follow the Nuxt `--dotenv` convention:
 - `.env.test`: test/staging layer, used by `pnpm dev:test` and `pnpm build:test`.
 - `.env.prod`: production layer, used by `pnpm build`, `pnpm build:prod`, and `pnpm dev:prod`.
 
-Keep real secrets out of committed env files. Runtime deployments should still inject final `NUXT_*` values from the platform, container, or process manager.
+The three environment files are intentionally tracked as starter baselines. Keep them as non-secret defaults, and inject final `NUXT_*` values from the platform, container, or process manager when deploying real environments.
 
 Key public variables:
 
@@ -139,7 +139,7 @@ Run the full local quality gate:
 pnpm quality
 ```
 
-`pnpm quality` runs lint, format:check, stylelint, typecheck, i18n:check, test, and build. Husky pre-commit keeps the faster subset for everyday commits.
+`pnpm quality` runs lint, format:check, stylelint, typecheck, i18n:check, build, and test. Build runs before test so output-budget tests inspect the latest `.output` assets. Husky pre-commit keeps the faster subset for everyday commits.
 
 Then verify deployment samples:
 

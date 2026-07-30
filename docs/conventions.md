@@ -29,7 +29,7 @@ Nuxt page files are route entries only. Keep them focused on `definePageMeta`, l
 
 Top-level `app/components`, `app/composables`, and `app/stores` are for shared framework-level primitives. Feature-specific components, composables, stores, types, constants, and utilities belong under `app/features/<feature>`.
 
-Use `app/features/<feature>/index.ts` as the feature public surface. Other features should import from that index instead of reaching into another feature's internal folders.
+Use `app/features/<feature>/index.ts` as the feature public surface for pages. Features must not import other feature modules; cross-feature domain data belongs in shared `app/api/*` and `app/types/*` modules.
 
 ## Ant Design Vue
 
@@ -53,14 +53,14 @@ HTTP requests follow a flat, mainstream layout:
 
 - `app/lib/http` owns the shared `$fetch` wrapper, response types, header helpers, envelope validation (`assertApiSuccess`), and error normalization.
 - `app/api/clients.ts` exposes `createPublicApiClient()`, `createAuthApiClient()`, and the authenticated product default via `createProductApiClient()` in `app/api/auth.ts`.
-- `app/api/public.ts` and `app/api/auth.ts` hold cross-feature business adapters. Pages should import from `~/api/public` or `~/api/auth`, not raw backend URLs.
-- Feature-only adapters live in `app/features/<feature>/api.ts` (for example workspace projects and editor documents).
+- `app/api/public.ts`, `app/api/auth.ts`, and `app/api/workspace-project.ts` hold cross-feature business adapters. Pages should import from `~/api/public`, `~/api/auth`, or feature barrels, not raw backend URLs.
+- Feature-only adapters live in `app/features/<feature>/api.ts` (for example editor documents). If two features need the same adapter or type, move it to `app/api/*` or `app/types/*` instead of importing across feature folders.
 
 `createPublicApiClient()` is the default for public SEO/content data. It strips `authorization` and `cookie` headers, does not refresh sessions, and is safe for SSR/prerender/SWR paths.
 
 `createAuthApiClient()` is the default for login, register, refresh, logout, `/me`, and profile requests.
 
-`createProductApiClient()` is the default for authenticated workspace and editor workflows. Workspace adapters such as `fetchWorkspaceProjects()`, `updateWorkspaceProject()`, and editor adapters such as `fetchEditorDocument()` should call it instead of pages calling raw URLs. Use `getWorkspaceDocPath(projectId)` or `getWorkspaceNewDocPath()` for editor links.
+`createProductApiClient()` is the default for authenticated workspace and editor workflows. Workspace project adapters such as `fetchWorkspaceProjects()` and `updateWorkspaceProject()` live in `app/api/workspace-project.ts`; editor-only adapters such as `fetchEditorDocument()` live in `app/features/editor/api.ts`. Use `getWorkspaceDocPath(projectId)` or `getWorkspaceNewDocPath()` for editor links.
 
 Scenario clients decide their own headers. Public clients only keep request metadata such as `accept-language` and `x-request-id`; authenticated clients add Bearer tokens explicitly. Logs redact `authorization` and `cookie`.
 
@@ -86,13 +86,15 @@ Use Nuxt test environment for composables, route middleware, server routes, and 
 
 Formatting and lint responsibilities are split on purpose:
 
-| Tool           | Role                                                                                         |
-| -------------- | -------------------------------------------------------------------------------------------- |
-| Prettier       | Source of truth for JS/TS/Vue/Markdown/JSON/CSS/SCSS formatting                              |
-| ESLint         | Code quality and Vue semantics; markup self-closing rules are aligned with Prettier output   |
-| Stylelint      | SCSS/CSS/Vue style blocks only; does not format script or template markup                    |
-| Husky          | `lint-staged` on commit, then full `pnpm lint`, `stylelint`, `typecheck`, and `test`         |
-| `pnpm quality` | Release gate: adds `format:check`, `i18n:check`, and `build` on top of the pre-commit subset |
+| Tool           | Role                                                                                                         |
+| -------------- | ------------------------------------------------------------------------------------------------------------ |
+| Prettier       | Source of truth for JS/TS/Vue/Markdown/JSON/CSS/SCSS formatting                                              |
+| ESLint         | Code quality and Vue semantics; markup self-closing rules are aligned with Prettier output                   |
+| Stylelint      | SCSS/CSS/Vue style blocks only; does not format script or template markup                                    |
+| Husky          | `lint-staged` on commit, then full `pnpm lint`, `stylelint`, `typecheck`, and `test`                         |
+| `pnpm quality` | Release gate: adds `format:check`, `i18n:check`, and `build` before `test` so tests can inspect build output |
+
+Commit messages use Conventional Commits by meaning, not only by syntax: use `fix` for bug/security fixes, `docs` for documentation-only changes, `chore` for dependency/tooling maintenance, `test` for test-only changes, and `feat` only for user-visible product capability.
 
 Commit flow for staged code files:
 
@@ -108,6 +110,8 @@ Do not hand-edit Vue template void/empty tags into a style that Prettier will re
 Do not log secrets, tokens, or cookies. Keep images sized and optimized before adding them to public pages.
 
 Third-party analytics scripts should stay behind explicit env toggles. The starter ships an analytics plugin slot, but analytics remains disabled by default. When enabling it, relax `script-src` in `nuxt.config.ts` for the script origin and keep `connect-src` aligned with the analytics provider if needed.
+
+The global CSP currently keeps `script-src 'unsafe-inline'` because prerendered and SWR-cached HTML includes executable inline scripts for `theme-init` and Nuxt runtime config. Do not switch to per-response nonces while keeping prerender/SWR caches; nonce reuse in cached HTML defeats the model. Removing `unsafe-inline` requires a separate build-time hash injection implementation and validation against generated HTML.
 
 Channel attribution uses client-side `localStorage` only. It does not affect SSR, prerender, SWR, or CDN cache safety. Clear attribution only on explicit logout; do not tie attribution cleanup to generic auth reset paths.
 

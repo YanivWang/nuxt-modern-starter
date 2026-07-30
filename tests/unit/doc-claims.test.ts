@@ -30,8 +30,8 @@ describe('doc-claims sync', () => {
   )
   const minClaims = docClaims.requiredClaimsPerDoc ?? 2
 
-  it('manifest covers 121 source files and 33 docs', () => {
-    expect(manifest.sourceFiles).toHaveLength(121)
+  it('manifest covers 130 source files and 33 docs', () => {
+    expect(manifest.sourceFiles).toHaveLength(130)
     expect(manifest.docFiles).toHaveLength(33)
   })
 

@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-09T03:06:49.274Z",
+  "generatedAt": "2026-07-30T14:47:33.678Z",
   "findCommand": "find app server config docker nuxt.config.ts vitest.config.ts -type f \\( -name \"*.ts\" -o -name \"*.vue\" -o -name \"*.js\" -o -name \"*.scss\" -o -name \"*.yaml\" -o -name \"*.conf\" \\) 2>/dev/null | sort",
-  "sourceFileCount": 121,
+  "sourceFileCount": 130,
   "docFileCount": 33,
   "sourceFiles": [
     {
@@ -20,6 +20,13 @@
     },
     {
       "path": "app/api/public.ts",
+      "type": "ts",
+      "module": "api",
+      "batch": 2,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/api/workspace-project.ts",
       "type": "ts",
       "module": "api",
       "batch": 2,
@@ -327,6 +334,13 @@
       "hasHeaderComment": true
     },
     {
+      "path": "app/features/editor/composables/useEditorMediaUpload.ts",
+      "type": "ts",
+      "module": "feature-editor",
+      "batch": 5,
+      "hasHeaderComment": true
+    },
+    {
       "path": "app/features/editor/composables/useEditorPage.ts",
       "type": "ts",
       "module": "feature-editor",
@@ -369,6 +383,62 @@
       "hasHeaderComment": true
     },
     {
+      "path": "app/features/editor/upload-api.ts",
+      "type": "ts",
+      "module": "feature-editor",
+      "batch": 5,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/features/editor/upload/compute-file-md5.ts",
+      "type": "ts",
+      "module": "feature-editor",
+      "batch": 5,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/features/editor/upload/compute-file-md5.worker.ts",
+      "type": "ts",
+      "module": "feature-editor",
+      "batch": 5,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/features/editor/upload/constants.ts",
+      "type": "ts",
+      "module": "feature-editor",
+      "batch": 5,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/features/editor/upload/large-upload-persistence.ts",
+      "type": "ts",
+      "module": "feature-editor",
+      "batch": 5,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/features/editor/upload/resolve-upload-url.ts",
+      "type": "ts",
+      "module": "feature-editor",
+      "batch": 5,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/features/editor/upload/types.ts",
+      "type": "ts",
+      "module": "feature-editor",
+      "batch": 5,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/features/editor/upload/useLargeFileUpload.ts",
+      "type": "ts",
+      "module": "feature-editor",
+      "batch": 5,
+      "hasHeaderComment": true
+    },
+    {
       "path": "app/features/product-shell/components/ProductShell.vue",
       "type": "vue",
       "module": "feature-product-shell",
@@ -404,13 +474,6 @@
       "hasHeaderComment": true
     },
     {
-      "path": "app/features/workspace/api.ts",
-      "type": "ts",
-      "module": "feature-workspace",
-      "batch": 5,
-      "hasHeaderComment": true
-    },
-    {
       "path": "app/features/workspace/components/WorkspaceDashboard.vue",
       "type": "vue",
       "module": "feature-workspace",
@@ -440,13 +503,6 @@
     },
     {
       "path": "app/features/workspace/index.ts",
-      "type": "ts",
-      "module": "feature-workspace",
-      "batch": 5,
-      "hasHeaderComment": true
-    },
-    {
-      "path": "app/features/workspace/types.ts",
       "type": "ts",
       "module": "feature-workspace",
       "batch": 5,
@@ -678,6 +734,13 @@
     },
     {
       "path": "app/types/document.ts",
+      "type": "ts",
+      "module": "types",
+      "batch": 1,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/types/workspace-project.ts",
       "type": "ts",
       "module": "types",
       "batch": 1,

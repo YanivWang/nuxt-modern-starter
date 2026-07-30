@@ -1,9 +1,22 @@
 /*
   【文件职责】
-    工作台领域类型：项目实体与 CRUD payload。
+    Workspace 项目共享领域类型：项目实体与 CRUD payload，供 workspace 与 editor feature 共同使用。
 
   【架构位置】
-    登录产品区 — app/features/workspace/types.ts。
+    共享类型层 — app/types，不属于任一 feature。
+
+  【主要导出 / 路由】
+    WorkspaceProject、CreateWorkspaceProjectPayload、UpdateWorkspaceProjectPayload
+
+  【依赖关系】
+    - 依赖：无
+    - 被引用：app/api/workspace-project.ts、workspace feature、editor feature、tests/fixtures
+
+  【渲染 / 数据】
+    无
+
+  【边界与注意】
+    仅描述项目领域数据形状，不包含请求实现或 UI 组件类型。
 */
 export type WorkspaceProjectAccent = 'blue' | 'green' | 'violet' | 'amber' | 'cyan' | 'rose'
 

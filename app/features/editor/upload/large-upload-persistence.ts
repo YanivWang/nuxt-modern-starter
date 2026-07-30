@@ -6,6 +6,7 @@ const PREFIX = 'nms-lu:'
 
 type StoredShape = { uploadId: string }
 
+// 文件名、大小、mtime 共同构成续传键；不同文件不能复用 uploadId。
 const storageKey = (file: File) =>
   `${PREFIX}${encodeURIComponent(file.name)}\u001f${file.size}\u001f${file.lastModified}`
 

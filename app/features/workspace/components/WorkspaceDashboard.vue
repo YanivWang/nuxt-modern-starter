@@ -1,7 +1,7 @@
 <!--
   【文件职责】
     工作台主 UI：项目列表、创建按钮跳转 /docs/new、删除确认与列表刷新。
-    idle 预加载 editor route 与 feature chunk 以加速进入编辑器。
+    idle 预加载 editor route 以加速进入编辑器。
 
   【架构位置】
     登录产品区 — app/features/workspace，由 app/pages/workspace/index.vue 挂载。
@@ -10,18 +10,18 @@
     WorkspaceDashboard；创建 → /docs/new，卡片 → /docs/:id
 
   【依赖关系】
-    - 依赖：../composables/useWorkspaceProjects、WorkspaceProjectCard、useLocalePath
+    - 依赖：~/api/workspace-project、../composables/useWorkspaceProjects、WorkspaceProjectCard、useLocalePath
     - 被引用：app/pages/workspace/index.vue
 
   【渲染 / 数据】
     CSR；列表与删除逻辑见 useWorkspaceProjects；创建仅 navigateTo /docs/new。
 
   【边界与注意】
-    仅顶部「创建项目」按钮创建；无空白卡片入口。
+    仅顶部「创建项目」按钮创建；无空白卡片入口；不直接 import editor feature，避免跨 feature 运行时耦合。
 -->
 <script setup lang="ts">
 import { PlusOutlined } from '~/utils/antdIcon'
-import { getWorkspaceDocPath, getWorkspaceNewDocPath } from '../api'
+import { getWorkspaceDocPath, getWorkspaceNewDocPath } from '~/api/workspace-project'
 import { useWorkspaceProjects } from '../composables/useWorkspaceProjects'
 import WorkspaceProjectCard from './WorkspaceProjectCard.vue'
 
@@ -40,11 +40,10 @@ const prefetchEditorRoute = () => {
 
   editorRoutePrefetched = true
   void preloadRouteComponents(newDocPath.value)
-  void import('~/features/editor')
 }
 
 onMounted(() => {
-  // idle 时预加载 /docs/new 路由组件与 editor feature chunk，缩短首次进入编辑器耗时
+  // idle 时预加载 /docs/new 路由组件，缩短首次进入编辑器耗时
   if (typeof requestIdleCallback !== 'undefined') {
     requestIdleCallback(() => prefetchEditorRoute())
     return

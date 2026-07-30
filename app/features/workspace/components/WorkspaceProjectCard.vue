@@ -10,7 +10,7 @@
     WorkspaceProjectCard；docPath prop → /docs/:id
 
   【依赖关系】
-    - 依赖：../api WorkspaceProject、formatWorkspaceDateTime
+    - 依赖：~/types/workspace-project WorkspaceProject、formatWorkspaceDateTime
     - 被引用：WorkspaceDashboard
 
   【渲染 / 数据】
@@ -27,7 +27,7 @@ import {
   StarOutlined
 } from '~/utils/antdIcon'
 import { formatWorkspaceDateTime } from '~/utils/formatDate'
-import type { WorkspaceProject } from '../types'
+import type { WorkspaceProject } from '~/types/workspace-project'
 
 const props = defineProps<{
   project: WorkspaceProject

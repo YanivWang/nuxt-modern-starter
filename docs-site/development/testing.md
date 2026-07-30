@@ -3,7 +3,7 @@
 ## 命令
 
 ```bash
-pnpm test          # Vitest 一次运行（35 文件 / 126 测试）
+pnpm test          # Vitest 一次运行（35 文件 / 134 测试）
 pnpm test:watch    # 监听模式
 pnpm typecheck     # vue-tsc + Nuxt 类型
 pnpm lint            # ESLint
@@ -16,7 +16,7 @@ pnpm quality         # 发布全量门禁
 ## quality 门禁内容
 
 ```
-lint → format:check → stylelint → typecheck → i18n:check → test → build
+lint → format:check → stylelint → typecheck → i18n:check → build → test
 ```
 
 `i18n:check` 防止 locale 配置、语言包目录、resolver 与 key 快照漂移。

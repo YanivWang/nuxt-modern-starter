@@ -1,6 +1,6 @@
 # Batch 3 Report: middleware + plugins + composables + utils
 
-Generated: 2026-07-09（深度审阅 + doc-claims 证据）
+Generated: 2026-07-30（深度审阅 + doc-claims 证据）
 
 ## 已读文件（18/18）
 

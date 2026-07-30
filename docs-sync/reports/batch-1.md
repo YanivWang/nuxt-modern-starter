@@ -1,12 +1,13 @@
 # Batch 1 Report: config + nuxt.config
 
-Generated: 2026-07-09（深度审阅 + doc-claims 证据）
+Generated: 2026-07-30（深度审阅 + doc-claims 证据）
 
-## 已读文件（10/10）
+## 已读文件（11/11）
 
 - app/app.config.ts
 - app/shims.d.ts
 - app/types/document.ts
+- app/types/workspace-project.ts
 - config/antd-locale.ts
 - config/auth.ts
 - config/content/faq.ts
@@ -47,32 +48,32 @@ Generated: 2026-07-09（深度审阅 + doc-claims 证据）
 | routing-006    | `docs-site/architecture/routing.md`      | config/site.ts:4 (PUBLIC_PAGE_PATHS); config/routes.ts:10 (prerenderRoutes); config/routes.ts:10 (swrRouteRules)      |
 | routing-007    | `docs-site/architecture/routing.md`      | config/site.ts:4 (PUBLIC_PAGE_PATHS)                                                                                  |
 | routing-008    | `docs-site/architecture/routing.md`      | config/site.ts:11 (DEFAULT_LOCALE); config/site.ts:12 (SITE_LOCALE_PREFIX_MAP); config/routes.ts:11 (localizedPath)   |
-| dataflow-007   | `docs-site/architecture/data-flow.md`    | nuxt.config.ts:52 (apiBase)                                                                                           |
-| dataflow-008   | `docs-site/architecture/data-flow.md`    | nuxt.config.ts:49 (revalidateSecret)                                                                                  |
+| dataflow-007   | `docs-site/architecture/data-flow.md`    | nuxt.config.ts:102 (apiBase)                                                                                          |
+| dataflow-008   | `docs-site/architecture/data-flow.md`    | nuxt.config.ts:99 (revalidateSecret)                                                                                  |
 | auth-001       | `docs-site/architecture/auth.md`         | config/auth.ts:10 (AUTH_REDIRECTS)                                                                                    |
 | auth-002       | `docs-site/architecture/auth.md`         | config/auth.ts:10 (ACCESS_TOKEN_MAX_AGE); config/auth.ts:11 (REFRESH_TOKEN_MAX_AGE)                                   |
 | auth-003       | `docs-site/architecture/auth.md`         | config/auth.ts:10 (AUTH_COOKIE_KEYS)                                                                                  |
 | auth-004       | `docs-site/architecture/auth.md`         | config/auth.ts:4 (AUTH_API_ENDPOINTS)                                                                                 |
 | arch-003       | `docs/architecture.md`                   | config/site.ts:11 (DEFAULT_LOCALE); config/site.ts:11 (SUPPORTED_LOCALES)                                             |
-| deploy-001     | `docs-site/deployment/overview.md`       | nuxt.config.ts:52 (apiBase); nuxt.config.ts:53 (siteUrl)                                                              |
+| deploy-001     | `docs-site/deployment/overview.md`       | nuxt.config.ts:102 (apiBase); nuxt.config.ts:103 (siteUrl)                                                            |
 | config-001     | `docs-site/reference/config.md`          | config/routes.ts:10 (productRoutePatterns); config/routes.ts:10 (csrRouteRules)                                       |
 | seo-001        | `docs-site/architecture/seo.md`          | config/site.ts:4 (PUBLIC_PAGE_PATHS); config/routes.ts:11 (isProductPath)                                             |
-| config-002     | `docs-site/reference/config.md`          | config/antd-locale.ts:34 (loadAntdLocale); config/antd-locale.ts:15 (ANTD_LOCALE_LOADERS)                             |
+| config-002     | `docs-site/reference/config.md`          | config/antd-locale.ts:37 (loadAntdLocale); config/antd-locale.ts:18 (ANTD_LOCALE_LOADERS)                             |
 | config-003     | `docs-site/reference/config.md`          | config/routes.ts:10 (prerenderRoutes)                                                                                 |
-| config-004     | `docs-site/reference/config.md`          | nuxt.config.ts:52 (apiBase)                                                                                           |
+| config-004     | `docs-site/reference/config.md`          | nuxt.config.ts:102 (apiBase)                                                                                          |
 | i18n-001       | `docs-site/architecture/i18n.md`         | config/routes.ts:11 (localizedPath); config/routes.ts:11 (isProductPath)                                              |
 | i18n-002       | `docs-site/architecture/i18n.md`         | config/site.ts:11 (SUPPORTED_LOCALES); config/site.ts:11 (DEFAULT_LOCALE)                                             |
 | directory-001  | `docs-site/architecture/directory.md`    | config/site.ts:4 (PUBLIC_PAGE_PATHS); config/routes.ts:11 (isProductPath)                                             |
 | index-001      | `docs-site/index.md`                     | config/content/faq.ts:10 (faqItems); config/content/faq.ts:14 (getFaqItems)                                           |
-| guide-gs-002   | `docs-site/guide/getting-started.md`     | nuxt.config.ts:52 (apiBase)                                                                                           |
+| guide-gs-002   | `docs-site/guide/getting-started.md`     | nuxt.config.ts:102 (apiBase)                                                                                          |
 | guide-ov-002   | `docs-site/guide/overview.md`            | config/routes.ts:10 (csrRouteRules); config/routes.ts:10 (productRoutePatterns)                                       |
 | addpage-001    | `docs-site/development/add-page.md`      | config/site.ts:4 (PUBLIC_PAGE_PATHS)                                                                                  |
 | env-001        | `docs-site/deployment/env.md`            | app/utils/auth-session.ts:4 (tokenCookieOptions); app/utils/auth-session.ts:4 (appEnv)                                |
-| env-002        | `docs-site/deployment/env.md`            | server/api/revalidate.post.ts:14 (revalidateSecret)                                                                   |
+| env-002        | `docs-site/deployment/env.md`            | server/api/revalidate.post.ts:65 (revalidateSecret)                                                                   |
 | nuxt-001       | `docs-site/tech-stack/nuxt.md`           | nuxt.config.ts:21 (@nuxt/test-utils/module)                                                                           |
-| nuxt-002       | `docs-site/tech-stack/nuxt.md`           | nuxt.config.ts:43 (additionalData)                                                                                    |
+| nuxt-002       | `docs-site/tech-stack/nuxt.md`           | nuxt.config.ts:93 (additionalData)                                                                                    |
 | styles-002     | `docs-site/tech-stack/styles.md`         | config/theme.ts:149 (applyThemeCssVariables)                                                                          |
-| antd-doc-001   | `docs-site/tech-stack/ant-design-vue.md` | nuxt.config.ts:65 (extractStyle)                                                                                      |
+| antd-doc-001   | `docs-site/tech-stack/ant-design-vue.md` | nuxt.config.ts:115 (extractStyle)                                                                                     |
 | antd-doc-002   | `docs-site/tech-stack/ant-design-vue.md` | config/antd-locale.ts:9 (ph-PH)                                                                                       |
 | docs-conv-002  | `docs/conventions.md`                    | config/routes.ts:10 (csrRouteRules)                                                                                   |
 | docs-usage-002 | `docs/usage.md`                          | app/api/public.ts:10 (getFaqItems); app/api/public.ts:24 (faqItems)                                                   |
@@ -83,6 +84,6 @@ Generated: 2026-07-09（深度审阅 + doc-claims 证据）
 
 ## 完成标准
 
-- [x] 已读文件数量 = 10
+- [x] 已读文件数量 = 11
 - [x] doc-claims 关联符号可在源码定位（见上表 evidenceHint）
 - [x] `pnpm docs:sync:check --batch 1`

@@ -6,7 +6,7 @@ import { describe, expect, it } from 'vitest'
 import { resolveSafeRedirectPath } from '../../app/utils/safe-redirect'
 import { localizedPath } from '../../config/routes'
 import { productNavItems } from '../../app/features/product-shell/config'
-import { getWorkspaceDocPath, getWorkspaceNewDocPath } from '../../app/features/workspace'
+import { getWorkspaceDocPath, getWorkspaceNewDocPath } from '../../app/api/workspace-project'
 import { editorProjectFixture } from '../fixtures/editor'
 
 describe('SaaS product flow contract', () => {

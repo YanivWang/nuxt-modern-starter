@@ -23,7 +23,7 @@
   - 删除项目 → 确认后调用 API → 刷新列表
 
   【依赖关系】
-  - 依赖：~/features/workspace WorkspaceDashboard、workspace api adapter
+  - 依赖：~/features/workspace WorkspaceDashboard、~/api/workspace-project
   - 被引用：sign-in 默认 redirect、AppHeader 已登录 CTA、product-shell 侧边栏
 
   【渲染 / 数据】

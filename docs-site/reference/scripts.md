@@ -29,7 +29,7 @@
 | `pnpm typecheck`    | Nuxt + vue-tsc                                                          |
 | `pnpm test`         | Vitest                                                                  |
 | `pnpm test:watch`   | Vitest 监听                                                             |
-| `pnpm quality`      | lint + format:check + stylelint + typecheck + i18n:check + test + build |
+| `pnpm quality`      | lint + format:check + stylelint + typecheck + i18n:check + build + test |
 
 ## Docker
 

@@ -2,7 +2,7 @@
   【文件职责】
     工作台单测共享 fixture：项目 mock 数据。
 */
-import type { WorkspaceProject } from '../../app/features/workspace/types'
+import type { WorkspaceProject } from '../../app/types/workspace-project'
 
 export const workspaceProjectFixture: WorkspaceProject = {
   id: 'project_1',

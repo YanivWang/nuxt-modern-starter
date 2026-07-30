@@ -3,7 +3,7 @@
     编辑器单测共享 fixture：项目与文档 mock 数据。
 */
 import type { EditorDocument } from '../../app/types/document'
-import type { WorkspaceProject } from '../../app/features/workspace/types'
+import type { WorkspaceProject } from '../../app/types/workspace-project'
 
 export const editorProjectFixture: WorkspaceProject = {
   id: 'project_1',

@@ -63,7 +63,7 @@ const batchRules = [
       p === 'nuxt.config.ts' ||
       p === 'app/app.config.ts' ||
       p === 'app/shims.d.ts' ||
-      p === 'app/types/document.ts'
+      p.startsWith('app/types/')
   },
   {
     id: 2,

@@ -1,6 +1,6 @@
 /*
   【文件职责】
-    SWR 路由缓存失效工具：按公开路径计算 Nitro cache key 并清除条目。
+    SWR 路由缓存失效工具：校验可失效路径，按公开路径计算 Nitro cache key 并清除条目。
 
   【架构位置】
     server/utils — 被 server/api/revalidate.post.ts 消费。
@@ -11,7 +11,7 @@
 import { hash } from 'ohash'
 import { parseURL } from 'ufo'
 import { SUPPORTED_LOCALES } from '../../config/site'
-import { localizedPath } from '../../config/routes'
+import { localizedPath, swrRouteRules } from '../../config/routes'
 
 const ROUTE_CACHE_GROUP = 'nitro/routes'
 const ROUTE_CACHE_NAME = '_'
@@ -27,6 +27,32 @@ export function normalizeRevalidatePath(path: string) {
   }
 
   return trimmed.startsWith('/') ? trimmed : `/${trimmed}`
+}
+
+const getPathname = (path: string) => parseURL(normalizeRevalidatePath(path)).pathname || '/'
+
+const routeRuleMatchesPath = (rule: string, path: string) => {
+  if (rule.endsWith('/**')) {
+    const basePath = rule.slice(0, -3)
+    return path === basePath || path.startsWith(`${basePath}/`)
+  }
+
+  return path === rule
+}
+
+export function isRevalidatablePath(path: string) {
+  const normalizedPath = normalizeRevalidatePath(path)
+
+  if (!normalizedPath) {
+    return false
+  }
+
+  try {
+    const pathname = getPathname(normalizedPath)
+    return swrRouteRules.some((rule) => routeRuleMatchesPath(rule, pathname))
+  } catch {
+    return false
+  }
 }
 
 export function buildRouteCacheKey(path: string) {
@@ -71,15 +97,21 @@ export async function purgeRouteCache(path: string) {
 export async function purgeRouteCaches(paths: readonly string[]) {
   const normalizedPaths = [...new Set(paths.map(normalizeRevalidatePath).filter(Boolean))]
   const purged: string[] = []
+  const missed: string[] = []
 
   for (const path of normalizedPaths) {
     const removed = await purgeRouteCache(path)
     if (removed) {
       purged.push(path)
+    } else {
+      missed.push(path)
     }
   }
 
-  return purged
+  return {
+    purged,
+    missed
+  }
 }
 
 export function resolveRevalidatePaths(body: unknown) {

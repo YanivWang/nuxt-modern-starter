@@ -1,8 +1,8 @@
 # Batch 5 Report: pages + feature-workspace + feature-editor
 
-Generated: 2026-07-09（深度审阅 + doc-claims 证据）
+Generated: 2026-07-30（深度审阅 + doc-claims 证据）
 
-## 已读文件（33/33）
+## 已读文件（40/40）
 
 - app/features/editor/api.ts
 - app/features/editor/components/EditorWorkspace.vue
@@ -11,19 +11,26 @@ Generated: 2026-07-09（深度审阅 + doc-claims 证据）
 - app/features/editor/composables/useDraftProject.ts
 - app/features/editor/composables/useEditorAutosave.ts
 - app/features/editor/composables/useEditorDocument.ts
+- app/features/editor/composables/useEditorMediaUpload.ts
 - app/features/editor/composables/useEditorPage.ts
 - app/features/editor/composables/useEditorTitle.ts
 - app/features/editor/composables/useEditorWorkspace.ts
 - app/features/editor/editor-appearance.ts
 - app/features/editor/index.ts
 - app/features/editor/types.ts
-- app/features/workspace/api.ts
+- app/features/editor/upload-api.ts
+- app/features/editor/upload/compute-file-md5.ts
+- app/features/editor/upload/compute-file-md5.worker.ts
+- app/features/editor/upload/constants.ts
+- app/features/editor/upload/large-upload-persistence.ts
+- app/features/editor/upload/resolve-upload-url.ts
+- app/features/editor/upload/types.ts
+- app/features/editor/upload/useLargeFileUpload.ts
 - app/features/workspace/components/WorkspaceDashboard.vue
 - app/features/workspace/components/WorkspaceProjectCard.vue
 - app/features/workspace/composables/useWorkspaceProjects.ts
 - app/features/workspace/composables/workspace-project-delete.ts
 - app/features/workspace/index.ts
-- app/features/workspace/types.ts
 - app/pages/[[language]]/[...slug].vue
 - app/pages/[[language]]/about.vue
 - app/pages/[[language]]/help.vue
@@ -57,26 +64,20 @@ Generated: 2026-07-09（深度审阅 + doc-claims 证据）
 - pages/help.vue、about.vue、[...slug].vue 404
 - pages/pricing.vue、news/*、sign-in/sign-up、docs/[id].vue
 - editor/workspace composables 状态机
-- WorkspaceDashboard.vue: idle 预加载 editor chunk
+- WorkspaceDashboard.vue: idle 预加载 editor route
 
-## doc-claims 证据（本批源码关联 14 条）
+## doc-claims 证据（本批源码关联 8 条）
 
-| claim         | 文档                                   | evidenceHint                                                                                                                                                                                                                               |
-| ------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| routing-001   | `docs-site/architecture/routing.md`    | config/routes.ts:11 (isProductPath); config/routes.ts:10 (productRoutePatterns)                                                                                                                                                            |
-| routing-009   | `docs-site/architecture/routing.md`    | app/features/workspace/api.ts:11 (WORKSPACE_NEW_PROJECT_ID); app/features/editor/composables/useDraftProject.ts:44 (ensureDraftProject)                                                                                                    |
-| routing-010   | `docs-site/architecture/routing.md`    | app/features/editor/types.ts:13 (EDITOR_AUTOSAVE_DEBOUNCE_MS)                                                                                                                                                                              |
-| dataflow-004  | `docs-site/architecture/data-flow.md`  | app/features/workspace/api.ts:11 (WORKSPACE_NEW_PROJECT_ID); app/features/workspace/api.ts:39 (getWorkspaceNewDocPath)                                                                                                                     |
-| dataflow-005  | `docs-site/architecture/data-flow.md`  | app/features/workspace/api.ts:10 (fetchWorkspaceProjects); app/features/workspace/api.ts:10 (createWorkspaceProject); app/features/workspace/api.ts:11 (updateWorkspaceProject); app/features/workspace/api.ts:11 (deleteWorkspaceProject) |
-| dataflow-006  | `docs-site/architecture/data-flow.md`  | app/features/editor/api.ts:9 (fetchEditorDocument); app/features/editor/api.ts:9 (saveEditorDocument)                                                                                                                                      |
-| arch-001      | `docs/architecture.md`                 | app/features/workspace/api.ts:11 (WORKSPACE_NEW_PROJECT_ID)                                                                                                                                                                                |
-| arch-002      | `docs/architecture.md`                 | app/features/editor/types.ts:13 (EDITOR_AUTOSAVE_DEBOUNCE_MS); app/features/editor/composables/useEditorWorkspace.ts:98 (flushAutosave); app/features/editor/composables/useEditorWorkspace.ts:138 (onBeforeRouteLeave)                    |
-| arch-004      | `docs/architecture.md`                 | app/features/workspace/api.ts:11 (getWorkspaceDocPath); app/features/workspace/api.ts:39 (getWorkspaceNewDocPath)                                                                                                                          |
-| feature-001   | `docs-site/development/add-feature.md` | app/api/auth.ts:4 (createProductApiClient)                                                                                                                                                                                                 |
-| deploy-002    | `docs-site/deployment/overview.md`     | app/features/workspace/api.ts:11 (WORKSPACE_NEW_PROJECT_ID); app/features/editor/types.ts:13 (EDITOR_AUTOSAVE_DEBOUNCE_MS)                                                                                                                 |
-| feature-002   | `docs-site/development/add-feature.md` | app/features/workspace/components/WorkspaceDashboard.vue:42 (preloadRouteComponents); app/features/workspace/components/WorkspaceDashboard.vue:36 (prefetchEditorRoute)                                                                    |
-| directory-002 | `docs-site/architecture/directory.md`  | app/features/product-shell/config.ts:10 (productNavItems)                                                                                                                                                                                  |
-| index-002     | `docs-site/index.md`                   | app/features/editor/types.ts:13 (EDITOR_AUTOSAVE_DEBOUNCE_MS)                                                                                                                                                                              |
+| claim         | 文档                                   | evidenceHint                                                                                                                                                                                                             |
+| ------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| routing-009   | `docs-site/architecture/routing.md`    | app/api/workspace-project.ts:11 (WORKSPACE_NEW_PROJECT_ID); app/features/editor/composables/useDraftProject.ts:58 (ensureDraftProject)                                                                                   |
+| routing-010   | `docs-site/architecture/routing.md`    | app/features/editor/types.ts:13 (EDITOR_AUTOSAVE_DEBOUNCE_MS)                                                                                                                                                            |
+| dataflow-006  | `docs-site/architecture/data-flow.md`  | app/features/editor/api.ts:9 (fetchEditorDocument); app/features/editor/api.ts:9 (saveEditorDocument)                                                                                                                    |
+| arch-002      | `docs/architecture.md`                 | app/features/editor/types.ts:13 (EDITOR_AUTOSAVE_DEBOUNCE_MS); app/features/editor/composables/useEditorWorkspace.ts:116 (flushAutosave); app/features/editor/composables/useEditorWorkspace.ts:156 (onBeforeRouteLeave) |
+| deploy-002    | `docs-site/deployment/overview.md`     | app/api/workspace-project.ts:11 (WORKSPACE_NEW_PROJECT_ID); app/features/editor/types.ts:13 (EDITOR_AUTOSAVE_DEBOUNCE_MS)                                                                                                |
+| feature-002   | `docs-site/development/add-feature.md` | app/features/workspace/components/WorkspaceDashboard.vue:42 (preloadRouteComponents); app/features/workspace/components/WorkspaceDashboard.vue:36 (prefetchEditorRoute)                                                  |
+| directory-002 | `docs-site/architecture/directory.md`  | app/features/product-shell/config.ts:10 (productNavItems)                                                                                                                                                                |
+| index-002     | `docs-site/index.md`                   | app/features/editor/types.ts:13 (EDITOR_AUTOSAVE_DEBOUNCE_MS)                                                                                                                                                            |
 
 ## 代码-文档不一致项
 
@@ -84,6 +85,6 @@ Generated: 2026-07-09（深度审阅 + doc-claims 证据）
 
 ## 完成标准
 
-- [x] 已读文件数量 = 33
+- [x] 已读文件数量 = 40
 - [x] doc-claims 关联符号可在源码定位（见上表 evidenceHint）
 - [x] `pnpm docs:sync:check --batch 5`

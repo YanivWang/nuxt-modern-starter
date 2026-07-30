@@ -1,18 +1,18 @@
 /*
   【文件职责】
-    工作台 Product API adapter：项目 CRUD、文档 path helper、新建 id 常量。
+    Workspace 项目 Product API adapter：项目 CRUD、文档 path helper、新建 id 常量。
     全部经 createProductApiClient（401 单飞 refresh）。
 
   【架构位置】
-    登录产品区 — app/features/workspace api，被 dashboard、editor 页消费。
+    共享 API 层 — app/api，供 workspace 与 editor feature 共同使用。
 
   【主要导出 / 路由】
     fetchWorkspaceProjects、fetchWorkspaceProject、createWorkspaceProject、
     updateWorkspaceProject、deleteWorkspaceProject、getWorkspaceDocPath、WORKSPACE_NEW_PROJECT_ID
 
   【依赖关系】
-    - 依赖：app/api/auth.ts createProductApiClient、~/types/document、./types
-    - 被引用：workspace composables、editor composables、tests/unit/workspace-api.test.ts
+    - 依赖：app/api/auth.ts createProductApiClient、~/types/document、~/types/workspace-project
+    - 被引用：workspace feature、editor feature、tests/unit/workspace-api.test.ts
 
   【渲染 / 数据】
     adapter 相对路径：/projects、/projects/:id（base NUXT_PUBLIC_API_BASE 已含 /api）。
@@ -29,7 +29,7 @@ import type {
   CreateWorkspaceProjectPayload,
   UpdateWorkspaceProjectPayload,
   WorkspaceProject
-} from './types'
+} from '~/types/workspace-project'
 
 export const WORKSPACE_NEW_PROJECT_ID = 'new'
 

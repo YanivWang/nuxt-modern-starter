@@ -35,11 +35,11 @@ for (const p of manifestPaths) {
 for (const p of batchPaths) {
   if (!manifestPaths.has(p)) errors.push(`batch has unknown file: ${p}`)
 }
-if (manifest.sourceFiles.length !== 121) {
-  errors.push(`manifest count ${manifest.sourceFiles.length} !== 121`)
+if (manifest.sourceFiles.length !== 130) {
+  errors.push(`manifest count ${manifest.sourceFiles.length} !== 130`)
 }
-if (batches.totalFiles !== 121) {
-  errors.push(`batches total ${batches.totalFiles} !== 121`)
+if (batches.totalFiles !== 130) {
+  errors.push(`batches total ${batches.totalFiles} !== 130`)
 }
 
 // 2. header comment check

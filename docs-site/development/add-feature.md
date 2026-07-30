@@ -30,6 +30,8 @@ export { default as GenerationPanel } from './components/GenerationPanel.vue'
 export * from './api'
 ```
 
+如果 API 或类型会被多个 feature 共用，例如 workspace project，请放到 `app/api/workspace-project.ts` 或 `app/types/*`，不要让 feature 互相导入。
+
 ## 创建页面入口
 
 ### 产品壳页面（带侧边栏）
@@ -88,25 +90,26 @@ export const productRoutePatterns = [
 ✅ 正确：
 
 ```ts
-import { getWorkspaceDocPath } from '~/features/workspace'
+import { getWorkspaceDocPath } from '~/api/workspace-project'
 ```
 
 ❌ 错误：
 
 ```ts
-import { getWorkspaceDocPath } from '~/features/workspace/api'
+import { useEditorPage } from '~/features/editor/composables/useEditorPage'
 import Something from '~/features/workspace/components/WorkspaceDashboard.vue'
+import { WorkspaceDashboard } from '~/features/workspace' // 在另一个 feature 内部引用
 ```
 
 ## 完整示例：现有模块参考
 
-| 需求类型    | 参考模块                     | 要点                                                                                                                                                         |
-| ----------- | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 列表 + CRUD | `workspace`                  | 创建跳转 `/docs/new`；删除带 confirm；`onMounted` 用 `requestIdleCallback`（或 200ms fallback）调用 `preloadRouteComponents` + `import('~/features/editor')` |
-| 全屏编辑器  | `editor` + `pages/docs/[id]` | 草稿首次保存创建项目；`cachedProject` 防闪烁；路由离开 flush                                                                                                 |
-| 占位页      | `templates`                  | 可选模板入口：6 张虚线卡片 + `a-empty`，无 API                                                                                                               |
-| 设置页      | `account` + `account-shell`  | `fetchProfileApi` + `useUserAvatar`                                                                                                                          |
-| 侧边栏壳    | `product-shell`              | `productNavItems` + footer 定价链接                                                                                                                          |
+| 需求类型    | 参考模块                     | 要点                                                                                                                         |
+| ----------- | ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| 列表 + CRUD | `workspace`                  | 创建跳转 `/docs/new`；删除带 confirm；`onMounted` 用 `requestIdleCallback`（或 200ms fallback）调用 `preloadRouteComponents` |
+| 全屏编辑器  | `editor` + `pages/docs/[id]` | 草稿首次保存创建项目；`cachedProject` 防闪烁；路由离开 flush                                                                 |
+| 占位页      | `templates`                  | 可选模板入口：6 张虚线卡片 + `a-empty`，无 API                                                                               |
+| 设置页      | `account` + `account-shell`  | `fetchProfileApi` + `useUserAvatar`                                                                                          |
+| 侧边栏壳    | `product-shell`              | `productNavItems` + footer 定价链接                                                                                          |
 
 默认不要用组织、团队、邀请、协作或企业权限系统作为扩展样例。模板、AI 生成、导出、素材、会员、额度、订单、支付等能力只有在目标 SaaS 工作流或商业化路径需要时再接入。
 

@@ -9,7 +9,7 @@
     useWorkspaceProjects、UseWorkspaceProjectsOptions
 
   【依赖关系】
-    - 依赖：workspace api、workspace-project-delete.ts、ant-design-vue message
+    - 依赖：~/api/workspace-project、workspace-project-delete.ts、ant-design-vue message
     - 被引用：WorkspaceDashboard.vue、tests/unit/workspace-projects.test.ts
 
   【渲染 / 数据】
@@ -21,8 +21,8 @@
 import { message } from 'ant-design-vue'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { deleteWorkspaceProject, fetchWorkspaceProjects } from '../api'
-import type { WorkspaceProject } from '../types'
+import { deleteWorkspaceProject, fetchWorkspaceProjects } from '~/api/workspace-project'
+import type { WorkspaceProject } from '~/types/workspace-project'
 import { performWorkspaceProjectDelete } from './workspace-project-delete'
 
 type ProjectsResponse = Promise<{ data: { projects: WorkspaceProject[] } }>

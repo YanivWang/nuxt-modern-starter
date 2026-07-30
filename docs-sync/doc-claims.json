@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-09T04:00:39.918Z",
+  "generatedAt": "2026-07-30T14:50:15.661Z",
   "description": "Verifiable documentation claims mapped to source symbols and files.",
   "claims": [
     {
@@ -7,7 +7,7 @@
       "docFile": "docs-site/architecture/routing.md",
       "claim": "产品路由为语言中性 URL：/workspace、/workspace/templates、/docs/:id、/docs/new、/account",
       "symbols": ["isProductPath", "productRoutePatterns"],
-      "sourceFiles": ["config/routes.ts", "app/features/workspace/api.ts"],
+      "sourceFiles": ["config/routes.ts", "app/api/workspace-project.ts"],
       "evidenceHint": "config/routes.ts:11 (isProductPath); config/routes.ts:10 (productRoutePatterns)"
     },
     {
@@ -72,10 +72,10 @@
       "claim": "编辑器 /docs/new 草稿模式，首次非空保存后 replace 到 /docs/:realId",
       "symbols": ["WORKSPACE_NEW_PROJECT_ID", "ensureDraftProject"],
       "sourceFiles": [
-        "app/features/workspace/api.ts",
+        "app/api/workspace-project.ts",
         "app/features/editor/composables/useDraftProject.ts"
       ],
-      "evidenceHint": "app/features/workspace/api.ts:11 (WORKSPACE_NEW_PROJECT_ID); app/features/editor/composables/useDraftProject.ts:44 (ensureDraftProject)"
+      "evidenceHint": "app/api/workspace-project.ts:11 (WORKSPACE_NEW_PROJECT_ID); app/features/editor/composables/useDraftProject.ts:58 (ensureDraftProject)"
     },
     {
       "id": "routing-010",
@@ -117,8 +117,8 @@
       "docFile": "docs-site/architecture/data-flow.md",
       "claim": "WORKSPACE_NEW_PROJECT_ID = 'new'",
       "symbols": ["WORKSPACE_NEW_PROJECT_ID", "getWorkspaceNewDocPath"],
-      "sourceFiles": ["app/features/workspace/api.ts"],
-      "evidenceHint": "app/features/workspace/api.ts:11 (WORKSPACE_NEW_PROJECT_ID); app/features/workspace/api.ts:39 (getWorkspaceNewDocPath)"
+      "sourceFiles": ["app/api/workspace-project.ts"],
+      "evidenceHint": "app/api/workspace-project.ts:11 (WORKSPACE_NEW_PROJECT_ID); app/api/workspace-project.ts:39 (getWorkspaceNewDocPath)"
     },
     {
       "id": "dataflow-005",
@@ -130,8 +130,8 @@
         "updateWorkspaceProject",
         "deleteWorkspaceProject"
       ],
-      "sourceFiles": ["app/features/workspace/api.ts"],
-      "evidenceHint": "app/features/workspace/api.ts:10 (fetchWorkspaceProjects); app/features/workspace/api.ts:10 (createWorkspaceProject); app/features/workspace/api.ts:11 (updateWorkspaceProject); app/features/workspace/api.ts:11 (deleteWorkspaceProject)"
+      "sourceFiles": ["app/api/workspace-project.ts"],
+      "evidenceHint": "app/api/workspace-project.ts:10 (fetchWorkspaceProjects); app/api/workspace-project.ts:10 (createWorkspaceProject); app/api/workspace-project.ts:11 (updateWorkspaceProject); app/api/workspace-project.ts:11 (deleteWorkspaceProject)"
     },
     {
       "id": "dataflow-006",
@@ -147,7 +147,7 @@
       "claim": "NUXT_PUBLIC_API_BASE 已含 /api 前缀",
       "symbols": ["apiBase"],
       "sourceFiles": ["nuxt.config.ts"],
-      "evidenceHint": "nuxt.config.ts:52 (apiBase)"
+      "evidenceHint": "nuxt.config.ts:102 (apiBase)"
     },
     {
       "id": "dataflow-008",
@@ -155,7 +155,7 @@
       "claim": "SWR 按需失效 POST /api/revalidate，Header x-revalidate-secret",
       "symbols": ["revalidateSecret"],
       "sourceFiles": ["nuxt.config.ts", "server/api/revalidate.post.ts"],
-      "evidenceHint": "nuxt.config.ts:49 (revalidateSecret)"
+      "evidenceHint": "nuxt.config.ts:99 (revalidateSecret)"
     },
     {
       "id": "auth-001",
@@ -210,8 +210,8 @@
       "docFile": "docs/architecture.md",
       "claim": "WORKSPACE_NEW_PROJECT_ID = 'new' 对应 /docs/new",
       "symbols": ["WORKSPACE_NEW_PROJECT_ID"],
-      "sourceFiles": ["app/features/workspace/api.ts"],
-      "evidenceHint": "app/features/workspace/api.ts:11 (WORKSPACE_NEW_PROJECT_ID)"
+      "sourceFiles": ["app/api/workspace-project.ts"],
+      "evidenceHint": "app/api/workspace-project.ts:11 (WORKSPACE_NEW_PROJECT_ID)"
     },
     {
       "id": "arch-002",
@@ -222,7 +222,7 @@
         "app/features/editor/types.ts",
         "app/features/editor/composables/useEditorWorkspace.ts"
       ],
-      "evidenceHint": "app/features/editor/types.ts:13 (EDITOR_AUTOSAVE_DEBOUNCE_MS); app/features/editor/composables/useEditorWorkspace.ts:98 (flushAutosave); app/features/editor/composables/useEditorWorkspace.ts:138 (onBeforeRouteLeave)"
+      "evidenceHint": "app/features/editor/types.ts:13 (EDITOR_AUTOSAVE_DEBOUNCE_MS); app/features/editor/composables/useEditorWorkspace.ts:116 (flushAutosave); app/features/editor/composables/useEditorWorkspace.ts:156 (onBeforeRouteLeave)"
     },
     {
       "id": "arch-003",
@@ -237,8 +237,8 @@
       "docFile": "docs/architecture.md",
       "claim": "getWorkspaceDocPath 返回 /docs/:id",
       "symbols": ["getWorkspaceDocPath", "getWorkspaceNewDocPath"],
-      "sourceFiles": ["app/features/workspace/api.ts"],
-      "evidenceHint": "app/features/workspace/api.ts:11 (getWorkspaceDocPath); app/features/workspace/api.ts:39 (getWorkspaceNewDocPath)"
+      "sourceFiles": ["app/api/workspace-project.ts"],
+      "evidenceHint": "app/api/workspace-project.ts:11 (getWorkspaceDocPath); app/api/workspace-project.ts:39 (getWorkspaceNewDocPath)"
     },
     {
       "id": "deploy-001",
@@ -246,7 +246,7 @@
       "claim": "默认 Node server 端口 3000，API base http://localhost:2026/api",
       "symbols": ["apiBase", "siteUrl"],
       "sourceFiles": ["nuxt.config.ts"],
-      "evidenceHint": "nuxt.config.ts:52 (apiBase); nuxt.config.ts:53 (siteUrl)"
+      "evidenceHint": "nuxt.config.ts:102 (apiBase); nuxt.config.ts:103 (siteUrl)"
     },
     {
       "id": "config-001",
@@ -259,10 +259,10 @@
     {
       "id": "feature-001",
       "docFile": "docs-site/development/add-feature.md",
-      "claim": "feature API 放 app/features/<feature>/api.ts，使用 createProductApiClient",
-      "symbols": ["createProductApiClient"],
-      "sourceFiles": ["app/api/auth.ts", "app/features/workspace/api.ts"],
-      "evidenceHint": "app/api/auth.ts:4 (createProductApiClient)"
+      "claim": "跨 feature workspace API 放 app/api/workspace-project.ts；feature 私有 API 可使用 createProductApiClient",
+      "symbols": ["createProductApiClient", "fetchWorkspaceProjects"],
+      "sourceFiles": ["app/api/auth.ts", "app/api/workspace-project.ts"],
+      "evidenceHint": "app/api/auth.ts:4 (createProductApiClient); app/api/workspace-project.ts:10 (fetchWorkspaceProjects)"
     },
     {
       "id": "seo-001",
@@ -278,7 +278,7 @@
       "claim": "ph-PH Ant Design locale 回退 en_US",
       "symbols": ["loadAntdLocale", "ANTD_LOCALE_LOADERS"],
       "sourceFiles": ["config/antd-locale.ts"],
-      "evidenceHint": "config/antd-locale.ts:34 (loadAntdLocale); config/antd-locale.ts:15 (ANTD_LOCALE_LOADERS)"
+      "evidenceHint": "config/antd-locale.ts:37 (loadAntdLocale); config/antd-locale.ts:18 (ANTD_LOCALE_LOADERS)"
     },
     {
       "id": "config-003",
@@ -294,7 +294,7 @@
       "claim": "runtimeConfig.public.apiBase 默认 http://localhost:2026/api",
       "symbols": ["apiBase"],
       "sourceFiles": ["nuxt.config.ts"],
-      "evidenceHint": "nuxt.config.ts:52 (apiBase)"
+      "evidenceHint": "nuxt.config.ts:102 (apiBase)"
     },
     {
       "id": "i18n-001",
@@ -325,13 +325,13 @@
       "docFile": "docs-site/deployment/overview.md",
       "claim": "联调验证 /workspace → /docs/new → /docs/:id 自动保存",
       "symbols": ["WORKSPACE_NEW_PROJECT_ID", "EDITOR_AUTOSAVE_DEBOUNCE_MS"],
-      "sourceFiles": ["app/features/workspace/api.ts", "app/features/editor/types.ts"],
-      "evidenceHint": "app/features/workspace/api.ts:11 (WORKSPACE_NEW_PROJECT_ID); app/features/editor/types.ts:13 (EDITOR_AUTOSAVE_DEBOUNCE_MS)"
+      "sourceFiles": ["app/api/workspace-project.ts", "app/features/editor/types.ts"],
+      "evidenceHint": "app/api/workspace-project.ts:11 (WORKSPACE_NEW_PROJECT_ID); app/features/editor/types.ts:13 (EDITOR_AUTOSAVE_DEBOUNCE_MS)"
     },
     {
       "id": "feature-002",
       "docFile": "docs-site/development/add-feature.md",
-      "claim": "工作台 idle 预加载 editor route 与 feature chunk",
+      "claim": "工作台 idle 预加载 editor route",
       "symbols": ["preloadRouteComponents", "prefetchEditorRoute"],
       "sourceFiles": ["app/features/workspace/components/WorkspaceDashboard.vue"],
       "evidenceHint": "app/features/workspace/components/WorkspaceDashboard.vue:42 (preloadRouteComponents); app/features/workspace/components/WorkspaceDashboard.vue:36 (prefetchEditorRoute)"
@@ -402,12 +402,12 @@
       "claim": "联调默认 NUXT_PUBLIC_API_BASE=http://localhost:2026/api",
       "symbols": ["apiBase"],
       "sourceFiles": ["nuxt.config.ts"],
-      "evidenceHint": "nuxt.config.ts:52 (apiBase)"
+      "evidenceHint": "nuxt.config.ts:102 (apiBase)"
     },
     {
       "id": "guide-ov-001",
       "docFile": "docs-site/guide/overview.md",
-      "claim": "Vitest 35 个测试文件、126 个用例",
+      "claim": "Vitest 35 个测试文件、134 个用例",
       "symbols": ["include"],
       "sourceFiles": ["vitest.config.ts"],
       "evidenceHint": "vitest.config.ts:19 (include)"
@@ -474,7 +474,7 @@
       "claim": "pnpm quality 含 i18n:check",
       "symbols": ["i18n:check"],
       "sourceFiles": ["package.json"],
-      "evidenceHint": "package.json:38 (i18n:check)"
+      "evidenceHint": "package.json:39 (i18n:check)"
     },
     {
       "id": "conv-002",
@@ -495,10 +495,10 @@
     {
       "id": "test-002",
       "docFile": "docs-site/development/testing.md",
-      "claim": "quality 门禁：lint → format:check → stylelint → typecheck → i18n:check → test → build",
+      "claim": "quality 门禁：lint → format:check → stylelint → typecheck → i18n:check → build → test",
       "symbols": ["quality"],
       "sourceFiles": ["package.json"],
-      "evidenceHint": "package.json:46 (quality)"
+      "evidenceHint": "package.json:47 (quality)"
     },
     {
       "id": "scripts-001",
@@ -530,7 +530,7 @@
       "claim": "未配置 revalidateSecret 时 POST /api/revalidate 返回 503",
       "symbols": ["revalidateSecret"],
       "sourceFiles": ["server/api/revalidate.post.ts", "nuxt.config.ts"],
-      "evidenceHint": "server/api/revalidate.post.ts:14 (revalidateSecret)"
+      "evidenceHint": "server/api/revalidate.post.ts:65 (revalidateSecret)"
     },
     {
       "id": "docker-001",
@@ -578,7 +578,7 @@
       "claim": "SFC 自动注入 tokens/_variables.scss",
       "symbols": ["additionalData"],
       "sourceFiles": ["nuxt.config.ts"],
-      "evidenceHint": "nuxt.config.ts:43 (additionalData)"
+      "evidenceHint": "nuxt.config.ts:93 (additionalData)"
     },
     {
       "id": "pinia-001",
@@ -602,7 +602,7 @@
       "claim": "色值唯一源 config/theme-palette.json，pnpm generate:theme 生成 SCSS",
       "symbols": ["generate:theme"],
       "sourceFiles": ["package.json", "scripts/generate-theme-scss.mjs"],
-      "evidenceHint": "package.json:33 (generate:theme)"
+      "evidenceHint": "package.json:34 (generate:theme)"
     },
     {
       "id": "styles-002",
@@ -618,7 +618,7 @@
       "claim": "Nuxt 4.4.8 + @yanivjs/yaniv-editor 0.1.4",
       "symbols": ["nuxt", "@yanivjs/yaniv-editor"],
       "sourceFiles": ["package.json"],
-      "evidenceHint": "package.json:65 (nuxt); package.json:63 (@yanivjs/yaniv-editor)"
+      "evidenceHint": "package.json:2 (nuxt); package.json:63 (@yanivjs/yaniv-editor)"
     },
     {
       "id": "ts-ov-002",
@@ -634,7 +634,7 @@
       "claim": "HTTP client 强制标准 API 信封并校验 assertApiSuccess",
       "symbols": ["assertApiEnvelope", "assertApiSuccess"],
       "sourceFiles": ["app/lib/http/client.ts"],
-      "evidenceHint": "app/lib/http/client.ts:35 (assertApiEnvelope); app/lib/http/client.ts:23 (assertApiSuccess)"
+      "evidenceHint": "app/lib/http/client.ts:39 (assertApiEnvelope); app/lib/http/client.ts:25 (assertApiSuccess)"
     },
     {
       "id": "http-doc-002",
@@ -650,7 +650,7 @@
       "claim": "antd extractStyle: true 用于 SSR",
       "symbols": ["extractStyle"],
       "sourceFiles": ["nuxt.config.ts"],
-      "evidenceHint": "nuxt.config.ts:65 (extractStyle)"
+      "evidenceHint": "nuxt.config.ts:115 (extractStyle)"
     },
     {
       "id": "antd-doc-002",
@@ -682,7 +682,7 @@
       "claim": "pnpm quality 含 i18n:check 与 build",
       "symbols": ["quality"],
       "sourceFiles": ["package.json"],
-      "evidenceHint": "package.json:46 (quality)"
+      "evidenceHint": "package.json:47 (quality)"
     },
     {
       "id": "docs-usage-002",
@@ -706,7 +706,7 @@
       "claim": "NUXT_REVALIDATE_SECRET 未配置时 revalidate 503",
       "symbols": ["revalidateSecret"],
       "sourceFiles": ["server/api/revalidate.post.ts"],
-      "evidenceHint": "server/api/revalidate.post.ts:14 (revalidateSecret)"
+      "evidenceHint": "server/api/revalidate.post.ts:65 (revalidateSecret)"
     },
     {
       "id": "readme-001",
