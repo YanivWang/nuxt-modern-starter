@@ -38,13 +38,8 @@ describe('revalidate helpers', () => {
     resetRevalidateRateLimitForTests()
   })
 
-  it('builds stable cache keys for public news paths', () => {
-    const first = buildRouteCacheKey('/news/starter-release')
-    const second = buildRouteCacheKey('/news/starter-release')
-
-    expect(first).toMatch(/^nitro\/routes:_:/)
-    expect(first).toBe(second)
-  })
+  // cache key 的正确性由 tests/unit/revalidate-nitro-contract.test.ts 对着 nitropack 真实算法断言，
+  // 此处不再重复「前缀 + 幂等」这类与 Nitro 无关的弱断言。
 
   it('allows only configured SWR news routes to be revalidated', () => {
     expect(isRevalidatablePath('/news')).toBe(true)

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-30T15:13:37.683Z",
+  "generatedAt": "2026-07-30T16:02:25.643Z",
   "docFileCount": 33,
   "referenceCount": 1126,
   "pathAllowlist": [
@@ -2727,14 +2727,14 @@
       "line": 6,
       "type": "script",
       "value": "test",
-      "context": "pnpm test          # Vitest 一次运行（35 文件 / 134 测试）"
+      "context": "pnpm test          # Vitest 一次运行（36 文件 / 137 测试）"
     },
     {
       "docFile": "docs-site/development/testing.md",
       "line": 6,
       "type": "test-count",
-      "value": "35/134",
-      "context": "pnpm test          # Vitest 一次运行（35 文件 / 134 测试）"
+      "value": "36/137",
+      "context": "pnpm test          # Vitest 一次运行（36 文件 / 137 测试）"
     },
     {
       "docFile": "docs-site/development/testing.md",
@@ -3146,7 +3146,7 @@
       "docFile": "docs-site/guide/overview.md",
       "line": 92,
       "type": "test-count",
-      "value": "35/134",
+      "value": "36/137",
       "context": "| 测试   | Vitest 4.1.9 + @nuxt/test-utils 4.0.3                  | `vitest.config.ts` `defineVitestConfig` + `include: te"
     },
     {
