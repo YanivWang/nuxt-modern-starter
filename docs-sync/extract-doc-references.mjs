@@ -2,12 +2,14 @@
 /**
  * Extracts all verifiable code references from documentation files.
  * Output: docs-sync/doc-references.json
+ * Pass --check to compare the current extraction with the committed snapshot without writing files.
  */
 import fs from 'node:fs'
 import path from 'node:path'
 
 const ROOT = path.resolve(import.meta.dirname, '..')
 const OUT = path.join(ROOT, 'docs-sync/doc-references.json')
+const checkOnly = process.argv.includes('--check')
 
 const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs-sync/manifest.json'), 'utf8'))
 
@@ -582,8 +584,7 @@ const unique = references.filter((r) => {
   return true
 })
 
-const out = {
-  generatedAt: new Date().toISOString(),
+const snapshot = {
   docFileCount: manifest.docFiles.length,
   referenceCount: unique.length,
   pathAllowlist: [...PATH_ALLOWLIST],
@@ -591,5 +592,33 @@ const out = {
   references: unique
 }
 
-fs.writeFileSync(OUT, `${JSON.stringify(out, null, 2)}\n`)
-console.log(`extracted ${unique.length} references from ${manifest.docFiles.length} docs`)
+if (checkOnly) {
+  if (!fs.existsSync(OUT)) {
+    console.error(
+      'doc reference snapshot is missing; run: node docs-sync/extract-doc-references.mjs'
+    )
+    process.exit(1)
+  }
+
+  const existing = JSON.parse(fs.readFileSync(OUT, 'utf8'))
+  const existingSnapshot = Object.fromEntries(
+    Object.entries(existing).filter(([key]) => key !== 'generatedAt')
+  )
+
+  if (JSON.stringify(existingSnapshot) !== JSON.stringify(snapshot)) {
+    console.error(
+      'doc reference snapshot is stale; run: node docs-sync/extract-doc-references.mjs and commit the result'
+    )
+    process.exit(1)
+  }
+
+  console.log(`verified ${unique.length} references from ${manifest.docFiles.length} docs`)
+} else {
+  const out = {
+    generatedAt: new Date().toISOString(),
+    ...snapshot
+  }
+
+  fs.writeFileSync(OUT, `${JSON.stringify(out, null, 2)}\n`)
+  console.log(`extracted ${unique.length} references from ${manifest.docFiles.length} docs`)
+}

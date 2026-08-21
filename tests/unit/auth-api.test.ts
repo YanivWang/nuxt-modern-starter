@@ -82,6 +82,30 @@ describe('auth api', () => {
     await expect(second).resolves.toBe('next-access-token')
   })
 
+  it('keeps the local session when refresh fails for a temporary backend error', async () => {
+    const { createApiError } = await import('../../app/lib/http/error')
+    clientMocks.request.mockRejectedValue(
+      createApiError({ statusCode: 503, message: 'Backend unavailable' })
+    )
+
+    const { refreshAccessTokenOnce } = await import('../../app/api/auth')
+
+    await expect(refreshAccessTokenOnce()).rejects.toMatchObject({ statusCode: 503 })
+    expect(sessionMocks.clearAuthSession).not.toHaveBeenCalled()
+  })
+
+  it('clears the local session when the refresh token is unauthorized', async () => {
+    const { createApiError } = await import('../../app/lib/http/error')
+    clientMocks.request.mockRejectedValue(
+      createApiError({ statusCode: 401, message: 'Refresh token expired' })
+    )
+
+    const { refreshAccessTokenOnce } = await import('../../app/api/auth')
+
+    await expect(refreshAccessTokenOnce()).rejects.toMatchObject({ statusCode: 401 })
+    expect(sessionMocks.clearAuthSession).toHaveBeenCalledOnce()
+  })
+
   it('merges attribution params into register payloads', async () => {
     clientMocks.request.mockResolvedValue({
       code: 200,

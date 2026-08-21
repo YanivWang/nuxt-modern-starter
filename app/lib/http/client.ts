@@ -22,7 +22,7 @@
 */
 import type { ApiClientOptions, ApiRequestOptions, ApiResponse } from './types'
 import { createHeaders } from './headers'
-import { assertApiSuccess, createApiFailure, isUnauthorizedError } from './error'
+import { assertApiSuccess, createApiError, isUnauthorizedError, normalizeApiError } from './error'
 
 /** 判断响应是否为 { code, message, data } 标准业务信封 */
 const isApiEnvelope = (result: unknown): result is ApiResponse<unknown> =>
@@ -38,7 +38,7 @@ const isApiEnvelope = (result: unknown): result is ApiResponse<unknown> =>
 
 const assertApiEnvelope = (result: unknown): ApiResponse<unknown> => {
   if (!isApiEnvelope(result)) {
-    throw createApiFailure({ message: 'Invalid API response envelope' })
+    throw createApiError({ message: 'Invalid API response envelope' })
   }
 
   return result
@@ -56,6 +56,22 @@ export const createApiClient = ({
   fetcher = $fetch,
   onUnauthorized
 }: ApiClientOptions) => {
+  const execute = async <T>(
+    path: FetchRequest,
+    fetchOptions: ApiRequestOptions & { baseURL: string; headers: Headers }
+  ) => {
+    try {
+      const result = await fetcher<T>(path, toFetchOptions(fetchOptions))
+
+      assertApiSuccess(assertApiEnvelope(result))
+
+      return result
+    } catch (error) {
+      // HTTP 边界统一收口；边界外不泄漏 ofetch/raw object 错误形状。
+      throw normalizeApiError(error)
+    }
+  }
+
   const request = async <T>(path: FetchRequest, options: ApiRequestOptions = {}) => {
     // 合并 client 级 baseHeaders 与单次请求 headers，后者覆盖同名 key
     const headers = createHeaders(baseHeaders)
@@ -73,18 +89,20 @@ export const createApiClient = ({
     }
 
     try {
-      const result = await fetcher<T>(path, toFetchOptions(fetchOptions))
-
-      assertApiSuccess(assertApiEnvelope(result))
-
-      return result
+      return await execute<T>(path, fetchOptions)
     } catch (error) {
-      // 无 onUnauthorized 或非 401 错误直接抛出，不重试
+      // execute 保证此处只会收到 ApiError；业务 code=401 与 HTTP 401 走同一条重试链。
       if (!onUnauthorized || !isUnauthorizedError(error)) {
         throw error
       }
 
-      const nextHeaders = await onUnauthorized()
+      let nextHeaders: HeadersInit | null | undefined
+
+      try {
+        nextHeaders = await onUnauthorized()
+      } catch (refreshError) {
+        throw normalizeApiError(refreshError)
+      }
 
       // refresh 失败（返回 null/undefined）时放弃重试，向上抛出原始 401
       if (!nextHeaders) {
@@ -98,17 +116,10 @@ export const createApiClient = ({
         retryHeaders.set(key, value)
       })
 
-      const result = await fetcher<T>(
-        path,
-        toFetchOptions({
-          ...fetchOptions,
-          headers: retryHeaders
-        })
-      )
-
-      assertApiSuccess(assertApiEnvelope(result))
-
-      return result
+      return execute<T>(path, {
+        ...fetchOptions,
+        headers: retryHeaders
+      })
     }
   }
 

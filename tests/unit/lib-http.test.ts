@@ -20,10 +20,12 @@
 */
 import { describe, expect, it, vi } from 'vitest'
 import {
-  createApiFailure,
+  ApiError,
+  createApiError,
   assertApiSuccess,
   getApiErrorMessage,
-  isUnauthorizedError
+  isUnauthorizedError,
+  normalizeApiError
 } from '../../app/lib/http/error'
 import { createApiClient } from '../../app/lib/http/client'
 import { createBearerHeaders, sanitizeHeaders } from '../../app/lib/http/headers'
@@ -45,13 +47,33 @@ describe('lib/http', () => {
     })
   })
 
-  it('reads API errors from the standard message shape only', () => {
-    expect(getApiErrorMessage({ data: { message: 'normalized' } }, 'default')).toBe('normalized')
-    expect(createApiFailure({ statusCode: 503, message: 'Unavailable' })).toMatchObject({
+  it('uses ApiError as the only error model outside the HTTP boundary', () => {
+    const error = createApiError({ statusCode: 503, message: 'Unavailable' })
+
+    expect(error).toBeInstanceOf(ApiError)
+    expect(error).toMatchObject({
       statusCode: 503,
       message: 'Unavailable'
     })
-    expect(isUnauthorizedError({ response: { status: 401 } })).toBe(true)
+    expect(getApiErrorMessage(error, 'default')).toBe('Unavailable')
+    expect(getApiErrorMessage({ data: { message: 'legacy shape' } }, 'default')).toBe('default')
+    expect(isUnauthorizedError(createApiError({ statusCode: 401 }))).toBe(true)
+    expect(isUnauthorizedError({ response: { status: 401 } })).toBe(false)
+  })
+
+  it('normalizes backend HTTP failures once at the HTTP boundary', () => {
+    const cause = {
+      response: {
+        status: 503,
+        statusText: 'Service Unavailable',
+        _data: { code: 503, message: 'Backend unavailable', data: null }
+      }
+    }
+    const error = normalizeApiError(cause)
+
+    expect(error).toBeInstanceOf(ApiError)
+    expect(error).toMatchObject({ statusCode: 503, message: 'Backend unavailable' })
+    expect(error.cause).toBe(cause)
   })
 
   it('throws when the API envelope reports a non-200 business code', () => {
@@ -146,5 +168,26 @@ describe('lib/http', () => {
     expect(onUnauthorized).toHaveBeenCalledTimes(1)
     expect(fetcher).toHaveBeenCalledTimes(2)
     expect(fetcher.mock.calls[1][1].headers.get('authorization')).toBe('Bearer next-token')
+  })
+
+  it('uses the same 401 retry path for a failed business envelope', async () => {
+    const fetcher = vi
+      .fn()
+      .mockResolvedValueOnce({ code: 401, message: 'Session expired', data: null })
+      .mockResolvedValueOnce({ code: 200, message: 'ok', data: { saved: true } })
+    const onUnauthorized = vi.fn().mockResolvedValue({ authorization: 'Bearer next-token' })
+    const client = createApiClient({
+      baseURL: 'https://api.example.com',
+      fetcher,
+      onUnauthorized
+    })
+
+    await expect(client.request('/documents/doc_1')).resolves.toEqual({
+      code: 200,
+      message: 'ok',
+      data: { saved: true }
+    })
+    expect(onUnauthorized).toHaveBeenCalledOnce()
+    expect(fetcher).toHaveBeenCalledTimes(2)
   })
 })

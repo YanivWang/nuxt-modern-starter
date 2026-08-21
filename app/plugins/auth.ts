@@ -18,6 +18,7 @@
 
   【边界与注意】
     不在此 plugin 做路由跳转；401 / 未登录由 app/middleware/auth.ts 处理。
+    公开页启动遇到临时 API 故障时保留 token，由受保护路由 middleware 再向上暴露错误。
 */
 export default defineNuxtPlugin(async () => {
   const { authStore, ensureSession } = useAuth()
@@ -28,6 +29,10 @@ export default defineNuxtPlugin(async () => {
     return
   }
 
-  // 有 token 时尝试 fetchMe；access 过期则 refresh 后再 fetchMe（见 useAuth.ensureSession）
-  await ensureSession()
+  // 启动恢复不能让公开页因鉴权 API 临时故障整体 500，也不能清除仍可能有效的 token。
+  try {
+    await ensureSession()
+  } catch {
+    authStore.status = 'idle'
+  }
 })

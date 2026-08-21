@@ -21,6 +21,8 @@
 import { createPinia, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { useAuthStore } from '../../app/stores/auth'
+import { useAuth } from '../../app/composables/useAuth'
+import { createApiError } from '../../app/lib/http/error'
 import {
   getAccessTokenCookie,
   getRefreshTokenCookie,
@@ -105,6 +107,22 @@ describe('auth store', () => {
     expect(apiMocks.fetchMeApi).toHaveBeenCalledWith('access-token')
   })
 
+  it('resets the loading state and partial session when login fails', async () => {
+    apiMocks.loginApi.mockRejectedValue(
+      createApiError({ statusCode: 401, message: 'Invalid credentials' })
+    )
+
+    const authStore = useAuthStore()
+
+    await expect(authStore.login({ username: 'alice', password: 'secret' })).rejects.toMatchObject({
+      statusCode: 401
+    })
+    expect(authStore.status).toBe('unauthenticated')
+    expect(authStore.accessToken).toBeFalsy()
+    expect(authStore.refreshToken).toBeFalsy()
+    expect(authStore.user).toBeNull()
+  })
+
   it('uses strict same-site cookies for token persistence', () => {
     expect(tokenCookieOptions(60)).toMatchObject({
       maxAge: 60,
@@ -143,8 +161,10 @@ describe('auth store', () => {
     expect(authStore.status).toBe('unauthenticated')
   })
 
-  it('does not clear attribution when refresh fails and reset runs', async () => {
-    apiMocks.refreshApi.mockRejectedValue(new Error('refresh failed'))
+  it('preserves tokens when refresh fails for a temporary backend error', async () => {
+    apiMocks.refreshApi.mockRejectedValue(
+      createApiError({ statusCode: 503, message: 'Backend unavailable' })
+    )
 
     const authStore = useAuthStore()
     authStore.setTokens({
@@ -156,10 +176,33 @@ describe('auth store', () => {
       }
     })
 
-    await expect(authStore.refresh()).rejects.toThrow('refresh failed')
+    await expect(authStore.refresh()).rejects.toMatchObject({ statusCode: 503 })
 
     expect(attributionMocks.clearAttributionParams).not.toHaveBeenCalled()
+    expect(authStore.status).toBe('idle')
+    expect(authStore.accessToken).toBe('access-token')
+    expect(authStore.refreshToken).toBe('refresh-token')
+  })
+
+  it('clears tokens when the refresh token is unauthorized', async () => {
+    apiMocks.refreshApi.mockRejectedValue(
+      createApiError({ statusCode: 401, message: 'Refresh token expired' })
+    )
+
+    const authStore = useAuthStore()
+    authStore.setTokens({
+      code: 200,
+      message: 'ok',
+      data: {
+        accessToken: 'access-token',
+        refreshToken: 'refresh-token'
+      }
+    })
+
+    await expect(authStore.refresh()).rejects.toMatchObject({ statusCode: 401 })
     expect(authStore.status).toBe('unauthenticated')
+    expect(authStore.accessToken).toBeFalsy()
+    expect(authStore.refreshToken).toBeFalsy()
   })
 
   it('fills user from /api/me', async () => {
@@ -252,5 +295,65 @@ describe('auth store', () => {
     })
     expect(authStore.status).toBe('unauthenticated')
     expect(apiMocks.fetchMeApi).not.toHaveBeenCalled()
+  })
+
+  it('does not refresh or clear the session when /me has a temporary backend error', async () => {
+    apiMocks.fetchMeApi.mockRejectedValue(
+      createApiError({ statusCode: 503, message: 'Backend unavailable' })
+    )
+
+    const authStore = useAuthStore()
+    authStore.setTokens({
+      code: 200,
+      message: 'ok',
+      data: {
+        accessToken: 'access-token',
+        refreshToken: 'refresh-token'
+      }
+    })
+
+    await expect(useAuth().ensureSession()).rejects.toMatchObject({ statusCode: 503 })
+    expect(apiMocks.refreshApi).not.toHaveBeenCalled()
+    expect(authStore.accessToken).toBe('access-token')
+    expect(authStore.refreshToken).toBe('refresh-token')
+  })
+
+  it('refreshes exactly once after /me returns an unauthorized error', async () => {
+    apiMocks.fetchMeApi
+      .mockRejectedValueOnce(createApiError({ statusCode: 401, message: 'Access token expired' }))
+      .mockResolvedValueOnce({
+        code: 200,
+        message: 'ok',
+        data: {
+          user: {
+            id: 1,
+            username: 'alice'
+          }
+        }
+      })
+    apiMocks.refreshApi.mockResolvedValue({
+      code: 200,
+      message: 'ok',
+      data: {
+        accessToken: 'next-access-token',
+        refreshToken: 'next-refresh-token'
+      }
+    })
+
+    const authStore = useAuthStore()
+    authStore.setTokens({
+      code: 200,
+      message: 'ok',
+      data: {
+        accessToken: 'expired-access-token',
+        refreshToken: 'refresh-token'
+      }
+    })
+
+    await expect(useAuth().ensureSession()).resolves.toBe(true)
+    expect(apiMocks.refreshApi).toHaveBeenCalledOnce()
+    expect(apiMocks.fetchMeApi).toHaveBeenCalledTimes(2)
+    expect(apiMocks.fetchMeApi).toHaveBeenLastCalledWith('next-access-token')
+    expect(authStore.status).toBe('authenticated')
   })
 })

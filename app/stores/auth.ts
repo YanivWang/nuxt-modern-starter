@@ -33,6 +33,7 @@ import {
 } from '~/api/auth'
 import { getAccessTokenCookie, getRefreshTokenCookie } from '../utils/auth-session'
 import { clearAttributionParams } from '../utils/attribution-params'
+import { createApiError, isUnauthorizedError } from '../lib/http/error'
 import type { AuthUser, Permission, Role } from '../../config/auth'
 
 type AuthStatus = 'idle' | 'loading' | 'authenticated' | 'unauthenticated' | 'refreshing'
@@ -64,9 +65,9 @@ export const useAuthStore = defineStore('auth', () => {
   const fetchMe = async () => {
     if (!accessToken.value) {
       status.value = 'unauthenticated'
-      throw createError({
+      throw createApiError({
         statusCode: 401,
-        statusMessage: 'Missing access token'
+        message: 'Missing access token'
       })
     }
 
@@ -90,17 +91,29 @@ export const useAuthStore = defineStore('auth', () => {
       status.value = user.value ? 'authenticated' : 'idle'
       return true
     } catch (error) {
-      reset()
+      if (isUnauthorizedError(error)) {
+        reset()
+      } else {
+        // 临时网络/服务端错误不能销毁仍可能有效的 refresh token。
+        status.value = user.value ? 'authenticated' : 'idle'
+      }
       throw error
     }
   }
 
   const login = async (payload: LoginPayload) => {
     status.value = 'loading'
-    const response = await loginApi(payload)
-    setTokens(response)
-    await fetchMe()
-    return user.value
+
+    try {
+      const response = await loginApi(payload)
+      setTokens(response)
+      await fetchMe()
+      return user.value
+    } catch (error) {
+      // 登录与用户初始化是一个原子动作；任一步失败都不能遗留 loading 或半会话。
+      reset()
+      throw error
+    }
   }
 
   // register 仅调 API，不 setTokens / fetchMe；登录由 sign-in 页 login 完成

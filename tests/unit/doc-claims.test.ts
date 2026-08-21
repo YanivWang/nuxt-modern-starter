@@ -4,6 +4,7 @@
 */
 import fs from 'node:fs'
 import path from 'node:path'
+import { execFileSync } from 'node:child_process'
 import { describe, expect, it } from 'vitest'
 
 const ROOT = path.resolve(import.meta.dirname, '../..')
@@ -93,5 +94,17 @@ describe('doc-claims sync', () => {
       (r) => !['path-pattern', 'external-script', 'route-template'].includes(r.type)
     )
     expect(verifiable.length).toBeGreaterThan(1000)
+  })
+
+  it('checks extracted references without mutating the committed snapshot', () => {
+    const snapshotPath = path.join(ROOT, 'docs-sync/doc-references.json')
+    const before = fs.readFileSync(snapshotPath, 'utf8')
+
+    execFileSync(process.execPath, ['docs-sync/extract-doc-references.mjs', '--check'], {
+      cwd: ROOT,
+      stdio: 'pipe'
+    })
+
+    expect(fs.readFileSync(snapshotPath, 'utf8')).toBe(before)
   })
 })

@@ -201,7 +201,8 @@ console.log(`claims checked: ${claimScope.length}`)
 // 9. strict 100% alignment (extract + verify all doc references)
 if (!batchId) {
   try {
-    execSync('node docs-sync/extract-doc-references.mjs', { cwd: ROOT, stdio: 'pipe' })
+    // check 必须只读：提取器比较当前结果与提交快照，不刷新 generatedAt 或写任何文件。
+    execSync('node docs-sync/extract-doc-references.mjs --check', { cwd: ROOT, stdio: 'pipe' })
     execSync('node docs-sync/verify-full-alignment.mjs', { cwd: ROOT, stdio: 'pipe' })
     console.log('strict alignment: 100% verified')
   } catch (e) {

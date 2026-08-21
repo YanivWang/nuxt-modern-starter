@@ -20,7 +20,8 @@
 
   【边界与注意】
     createProductApiClient 定义在此文件，不在 app/api/clients.ts。
-    refresh 失败时 clearAuthSession；并发 401 共享同一 refreshPromise。
+    refresh 仅在明确 401 时 clearAuthSession；临时网络/服务端错误保留本地会话。
+    并发 401 共享同一 refreshPromise。
 */
 import { AUTH_API_ENDPOINTS, type AuthUser, type Permission, type Role } from '../../config/auth'
 import type { ApiResponse } from '../lib/http/types'
@@ -32,6 +33,7 @@ import {
   setAuthTokenCookies
 } from '../utils/auth-session'
 import { mergeAttributionIntoBody } from '../utils/attribution-params'
+import { isUnauthorizedError } from '../lib/http/error'
 
 export { createAuthApiClient, type AuthApiClientOptions } from './clients'
 
@@ -93,7 +95,9 @@ const refreshAccessToken = async () => {
     setAuthTokenCookies(response.data)
     return response.data.accessToken
   } catch (error) {
-    clearAuthSession()
+    if (isUnauthorizedError(error)) {
+      clearAuthSession()
+    }
     throw error
   }
 }
@@ -120,7 +124,7 @@ const sendAuthApiRequest = async <T>(
     method?: 'GET' | 'POST' | 'PATCH'
     body?: unknown
     accessToken?: string | null
-    /** true 时 401 走 refreshAccessTokenOnce 并重试一次（用于 /me、/me/profile） */
+    /** true 时 401 走 refreshAccessTokenOnce 并重试一次（用于产品资料请求） */
     retryOnUnauthorized?: boolean
   } = {}
 ) => {
@@ -171,8 +175,7 @@ export const logoutApi = (accessToken: string | null, refreshToken: string | nul
 
 export const fetchMeApi = (accessToken: string) =>
   sendAuthApiRequest<MeResponse>(AUTH_API_ENDPOINTS.me, {
-    accessToken,
-    retryOnUnauthorized: true
+    accessToken
   })
 
 export const fetchProfileApi = (accessToken: string) =>

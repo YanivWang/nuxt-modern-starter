@@ -1,7 +1,7 @@
 /*
   【文件职责】
     鉴权 composable：暴露 authStore action 与 ensureSession 会话恢复、RBAC helper。
-    ensureSession 按 accessToken → fetchMe → refresh → fetchMe 顺序尝试恢复登录态。
+    ensureSession 按 accessToken → fetchMe → 仅 401 时 refresh → fetchMe 恢复登录态。
 
   【架构位置】
     共享层 — app/composables，被 app/middleware/auth.ts、页面与 feature 组件消费。
@@ -14,12 +14,13 @@
     - 被引用：app/middleware/auth.ts、app/plugins/auth.ts、sign-in / account 页面
 
   【渲染 / 数据】
-    ensureSession 可能触发 /me 与 refresh API；失败时 reset 并返回 false。
+    ensureSession 仅把明确 401 视为失效会话；临时网络/服务端错误向上抛出且保留 token。
 
   【边界与注意】
     can / hasRole 直接委托 store；logout 不跳转，与 auth store 一致。
 */
 import type { Permission, Role } from '../../config/auth'
+import { isUnauthorizedError } from '../lib/http/error'
 
 export const useAuth = () => {
   const authStore = useAuthStore()
@@ -33,13 +34,15 @@ export const useAuth = () => {
       return true
     }
 
-    // 有 accessToken 时先 /me；成功即返回，失败（如 401）则继续尝试 refresh
+    // 有 accessToken 时先 /me；只有明确 401 才进入 refresh，其他故障不能销毁会话。
     if (authStore.accessToken) {
       try {
         await authStore.fetchMe()
         return true
-      } catch {
-        // access token 可能过期，继续尝试 refresh
+      } catch (error) {
+        if (!isUnauthorizedError(error)) {
+          throw error
+        }
       }
     }
 
@@ -53,9 +56,13 @@ export const useAuth = () => {
       await authStore.refresh()
       await authStore.fetchMe()
       return true
-    } catch {
-      authStore.reset()
-      return false
+    } catch (error) {
+      if (isUnauthorizedError(error)) {
+        authStore.reset()
+        return false
+      }
+
+      throw error
     }
   }
 
