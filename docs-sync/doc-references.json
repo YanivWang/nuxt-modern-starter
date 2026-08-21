@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-30T16:02:25.643Z",
+  "generatedAt": "2026-08-21T06:00:33.603Z",
   "docFileCount": 33,
-  "referenceCount": 1126,
+  "referenceCount": 1131,
   "pathAllowlist": [
     "app/features/my-feature/",
     "app/features/my-feature/components/",
@@ -395,8 +395,8 @@
       "docFile": "docs-site/architecture/auth.md",
       "line": 10,
       "type": "env-var",
-      "value": "NUXT_APP_ENV",
-      "context": "- 生产环境 cookie `secure: true`（`NUXT_APP_ENV=production`）"
+      "value": "NUXT_PUBLIC_APP_ENV",
+      "context": "- 生产环境 cookie `secure: true`（`NUXT_PUBLIC_APP_ENV=production`）"
     },
     {
       "docFile": "docs-site/architecture/auth.md",
@@ -1933,10 +1933,17 @@
     },
     {
       "docFile": "docs-site/deployment/docker.md",
+      "line": 29,
+      "type": "file-path",
+      "value": "package.json",
+      "context": "- 基础：`node:22.22.3-alpine`（与 `.nvmrc`、`package.json`、CI 一致）"
+    },
+    {
+      "docFile": "docs-site/deployment/docker.md",
       "line": 40,
       "type": "env-var",
-      "value": "NUXT_APP_ENV",
-      "context": "- 环境：`NUXT_APP_ENV=production`"
+      "value": "NUXT_PUBLIC_APP_ENV",
+      "context": "- 环境：`NUXT_PUBLIC_APP_ENV=production`"
     },
     {
       "docFile": "docs-site/deployment/docker.md",
@@ -2075,15 +2082,15 @@
       "docFile": "docs-site/deployment/env.md",
       "line": 40,
       "type": "env-var",
-      "value": "NUXT_APP_ENV",
-      "context": "| `NUXT_APP_ENV`                         | `public.appEnv`                 | 控制 cookie `secure`      | `development`    "
+      "value": "NUXT_PUBLIC_APP_ENV",
+      "context": "| `NUXT_PUBLIC_APP_ENV`                  | `public.appEnv`                 | 控制 cookie `secure`      | `development`    "
     },
     {
       "docFile": "docs-site/deployment/env.md",
       "line": 40,
       "type": "symbol",
-      "value": "NUXT_APP_ENV",
-      "context": "| `NUXT_APP_ENV`                         | `public.appEnv`                 | 控制 cookie `secure`      | `development`    "
+      "value": "NUXT_PUBLIC_APP_ENV",
+      "context": "| `NUXT_PUBLIC_APP_ENV`                  | `public.appEnv`                 | 控制 cookie `secure`      | `development`    "
     },
     {
       "docFile": "docs-site/deployment/env.md",
@@ -2111,7 +2118,7 @@
       "line": 53,
       "type": "script",
       "value": "dev",
-      "context": "| 本地 pnpm dev | 默认 `development`        | false         |"
+      "context": "| 本地 pnpm dev | 默认 `development`         | false         |"
     },
     {
       "docFile": "docs-site/deployment/env.md",
@@ -4021,22 +4028,22 @@
       "docFile": "docs-site/tech-stack/nuxt.md",
       "line": 40,
       "type": "env-var",
-      "value": "NUXT_APP_ENV",
-      "context": "| `appEnv`                 | `NUXT_APP_ENV`                         |"
+      "value": "NUXT_PUBLIC_APP_ENV",
+      "context": "| `appEnv`                 | `NUXT_PUBLIC_APP_ENV`                  |"
     },
     {
       "docFile": "docs-site/tech-stack/nuxt.md",
       "line": 40,
       "type": "symbol",
       "value": "appEnv",
-      "context": "| `appEnv`                 | `NUXT_APP_ENV`                         |"
+      "context": "| `appEnv`                 | `NUXT_PUBLIC_APP_ENV`                  |"
     },
     {
       "docFile": "docs-site/tech-stack/nuxt.md",
       "line": 40,
       "type": "symbol",
-      "value": "NUXT_APP_ENV",
-      "context": "| `appEnv`                 | `NUXT_APP_ENV`                         |"
+      "value": "NUXT_PUBLIC_APP_ENV",
+      "context": "| `appEnv`                 | `NUXT_PUBLIC_APP_ENV`                  |"
     },
     {
       "docFile": "docs-site/tech-stack/nuxt.md",
@@ -6261,8 +6268,36 @@
       "docFile": "docs/conventions.md",
       "line": 18,
       "type": "env-var",
-      "value": "NUXT_APP_ENV",
-      "context": "`runtimeConfig.public.appEnv` controls auth cookie `secure` behavior. Local `.env.*` files leave it at the default `deve"
+      "value": "NUXT_PUBLIC_APP_ENV",
+      "context": "`runtimeConfig.public.appEnv` controls auth cookie `secure` behavior. The tracked environment profiles explicitly set `N"
+    },
+    {
+      "docFile": "docs/conventions.md",
+      "line": 18,
+      "type": "env-file",
+      "value": ".env.dev",
+      "context": "`runtimeConfig.public.appEnv` controls auth cookie `secure` behavior. The tracked environment profiles explicitly set `N"
+    },
+    {
+      "docFile": "docs/conventions.md",
+      "line": 18,
+      "type": "env-file",
+      "value": ".env.test",
+      "context": "`runtimeConfig.public.appEnv` controls auth cookie `secure` behavior. The tracked environment profiles explicitly set `N"
+    },
+    {
+      "docFile": "docs/conventions.md",
+      "line": 18,
+      "type": "env-file",
+      "value": ".env.prod",
+      "context": "`runtimeConfig.public.appEnv` controls auth cookie `secure` behavior. The tracked environment profiles explicitly set `N"
+    },
+    {
+      "docFile": "docs/conventions.md",
+      "line": 18,
+      "type": "symbol",
+      "value": "NUXT_PUBLIC_APP_ENV",
+      "context": "`runtimeConfig.public.appEnv` controls auth cookie `secure` behavior. The tracked environment profiles explicitly set `N"
     },
     {
       "docFile": "docs/conventions.md",
@@ -6744,15 +6779,15 @@
       "docFile": "docs/deployment.md",
       "line": 40,
       "type": "env-var",
-      "value": "NUXT_APP_ENV",
-      "context": "| `NUXT_APP_ENV`                         | Controls auth cookie `secure` flag via `runtimeConfig.public.appEnv`  | `deve"
+      "value": "NUXT_PUBLIC_APP_ENV",
+      "context": "| `NUXT_PUBLIC_APP_ENV`                  | Controls auth cookie `secure` flag via `runtimeConfig.public.appEnv`  | `deve"
     },
     {
       "docFile": "docs/deployment.md",
       "line": 40,
       "type": "symbol",
-      "value": "NUXT_APP_ENV",
-      "context": "| `NUXT_APP_ENV`                         | Controls auth cookie `secure` flag via `runtimeConfig.public.appEnv`  | `deve"
+      "value": "NUXT_PUBLIC_APP_ENV",
+      "context": "| `NUXT_PUBLIC_APP_ENV`                  | Controls auth cookie `secure` flag via `runtimeConfig.public.appEnv`  | `deve"
     },
     {
       "docFile": "docs/deployment.md",
@@ -6871,7 +6906,7 @@
       "line": 80,
       "type": "script",
       "value": "docker:up",
-      "context": "pnpm docker:up      # production stack, reads .env.prod, sets NUXT_APP_ENV=production"
+      "context": "pnpm docker:up      # production stack, reads .env.prod, sets NUXT_PUBLIC_APP_ENV=production"
     },
     {
       "docFile": "docs/deployment.md",
@@ -7584,15 +7619,15 @@
       "docFile": "docs/usage.md",
       "line": 271,
       "type": "env-var",
-      "value": "NUXT_APP_ENV",
-      "context": "| `NUXT_APP_ENV`                         | Controls auth cookie `secure` flag; Docker Compose sets `production` or `dev`"
+      "value": "NUXT_PUBLIC_APP_ENV",
+      "context": "| `NUXT_PUBLIC_APP_ENV`                  | Controls auth cookie `secure` flag; Docker Compose sets `production` or `deve"
     },
     {
       "docFile": "docs/usage.md",
       "line": 271,
       "type": "symbol",
-      "value": "NUXT_APP_ENV",
-      "context": "| `NUXT_APP_ENV`                         | Controls auth cookie `secure` flag; Docker Compose sets `production` or `dev`"
+      "value": "NUXT_PUBLIC_APP_ENV",
+      "context": "| `NUXT_PUBLIC_APP_ENV`                  | Controls auth cookie `secure` flag; Docker Compose sets `production` or `deve"
     },
     {
       "docFile": "docs/usage.md",
@@ -8263,8 +8298,8 @@
       "docFile": "README.md",
       "line": 132,
       "type": "env-var",
-      "value": "NUXT_APP_ENV",
-      "context": "Docker Compose also sets `NUXT_APP_ENV=production` or `NUXT_APP_ENV=dev`, which controls auth cookie `secure` behavior. "
+      "value": "NUXT_PUBLIC_APP_ENV",
+      "context": "Docker Compose also sets `NUXT_PUBLIC_APP_ENV=production` or `NUXT_PUBLIC_APP_ENV=development`, which controls auth cook"
     },
     {
       "docFile": "README.md",

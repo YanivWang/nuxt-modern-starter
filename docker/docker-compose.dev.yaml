@@ -46,7 +46,7 @@ services:
     environment:
       HUSKY: '0'
       NODE_ENV: development
-      NUXT_APP_ENV: dev
+      NUXT_PUBLIC_APP_ENV: development
       HOST: 0.0.0.0
       PORT: '3000'
     ports:

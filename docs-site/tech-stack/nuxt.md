@@ -37,7 +37,7 @@ routeRules: {
 
 | 键                       | 环境变量                               |
 | ------------------------ | -------------------------------------- |
-| `appEnv`                 | `NUXT_APP_ENV`                         |
+| `appEnv`                 | `NUXT_PUBLIC_APP_ENV`                  |
 | `apiBase`                | `NUXT_PUBLIC_API_BASE`                 |
 | `siteUrl`                | `NUXT_PUBLIC_SITE_URL`                 |
 | `googleSiteVerification` | `NUXT_PUBLIC_GOOGLE_SITE_VERIFICATION` |

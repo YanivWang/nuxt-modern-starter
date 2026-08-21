@@ -37,10 +37,10 @@ NUXT_REVALIDATE_SECRET=replace_with_random_revalidate_secret
 | `NUXT_PUBLIC_ANALYTICS_ENABLED`        | `public.analyticsEnabled`       | 必须精确为 `true` 才启用  | `false`                     |
 | `NUXT_PUBLIC_ANALYTICS_SCRIPT_SRC`     | `public.analyticsScriptSrc`     | 第三方脚本 URL            | 空                          |
 | `NUXT_PUBLIC_ANALYTICS_DEFER_MS`       | `public.analyticsDeferMs`       | 延迟毫秒                  | `3000`                      |
-| `NUXT_APP_ENV`                         | `public.appEnv`                 | 控制 cookie `secure`      | `development`               |
+| `NUXT_PUBLIC_APP_ENV`                  | `public.appEnv`                 | 控制 cookie `secure`      | `development`               |
 | `NUXT_REVALIDATE_SECRET`               | `revalidateSecret`              | SWR 按需失效 webhook 密钥 | 示例占位符（生产须替换）    |
 
-## NUXT_APP_ENV 与 Cookie
+## NUXT_PUBLIC_APP_ENV 与 Cookie
 
 `app/utils/auth-session.ts`：
 
@@ -48,13 +48,13 @@ NUXT_REVALIDATE_SECRET=replace_with_random_revalidate_secret
 secure: config.public.appEnv === 'production'
 ```
 
-| 环境          | 设置方式                  | cookie secure |
-| ------------- | ------------------------- | ------------- |
-| 本地 pnpm dev | 默认 `development`        | false         |
-| Docker 生产栈 | Compose 注入 `production` | true          |
-| Docker 开发栈 | Compose 注入 `dev`        | false         |
+| 环境          | 设置方式                   | cookie secure |
+| ------------- | -------------------------- | ------------- |
+| 本地 pnpm dev | 默认 `development`         | false         |
+| Docker 生产栈 | Compose 注入 `production`  | true          |
+| Docker 开发栈 | Compose 注入 `development` | false         |
 
-**生产 HTTPS 登录** 必须 `NUXT_APP_ENV=production` + HTTPS。
+**生产 HTTPS 登录** 必须 `NUXT_PUBLIC_APP_ENV=production` + HTTPS。
 
 ## 生产注意
 

@@ -28,19 +28,19 @@ The three env files are intentionally committed as starter baselines. Keep them 
 
 ### Runtime variables
 
-| Variable                               | Purpose                                                               | Local default                                                    |
-| -------------------------------------- | --------------------------------------------------------------------- | ---------------------------------------------------------------- |
-| `NUXT_PUBLIC_SITE_URL`                 | Canonical site origin for SEO, sitemap, and robots                    | `http://localhost:3000`                                          |
-| `NUXT_PUBLIC_API_BASE`                 | Backend API origin including `/api` prefix                            | `http://localhost:2027/api`                                      |
-| `NUXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | Google Search Console verification token                              | empty                                                            |
-| `NUXT_PUBLIC_BAIDU_SITE_VERIFICATION`  | Baidu verification token                                              | empty                                                            |
-| `NUXT_PUBLIC_ANALYTICS_ENABLED`        | Must be exactly `true` to enable analytics plugin                     | `false`                                                          |
-| `NUXT_PUBLIC_ANALYTICS_SCRIPT_SRC`     | Single deferred third-party script URL                                | empty                                                            |
-| `NUXT_PUBLIC_ANALYTICS_DEFER_MS`       | Client defer before loading analytics script                          | `3000`                                                           |
-| `NUXT_APP_ENV`                         | Controls auth cookie `secure` flag via `runtimeConfig.public.appEnv`  | `development` locally; Docker Compose sets `production` or `dev` |
-| `NUXT_REVALIDATE_SECRET`               | Server-only secret for `POST /api/revalidate` (`x-revalidate-secret`) | placeholder in tracked `.env.*`; override in real environments   |
+| Variable                               | Purpose                                                               | Local default                                                            |
+| -------------------------------------- | --------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| `NUXT_PUBLIC_SITE_URL`                 | Canonical site origin for SEO, sitemap, and robots                    | `http://localhost:3000`                                                  |
+| `NUXT_PUBLIC_API_BASE`                 | Backend API origin including `/api` prefix                            | `http://localhost:2027/api`                                              |
+| `NUXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | Google Search Console verification token                              | empty                                                                    |
+| `NUXT_PUBLIC_BAIDU_SITE_VERIFICATION`  | Baidu verification token                                              | empty                                                                    |
+| `NUXT_PUBLIC_ANALYTICS_ENABLED`        | Must be exactly `true` to enable analytics plugin                     | `false`                                                                  |
+| `NUXT_PUBLIC_ANALYTICS_SCRIPT_SRC`     | Single deferred third-party script URL                                | empty                                                                    |
+| `NUXT_PUBLIC_ANALYTICS_DEFER_MS`       | Client defer before loading analytics script                          | `3000`                                                                   |
+| `NUXT_PUBLIC_APP_ENV`                  | Controls auth cookie `secure` flag via `runtimeConfig.public.appEnv`  | `development` locally; Docker Compose sets `production` or `development` |
+| `NUXT_REVALIDATE_SECRET`               | Server-only secret for `POST /api/revalidate` (`x-revalidate-secret`) | placeholder in tracked `.env.*`; override in real environments           |
 
-Production auth cookies are marked `secure` when `NUXT_APP_ENV=production`, so real login flows must be served over HTTPS.
+Production auth cookies are marked `secure` when `NUXT_PUBLIC_APP_ENV=production`, so real login flows must be served over HTTPS.
 
 `NUXT_REVALIDATE_SECRET` is not exposed to the client (`runtimeConfig.revalidateSecret`). If it is unset, `/api/revalidate` returns 503 so unauthenticated cache purge is not available in production.
 
@@ -77,8 +77,8 @@ The image runs `.output/server/index.mjs` on port `3000`.
 For the full gateway sample, use Compose:
 
 ```bash
-pnpm docker:up      # production stack, reads .env.prod, sets NUXT_APP_ENV=production
-pnpm docker:up:dev  # development stack with bind mount, reads .env.dev, sets NUXT_APP_ENV=dev
+pnpm docker:up      # production stack, reads .env.prod, sets NUXT_PUBLIC_APP_ENV=production
+pnpm docker:up:dev  # development stack with bind mount, reads .env.dev, sets NUXT_PUBLIC_APP_ENV=development
 pnpm docker:down
 pnpm docker:down:dev
 ```

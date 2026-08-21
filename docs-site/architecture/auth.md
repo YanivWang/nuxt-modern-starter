@@ -7,7 +7,7 @@
 当前默认值偏向更严格的前端安全基线：
 
 - token cookie 使用 `sameSite: 'strict'`
-- 生产环境 cookie `secure: true`（`NUXT_APP_ENV=production`）
+- 生产环境 cookie `secure: true`（`NUXT_PUBLIC_APP_ENV=production`）
 - 登录 redirect 只允许站内路径，避免开放重定向
 
 更高安全等级的生产系统建议改成后端托管会话：refresh token 由后端写入 `httpOnly + secure + sameSite` Cookie，前端只在内存中持有短期 access token，或通过 BFF 由同源服务代理所有敏感 API。这个基座不内置后端，因此不会伪装提供 `httpOnly` 能力。
@@ -61,7 +61,7 @@ sequenceDiagram
 - access token 默认 15 分钟（`ACCESS_TOKEN_MAX_AGE = 900`）
 - refresh token 默认 30 天（`REFRESH_TOKEN_MAX_AGE = 2_592_000`）
 - token cookie 默认 `sameSite: 'strict'`
-- 生产环境 token cookie `secure: true`（`NUXT_APP_ENV=production`）
+- 生产环境 token cookie `secure: true`（`NUXT_PUBLIC_APP_ENV=production`）
 
 ## 保护路由
 

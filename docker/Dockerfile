@@ -19,7 +19,7 @@
 # 文件职责：生产镜像构建。
 # 多阶段安装依赖、编译 Nuxt，并在运行阶段只保留 .output 与非 root 用户。
 ARG PNPM_VERSION=11.5.2
-ARG NODE_IMAGE=node:22-alpine
+ARG NODE_IMAGE=node:22.22.3-alpine
 
 FROM ${NODE_IMAGE} AS base
 WORKDIR /app
@@ -34,7 +34,8 @@ RUN pnpm install --frozen-lockfile
 FROM deps AS build
 ARG BUILD_ENV=prod
 COPY . .
-RUN pnpm run build:${BUILD_ENV}
+# deps 层的 postinstall 发生在源码复制前；这里必须基于完整项目重新生成 Nuxt 类型与自动导入。
+RUN pnpm exec nuxt prepare && pnpm run build:${BUILD_ENV}
 
 FROM ${NODE_IMAGE} AS runtime
 WORKDIR /app

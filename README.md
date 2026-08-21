@@ -129,7 +129,7 @@ NUXT_PUBLIC_ANALYTICS_SCRIPT_SRC=
 NUXT_PUBLIC_ANALYTICS_DEFER_MS=3000
 ```
 
-Docker Compose also sets `NUXT_APP_ENV=production` or `NUXT_APP_ENV=dev`, which controls auth cookie `secure` behavior. See `docs/deployment.md` for the full variable table.
+Docker Compose also sets `NUXT_PUBLIC_APP_ENV=production` or `NUXT_PUBLIC_APP_ENV=development`, which controls auth cookie `secure` behavior. See `docs/deployment.md` for the full variable table.
 
 ## Verification
 

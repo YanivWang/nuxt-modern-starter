@@ -259,16 +259,16 @@ To disable dark mode, remove dark overrides from `tokens/index.scss`, set `DEFAU
 
 Committed dotenv layers (`.env.dev`, `.env.test`, `.env.prod`) provide non-secret defaults. Runtime platforms should override them with `NUXT_*` values.
 
-| Variable                               | Purpose                                                                       |
-| -------------------------------------- | ----------------------------------------------------------------------------- |
-| `NUXT_PUBLIC_SITE_URL`                 | Canonical site origin for SEO, sitemap, and robots                            |
-| `NUXT_PUBLIC_API_BASE`                 | Backend API origin including `/api` prefix                                    |
-| `NUXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | Google Search Console verification token                                      |
-| `NUXT_PUBLIC_BAIDU_SITE_VERIFICATION`  | Baidu verification token                                                      |
-| `NUXT_PUBLIC_ANALYTICS_ENABLED`        | Must be exactly `true` to enable analytics                                    |
-| `NUXT_PUBLIC_ANALYTICS_SCRIPT_SRC`     | Single deferred third-party script URL                                        |
-| `NUXT_PUBLIC_ANALYTICS_DEFER_MS`       | Client defer before loading analytics script                                  |
-| `NUXT_APP_ENV`                         | Controls auth cookie `secure` flag; Docker Compose sets `production` or `dev` |
+| Variable                               | Purpose                                                                               |
+| -------------------------------------- | ------------------------------------------------------------------------------------- |
+| `NUXT_PUBLIC_SITE_URL`                 | Canonical site origin for SEO, sitemap, and robots                                    |
+| `NUXT_PUBLIC_API_BASE`                 | Backend API origin including `/api` prefix                                            |
+| `NUXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | Google Search Console verification token                                              |
+| `NUXT_PUBLIC_BAIDU_SITE_VERIFICATION`  | Baidu verification token                                                              |
+| `NUXT_PUBLIC_ANALYTICS_ENABLED`        | Must be exactly `true` to enable analytics                                            |
+| `NUXT_PUBLIC_ANALYTICS_SCRIPT_SRC`     | Single deferred third-party script URL                                                |
+| `NUXT_PUBLIC_ANALYTICS_DEFER_MS`       | Client defer before loading analytics script                                          |
+| `NUXT_PUBLIC_APP_ENV`                  | Controls auth cookie `secure` flag; Docker Compose sets `production` or `development` |
 
 See `docs/deployment.md` for deployment-specific notes and full-stack pairing defaults.
 
@@ -335,4 +335,4 @@ Auth is implemented as an opt-in Bearer Token module for the current application
 - Login redirect targets must stay on same-origin relative paths. Use `resolveSafeRedirectPath()` from `app/utils/safe-redirect.ts` on the sign-in page instead of passing raw `route.query.redirect` to `router.push()`.
 - The backend currently has no RBAC fields in JWT or `/api/me`. Frontend roles and permissions default to empty arrays and should be populated in `normalizeAuthUser()` once the backend contract adds them.
 - Development and production both use `NUXT_PUBLIC_API_BASE` to call the backend directly. Configure CORS on the backend or gateway when the API origin differs from the frontend origin.
-- Auth cookies use `secure: true` when `runtimeConfig.public.appEnv === 'production'`. Docker Compose sets `NUXT_APP_ENV=production` for the production stack.
+- Auth cookies use `secure: true` when `runtimeConfig.public.appEnv === 'production'`. Docker Compose sets `NUXT_PUBLIC_APP_ENV=production` for the production stack.

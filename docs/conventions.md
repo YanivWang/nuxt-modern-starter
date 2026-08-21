@@ -15,7 +15,7 @@
 
 `runtimeConfig.public.siteUrl` should be set in production. Local development falls back to `http://localhost:3000`; production deployments should fail review if this remains unchanged.
 
-`runtimeConfig.public.appEnv` controls auth cookie `secure` behavior. Local `.env.*` files leave it at the default `development`; Docker Compose sets `NUXT_APP_ENV=production` for the production stack and `NUXT_APP_ENV=dev` for the development stack. Real HTTPS login flows require `appEnv === 'production'`.
+`runtimeConfig.public.appEnv` controls auth cookie `secure` behavior. The tracked environment profiles explicitly set `NUXT_PUBLIC_APP_ENV` to `development` in `.env.dev`, `test` in `.env.test`, and `production` in `.env.prod`. Docker Compose preserves the matching production and development values. Real HTTPS login flows require `appEnv === 'production'`.
 
 ## Naming
 
