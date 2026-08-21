@@ -72,6 +72,23 @@ Product routes (`/workspace/**`, `/docs/**`, `/account`) are client-rendered by 
 
 Product sidebar navigation belongs in `app/features/product-shell/config.ts` through `productNavItems` and `productFooterNavItems` (footer includes a localized pricing link). Account settings navigation belongs in `app/features/account-shell/config.ts` through `accountNavItems`. Account access from the product shell lives in `UserAccountMenu`, not the product sidebar. Page-level auth and noindex are declared with `definePageMeta` and `usePageSeo`.
 
+`useAsyncData()` is for page data that must be server-rendered and hydrated. It is **not** a request helper: it caches by key and, on a cache hit, returns the previous value without calling the handler again. Inside an event handler — a button click, a search box, a form submit — that means the user sees stale data and no request goes out.
+
+```ts
+// 页面数据：需要 SSR + hydration 复用
+const { data } = await useAsyncData(
+  () => `news-article:${slug}:${languageStore.currentLanguage}`,
+  () => fetchLocalizedNewsArticle(slug, languageStore.currentLanguage)
+)
+
+// 事件里的读写：直接 await adapter，不要包 useAsyncData
+const onSearch = async () => {
+  results.value = await searchTemplates(keyword.value)
+}
+```
+
+Keys must include every input the request depends on (slug, locale, id). Prefer a function key so it re-evaluates reactively, and pair it with `watch` when those inputs can change without a route change.
+
 Auth redirect query values must stay on same-origin relative paths. Use `resolveSafeRedirectPath()` from `app/utils/safe-redirect.ts` instead of passing raw `route.query.redirect` to `router.push()`.
 
 ## SEO Server Routes

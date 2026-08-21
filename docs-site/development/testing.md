@@ -3,7 +3,7 @@
 ## 命令
 
 ```bash
-pnpm test          # Vitest 一次运行（37 文件 / 154 测试）
+pnpm test          # Vitest 一次运行（38 文件 / 159 测试）
 pnpm test:watch    # 监听模式
 pnpm typecheck     # vue-tsc + Nuxt 类型
 pnpm lint            # ESLint

@@ -10,6 +10,7 @@
         "app/types/workspace-project.ts",
         "config/antd-locale.ts",
         "config/auth.ts",
+        "config/cache.ts",
         "config/content/faq.ts",
         "config/routes.ts",
         "config/site.ts",
@@ -182,5 +183,5 @@
       ]
     }
   ],
-  "totalFiles": 133
+  "totalFiles": 134
 }

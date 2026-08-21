@@ -14,6 +14,19 @@ flowchart TD
     F --> I[createProductApiClient]
 ```
 
+## `useAsyncData` 的边界
+
+`useAsyncData` 是**页面数据**的工具，不是请求工具。它按 key 缓存，命中时直接返回上次的值、
+**不会重新调用 handler**。放进事件回调里，用户看到的是旧数据，而且请求根本没发出去。
+
+| 场景                             | 写法                                      |
+| -------------------------------- | ----------------------------------------- |
+| 页面数据（需 SSR + hydration）   | `useAsyncData(() => key, () => xxxApi())` |
+| 事件里的读写（点击、搜索、提交） | `await xxxApi()`                          |
+
+key 必须包含请求依赖的全部输入（slug、locale、id）。优先用函数形式的 key 以便响应式重算，
+并在这些输入可能不随路由变化时配合 `watch`。
+
 ## 示例：Feature 私有 API
 
 `app/features/exports/api.ts`：

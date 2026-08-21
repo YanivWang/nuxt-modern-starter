@@ -43,6 +43,12 @@ const symbolAllowlist = new Set([
 const errors = []
 
 /** 精确版本的单一来源：.nvmrc（Node）与 package.json packageManager（pnpm） */
+/** config/ 下同样可能读取构建期环境变量的模块 */
+const envVarConfigModules = fs
+  .readdirSync(path.join(ROOT, 'config'))
+  .filter((name) => name.endsWith('.ts'))
+  .map((name) => `config/${name}`)
+
 const pinnedNodeVersion = fs.existsSync(path.join(ROOT, '.nvmrc'))
   ? fs.readFileSync(path.join(ROOT, '.nvmrc'), 'utf8').trim().replace(/^v/, '')
   : undefined
@@ -78,14 +84,17 @@ for (const ref of docRefs.references) {
     case 'env-file':
       break
     case 'env-var': {
-      const inNuxt = readText('nuxt.config.ts')?.includes(value)
-      if (!inNuxt && !index.envToRuntime[value]) {
+      // 构建期变量不一定直接写在 nuxt.config.ts 里：config/ 下的模块（如 config/cache.ts
+      // 解析 nitro.storage）读 process.env 后再被 nuxt.config 引用，同样算「被引用」。
+      const configSources = ['nuxt.config.ts', ...envVarConfigModules]
+      const referenced = configSources.some((file) => readText(file)?.includes(value))
+      if (!referenced && !index.envToRuntime[value]) {
         pushError('doc-reference', {
           docFile,
           line,
           type,
           value,
-          message: `env var not referenced in nuxt.config.ts: ${value}`
+          message: `env var not referenced in nuxt.config.ts or config/*.ts: ${value}`
         })
       }
       break

@@ -22,6 +22,7 @@
 */
 import { defineNuxtConfig } from 'nuxt/config'
 import { csrRouteRules, prerenderRoutes, swrRouteRules } from './config/routes'
+import { resolveCacheStorage } from './config/cache'
 
 const isTest = process.env.NODE_ENV === 'test' || process.env.VITEST
 
@@ -113,6 +114,12 @@ export default defineNuxtConfig({
   },
   antd: {
     extractStyle: true
+  },
+  nitro: {
+    // SWR 页面缓存的存储驱动。默认进程内存 —— 单进程部署够用，
+    // 但横向扩容后 POST /api/revalidate 只会清掉收到请求的那个进程。
+    // 见 config/cache.ts 与 docs-site/deployment/overview.md。
+    storage: resolveCacheStorage()
   },
   typescript: {
     strict: true,

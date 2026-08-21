@@ -38,6 +38,30 @@ flowchart LR
 
 Committed env 文件只放占位默认值，**真实密钥运行时注入**。
 
+## SWR 页面缓存与多实例
+
+`routeRules` 的 SWR 缓存**默认存在进程内存里**（`config/cache.ts` 的默认驱动）。
+单进程部署没问题；一旦横向扩容（pm2 cluster、多容器副本），每个进程各持一份缓存，
+而 `POST /api/revalidate` 只会打到其中一个进程 —— **其余进程继续发陈旧 HTML 直到 TTL 到期**。
+
+实测（Nuxt 4.4.8 / Nitro 2.13.4，两个进程）：
+
+| 驱动                   | 向实例 A 发 revalidate 后          |
+| ---------------------- | ---------------------------------- |
+| 默认（内存）           | A 重新生成，**B 仍发旧内容**       |
+| `NUXT_CACHE_DRIVER=fs` | 共享条目被删除，**A / B 同时失效** |
+
+这两个变量在**构建期**求值（Nitro 的 `nitro.storage` 是构建期配置），Docker 里用 build arg 传入：
+
+```bash
+# 同机多进程：挂一个共享卷到 base 指向的目录
+NUXT_CACHE_DRIVER=fs NUXT_CACHE_FS_BASE=/data/cache pnpm build
+```
+
+跨主机部署需要共享驱动（redis 等）。`config/cache.ts` 只内置 `memory` 与 `fs` 以保持零额外依赖；
+接入 redis 请在 `nuxt.config.ts` 的 `nitro.storage.cache` 直接配置并安装对应 driver 依赖。
+配错驱动名会在构建期直接报错，不会静默回退到内存。
+
 ## 发布流程
 
 ```bash

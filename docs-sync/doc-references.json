@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-21T10:43:47.333Z",
+  "generatedAt": "2026-08-21T11:50:07.020Z",
   "docFileCount": 33,
-  "referenceCount": 1148,
+  "referenceCount": 1153,
   "pathAllowlist": [
     "app/features/my-feature/",
     "app/features/my-feature/components/",
@@ -1555,168 +1555,175 @@
     },
     {
       "docFile": "docs-site/architecture/routing.md",
-      "line": 60,
+      "line": 65,
+      "type": "file-path",
+      "value": "tests/unit/revalidate-nitro-contract.test.ts",
+      "context": "而缓存实际从未被清除。`tests/unit/revalidate-nitro-contract.test.ts` 从 nitropack 源码"
+    },
+    {
+      "docFile": "docs-site/architecture/routing.md",
+      "line": 75,
       "type": "file-path",
       "value": "app/pages/[[language]]/",
       "context": "### 公开 SEO 区（`app/pages/[[language]]/`）"
     },
     {
       "docFile": "docs-site/architecture/routing.md",
-      "line": 65,
+      "line": 80,
       "type": "route",
       "value": "/en/about",
       "context": "| 关于     | `/about`、`/en/about`           | `about.vue`       | **prerender**   | 构建时静态 HTML，纯 i18n                     "
     },
     {
       "docFile": "docs-site/architecture/routing.md",
-      "line": 66,
+      "line": 81,
       "type": "route",
       "value": "/en/help",
       "context": "| 帮助     | `/help`、`/en/help`             | `help.vue`        | **prerender**   | 构建时静态 HTML；i18n 文案 + FAQ 本地 config    "
     },
     {
       "docFile": "docs-site/architecture/routing.md",
-      "line": 67,
+      "line": 82,
       "type": "route",
       "value": "/en/pricing",
       "context": "| 定价     | `/pricing`、`/en/pricing`       | `pricing.vue`     | **SSR**（默认） | 每次请求服务端渲染，内容来自 API                   |"
     },
     {
       "docFile": "docs-site/architecture/routing.md",
-      "line": 68,
+      "line": 83,
       "type": "route",
       "value": "/en/news",
       "context": "| 新闻列表 | `/news`、`/en/news`             | `news/index.vue`  | **SWR 3600s**   | 摘要来自 API；基础 SEO meta；支持按需 revalidate   |"
     },
     {
       "docFile": "docs-site/architecture/routing.md",
-      "line": 69,
+      "line": 84,
       "type": "route",
       "value": "/news/:slug",
       "context": "| 新闻详情 | `/news/:slug`、`/en/news/:slug` | `news/[slug].vue` | **SWR 3600s**   | 正文来自 API；Article JSON-LD；支持按需 revalidate"
     },
     {
       "docFile": "docs-site/architecture/routing.md",
-      "line": 69,
+      "line": 84,
       "type": "route",
       "value": "/en/news/:slug",
       "context": "| 新闻详情 | `/news/:slug`、`/en/news/:slug` | `news/[slug].vue` | **SWR 3600s**   | 正文来自 API；Article JSON-LD；支持按需 revalidate"
     },
     {
       "docFile": "docs-site/architecture/routing.md",
-      "line": 70,
+      "line": 85,
       "type": "route",
       "value": "/en/sign-in",
       "context": "| 登录     | `/sign-in`、`/en/sign-in`       | `sign-in.vue`     | **SSR**（默认） | noindex，不在 `PUBLIC_PAGE_PATHS`            "
     },
     {
       "docFile": "docs-site/architecture/routing.md",
-      "line": 70,
+      "line": 85,
       "type": "symbol",
       "value": "PUBLIC_PAGE_PATHS",
       "context": "| 登录     | `/sign-in`、`/en/sign-in`       | `sign-in.vue`     | **SSR**（默认） | noindex，不在 `PUBLIC_PAGE_PATHS`            "
     },
     {
       "docFile": "docs-site/architecture/routing.md",
-      "line": 71,
+      "line": 86,
       "type": "route",
       "value": "/sign-up",
       "context": "| 注册     | `/sign-up`、`/en/sign-up`       | `sign-up.vue`     | **SSR**（默认） | noindex，不在 `PUBLIC_PAGE_PATHS`            "
     },
     {
       "docFile": "docs-site/architecture/routing.md",
-      "line": 71,
+      "line": 86,
       "type": "route",
       "value": "/en/sign-up",
       "context": "| 注册     | `/sign-up`、`/en/sign-up`       | `sign-up.vue`     | **SSR**（默认） | noindex，不在 `PUBLIC_PAGE_PATHS`            "
     },
     {
       "docFile": "docs-site/architecture/routing.md",
-      "line": 78,
+      "line": 93,
       "type": "file-path",
       "value": "app/pages/workspace/index.vue",
       "context": "| 工作台 | `/workspace`             | `workspace/index.vue`           | **CSR**  | 需 `auth` 中间件；列表/删除；创建跳转 `/docs/new`     "
     },
     {
       "docFile": "docs-site/architecture/routing.md",
-      "line": 79,
+      "line": 94,
       "type": "file-path",
       "value": "app/pages/workspace/templates/index.vue",
       "context": "| 模板   | `/workspace/templates`   | `workspace/templates/index.vue` | **CSR**  | 占位 UI                                  "
     },
     {
       "docFile": "docs-site/architecture/routing.md",
-      "line": 80,
+      "line": 95,
       "type": "file-path",
       "value": "docs/[id].vue",
       "context": "| 编辑器 | `/docs/:id`、`/docs/new` | `docs/[id].vue`                 | **CSR**  | YanivEditor；`WORKSPACE_NEW_PROJECT_ID`（`/"
     },
     {
       "docFile": "docs-site/architecture/routing.md",
-      "line": 80,
+      "line": 95,
       "type": "file-path",
       "value": "app/pages/docs/[id].vue",
       "context": "| 编辑器 | `/docs/:id`、`/docs/new` | `docs/[id].vue`                 | **CSR**  | YanivEditor；`WORKSPACE_NEW_PROJECT_ID`（`/"
     },
     {
       "docFile": "docs-site/architecture/routing.md",
-      "line": 80,
+      "line": 95,
       "type": "symbol",
       "value": "WORKSPACE_NEW_PROJECT_ID",
       "context": "| 编辑器 | `/docs/:id`、`/docs/new` | `docs/[id].vue`                 | **CSR**  | YanivEditor；`WORKSPACE_NEW_PROJECT_ID`（`/"
     },
     {
       "docFile": "docs-site/architecture/routing.md",
-      "line": 80,
+      "line": 95,
       "type": "symbol",
       "value": "ensureDraftProject",
       "context": "| 编辑器 | `/docs/:id`、`/docs/new` | `docs/[id].vue`                 | **CSR**  | YanivEditor；`WORKSPACE_NEW_PROJECT_ID`（`/"
     },
     {
       "docFile": "docs-site/architecture/routing.md",
-      "line": 80,
+      "line": 95,
       "type": "symbol",
       "value": "EDITOR_AUTOSAVE_DEBOUNCE_MS",
       "context": "| 编辑器 | `/docs/:id`、`/docs/new` | `docs/[id].vue`                 | **CSR**  | YanivEditor；`WORKSPACE_NEW_PROJECT_ID`（`/"
     },
     {
       "docFile": "docs-site/architecture/routing.md",
-      "line": 81,
+      "line": 96,
       "type": "file-path",
       "value": "app/pages/account.vue",
       "context": "| 账户   | `/account`               | `account.vue`                   | **CSR**  | profile + 退出                           "
     },
     {
       "docFile": "docs-site/architecture/routing.md",
-      "line": 83,
+      "line": 98,
       "type": "symbol",
       "value": "csrRouteRules",
       "context": "> 未单独配置 `routeRules` 的公开路由均走 **SSR（默认）**；产品区由 `csrRouteRules` 统一设为 **CSR**。"
     },
     {
       "docFile": "docs-site/architecture/routing.md",
-      "line": 93,
+      "line": 108,
       "type": "symbol",
       "value": "usePageSeo",
       "context": "| 首页     | Hero（定位 + 主/次 CTA）/ Stats / Features / Workflow / Closing CTA；主 CTA → `/sign-up`，次 CTA → `/pricing`；`usePageS"
     },
     {
       "docFile": "docs-site/architecture/routing.md",
-      "line": 99,
+      "line": 114,
       "type": "symbol",
       "value": "resolveSafeRedirectPath",
       "context": "| 登录     | 居中 auth-card；`?redirect=` 安全回跳（`resolveSafeRedirectPath`），默认 `/workspace`；支持 `?username=` 预填                 "
     },
     {
       "docFile": "docs-site/architecture/routing.md",
-      "line": 109,
+      "line": 124,
       "type": "symbol",
       "value": "cachedProject",
       "context": "| 编辑器 | `editor` 全屏 layout；`/docs/new` 草稿模式，首次非空保存后 `replace` 到 `/docs/:id`；`cachedProject` 防切换闪烁；YanivEditor PPT 模式；2s "
     },
     {
       "docFile": "docs-site/architecture/routing.md",
-      "line": 132,
+      "line": 147,
       "type": "file-path",
       "value": "config/site.ts",
       "context": "定义在 `config/site.ts`："
@@ -2241,217 +2248,245 @@
     },
     {
       "docFile": "docs-site/deployment/overview.md",
-      "line": 44,
+      "line": 43,
+      "type": "file-path",
+      "value": "config/cache.ts",
+      "context": "`routeRules` 的 SWR 缓存**默认存在进程内存里**（`config/cache.ts` 的默认驱动）。"
+    },
+    {
+      "docFile": "docs-site/deployment/overview.md",
+      "line": 43,
+      "type": "symbol",
+      "value": "routeRules",
+      "context": "`routeRules` 的 SWR 缓存**默认存在进程内存里**（`config/cache.ts` 的默认驱动）。"
+    },
+    {
+      "docFile": "docs-site/deployment/overview.md",
+      "line": 52,
+      "type": "env-var",
+      "value": "NUXT_CACHE_DRIVER",
+      "context": "| `NUXT_CACHE_DRIVER=fs` | 共享条目被删除，**A / B 同时失效** |"
+    },
+    {
+      "docFile": "docs-site/deployment/overview.md",
+      "line": 58,
+      "type": "env-var",
+      "value": "NUXT_CACHE_FS_BASE",
+      "context": "NUXT_CACHE_DRIVER=fs NUXT_CACHE_FS_BASE=/data/cache pnpm build"
+    },
+    {
+      "docFile": "docs-site/deployment/overview.md",
+      "line": 68,
       "type": "script",
       "value": "quality",
       "context": "pnpm quality"
     },
     {
       "docFile": "docs-site/deployment/overview.md",
-      "line": 45,
+      "line": 69,
       "type": "script",
       "value": "docker:build",
       "context": "pnpm docker:build    # 可选"
     },
     {
       "docFile": "docs-site/deployment/overview.md",
-      "line": 46,
+      "line": 70,
       "type": "script",
       "value": "docker:up",
       "context": "pnpm docker:up       # 可选 Compose 栈"
     },
     {
       "docFile": "docs-site/deployment/overview.md",
-      "line": 53,
+      "line": 77,
       "type": "external-script",
       "value": "docker:dev",
       "context": "1. 在 **`nuxt-modern-starter-api` 后端仓库** 启动栈（常见命令 `pnpm docker:dev`；前端 Compose 用 `pnpm docker:up:dev`）"
     },
     {
       "docFile": "docs-site/deployment/overview.md",
-      "line": 53,
+      "line": 77,
       "type": "script",
       "value": "docker:up:dev",
       "context": "1. 在 **`nuxt-modern-starter-api` 后端仓库** 启动栈（常见命令 `pnpm docker:dev`；前端 Compose 用 `pnpm docker:up:dev`）"
     },
     {
       "docFile": "docs-site/deployment/overview.md",
-      "line": 56,
+      "line": 80,
       "type": "route",
       "value": "/docs/new",
       "context": "4. 验证：登录 → 工作台（列表/删除/创建跳转 `/docs/new`）→ 编辑器自动保存 → 账户"
     },
     {
       "docFile": "docs-site/deployment/overview.md",
-      "line": 57,
+      "line": 81,
       "type": "env-var",
       "value": "NUXT_REVALIDATE_SECRET",
       "context": "5. 新闻变更后：后端 webhook 调用 `POST /api/revalidate`（需配置 `NUXT_REVALIDATE_SECRET`）"
     },
     {
       "docFile": "docs-site/deployment/overview.md",
-      "line": 57,
+      "line": 81,
       "type": "symbol",
       "value": "NUXT_REVALIDATE_SECRET",
       "context": "5. 新闻变更后：后端 webhook 调用 `POST /api/revalidate`（需配置 `NUXT_REVALIDATE_SECRET`）"
     },
     {
       "docFile": "docs-site/deployment/overview.md",
-      "line": 63,
+      "line": 87,
       "type": "route",
       "value": "/sign-up",
       "context": "| 1    | `/sign-up` → `/sign-in` | 注册不自动登录；登录写 cookie 并 fetchMe                                                         "
     },
     {
       "docFile": "docs-site/deployment/overview.md",
-      "line": 63,
+      "line": 87,
       "type": "route",
       "value": "/sign-in",
       "context": "| 1    | `/sign-up` → `/sign-in` | 注册不自动登录；登录写 cookie 并 fetchMe                                                         "
     },
     {
       "docFile": "docs-site/deployment/overview.md",
-      "line": 64,
+      "line": 88,
       "type": "route",
       "value": "/workspace",
       "context": "| 2    | `/workspace`            | 列表/删除项目；创建按钮跳转 `/docs/new`（预加载 editor route）                                         "
     },
     {
       "docFile": "docs-site/deployment/overview.md",
-      "line": 65,
+      "line": 89,
       "type": "symbol",
       "value": "WORKSPACE_NEW_PROJECT_ID",
       "context": "| 3    | `/docs/new`             | 草稿模式；`WORKSPACE_NEW_PROJECT_ID` + `ensureDraftProject`；`EDITOR_AUTOSAVE_DEBOUNCE_MS`（"
     },
     {
       "docFile": "docs-site/deployment/overview.md",
-      "line": 65,
+      "line": 89,
       "type": "symbol",
       "value": "ensureDraftProject",
       "context": "| 3    | `/docs/new`             | 草稿模式；`WORKSPACE_NEW_PROJECT_ID` + `ensureDraftProject`；`EDITOR_AUTOSAVE_DEBOUNCE_MS`（"
     },
     {
       "docFile": "docs-site/deployment/overview.md",
-      "line": 65,
+      "line": 89,
       "type": "symbol",
       "value": "EDITOR_AUTOSAVE_DEBOUNCE_MS",
       "context": "| 3    | `/docs/new`             | 草稿模式；`WORKSPACE_NEW_PROJECT_ID` + `ensureDraftProject`；`EDITOR_AUTOSAVE_DEBOUNCE_MS`（"
     },
     {
       "docFile": "docs-site/deployment/overview.md",
-      "line": 66,
+      "line": 90,
       "type": "route",
       "value": "/docs/:id",
       "context": "| 4    | `/docs/:id`             | 加载项目 + documentId；debounce 自动保存；标题双写 document/project                                "
     },
     {
       "docFile": "docs-site/deployment/overview.md",
-      "line": 67,
+      "line": 91,
       "type": "route",
       "value": "/account",
       "context": "| 5    | `/account`              | `fetchProfileApi` 展示扩展资料；UserAccountMenu 退出清归因                                       "
     },
     {
       "docFile": "docs-site/deployment/overview.md",
-      "line": 67,
+      "line": 91,
       "type": "symbol",
       "value": "fetchProfileApi",
       "context": "| 5    | `/account`              | `fetchProfileApi` 展示扩展资料；UserAccountMenu 退出清归因                                       "
     },
     {
       "docFile": "docs-site/deployment/overview.md",
-      "line": 74,
+      "line": 98,
       "type": "path-pattern",
       "value": "docs-site/**",
       "context": "2. 推送 `main` 上 `docs-site/**` 变更，或手动 **Actions → Deploy Docs → Run workflow**"
     },
     {
       "docFile": "docs-site/deployment/overview.md",
-      "line": 77,
+      "line": 101,
       "type": "script",
       "value": "docs:dev",
       "context": "本地构建仍用根路径：`pnpm docs:dev` / `pnpm docs:build`。"
     },
     {
       "docFile": "docs-site/deployment/overview.md",
-      "line": 77,
+      "line": 101,
       "type": "script",
       "value": "docs:build",
       "context": "本地构建仍用根路径：`pnpm docs:dev` / `pnpm docs:build`。"
     },
     {
       "docFile": "docs-site/development/add-api.md",
-      "line": 19,
+      "line": 32,
       "type": "path-pattern",
       "value": "app/features/exports/api.ts",
       "context": "`app/features/exports/api.ts`："
     },
     {
       "docFile": "docs-site/development/add-api.md",
-      "line": 33,
+      "line": 46,
       "type": "path-pattern",
       "value": "app/features/exports/index.ts",
       "context": "`app/features/exports/index.ts`："
     },
     {
       "docFile": "docs-site/development/add-api.md",
-      "line": 50,
+      "line": 63,
       "type": "file-path",
       "value": "app/api/public.ts",
       "context": "`app/api/public.ts`："
     },
     {
       "docFile": "docs-site/development/add-api.md",
-      "line": 69,
+      "line": 82,
       "type": "symbol",
       "value": "WorkspaceDashboard",
       "context": "产品页推荐 pattern：`a-alert` + 重试按钮（参考 `WorkspaceDashboard`、`AccountPage`）。"
     },
     {
       "docFile": "docs-site/development/add-api.md",
-      "line": 69,
+      "line": 82,
       "type": "symbol",
       "value": "AccountPage",
       "context": "产品页推荐 pattern：`a-alert` + 重试按钮（参考 `WorkspaceDashboard`、`AccountPage`）。"
     },
     {
       "docFile": "docs-site/development/add-api.md",
-      "line": 73,
+      "line": 86,
       "type": "env-var",
       "value": "NUXT_PUBLIC_API_BASE",
       "context": "- `NUXT_PUBLIC_API_BASE` = `http://localhost:2027/api`"
     },
     {
       "docFile": "docs-site/development/add-api.md",
-      "line": 73,
+      "line": 86,
       "type": "symbol",
       "value": "NUXT_PUBLIC_API_BASE",
       "context": "- `NUXT_PUBLIC_API_BASE` = `http://localhost:2027/api`"
     },
     {
       "docFile": "docs-site/development/add-api.md",
-      "line": 78,
+      "line": 91,
       "type": "path-pattern",
       "value": "tests/unit/<feature>-api.test.ts",
       "context": "为新适配器添加 `tests/unit/<feature>-api.test.ts`，mock `createProductApiClient` 或 `createPublicApiClient`。"
     },
     {
       "docFile": "docs-site/development/add-api.md",
-      "line": 78,
+      "line": 91,
       "type": "symbol",
       "value": "createProductApiClient",
       "context": "为新适配器添加 `tests/unit/<feature>-api.test.ts`，mock `createProductApiClient` 或 `createPublicApiClient`。"
     },
     {
       "docFile": "docs-site/development/add-api.md",
-      "line": 78,
+      "line": 91,
       "type": "symbol",
       "value": "createPublicApiClient",
       "context": "为新适配器添加 `tests/unit/<feature>-api.test.ts`，mock `createProductApiClient` 或 `createPublicApiClient`。"
     },
     {
       "docFile": "docs-site/development/add-api.md",
-      "line": 80,
+      "line": 93,
       "type": "file-path",
       "value": "tests/unit/workspace-api.test.ts",
       "context": "参考：`tests/unit/workspace-api.test.ts`"
@@ -2755,14 +2790,14 @@
       "line": 6,
       "type": "script",
       "value": "test",
-      "context": "pnpm test          # Vitest 一次运行（37 文件 / 154 测试）"
+      "context": "pnpm test          # Vitest 一次运行（38 文件 / 159 测试）"
     },
     {
       "docFile": "docs-site/development/testing.md",
       "line": 6,
       "type": "test-count",
-      "value": "37/154",
-      "context": "pnpm test          # Vitest 一次运行（37 文件 / 154 测试）"
+      "value": "38/159",
+      "context": "pnpm test          # Vitest 一次运行（38 文件 / 159 测试）"
     },
     {
       "docFile": "docs-site/development/testing.md",
@@ -3181,7 +3216,7 @@
       "docFile": "docs-site/guide/overview.md",
       "line": 92,
       "type": "test-count",
-      "value": "37/154",
+      "value": "38/159",
       "context": "| 测试   | Vitest 4.1.9 + @nuxt/test-utils 4.0.3                  | `vitest.config.ts` `defineVitestConfig` + `include: te"
     },
     {
@@ -6672,35 +6707,35 @@
     },
     {
       "docFile": "docs/conventions.md",
-      "line": 75,
+      "line": 92,
       "type": "file-path",
       "value": "app/utils/safe-redirect.ts",
       "context": "Auth redirect query values must stay on same-origin relative paths. Use `resolveSafeRedirectPath()` from `app/utils/safe"
     },
     {
       "docFile": "docs/conventions.md",
-      "line": 79,
+      "line": 96,
       "type": "file-path",
       "value": "server/routes/sitemap.xml.ts",
       "context": "`server/routes/sitemap.xml.ts` and `server/routes/robots.txt.ts` are the canonical crawler entrypoints. Sitemap output s"
     },
     {
       "docFile": "docs/conventions.md",
-      "line": 79,
+      "line": 96,
       "type": "file-path",
       "value": "server/routes/robots.txt.ts",
       "context": "`server/routes/sitemap.xml.ts` and `server/routes/robots.txt.ts` are the canonical crawler entrypoints. Sitemap output s"
     },
     {
       "docFile": "docs/conventions.md",
-      "line": 94,
+      "line": 111,
       "type": "script",
       "value": "lint",
       "context": "| Husky          | `lint-staged` on commit, then full `pnpm lint`, `stylelint`, `typecheck`, and `test`                 "
     },
     {
       "docFile": "docs/conventions.md",
-      "line": 95,
+      "line": 112,
       "type": "script",
       "value": "quality",
       "context": "| `pnpm quality` | Release gate: adds `format:check`, `i18n:check`, and `build` before `test` so tests can inspect build"

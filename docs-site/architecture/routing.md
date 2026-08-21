@@ -53,6 +53,21 @@ SWR 默认最长 1 小时才后台刷新。新闻等内容变更后，后端可 
 
 需配置 `NUXT_REVALIDATE_SECRET` 并通过 Header `x-revalidate-secret` 鉴权。实现见 `server/api/revalidate.post.ts` 与 `server/utils/revalidate.ts`。
 
+失效的做法是按 Nitro 的规则算出 cache key 再删除条目，因此 `buildRouteCacheKey()` 与
+Nitro 内部实现是**强耦合**的。哈希段必须复刻 `nitropack/dist/runtime/internal/hash.mjs`：
+
+```
+digest(path).replace(/[-_]/g, '').slice(0, 10)
+```
+
+不能改用 ohash 导出的 `hash()` —— 它会先 serialize 再 digest 且不截断，算出的 key
+永远匹配不到真实条目，`/api/revalidate` 会一直返回 `No matching SWR cache entries`，
+而缓存实际从未被清除。`tests/unit/revalidate-nitro-contract.test.ts` 从 nitropack 源码
+提取真实实现来比对，Nitro 升级导致算法漂移时会红。
+
+另外，缓存本身默认按进程隔离，多实例部署下 revalidate 只影响收到请求的那个进程，
+见[部署概览](/deployment/overview)的「SWR 页面缓存与多实例」。
+
 ## 各页面渲染方式
 
 当前预置的 **13 个页面文件**，按路由分区与 `routeRules` 对应如下。

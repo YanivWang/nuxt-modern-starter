@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-21T10:30:23.496Z",
+  "generatedAt": "2026-08-21T11:48:56.606Z",
   "findCommand": "find app server config docker nuxt.config.ts vitest.config.ts -type f \\( -name \"*.ts\" -o -name \"*.vue\" -o -name \"*.js\" -o -name \"*.scss\" -o -name \"*.yaml\" -o -name \"*.conf\" \\) 2>/dev/null | sort",
-  "sourceFileCount": 133,
+  "sourceFileCount": 134,
   "docFileCount": 33,
   "sourceFiles": [
     {
@@ -818,6 +818,13 @@
     },
     {
       "path": "config/auth.ts",
+      "type": "ts",
+      "module": "config",
+      "batch": 1,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "config/cache.ts",
       "type": "ts",
       "module": "config",
       "batch": 1,
