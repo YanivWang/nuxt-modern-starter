@@ -7,8 +7,10 @@
 
   【边界与注意】
     routeRules SWR 使用 group `nitro/routes`；key 算法需与 Nitro cachedEventHandler 保持一致。
+    哈希必须用 nitroCacheHash，不能用 ohash 的 hash()，原因见该函数注释。
+    算法漂移由 tests/unit/revalidate-nitro-contract.test.ts 拦截。
 */
-import { hash } from 'ohash'
+import { digest } from 'ohash'
 import { parseURL } from 'ufo'
 import { SUPPORTED_LOCALES } from '../../config/site'
 import { localizedPath, swrRouteRules } from '../../config/routes'
@@ -18,6 +20,20 @@ const ROUTE_CACHE_NAME = '_'
 
 function escapeCacheKey(key: string) {
   return String(key).replace(/\W/g, '')
+}
+
+/**
+ * 复刻 Nitro 的缓存 key 哈希（nitropack/dist/runtime/internal/hash.mjs）：
+ *   digest(value).replace(/[-_]/g, '').slice(0, 10)
+ *
+ * 不能改用 ohash 的 hash()。对字符串输入，两者有两处不同：
+ *   1. ohash.hash 会先 serialize 再 digest，Nitro 对字符串是直接 digest
+ *   2. ohash.hash 返回完整摘要，Nitro 会去掉 -_ 并截断到 10 位
+ * 用错的后果是静默的：算出的 key 永远匹配不到真实条目，
+ * /api/revalidate 每次都报 "No matching SWR cache entries"，缓存实际从未被清除。
+ */
+function nitroCacheHash(value: string) {
+  return digest(value).replace(/[-_]/g, '').slice(0, 10)
 }
 
 export function normalizeRevalidatePath(path: string) {
@@ -66,7 +82,7 @@ export function buildRouteCacheKey(path: string) {
     pathname = '-'
   }
 
-  const hashedPath = `${pathname}.${hash(normalizedPath)}`
+  const hashedPath = `${pathname}.${nitroCacheHash(normalizedPath)}`
   return `${ROUTE_CACHE_GROUP}:${ROUTE_CACHE_NAME}:${hashedPath}.json`
 }
 

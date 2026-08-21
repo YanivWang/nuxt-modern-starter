@@ -19,12 +19,15 @@
 
   【边界与注意】
     🔴 本测试的意义是「我们的拷贝 == Nitro 装的那份」。
-    若 nitropack 改了 escapeKey / slice(0,16) / group / base，提取会失败或 key 不等，两种都必须红。
+    若 nitropack 改了 escapeKey / slice(0,16) / group / base / hash，提取会失败或 key 不等，两种都必须红。
     不要把它降级成只断言前缀 —— 那正是本测试要取代的东西。
+    🔴 哈希也必须从 nitropack 源码提取。曾经这里直接调用 ohash 的 hash()，
+    与被测代码是同一个调用 —— 两边用同一个错误实现互相印证，
+    导致 /api/revalidate 实际从未清除过任何条目，测试却一直是绿的。
 */
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
-import { hash } from 'ohash'
+import { digest } from 'ohash'
 import { parseURL } from 'ufo'
 import { createStorage, prefixStorage } from 'unstorage'
 import memoryDriver from 'unstorage/drivers/memory'
@@ -40,6 +43,7 @@ const readNitroSource = (fileName: string) =>
 
 const cacheSource = readNitroSource('cache.mjs')
 const appSource = readNitroSource('app.mjs')
+const hashSource = readNitroSource('hash.mjs')
 
 /** 从 nitropack 源码提取真实实现，提取不到即视为契约漂移 */
 const extract = (source: string, pattern: RegExp, label: string) => {
@@ -73,6 +77,22 @@ const nitroCacheBase = extract(cacheSource, /base:\s*"([^"]+)"/, 'default cache 
 
 const nitroEscapeKey = new Function('key', `return ${nitroEscapeBody}`) as (key: string) => string
 
+// hash：Nitro 用它生成 key 的哈希段。必须从源码提取执行，
+// 直接 import ohash 的 hash() 会与被测代码犯同一个错误而无法发现漂移。
+const nitroHashBody = extract(
+  hashSource,
+  /export function hash\(value\)\s*\{\s*return ([^;]+);/,
+  'cache key hash'
+)
+
+const nitroHash = new Function('digest', 'serialize', `return (value) => ${nitroHashBody}`)(
+  digest,
+  () => {
+    // 本测试只喂字符串路径；走到 serialize 说明 Nitro 改了实现，必须显式失败
+    throw new Error('Nitro 的 hash 对字符串走了 serialize 分支，请重新核对 revalidate.ts')
+  }
+) as (value: string) => string
+
 /** 完全按 Nitro 的 getKey + defineCachedFunction 组装 root storage key */
 const nitroRootCacheKey = (path: string) => {
   let pathname: string
@@ -82,7 +102,7 @@ const nitroRootCacheKey = (path: string) => {
   } catch {
     pathname = '-'
   }
-  const hashedPath = `${pathname}.${hash(path)}`
+  const hashedPath = `${pathname}.${nitroHash(path)}`
   return [nitroCacheBase, nitroRouteGroup, nitroCacheName, `${hashedPath}.json`]
     .filter(Boolean)
     .join(':')
@@ -98,6 +118,9 @@ describe('nitro cache key contract', () => {
     expect(nitroCacheBase).toBe('/cache')
     expect(nitroPathnameSlice).toBe(16)
     expect(nitroEscapeKey('/news/starter-release')).toBe('newsstarterrelease')
+    // 哈希段固定 10 位、不含 - 与 _；ohash 的 hash() 返回的是完整摘要，长度与字符集都不同
+    expect(nitroHash('/news')).toHaveLength(10)
+    expect(nitroHash('/news')).toMatch(/^[A-Za-z0-9]{10}$/)
   })
 
   it('resolves to the exact entry Nitro would write, through unstorage normalization', async () => {
