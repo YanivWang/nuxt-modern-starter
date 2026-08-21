@@ -23,11 +23,14 @@
 import { message } from 'ant-design-vue'
 import { useI18n } from 'vue-i18n'
 import { fetchProfileApi } from '~/api/auth'
+import { useAuthSession } from '~/utils/auth-session'
 
 const router = useRouter()
 const { t } = useI18n()
 const { localePath } = useLocalePath()
 const { authStore, logout } = useAuth()
+// 令牌读自会话模块；authStore 只提供 user 展示数据
+const session = useAuthSession()
 const { avatarUrl, initials } = useUserAvatar()
 
 const {
@@ -36,11 +39,11 @@ const {
   error,
   refresh
 } = await useAsyncData('auth-profile', async () => {
-  if (!authStore.accessToken) {
+  if (!session.accessToken.value) {
     return null
   }
 
-  const response = await fetchProfileApi(authStore.accessToken)
+  const response = await fetchProfileApi(session.accessToken.value)
   return response.data.profile
 })
 

@@ -1,0 +1,24 @@
+{
+  "description": "对外表述黑名单。放在数据文件里而非测试代码里：模式本身就是被禁止的字面量，写在 .ts 里会让扫描器扫到自己，从而必须自我豁免。",
+  "ignoredFiles": [
+    "docs-sync/legacy-terms.json",
+    "docs-sync/doc-references.json",
+    "scripts/i18n-diff.json",
+    "scripts/i18n-used.json",
+    "scripts/i18n-unused.json"
+  ],
+  "patterns": [
+    { "source": "personal creator", "flags": "i", "reason": "旧定位：个人创作者工具" },
+    { "source": "personal-creator", "flags": "i", "reason": "旧定位：个人创作者工具" },
+    { "source": "consumer-facing", "flags": "i", "reason": "旧定位：C 端产品" },
+    { "source": "consumer creator", "flags": "i", "reason": "旧定位：C 端产品" },
+    { "source": "consumer-product", "flags": "i", "reason": "旧定位：C 端产品" },
+    { "source": "C 端个人创作者", "flags": "", "reason": "旧定位：C 端产品" },
+    { "source": "个人创作者", "flags": "", "reason": "旧定位：个人创作者工具" },
+    { "source": "个人产品", "flags": "", "reason": "旧定位：个人产品" },
+    { "source": "裸 JSON", "flags": "", "reason": "旧响应契约：非信封响应" },
+    { "source": "非信封 JSON", "flags": "", "reason": "旧响应契约：非信封响应" },
+    { "source": "跳过.*assertApiSuccess", "flags": "", "reason": "旧响应契约：绕过信封校验" },
+    { "source": "旧说法", "flags": "", "reason": "含糊的历史表述" }
+  ]
+}

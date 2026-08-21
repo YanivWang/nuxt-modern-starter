@@ -37,13 +37,13 @@
 
 ## 格式化与工具链
 
-| 工具           | 职责                                                                    |
-| -------------- | ----------------------------------------------------------------------- |
-| Prettier       | JS/TS/Vue/Markdown/JSON/CSS/SCSS 格式化（单一来源）                     |
-| ESLint         | 代码质量与 Vue 语义；`--max-warnings 0`                                 |
-| Stylelint      | SCSS/CSS/Vue style 块                                                   |
-| Husky          | pre-commit：`lint-staged` → `lint` → `stylelint` → `typecheck` → `test` |
-| `pnpm quality` | 发布门禁：上述 + `format:check` + `i18n:check` + `build`                |
+| 工具           | 职责                                                     |
+| -------------- | -------------------------------------------------------- |
+| Prettier       | JS/TS/Vue/Markdown/JSON/CSS/SCSS 格式化（单一来源）      |
+| ESLint         | 代码质量与 Vue 语义；`--max-warnings 0`                  |
+| Stylelint      | SCSS/CSS/Vue style 块                                    |
+| Husky          | pre-commit：仅 `lint-staged`；全量门禁在 CI              |
+| `pnpm quality` | 发布门禁：上述 + `format:check` + `i18n:check` + `build` |
 
 提交时 staged 文件先 `prettier --write`，再 `eslint --fix --max-warnings 0`。
 

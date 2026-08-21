@@ -7,7 +7,9 @@
 | Node | 22.22.3 |
 | pnpm | 11.5.2  |
 
-`package.json` `engines` 要求 Node **22.22.3**、pnpm **11.5.2**。
+`package.json` `engines` 要求 Node **>=22.22.3 <23**、pnpm **>=11.5.2 <12**；上表是验证过的版本。
+精确版本锁定交给 `packageManager: pnpm@11.5.2`（corepack）与 `.nvmrc`，`engines` 用范围避免
+补丁号不同就报 unsupported engine。
 
 ```bash
 corepack enable

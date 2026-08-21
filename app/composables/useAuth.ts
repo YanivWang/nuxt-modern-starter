@@ -10,8 +10,8 @@
     useAuth — ensureSession、login、register、logout、can、hasRole、isAuthenticated
 
   【依赖关系】
-    - 依赖：app/stores/auth.ts、config/auth.ts（Role、Permission 类型）
-    - 被引用：app/middleware/auth.ts、app/plugins/auth.ts、sign-in / account 页面
+    - 依赖：app/stores/auth.ts、app/utils/auth-session.ts、config/auth.ts（Role、Permission 类型）
+    - 被引用：app/middleware/auth.ts、app/plugins/auth.client.ts、sign-in / account 页面
 
   【渲染 / 数据】
     ensureSession 仅把明确 401 视为失效会话；临时网络/服务端错误向上抛出且保留 token。
@@ -21,9 +21,12 @@
 */
 import type { Permission, Role } from '../../config/auth'
 import { isUnauthorizedError } from '../lib/http/error'
+import { useAuthSession } from '../utils/auth-session'
 
 export const useAuth = () => {
   const authStore = useAuthStore()
+  // 令牌读自会话模块，不读 store —— store 不再持有令牌
+  const session = useAuthSession()
 
   /**
    * 恢复登录态：供 app/middleware/auth.ts 与页面初始化调用。
@@ -35,7 +38,7 @@ export const useAuth = () => {
     }
 
     // 有 accessToken 时先 /me；只有明确 401 才进入 refresh，其他故障不能销毁会话。
-    if (authStore.accessToken) {
+    if (session.accessToken.value) {
       try {
         await authStore.fetchMe()
         return true
@@ -47,7 +50,7 @@ export const useAuth = () => {
     }
 
     // 无 refreshToken 则无法续期，清空残留 cookie 并视为未登录
-    if (!authStore.refreshToken) {
+    if (!session.refreshToken.value) {
       authStore.reset()
       return false
     }

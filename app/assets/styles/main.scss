@@ -7,7 +7,8 @@
     共享层 — app/assets/styles 根入口。
 
   【主要导出 / 路由】
-    全局 .app-shell、.app-main、.app-container、.app-header__icon-button、.page-* 标题类
+    全局 .app-shell、.app-main、.app-container、.app-header__icon-button、
+    .app-header__auth / __sign-in / __sign-up / __workspace、.page-* 标题类
 
   【依赖关系】
     - 依赖：tokens/index.scss、patterns/index.scss
@@ -98,6 +99,71 @@ a {
     min-width: unset;
     line-height: 1;
     box-shadow: none;
+  }
+}
+
+// 顶栏 CTA：AppHeader（.app-header__workspace）与 AppHeaderSignedOutActions
+// （.app-header__auth / __sign-in / __sign-up）共享同一套按钮基线，
+// 跨组件复用 → 与 .app-header__icon-button 一样放全局，不放 scoped。
+.app-header__auth {
+  display: flex;
+  align-items: center;
+  gap: var(--app-header-auth-gap);
+}
+
+.app-header__sign-in,
+.app-header__sign-up,
+.app-header__workspace {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: var(--app-header-control-size);
+  padding-inline: var(--app-auth-btn-padding-inline);
+  border-radius: var(--app-auth-btn-radius);
+  font-size: var(--app-text-base);
+  font-weight: var(--app-weight-medium);
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.app-header__sign-in {
+  border: 1px solid var(--app-auth-sign-in-border);
+  background: var(--app-auth-sign-in-bg);
+  color: var(--app-auth-sign-in-text);
+
+  &:hover {
+    border-color: var(--app-auth-sign-in-border-hover);
+    background: var(--app-auth-sign-in-bg-hover);
+  }
+}
+
+.app-header__sign-up,
+.app-header__workspace {
+  border: 1px solid transparent;
+  background: var(--app-auth-sign-up-bg);
+  color: var(--app-auth-sign-up-text);
+  padding-inline-end: calc(var(--app-auth-btn-padding-inline) - 2px);
+
+  .anticon {
+    font-size: var(--app-text-sm);
+    line-height: 1;
+  }
+
+  &:hover {
+    background: var(--app-auth-sign-up-bg-hover);
+  }
+}
+
+@media (width <= 760px) {
+  .app-header__auth {
+    margin-inline-start: auto;
   }
 }
 

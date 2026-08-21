@@ -10,21 +10,22 @@
 
   【依赖关系】
     - 依赖：app/api/auth.ts
-    - mock：getRefreshTokenCookie、createAuthApiClient、mergeAttributionIntoBody
+    - mock：useAuthSession、createAuthApiClient、mergeAttributionIntoBody
 
   【渲染 / 数据】
     无
 
   【边界与注意】
     不覆盖完整 login 页面流；并发 refresh 单飞行为必测。
+    单飞 Promise 挂在 nuxtApp 上，跨 vi.resetModules() 仍共享同一次 refresh。
 */
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 const sessionMocks = vi.hoisted(() => ({
-  getRefreshTokenCookie: vi.fn(),
-  clearAuthSession: vi.fn(),
-  setAuthTokenCookies: vi.fn(),
-  getAccessTokenCookie: vi.fn()
+  accessToken: { value: null as string | null },
+  refreshToken: { value: null as string | null },
+  write: vi.fn(),
+  clear: vi.fn()
 }))
 
 const clientMocks = vi.hoisted(() => ({
@@ -38,7 +39,9 @@ const attributionMocks = vi.hoisted(() => ({
   }))
 }))
 
-vi.mock('../../app/utils/auth-session', () => sessionMocks)
+vi.mock('../../app/utils/auth-session', () => ({
+  useAuthSession: () => sessionMocks
+}))
 vi.mock('../../app/utils/attribution-params', () => attributionMocks)
 vi.mock('../../app/api/clients', () => ({
   createAuthApiClient: vi.fn(() => ({
@@ -50,8 +53,8 @@ describe('auth api', () => {
   beforeEach(async () => {
     vi.resetModules()
     vi.clearAllMocks()
-    sessionMocks.getRefreshTokenCookie.mockReturnValue({ value: 'refresh-token' })
-    sessionMocks.getAccessTokenCookie.mockReturnValue({ value: 'access-token' })
+    sessionMocks.accessToken.value = 'access-token'
+    sessionMocks.refreshToken.value = 'refresh-token'
   })
 
   it('deduplicates concurrent refresh requests', async () => {
@@ -91,7 +94,7 @@ describe('auth api', () => {
     const { refreshAccessTokenOnce } = await import('../../app/api/auth')
 
     await expect(refreshAccessTokenOnce()).rejects.toMatchObject({ statusCode: 503 })
-    expect(sessionMocks.clearAuthSession).not.toHaveBeenCalled()
+    expect(sessionMocks.clear).not.toHaveBeenCalled()
   })
 
   it('clears the local session when the refresh token is unauthorized', async () => {
@@ -103,7 +106,7 @@ describe('auth api', () => {
     const { refreshAccessTokenOnce } = await import('../../app/api/auth')
 
     await expect(refreshAccessTokenOnce()).rejects.toMatchObject({ statusCode: 401 })
-    expect(sessionMocks.clearAuthSession).toHaveBeenCalledOnce()
+    expect(sessionMocks.clear).toHaveBeenCalledOnce()
   })
 
   it('merges attribution params into register payloads', async () => {

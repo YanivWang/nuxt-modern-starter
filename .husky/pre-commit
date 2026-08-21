@@ -1,1 +1,4 @@
-pnpm lint-staged && pnpm lint && pnpm stylelint && pnpm typecheck && pnpm i18n:check && pnpm test
+# 只跑 lint-staged：全量 lint / stylelint / typecheck / i18n:check / test 由 CI 的
+# .github/workflows/quality.yml 执行（pnpm quality）。提交钩子重复跑一遍全量门禁
+# 会让每次提交等待数十秒，而且拦不住 CI 拦不住的东西。
+pnpm lint-staged

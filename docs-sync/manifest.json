@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-30T14:47:33.678Z",
+  "generatedAt": "2026-08-21T10:30:23.496Z",
   "findCommand": "find app server config docker nuxt.config.ts vitest.config.ts -type f \\( -name \"*.ts\" -o -name \"*.vue\" -o -name \"*.js\" -o -name \"*.scss\" -o -name \"*.yaml\" -o -name \"*.conf\" \\) 2>/dev/null | sort",
-  "sourceFileCount": 130,
+  "sourceFileCount": 133,
   "docFileCount": 33,
   "sourceFiles": [
     {
@@ -173,7 +173,21 @@
       "hasHeaderComment": true
     },
     {
+      "path": "app/components/layout/AppHeaderSignedOutActions.vue",
+      "type": "vue",
+      "module": "components",
+      "batch": 4,
+      "hasHeaderComment": true
+    },
+    {
       "path": "app/components/layout/AppShellHeader.vue",
+      "type": "vue",
+      "module": "components",
+      "batch": 4,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/components/layout/LanguageOptionList.vue",
       "type": "vue",
       "module": "components",
       "batch": 4,
@@ -202,6 +216,13 @@
     },
     {
       "path": "app/composables/useAuth.ts",
+      "type": "ts",
+      "module": "composables",
+      "batch": 3,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/composables/useCoarsePointer.ts",
       "type": "ts",
       "module": "composables",
       "batch": 3,
@@ -691,7 +712,7 @@
       "hasHeaderComment": true
     },
     {
-      "path": "app/plugins/auth.ts",
+      "path": "app/plugins/auth.client.ts",
       "type": "ts",
       "module": "plugins",
       "batch": 3,

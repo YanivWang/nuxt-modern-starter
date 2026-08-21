@@ -1,6 +1,6 @@
 # Coverage Report
 
-Generated: 2026-07-30T14:47:33.678Z
+Generated: 2026-08-21T10:30:23.496Z
 
 ## Enumeration
 
@@ -8,7 +8,7 @@ Generated: 2026-07-30T14:47:33.678Z
 find app server config docker nuxt.config.ts vitest.config.ts -type f \( -name "*.ts" -o -name "*.vue" -o -name "*.js" -o -name "*.scss" -o -name "*.yaml" -o -name "*.conf" \) 2>/dev/null | sort
 ```
 
-**Source file count:** 130
+**Source file count:** 133
 
 **Documentation file count:** 33
 
@@ -16,8 +16,8 @@ find app server config docker nuxt.config.ts vitest.config.ts -type f \( -name "
 
 - Batch 1 (config + nuxt.config): 11 files
 - Batch 2 (app/lib/http + app/api): 8 files
-- Batch 3 (middleware + plugins + composables + utils): 18 files
-- Batch 4 (stores + layouts + components + app-root): 21 files
+- Batch 3 (middleware + plugins + composables + utils): 19 files
+- Batch 4 (stores + layouts + components + app-root): 23 files
 - Batch 5 (pages + feature-workspace + feature-editor): 40 files
 - Batch 6 (feature-account + product-shell + templates): 10 files
 - Batch 7 (server + assets/styles): 17 files

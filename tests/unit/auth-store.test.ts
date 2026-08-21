@@ -9,7 +9,7 @@
     describe auth store（多 it 块）
 
   【依赖关系】
-    - 依赖：app/stores/auth.ts、auth-session cookies
+    - 依赖：app/stores/auth.ts、app/utils/auth-session.ts
     - mock：loginApi、logoutApi、fetchMeApi、refreshApi、registerApi、clearAttributionParams
 
   【渲染 / 数据】
@@ -17,17 +17,14 @@
 
   【边界与注意】
     不覆盖 UI router.push；register 断言不自动 fetchMe；修改 store action 须同步。
+    令牌断言一律读 useAuthSession()，store 不再持有令牌（见 tests/unit/ssr-cache-safety.test.ts）。
 */
 import { createPinia, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { useAuthStore } from '../../app/stores/auth'
 import { useAuth } from '../../app/composables/useAuth'
 import { createApiError } from '../../app/lib/http/error'
-import {
-  getAccessTokenCookie,
-  getRefreshTokenCookie,
-  tokenCookieOptions
-} from '../../app/utils/auth-session'
+import { tokenCookieOptions, useAuthSession } from '../../app/utils/auth-session'
 
 const apiMocks = vi.hoisted(() => ({
   loginApi: vi.fn(),
@@ -64,15 +61,13 @@ vi.mock('../../app/api/auth', () => ({
   })
 }))
 
-const clearAuthCookies = () => {
-  getAccessTokenCookie().value = null
-  getRefreshTokenCookie().value = null
-}
+/** 令牌唯一来源是会话模块；store 上没有令牌可读 */
+const session = () => useAuthSession()
 
 describe('auth store', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
-    clearAuthCookies()
+    session().clear()
     vi.clearAllMocks()
   })
 
@@ -100,8 +95,8 @@ describe('auth store', () => {
     const authStore = useAuthStore()
     await authStore.login({ username: 'alice', password: 'secret' })
 
-    expect(authStore.accessToken).toBe('access-token')
-    expect(authStore.refreshToken).toBe('refresh-token')
+    expect(session().accessToken.value).toBe('access-token')
+    expect(session().refreshToken.value).toBe('refresh-token')
     expect(authStore.user?.username).toBe('alice')
     expect(authStore.isAuthenticated).toBe(true)
     expect(apiMocks.fetchMeApi).toHaveBeenCalledWith('access-token')
@@ -118,8 +113,8 @@ describe('auth store', () => {
       statusCode: 401
     })
     expect(authStore.status).toBe('unauthenticated')
-    expect(authStore.accessToken).toBeFalsy()
-    expect(authStore.refreshToken).toBeFalsy()
+    expect(session().accessToken.value).toBeFalsy()
+    expect(session().refreshToken.value).toBeFalsy()
     expect(authStore.user).toBeNull()
   })
 
@@ -155,8 +150,8 @@ describe('auth store', () => {
     await authStore.logout()
 
     expect(attributionMocks.clearAttributionParams).toHaveBeenCalledOnce()
-    expect(authStore.accessToken).toBeFalsy()
-    expect(authStore.refreshToken).toBeFalsy()
+    expect(session().accessToken.value).toBeFalsy()
+    expect(session().refreshToken.value).toBeFalsy()
     expect(authStore.user).toBeNull()
     expect(authStore.status).toBe('unauthenticated')
   })
@@ -180,8 +175,8 @@ describe('auth store', () => {
 
     expect(attributionMocks.clearAttributionParams).not.toHaveBeenCalled()
     expect(authStore.status).toBe('idle')
-    expect(authStore.accessToken).toBe('access-token')
-    expect(authStore.refreshToken).toBe('refresh-token')
+    expect(session().accessToken.value).toBe('access-token')
+    expect(session().refreshToken.value).toBe('refresh-token')
   })
 
   it('clears tokens when the refresh token is unauthorized', async () => {
@@ -201,8 +196,8 @@ describe('auth store', () => {
 
     await expect(authStore.refresh()).rejects.toMatchObject({ statusCode: 401 })
     expect(authStore.status).toBe('unauthenticated')
-    expect(authStore.accessToken).toBeFalsy()
-    expect(authStore.refreshToken).toBeFalsy()
+    expect(session().accessToken.value).toBeFalsy()
+    expect(session().refreshToken.value).toBeFalsy()
   })
 
   it('fills user from /api/me', async () => {
@@ -263,8 +258,8 @@ describe('auth store', () => {
     await expect(authStore.refresh()).resolves.toBe(true)
 
     expect(apiMocks.refreshApi).toHaveBeenCalledWith('refresh-token')
-    expect(authStore.accessToken).toBe('next-access-token')
-    expect(authStore.refreshToken).toBe('next-refresh-token')
+    expect(session().accessToken.value).toBe('next-access-token')
+    expect(session().refreshToken.value).toBe('next-refresh-token')
   })
 
   it('registers without mutating the local session', async () => {
@@ -282,8 +277,8 @@ describe('auth store', () => {
       data: null
     })
 
-    expect(authStore.accessToken).toBeFalsy()
-    expect(authStore.refreshToken).toBeFalsy()
+    expect(session().accessToken.value).toBeFalsy()
+    expect(session().refreshToken.value).toBeFalsy()
     expect(authStore.user).toBeNull()
   })
 
@@ -314,8 +309,8 @@ describe('auth store', () => {
 
     await expect(useAuth().ensureSession()).rejects.toMatchObject({ statusCode: 503 })
     expect(apiMocks.refreshApi).not.toHaveBeenCalled()
-    expect(authStore.accessToken).toBe('access-token')
-    expect(authStore.refreshToken).toBe('refresh-token')
+    expect(session().accessToken.value).toBe('access-token')
+    expect(session().refreshToken.value).toBe('refresh-token')
   })
 
   it('refreshes exactly once after /me returns an unauthorized error', async () => {

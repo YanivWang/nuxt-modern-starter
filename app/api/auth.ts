@@ -20,18 +20,14 @@
 
   【边界与注意】
     createProductApiClient 定义在此文件，不在 app/api/clients.ts。
-    refresh 仅在明确 401 时 clearAuthSession；临时网络/服务端错误保留本地会话。
-    并发 401 共享同一 refreshPromise。
+    refresh 仅在明确 401 时清除令牌；临时网络/服务端错误保留本地会话。
+    并发 401 共享同一 refreshPromise，该 Promise 挂在 nuxtApp 上而非模块单例，
+    避免 SSR 下跨请求共用同一次 refresh。
 */
 import { AUTH_API_ENDPOINTS, type AuthUser, type Permission, type Role } from '../../config/auth'
 import type { ApiResponse } from '../lib/http/types'
 import { createAuthApiClient, type AuthApiClientOptions } from './clients'
-import {
-  clearAuthSession,
-  getAccessTokenCookie,
-  getRefreshTokenCookie,
-  setAuthTokenCookies
-} from '../utils/auth-session'
+import { useAuthSession } from '../utils/auth-session'
 import { mergeAttributionIntoBody } from '../utils/attribution-params'
 import { isUnauthorizedError } from '../lib/http/error'
 
@@ -80,41 +76,60 @@ export type UpdateProfilePayload = Record<string, string | number | boolean | nu
 
 export type ProductApiClientOptions = Omit<AuthApiClientOptions, 'refreshAccessToken'>
 
-let refreshPromise: Promise<string | null> | null = null
+const REFRESH_PROMISE_KEY = '_authRefreshPromise'
+
+type NuxtAppWithRefresh = ReturnType<typeof useNuxtApp> & {
+  [REFRESH_PROMISE_KEY]?: Promise<string | null>
+}
+
+/** 无 Nuxt 上下文时（如纯工具单测）退化为模块级单飞 */
+let fallbackRefreshPromise: Promise<string | null> | null = null
 
 const refreshAccessToken = async () => {
-  const refreshToken = getRefreshTokenCookie()
+  const session = useAuthSession()
 
-  if (!refreshToken.value) {
-    clearAuthSession()
+  if (!session.refreshToken.value) {
+    session.clear()
     return null
   }
 
   try {
-    const response = await refreshApi(refreshToken.value)
-    setAuthTokenCookies(response.data)
+    const response = await refreshApi(session.refreshToken.value)
+    session.write(response.data)
     return response.data.accessToken
   } catch (error) {
     if (isUnauthorizedError(error)) {
-      clearAuthSession()
+      session.clear()
     }
     throw error
   }
 }
 
 export const refreshAccessTokenOnce = () => {
-  // 401 单飞：并发请求共享同一 refresh Promise，避免 token 风暴
-  refreshPromise ||= refreshAccessToken().finally(() => {
-    refreshPromise = null
+  // 401 单飞：并发请求共享同一 refresh Promise，避免 token 风暴。
+  // Promise 按 Nuxt app 实例隔离，SSR 下不同请求不会共用同一次 refresh。
+  const nuxtApp = tryUseNuxtApp() as NuxtAppWithRefresh | undefined
+
+  if (!nuxtApp) {
+    fallbackRefreshPromise ||= refreshAccessToken().finally(() => {
+      fallbackRefreshPromise = null
+    })
+
+    return fallbackRefreshPromise
+  }
+
+  // 置 undefined 而非 delete：同样让下一次 401 重新发起 refresh，且不触发动态 key 删除
+  nuxtApp[REFRESH_PROMISE_KEY] ||= refreshAccessToken().finally(() => {
+    nuxtApp[REFRESH_PROMISE_KEY] = undefined
   })
 
-  return refreshPromise
+  return nuxtApp[REFRESH_PROMISE_KEY]
 }
 
 export const createProductApiClient = (options: ProductApiClientOptions = {}) =>
   createAuthApiClient({
     ...options,
-    accessToken: options.accessToken ?? getAccessTokenCookie().value,
+    accessToken: options.accessToken ?? useAuthSession().accessToken.value,
     refreshAccessToken: refreshAccessTokenOnce
   })
 

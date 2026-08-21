@@ -4,8 +4,8 @@
   "private": true,
   "packageManager": "pnpm@11.5.2",
   "engines": {
-    "node": "22.22.3",
-    "pnpm": "11.5.2"
+    "node": ">=22.22.3 <23",
+    "pnpm": ">=11.5.2 <12"
   },
   "scripts": {
     "build": "nuxt build --dotenv .env.prod",
@@ -26,6 +26,7 @@
     "docs:dev": "vitepress dev docs-site",
     "docs:preview": "vitepress preview docs-site",
     "docs:sync:check": "node docs-sync/check-docs-sync.mjs",
+    "docs:sync:manifest": "node docs-sync/generate-manifest.mjs",
     "docs:sync:extract": "node docs-sync/extract-doc-references.mjs",
     "docs:sync:enrich": "node docs-sync/enrich-claims.mjs",
     "docs:sync:reports": "node docs-sync/generate-batch-reports.mjs",

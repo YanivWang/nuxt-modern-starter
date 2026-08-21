@@ -61,7 +61,7 @@ Run the full release gate:
 pnpm quality
 ```
 
-`pnpm quality` runs lint, format:check, stylelint, typecheck, i18n:check, build, and test. Build runs before test so output-budget tests inspect the latest `.output` assets. Husky pre-commit keeps the faster subset for everyday commits.
+`pnpm quality` runs lint, format:check, stylelint, typecheck, i18n:check, build, and test. Build runs before test so output-budget tests inspect the latest `.output` assets. Husky pre-commit runs `lint-staged` only; the full gate runs in CI (`.github/workflows/quality.yml`).
 
 ## Docker Verification
 

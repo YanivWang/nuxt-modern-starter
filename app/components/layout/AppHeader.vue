@@ -10,14 +10,20 @@
     AppHeader
 
   【依赖关系】
-    - 依赖：config/site.ts（NAV_ITEMS）、BaseLogo、LanguageSwitcher、ThemeSwitch、useAuth
+    - 依赖：config/site.ts（NAV_ITEMS）、BaseLogo、LanguageSwitcher、ThemeSwitch、
+      AppHeaderSignedOutActions、useAuth
     - 被引用：app/layouts/default.vue
 
   【渲染 / 数据】
     未登录显示 sign-in / sign-up；已登录显示 enterWorkspace → /workspace（localePath）。
+    登录态分支包在 <ClientOnly> 内：本组件出现在 prerender / SWR 缓存的公开页上，
+    SSR 输出必须对所有访客一致，否则登录用户的渲染结果会被缓存并发给匿名访客。
 
   【边界与注意】
     产品 layout 不使用 AppHeader；内部链接须 localePath。
+    CTA 按钮样式（.app-header__auth / __sign-in / __sign-up / __workspace）为全局类，
+    定义在 app/assets/styles/main.scss，与 AppHeaderSignedOutActions 共享，勿改回 scoped。
+    新增依赖登录态的 UI 必须放进 <ClientOnly>，见 tests/unit/ssr-cache-safety.test.ts。
 -->
 <template>
   <header class="app-header" :class="{ 'app-header--scrolled': isScrolled }">
@@ -33,19 +39,25 @@
           <LanguageSwitcher />
           <ThemeSwitch />
         </div>
-        <div v-if="!authStore.isAuthenticated" class="app-header__auth">
-          <NuxtLink class="app-header__sign-in" :to="localePath('/sign-in')">
-            {{ $t('auth.header.signIn') }}
-          </NuxtLink>
-          <NuxtLink class="app-header__sign-up" :to="localePath('/sign-up')">
-            <span>{{ $t('auth.header.signUp') }}</span>
+        <!--
+          登录态 UI 只在客户端渲染。公开页存在 prerender 与 SWR 缓存，而 Nitro 的缓存键
+          只按 path、不区分 cookie：任何依赖登录态的 SSR 输出都会被缓存并发给其他访客。
+          fallback 与未登录分支复用同一组件，保证 SSR HTML 始终是匿名形态。
+        -->
+        <ClientOnly>
+          <NuxtLink
+            v-if="authStore.isAuthenticated"
+            class="app-header__workspace"
+            :to="localePath('/workspace')"
+          >
+            <span>{{ $t('auth.header.enterWorkspace') }}</span>
             <ArrowRightOutlined />
           </NuxtLink>
-        </div>
-        <NuxtLink v-else class="app-header__workspace" :to="localePath('/workspace')">
-          <span>{{ $t('auth.header.enterWorkspace') }}</span>
-          <ArrowRightOutlined />
-        </NuxtLink>
+          <AppHeaderSignedOutActions v-else />
+          <template #fallback>
+            <AppHeaderSignedOutActions />
+          </template>
+        </ClientOnly>
       </div>
     </AppContainer>
   </header>
@@ -134,62 +146,6 @@ onUnmounted(() => {
   gap: var(--app-header-utility-gap);
 }
 
-.app-header__auth {
-  display: flex;
-  align-items: center;
-  gap: var(--app-header-auth-gap);
-}
-
-.app-header__sign-in,
-.app-header__sign-up,
-.app-header__workspace {
-  box-sizing: border-box;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  min-height: var(--app-header-control-size);
-  padding-inline: var(--app-auth-btn-padding-inline);
-  border-radius: var(--app-auth-btn-radius);
-  font-size: var(--app-text-base);
-  font-weight: var(--app-weight-medium);
-  line-height: 1;
-  text-decoration: none;
-  white-space: nowrap;
-  transition:
-    background-color 0.2s ease,
-    border-color 0.2s ease,
-    color 0.2s ease;
-}
-
-.app-header__sign-in {
-  border: 1px solid var(--app-auth-sign-in-border);
-  background: var(--app-auth-sign-in-bg);
-  color: var(--app-auth-sign-in-text);
-
-  &:hover {
-    border-color: var(--app-auth-sign-in-border-hover);
-    background: var(--app-auth-sign-in-bg-hover);
-  }
-}
-
-.app-header__sign-up,
-.app-header__workspace {
-  border: 1px solid transparent;
-  background: var(--app-auth-sign-up-bg);
-  color: var(--app-auth-sign-up-text);
-  padding-inline-end: calc(var(--app-auth-btn-padding-inline) - 2px);
-
-  :deep(.anticon) {
-    font-size: var(--app-text-sm);
-    line-height: 1;
-  }
-
-  &:hover {
-    background: var(--app-auth-sign-up-bg-hover);
-  }
-}
-
 .app-nav a.router-link-active {
   color: var(--app-color-primary);
 }
@@ -211,10 +167,6 @@ onUnmounted(() => {
     flex-wrap: wrap;
     justify-content: space-between;
     gap: 12px;
-  }
-
-  .app-header__auth {
-    margin-inline-start: auto;
   }
 }
 </style>

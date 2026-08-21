@@ -1,6 +1,8 @@
 /*
   【文件职责】
     单测：通用 SaaS 基座定位契约，防止旧定位与旧响应契约口径回流。
+    黑名单模式存放在 docs-sync/legacy-terms.json —— 模式本身就是被禁止的字面量，
+    写在测试代码里会让扫描器扫到自己，从而不得不自我豁免。
 */
 import { readdirSync, readFileSync, statSync } from 'node:fs'
 import { join, relative, resolve } from 'node:path'
@@ -20,11 +22,14 @@ const scannedRoots = [
 ] as const
 
 const ignoredDirectories = new Set(['node_modules', '.nuxt', '.output', '.git', 'dist'])
-const ignoredFiles = new Set([
-  'scripts/i18n-diff.json',
-  'scripts/i18n-used.json',
-  'tests/unit/saas-foundation-contract.test.ts'
-])
+type LegacyTerm = { source: string; flags: string; reason: string }
+type LegacyTermsFile = { ignoredFiles: string[]; patterns: LegacyTerm[] }
+
+const legacyTerms = JSON.parse(
+  readFileSync(resolve(projectRoot, 'docs-sync/legacy-terms.json'), 'utf8')
+) as LegacyTermsFile
+
+const ignoredFiles = new Set(legacyTerms.ignoredFiles)
 const textExtensions = new Set([
   '.ts',
   '.vue',
@@ -38,20 +43,10 @@ const textExtensions = new Set([
   '.yml'
 ])
 
-const legacyPatterns = [
-  /personal creator/i,
-  /personal-creator/i,
-  /consumer-facing/i,
-  /consumer creator/i,
-  /consumer-product/i,
-  /C 端个人创作者/,
-  /个人创作者/,
-  /个人产品/,
-  /裸 JSON/,
-  /非信封 JSON/,
-  /跳过.*assertApiSuccess/,
-  /旧说法/
-]
+const legacyPatterns = legacyTerms.patterns.map((term) => ({
+  regex: new RegExp(term.source, term.flags),
+  reason: term.reason
+}))
 
 const extensionOf = (filePath: string) => {
   const lastDot = filePath.lastIndexOf('.')
@@ -87,8 +82,8 @@ describe('SaaS foundation contract', () => {
         const source = readFileSync(resolve(projectRoot, file), 'utf8')
 
         return legacyPatterns
-          .filter((pattern) => pattern.test(source))
-          .map((pattern) => `${file} -> ${pattern}`)
+          .filter(({ regex }) => regex.test(source))
+          .map(({ regex, reason }) => `${file} -> ${regex.source}（${reason}）`)
       })
 
     expect(offenders).toEqual([])

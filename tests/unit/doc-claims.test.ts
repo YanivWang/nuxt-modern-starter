@@ -5,6 +5,11 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { execFileSync } from 'node:child_process'
+import {
+  diffAgainstDisk,
+  enumerateDocPaths,
+  enumerateSourcePaths
+} from '../../docs-sync/lib/enumerate-sources.mjs'
 import { describe, expect, it } from 'vitest'
 
 const ROOT = path.resolve(import.meta.dirname, '../..')
@@ -13,6 +18,8 @@ const readJson = <T>(rel: string): T =>
   JSON.parse(fs.readFileSync(path.join(ROOT, rel), 'utf8')) as T
 
 const readText = (rel: string) => fs.readFileSync(path.join(ROOT, rel), 'utf8')
+
+const REGENERATE_HINT = 'pnpm docs:sync:manifest'
 
 type DocClaim = {
   id: string
@@ -23,17 +30,38 @@ type DocClaim = {
 }
 
 describe('doc-claims sync', () => {
-  const manifest = readJson<{ sourceFiles: { path: string }[]; docFiles: { path: string }[] }>(
-    'docs-sync/manifest.json'
-  )
+  const manifest = readJson<{
+    sourceFileCount: number
+    docFileCount: number
+    sourceFiles: { path: string }[]
+    docFiles: { path: string }[]
+  }>('docs-sync/manifest.json')
   const docClaims = readJson<{ claims: DocClaim[]; requiredClaimsPerDoc?: number }>(
     'docs-sync/doc-claims.json'
   )
   const minClaims = docClaims.requiredClaimsPerDoc ?? 2
 
-  it('manifest covers 130 source files and 33 docs', () => {
-    expect(manifest.sourceFiles).toHaveLength(130)
-    expect(manifest.docFiles).toHaveLength(33)
+  it('manifest covers exactly the files that exist on disk', () => {
+    // 对着真实文件树比，不锁计数：新增源文件时报出的是文件名，不是一个魔法数字
+    const sourceDiff = diffAgainstDisk(
+      manifest.sourceFiles.map((f) => f.path),
+      enumerateSourcePaths()
+    )
+    const docDiff = diffAgainstDisk(
+      manifest.docFiles.map((d) => d.path),
+      enumerateDocPaths()
+    )
+
+    expect(
+      { ...sourceDiff, hint: REGENERATE_HINT },
+      '运行 pnpm docs:sync:manifest 重新生成 manifest'
+    ).toEqual({ added: [], removed: [], hint: REGENERATE_HINT })
+    expect(docDiff, '运行 pnpm docs:sync:manifest 重新生成 manifest').toEqual({
+      added: [],
+      removed: []
+    })
+    expect(manifest.sourceFiles).toHaveLength(manifest.sourceFileCount)
+    expect(manifest.docFiles).toHaveLength(manifest.docFileCount)
   })
 
   it('each doc has at least required claims with evidenceHint', () => {

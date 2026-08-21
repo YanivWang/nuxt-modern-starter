@@ -36,6 +36,7 @@
       "name": "middleware + plugins + composables + utils",
       "files": [
         "app/composables/useAuth.ts",
+        "app/composables/useCoarsePointer.ts",
         "app/composables/useLanguageSwitch.ts",
         "app/composables/useLocalePath.ts",
         "app/composables/usePageSeo.ts",
@@ -45,7 +46,7 @@
         "app/middleware/locale.global.ts",
         "app/plugins/analytics.client.ts",
         "app/plugins/attribution.client.ts",
-        "app/plugins/auth.ts",
+        "app/plugins/auth.client.ts",
         "app/plugins/i18n.ts",
         "app/utils/antdIcon.ts",
         "app/utils/attribution-params.ts",
@@ -67,7 +68,9 @@
         "app/components/base/PageContainer.vue",
         "app/components/layout/AppFooter.vue",
         "app/components/layout/AppHeader.vue",
+        "app/components/layout/AppHeaderSignedOutActions.vue",
         "app/components/layout/AppShellHeader.vue",
+        "app/components/layout/LanguageOptionList.vue",
         "app/components/layout/LanguageSwitcher.vue",
         "app/components/layout/ThemeSwitch.vue",
         "app/components/layout/UserAccountMenu.vue",
@@ -179,5 +182,5 @@
       ]
     }
   ],
-  "totalFiles": 130
+  "totalFiles": 133
 }

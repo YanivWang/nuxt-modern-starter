@@ -3,7 +3,7 @@
 ## 命令
 
 ```bash
-pnpm test          # Vitest 一次运行（36 文件 / 146 测试）
+pnpm test          # Vitest 一次运行（37 文件 / 154 测试）
 pnpm test:watch    # 监听模式
 pnpm typecheck     # vue-tsc + Nuxt 类型
 pnpm lint            # ESLint
@@ -21,7 +21,7 @@ lint → format:check → stylelint → typecheck → i18n:check → build → t
 
 `i18n:check` 防止 locale 配置、语言包目录、resolver 与 key 快照漂移。
 
-Husky pre-commit 跑较快子集：`lint-staged`，再跑 `lint`、`stylelint`、`typecheck`、`test`（不含 `format:check` 和 `build`）。
+Husky pre-commit 只跑 `lint-staged`。全量门禁属于 CI（`.github/workflows/quality.yml` 跑 `pnpm docs:sync:check` 与 `pnpm quality`）——在提交钩子里再跑一遍，每次提交要等数十秒，却拦不住 CI 拦不住的东西。
 
 ## 测试分类
 

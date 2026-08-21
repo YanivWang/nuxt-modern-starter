@@ -10,14 +10,15 @@
     LanguageSwitcher
 
   【依赖关系】
-    - 依赖：useLanguageStore、useLocalePath（switchLocalePath）
+    - 依赖：useLanguageSwitch、useCoarsePointer、LanguageOptionList
     - 被引用：AppHeader
 
   【渲染 / 数据】
     公开页切换会改 URL（/ ↔ /en）；产品区语言切换见 UserAccountMenu。
 
   【边界与注意】
-    与 UserAccountMenu 内嵌语言面板逻辑类似，但用于公开 header 场景。
+    选项列表与产品区 UserAccountMenu 共用 LanguageOptionList；本组件只负责触发器与浮层定位。
+    切换逻辑统一走 useLanguageSwitch，勿在此重复实现 chooseLanguage + router.push。
 -->
 <template>
   <div class="language-switcher" @mouseenter="openPanel" @mouseleave="closePanel">
@@ -33,51 +34,26 @@
     </button>
 
     <Transition name="language-switcher-fade">
-      <div
+      <LanguageOptionList
         v-show="isOpen"
         class="language-switcher__panel"
-        role="menu"
-        :aria-label="$t('common.switchLanguage')"
-      >
-        <button
-          v-for="language in languageStore.languages"
-          :key="language.locale"
-          type="button"
-          role="menuitem"
-          class="language-switcher__item"
-          :class="{
-            'language-switcher__item--active': language.locale === languageStore.currentLanguage
-          }"
-          :aria-current="language.locale === languageStore.currentLanguage ? 'true' : undefined"
-          @click="handleLanguageSelect(language.locale)"
-        >
-          <span class="language-switcher__label">{{ language.label }}</span>
-          <span class="language-switcher__check-slot" aria-hidden="true">
-            <CheckOutlined
-              v-if="language.locale === languageStore.currentLanguage"
-              class="language-switcher__check"
-            />
-          </span>
-        </button>
-      </div>
+        :languages="languages"
+        :current-language="currentLanguage"
+        :panel-label="$t('common.switchLanguage')"
+        @select="handleLanguageSelect"
+      />
     </Transition>
   </div>
 </template>
 
 <script setup lang="ts">
-import { CheckOutlined, TranslationOutlined } from '../../utils/antdIcon'
-import { SUPPORTED_LOCALES, type SupportedLocale } from '../../../config/site'
+import { TranslationOutlined } from '../../utils/antdIcon'
+import type { SupportedLocale } from '../../../config/site'
 
-const router = useRouter()
-const languageStore = useLanguageStore()
-const { switchLocalePath } = useLocalePath()
+const { switchLanguage, languages, currentLanguage } = useLanguageSwitch()
+const { isCoarsePointer } = useCoarsePointer()
 
 const isOpen = ref(false)
-const isCoarsePointer = ref(false)
-
-onMounted(() => {
-  isCoarsePointer.value = window.matchMedia('(hover: none), (pointer: coarse)').matches
-})
 
 const openPanel = () => {
   if (!isCoarsePointer.value) {
@@ -91,6 +67,7 @@ const closePanel = () => {
   }
 }
 
+// 触控设备没有 hover，改由点击触发器切换面板
 const handleTriggerClick = () => {
   if (isCoarsePointer.value) {
     isOpen.value = !isOpen.value
@@ -98,14 +75,8 @@ const handleTriggerClick = () => {
 }
 
 const handleLanguageSelect = async (locale: SupportedLocale) => {
-  if (!SUPPORTED_LOCALES.includes(locale) || locale === languageStore.currentLanguage) {
-    isOpen.value = false
-    return
-  }
-
-  await languageStore.chooseLanguage(locale)
-  // 公开页切换语言会改 URL（/ ↔ /en）；与产品区 UserAccountMenu 行为不同
-  await router.push(switchLocalePath(locale))
+  // 公开页切换语言会改 URL（/ ↔ /en）；产品区不改，差异封装在 switchLocalePath 里
+  await switchLanguage(locale)
   isOpen.value = false
 }
 </script>
@@ -126,19 +97,8 @@ const handleLanguageSelect = async (locale: SupportedLocale) => {
   position: absolute;
   top: calc(100% + 6px);
   right: 0;
-  z-index: var(--app-z-index-dropdown);
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  box-sizing: border-box;
-  width: max-content;
-  min-width: var(--app-lang-panel-min-width);
-  padding: var(--app-lang-panel-padding);
-  border: 1px solid var(--app-color-border);
-  border-radius: 10px;
-  background: var(--app-color-bg);
-  box-shadow: var(--app-shadow-dropdown);
 
+  // hover 打开时补一条不可见的桥接区，避免鼠标从触发器移到面板途中面板关闭
   &::before {
     content: '';
     position: absolute;
@@ -147,60 +107,6 @@ const handleLanguageSelect = async (locale: SupportedLocale) => {
     left: 0;
     height: 6px;
   }
-}
-
-.language-switcher__item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  width: 100%;
-  min-height: var(--app-lang-item-height);
-  padding: 0 10px;
-  border: 0;
-  border-radius: 6px;
-  background: transparent;
-  color: var(--app-color-text);
-  cursor: pointer;
-  font: inherit;
-  font-size: var(--app-lang-item-font-size);
-  line-height: 1.2;
-  text-align: left;
-  transition:
-    color 0.15s ease,
-    background-color 0.15s ease;
-
-  &:hover,
-  &:focus-visible {
-    background: var(--app-color-elevated);
-  }
-}
-
-.language-switcher__item--active {
-  background: var(--app-color-elevated);
-  color: var(--app-color-primary);
-  font-weight: 600;
-}
-
-.language-switcher__label {
-  flex: 1;
-  min-width: 0;
-  white-space: nowrap;
-}
-
-.language-switcher__check-slot {
-  display: inline-flex;
-  flex-shrink: 0;
-  align-items: center;
-  justify-content: center;
-  width: 14px;
-  height: 14px;
-}
-
-.language-switcher__check {
-  color: var(--app-color-primary);
-  font-size: var(--app-text-xs);
-  line-height: 1;
 }
 
 .language-switcher-fade-enter-active,

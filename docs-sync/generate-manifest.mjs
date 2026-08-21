@@ -3,31 +3,17 @@
  * Generates docs-sync/manifest.json, batches.json, and enumerates doc files.
  * Run: node docs-sync/generate-manifest.mjs
  */
-import { execSync } from 'node:child_process'
 import fs from 'node:fs'
 import path from 'node:path'
+import {
+  FIND_SOURCES_CMD as FIND_CMD,
+  ROOT,
+  enumerateDocPaths,
+  enumerateSourcePaths
+} from './lib/enumerate-sources.mjs'
 
-const ROOT = path.resolve(import.meta.dirname, '..')
-
-const FIND_CMD =
-  'find app server config docker nuxt.config.ts vitest.config.ts -type f \\( -name "*.ts" -o -name "*.vue" -o -name "*.js" -o -name "*.scss" -o -name "*.yaml" -o -name "*.conf" \\) 2>/dev/null | sort'
-
-const sourcePaths = execSync(FIND_CMD, { cwd: ROOT, encoding: 'utf8' })
-  .trim()
-  .split('\n')
-  .filter(Boolean)
-
-const docPaths = [
-  ...execSync('find docs-site -name "*.md" | sort', { cwd: ROOT, encoding: 'utf8' })
-    .trim()
-    .split('\n')
-    .filter(Boolean),
-  ...execSync('find docs -name "*.md" | sort', { cwd: ROOT, encoding: 'utf8' })
-    .trim()
-    .split('\n')
-    .filter(Boolean),
-  'README.md'
-]
+const sourcePaths = enumerateSourcePaths()
+const docPaths = enumerateDocPaths()
 
 const moduleOf = (p) => {
   if (p.startsWith('config/')) return 'config'

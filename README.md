@@ -68,6 +68,7 @@ pnpm docs:dev      # http://localhost:5173
 pnpm docs:build
 pnpm docs:preview
 pnpm docs:sync:check   # 校验 manifest / 头注释 / doc-claims 与源码一致
+pnpm docs:sync:manifest # 新增或删除源文件后重新生成 manifest / batches / COVERAGE
 ```
 
 Source lives in `docs-site/`. Pushing changes under `docs-site/` to `main` triggers `.github/workflows/deploy-docs.yml` and publishes to GitHub Pages (`Settings → Pages → Source: GitHub Actions`).
@@ -99,6 +100,7 @@ pnpm test
 pnpm test:watch
 pnpm quality
 pnpm docs:sync:check
+pnpm docs:sync:manifest
 pnpm docker:build
 pnpm docker:run
 pnpm docker:up
@@ -139,7 +141,7 @@ Run the full local quality gate:
 pnpm quality
 ```
 
-`pnpm quality` runs lint, format:check, stylelint, typecheck, i18n:check, build, and test. Build runs before test so output-budget tests inspect the latest `.output` assets. Husky pre-commit keeps the faster subset for everyday commits.
+`pnpm quality` runs lint, format:check, stylelint, typecheck, i18n:check, build, and test. Build runs before test so output-budget tests inspect the latest `.output` assets. Husky pre-commit runs `lint-staged` only; the full gate runs in CI (`.github/workflows/quality.yml`).
 
 Then verify deployment samples:
 

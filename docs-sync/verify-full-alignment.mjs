@@ -42,6 +42,14 @@ const symbolAllowlist = new Set([
 ])
 const errors = []
 
+/** 精确版本的单一来源：.nvmrc（Node）与 package.json packageManager（pnpm） */
+const pinnedNodeVersion = fs.existsSync(path.join(ROOT, '.nvmrc'))
+  ? fs.readFileSync(path.join(ROOT, '.nvmrc'), 'utf8').trim().replace(/^v/, '')
+  : undefined
+const pinnedPnpmVersion = JSON.parse(
+  fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8')
+).packageManager?.replace('pnpm@', '')
+
 const pushError = (category, detail) => errors.push({ category, ...detail })
 
 // ── 1. Verify every extracted doc reference ──
@@ -178,9 +186,10 @@ for (const ref of docRefs.references) {
       }
       const packageName = packageNameByDocName[name] ?? name
       let actual
-      if (name === 'Node') actual = index.engines.node
-      else if (name === 'pnpm')
-        actual = index.engines.pnpm ?? index.pkg.packageManager?.replace('pnpm@', '')
+      // engines 是支持范围（>=x <y），精确版本的单一来源是 .nvmrc 与 packageManager；
+      // 文档里的「验证版本」表对齐的是后者，拿 engines 去比会把范围当成版本号。
+      if (name === 'Node') actual = pinnedNodeVersion
+      else if (name === 'pnpm') actual = pinnedPnpmVersion
       else actual = index.deps[packageName]?.replace(/^[\^~]/, '')
 
       const pattern = new RegExp(`^${ver.replace(/\./g, '\\.').replace(/x/g, '\\d+')}(?:\\.|$)`)
@@ -212,8 +221,9 @@ const countTestsFromSources = () => {
       if (entry.isDirectory()) walk(full)
       else if (entry.name.endsWith('.test.ts')) {
         const content = fs.readFileSync(full, 'utf8')
-        total += (content.match(/\bit\s*\(/g) ?? []).length
-        total += (content.match(/\btest\s*\(/g) ?? []).length
+        // 只认行首的 it( / test(（含 it.each、it.skip 等修饰）：
+        // \btest\s*\( 会把 regex.test(source)、date.test(...) 这类调用也算成用例。
+        total += (content.match(/^\s*(?:it|test)(?:\.\w+)*\s*\(/gm) ?? []).length
       }
     }
   }

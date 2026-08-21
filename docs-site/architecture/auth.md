@@ -22,7 +22,7 @@
 | `app/stores/auth.ts`         | Pinia：user、tokens、status、业务 action     |
 | `app/composables/useAuth.ts` | `ensureSession()`、`can()`、`hasRole()`      |
 | `app/middleware/auth.ts`     | 保护路由、RBAC、登录重定向                   |
-| `app/plugins/auth.ts`        | 启动时 session 恢复                          |
+| `app/plugins/auth.client.ts` | 启动时 session 恢复（**仅客户端**）          |
 | `app/utils/safe-redirect.ts` | 登录 redirect 防开放重定向                   |
 
 ## 前端路由 vs 后端端点
@@ -111,7 +111,22 @@ sign-in 页使用 `resolveSafeRedirectPath()` 校验 redirect，拒绝 `//evil.c
 
 ## Session 恢复
 
-`plugins/auth.ts`：启动时若 cookie 有 token → `ensureSession()` → fetchMe 或 refresh。
+`plugins/auth.client.ts`：启动时若 cookie 有 token → `ensureSession()` → fetchMe 或 refresh。
+
+## 为什么会话状态不进 SSR
+
+两条硬性约束，改动鉴权代码时必须一起满足：
+
+1. **令牌不进 Pinia state。** `@pinia/nuxt` 在 `app:rendered` 时执行
+   `payload.pinia = toRaw($pinia).state.value`，setup store 返回的任何 ref 都会被写进 SSR HTML。
+   因此令牌留在 `app/utils/auth-session.ts` 的 cookie ref 里，store 只通过 `isAuthenticated`
+   这类 getter 间接依赖它们。
+2. **登录态不影响 SSR 输出。** 公开页有 prerender 与 SWR 缓存，而 Nitro 的缓存键只按 path、
+   不区分 cookie；任何随登录态变化的 SSR 输出都会被缓存并发给其他访客。所以鉴权 bootstrap
+   是 `.client` 插件，`AppHeader` 的登录态分支包在 `<ClientOnly>` 内。产品区路由本身是
+   `ssr: false`，服务端从不需要登录态。
+
+两条约束都由 `tests/unit/ssr-cache-safety.test.ts` 守住。
 
 ## 下一步
 

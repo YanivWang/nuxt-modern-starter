@@ -6,6 +6,12 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { execSync } from 'node:child_process'
+import {
+  diffAgainstDisk,
+  enumerateDocPaths,
+  enumerateSourcePaths,
+  formatDiff
+} from './lib/enumerate-sources.mjs'
 
 const ROOT = path.resolve(import.meta.dirname, '..')
 const batchArg = process.argv.find((a) => a.startsWith('--batch='))
@@ -35,11 +41,29 @@ for (const p of manifestPaths) {
 for (const p of batchPaths) {
   if (!manifestPaths.has(p)) errors.push(`batch has unknown file: ${p}`)
 }
-if (manifest.sourceFiles.length !== 130) {
-  errors.push(`manifest count ${manifest.sourceFiles.length} !== 130`)
-}
-if (batches.totalFiles !== 130) {
-  errors.push(`batches total ${batches.totalFiles} !== 130`)
+// 覆盖范围对着真实文件树比，不用硬编码计数：新增/删除文件时给出可执行的修复提示
+const REGENERATE_HINT = 'pnpm docs:sync:manifest（随后为新文件补头注释与 doc-claims）'
+errors.push(
+  ...formatDiff(
+    diffAgainstDisk([...manifestPaths], enumerateSourcePaths()),
+    'manifest.sourceFiles',
+    REGENERATE_HINT
+  )
+)
+errors.push(
+  ...formatDiff(
+    diffAgainstDisk(
+      manifest.docFiles.map((d) => d.path),
+      enumerateDocPaths()
+    ),
+    'manifest.docFiles',
+    REGENERATE_HINT
+  )
+)
+if (batches.totalFiles !== manifest.sourceFiles.length) {
+  errors.push(
+    `batches.totalFiles ${batches.totalFiles} 与 manifest.sourceFiles ${manifest.sourceFiles.length} 不一致 → ${REGENERATE_HINT}`
+  )
 }
 
 // 2. header comment check
@@ -206,8 +230,11 @@ if (!batchId) {
     execSync('node docs-sync/verify-full-alignment.mjs', { cwd: ROOT, stdio: 'pipe' })
     console.log('strict alignment: 100% verified')
   } catch (e) {
-    const out = e.stdout?.toString() ?? e.stderr?.toString() ?? e.message
-    errors.push(`strict alignment failed:\n${out}`)
+    // stdout 为空 Buffer 时不是 nullish，?? 会把 stderr 整个吞掉 —— 失败原因必须两路都取
+    const out = [e.stdout?.toString(), e.stderr?.toString()]
+      .filter((chunk) => chunk && chunk.trim())
+      .join('\n')
+    errors.push(`strict alignment failed:\n${out || e.message}`)
   }
 }
 

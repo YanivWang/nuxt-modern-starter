@@ -8,7 +8,7 @@ Before tagging, deploying, or running `pnpm docker:up`, run the full local quali
 pnpm quality
 ```
 
-`pnpm quality` runs `lint`, `format:check`, `stylelint`, `typecheck`, `i18n:check`, `build`, and `test`. Build runs before test so output-budget tests inspect the latest `.output` assets. Husky pre-commit still runs the faster subset (`lint-staged`, then `lint`, `stylelint`, `typecheck`, `test`) on every commit and intentionally skips `format:check`, `i18n:check`, and `build` to keep day-to-day commits fast.
+`pnpm quality` runs `lint`, `format:check`, `stylelint`, `typecheck`, `i18n:check`, `build`, and `test`. Build runs before test so output-budget tests inspect the latest `.output` assets. Husky pre-commit runs `lint-staged` only. The full gate belongs to CI (`.github/workflows/quality.yml` runs `pnpm docs:sync:check` and `pnpm quality`); duplicating it in the commit hook costs tens of seconds per commit without catching anything CI would miss.
 
 Typical release flow:
 
@@ -328,9 +328,9 @@ Auth is implemented as an opt-in Bearer Token module for the current application
 - `POST /api/register` creates an account but does not log the user in. The sign-up page redirects users to sign-in after success.
 - `POST /api/login` and `POST /api/refresh` return `accessToken` and `refreshToken`. Tokens are stored in JS-readable Nuxt cookies for client-side product workflows.
 - `createAuthApiClient()` and `createProductApiClient()` may attach the access token for authenticated business requests. A 401 triggers a single-flight `POST /api/refresh` and retries the failed request once; refresh failure clears the local session.
-- `app/stores/auth.ts` owns `user`, token cookies, `status`, `login`, `register`, `logout`, `fetchMe`, `refresh`, and `reset`.
+- `app/stores/auth.ts` owns `user`, `status`, `login`, `register`, `logout`, `fetchMe`, `refresh`, and `reset`. It never holds the tokens themselves: Pinia state is serialized into the SSR payload, so credentials stay in `app/utils/auth-session.ts` and are reached through `useAuthSession()`.
 - `app/composables/useAuth.ts` exposes the store plus `ensureSession()`, `can()`, and `hasRole()` for pages and middleware.
-- `app/plugins/auth.ts` hydrates `/api/me` on startup when token cookies are present.
+- `app/plugins/auth.client.ts` hydrates `/api/me` on startup when token cookies are present. It is client-only on purpose: prerendered and SWR-cached HTML must not depend on who is signed in.
 - Protected routes opt in with `definePageMeta({ middleware: 'auth' })`. Optional `route.meta.auth.roles` and `route.meta.auth.permissions` are already checked by the middleware.
 - Login redirect targets must stay on same-origin relative paths. Use `resolveSafeRedirectPath()` from `app/utils/safe-redirect.ts` on the sign-in page instead of passing raw `route.query.redirect` to `router.push()`.
 - The backend currently has no RBAC fields in JWT or `/api/me`. Frontend roles and permissions default to empty arrays and should be populated in `normalizeAuthUser()` once the backend contract adds them.

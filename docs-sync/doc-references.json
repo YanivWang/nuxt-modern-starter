@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-21T07:09:56.531Z",
+  "generatedAt": "2026-08-21T10:34:58.623Z",
   "docFileCount": 33,
-  "referenceCount": 1131,
+  "referenceCount": 1139,
   "pathAllowlist": [
     "app/features/my-feature/",
     "app/features/my-feature/components/",
@@ -444,8 +444,8 @@
       "docFile": "docs-site/architecture/auth.md",
       "line": 25,
       "type": "file-path",
-      "value": "app/plugins/auth.ts",
-      "context": "| `app/plugins/auth.ts`        | 启动时 session 恢复                          |"
+      "value": "app/plugins/auth.client.ts",
+      "context": "| `app/plugins/auth.client.ts` | 启动时 session 恢复（**仅客户端**）          |"
     },
     {
       "docFile": "docs-site/architecture/auth.md",
@@ -495,6 +495,27 @@
       "type": "symbol",
       "value": "UserAccountMenu",
       "context": "`logout()` **不负责路由跳转**。`AccountPage`、`UserAccountMenu` 等在 `await logout()` 后调用 `router.push(localePath('/'))` 回到首页。"
+    },
+    {
+      "docFile": "docs-site/architecture/auth.md",
+      "line": 122,
+      "type": "symbol",
+      "value": "isAuthenticated",
+      "context": "   因此令牌留在 `app/utils/auth-session.ts` 的 cookie ref 里，store 只通过 `isAuthenticated`"
+    },
+    {
+      "docFile": "docs-site/architecture/auth.md",
+      "line": 126,
+      "type": "symbol",
+      "value": "AppHeader",
+      "context": "   是 `.client` 插件，`AppHeader` 的登录态分支包在 `<ClientOnly>` 内。产品区路由本身是"
+    },
+    {
+      "docFile": "docs-site/architecture/auth.md",
+      "line": 129,
+      "type": "file-path",
+      "value": "tests/unit/ssr-cache-safety.test.ts",
+      "context": "两条约束都由 `tests/unit/ssr-cache-safety.test.ts` 守住。"
     },
     {
       "docFile": "docs-site/architecture/data-flow.md",
@@ -2720,7 +2741,7 @@
       "line": 46,
       "type": "script",
       "value": "quality",
-      "context": "| `pnpm quality` | 发布门禁：上述 + `format:check` + `i18n:check` + `build`                |"
+      "context": "| `pnpm quality` | 发布门禁：上述 + `format:check` + `i18n:check` + `build` |"
     },
     {
       "docFile": "docs-site/development/conventions.md",
@@ -2734,14 +2755,14 @@
       "line": 6,
       "type": "script",
       "value": "test",
-      "context": "pnpm test          # Vitest 一次运行（36 文件 / 146 测试）"
+      "context": "pnpm test          # Vitest 一次运行（37 文件 / 154 测试）"
     },
     {
       "docFile": "docs-site/development/testing.md",
       "line": 6,
       "type": "test-count",
-      "value": "36/146",
-      "context": "pnpm test          # Vitest 一次运行（36 文件 / 146 测试）"
+      "value": "37/154",
+      "context": "pnpm test          # Vitest 一次运行（37 文件 / 154 测试）"
     },
     {
       "docFile": "docs-site/development/testing.md",
@@ -2787,6 +2808,13 @@
     },
     {
       "docFile": "docs-site/development/testing.md",
+      "line": 24,
+      "type": "script",
+      "value": "docs:sync:check",
+      "context": "Husky pre-commit 只跑 `lint-staged`。全量门禁属于 CI（`.github/workflows/quality.yml` 跑 `pnpm docs:sync:check` 与 `pnpm quality`）——"
+    },
+    {
+      "docFile": "docs-site/development/testing.md",
       "line": 30,
       "type": "file-path",
       "value": "tests/unit/",
@@ -2825,123 +2853,123 @@
       "line": 10,
       "type": "file-path",
       "value": "package.json",
-      "context": "`package.json` `engines` 要求 Node **22.22.3**、pnpm **11.5.2**。"
+      "context": "`package.json` `engines` 要求 Node **>=22.22.3 <23**、pnpm **>=11.5.2 <12**；上表是验证过的版本。"
     },
     {
       "docFile": "docs-site/guide/getting-started.md",
-      "line": 23,
+      "line": 25,
       "type": "external-script",
       "value": "install",
       "context": "pnpm install"
     },
     {
       "docFile": "docs-site/guide/getting-started.md",
-      "line": 24,
+      "line": 26,
       "type": "script",
       "value": "dev",
       "context": "pnpm dev"
     },
     {
       "docFile": "docs-site/guide/getting-started.md",
-      "line": 32,
+      "line": 34,
       "type": "env-file",
       "value": ".env.dev",
       "context": "默认读取 `.env.dev` 环境层。"
     },
     {
       "docFile": "docs-site/guide/getting-started.md",
-      "line": 38,
+      "line": 40,
       "type": "external-script",
       "value": "docker:dev",
       "context": "1. 在 **`nuxt-modern-starter-api` 后端仓库** 启动 Docker 栈（该仓库命令，常见为 `pnpm docker:dev`；与本前端 `pnpm docker:up:dev` 不同）"
     },
     {
       "docFile": "docs-site/guide/getting-started.md",
-      "line": 38,
+      "line": 40,
       "type": "script",
       "value": "docker:up:dev",
       "context": "1. 在 **`nuxt-modern-starter-api` 后端仓库** 启动 Docker 栈（该仓库命令，常见为 `pnpm docker:dev`；与本前端 `pnpm docker:up:dev` 不同）"
     },
     {
       "docFile": "docs-site/guide/getting-started.md",
-      "line": 42,
+      "line": 44,
       "type": "env-var",
       "value": "NUXT_PUBLIC_API_BASE",
       "context": "NUXT_PUBLIC_API_BASE=http://localhost:2027/api"
     },
     {
       "docFile": "docs-site/guide/getting-started.md",
-      "line": 45,
+      "line": 47,
       "type": "file-path",
       "value": "nuxt.config.ts",
       "context": "对应 `nuxt.config.ts` `runtimeConfig.public.apiBase` 默认值。"
     },
     {
       "docFile": "docs-site/guide/getting-started.md",
-      "line": 47,
+      "line": 49,
       "type": "symbol",
       "value": "CORS_ORIGINS",
       "context": "3. 后端 `CORS_ORIGINS` 包含 `http://localhost:3000`"
     },
     {
       "docFile": "docs-site/guide/getting-started.md",
-      "line": 48,
+      "line": 50,
       "type": "route",
       "value": "/workspace",
       "context": "4. 登录后验证 `/workspace`（列表/删除）、从创建按钮进入 `/docs/new`、编辑器自动保存与标题编辑、`/workspace/templates` 占位页、`/account` 资料展示与退出"
     },
     {
       "docFile": "docs-site/guide/getting-started.md",
-      "line": 48,
+      "line": 50,
       "type": "route",
       "value": "/docs/new",
       "context": "4. 登录后验证 `/workspace`（列表/删除）、从创建按钮进入 `/docs/new`、编辑器自动保存与标题编辑、`/workspace/templates` 占位页、`/account` 资料展示与退出"
     },
     {
       "docFile": "docs-site/guide/getting-started.md",
-      "line": 48,
+      "line": 50,
       "type": "route",
       "value": "/workspace/templates",
       "context": "4. 登录后验证 `/workspace`（列表/删除）、从创建按钮进入 `/docs/new`、编辑器自动保存与标题编辑、`/workspace/templates` 占位页、`/account` 资料展示与退出"
     },
     {
       "docFile": "docs-site/guide/getting-started.md",
-      "line": 48,
+      "line": 50,
       "type": "route",
       "value": "/account",
       "context": "4. 登录后验证 `/workspace`（列表/删除）、从创建按钮进入 `/docs/new`、编辑器自动保存与标题编辑、`/workspace/templates` 占位页、`/account` 资料展示与退出"
     },
     {
       "docFile": "docs-site/guide/getting-started.md",
-      "line": 54,
+      "line": 56,
       "type": "script",
       "value": "test",
       "context": "pnpm test         # 单元测试"
     },
     {
       "docFile": "docs-site/guide/getting-started.md",
-      "line": 55,
+      "line": 57,
       "type": "script",
       "value": "typecheck",
       "context": "pnpm typecheck    # TypeScript 检查"
     },
     {
       "docFile": "docs-site/guide/getting-started.md",
-      "line": 56,
+      "line": 58,
       "type": "script",
       "value": "lint",
       "context": "pnpm lint         # ESLint"
     },
     {
       "docFile": "docs-site/guide/getting-started.md",
-      "line": 57,
+      "line": 59,
       "type": "script",
       "value": "quality",
       "context": "pnpm quality      # 发布前全量门禁"
     },
     {
       "docFile": "docs-site/guide/getting-started.md",
-      "line": 58,
+      "line": 60,
       "type": "script",
       "value": "docs:dev",
       "context": "pnpm docs:dev     # 预览本文档站"
@@ -3153,7 +3181,7 @@
       "docFile": "docs-site/guide/overview.md",
       "line": 92,
       "type": "test-count",
-      "value": "36/146",
+      "value": "37/154",
       "context": "| 测试   | Vitest 4.1.9 + @nuxt/test-utils 4.0.3                  | `vitest.config.ts` `defineVitestConfig` + `include: te"
     },
     {
@@ -3728,49 +3756,56 @@
       "line": 60,
       "type": "script",
       "value": "i18n:check",
-      "context": "| `pnpm i18n:check`     | 校验 locale 配置、目录、resolver、AntD 映射、key 完整性与快照同步            |"
+      "context": "| `pnpm i18n:check`         | 校验 locale 配置、目录、resolver、AntD 映射、key 完整性与快照同步            |"
     },
     {
       "docFile": "docs-site/reference/scripts.md",
       "line": 61,
       "type": "file-path",
       "value": "scripts/i18n-diff.json",
-      "context": "| `pnpm i18n:diff`      | 基于聚合后的运行时消息树输出 `scripts/i18n-diff.json`                        |"
+      "context": "| `pnpm i18n:diff`          | 基于聚合后的运行时消息树输出 `scripts/i18n-diff.json`                        |"
     },
     {
       "docFile": "docs-site/reference/scripts.md",
       "line": 61,
       "type": "script",
       "value": "i18n:diff",
-      "context": "| `pnpm i18n:diff`      | 基于聚合后的运行时消息树输出 `scripts/i18n-diff.json`                        |"
+      "context": "| `pnpm i18n:diff`          | 基于聚合后的运行时消息树输出 `scripts/i18n-diff.json`                        |"
     },
     {
       "docFile": "docs-site/reference/scripts.md",
       "line": 62,
       "type": "file-path",
       "value": "scripts/i18n-used.json",
-      "context": "| `pnpm i18n:scan`      | 先从源码重建 diff，再输出实际使用 key 到 `scripts/i18n-used.json`            |"
+      "context": "| `pnpm i18n:scan`          | 先从源码重建 diff，再输出实际使用 key 到 `scripts/i18n-used.json`            |"
     },
     {
       "docFile": "docs-site/reference/scripts.md",
       "line": 62,
       "type": "script",
       "value": "i18n:scan",
-      "context": "| `pnpm i18n:scan`      | 先从源码重建 diff，再输出实际使用 key 到 `scripts/i18n-used.json`            |"
+      "context": "| `pnpm i18n:scan`          | 先从源码重建 diff，再输出实际使用 key 到 `scripts/i18n-used.json`            |"
     },
     {
       "docFile": "docs-site/reference/scripts.md",
       "line": 63,
       "type": "file-path",
       "value": "config/theme-palette.json",
-      "context": "| `pnpm generate:theme` | 从 `config/theme-palette.json` 生成 `tokens/_variables.scss` 与 `_dark.scss` |"
+      "context": "| `pnpm generate:theme`     | 从 `config/theme-palette.json` 生成 `tokens/_variables.scss` 与 `_dark.scss` |"
     },
     {
       "docFile": "docs-site/reference/scripts.md",
       "line": 63,
       "type": "script",
       "value": "generate:theme",
-      "context": "| `pnpm generate:theme` | 从 `config/theme-palette.json` 生成 `tokens/_variables.scss` 与 `_dark.scss` |"
+      "context": "| `pnpm generate:theme`     | 从 `config/theme-palette.json` 生成 `tokens/_variables.scss` 与 `_dark.scss` |"
+    },
+    {
+      "docFile": "docs-site/reference/scripts.md",
+      "line": 64,
+      "type": "script",
+      "value": "docs:sync:manifest",
+      "context": "| `pnpm docs:sync:manifest` | 重新生成 `docs-sync/manifest.json`、`batches.json` 与 `COVERAGE.md`          |"
     },
     {
       "docFile": "docs-site/tech-stack/ant-design-vue.md",
@@ -6952,6 +6987,13 @@
     },
     {
       "docFile": "docs/usage.md",
+      "line": 11,
+      "type": "script",
+      "value": "docs:sync:check",
+      "context": "`pnpm quality` runs `lint`, `format:check`, `stylelint`, `typecheck`, `i18n:check`, `build`, and `test`. Build runs befo"
+    },
+    {
+      "docFile": "docs/usage.md",
       "line": 20,
       "type": "env-file",
       "value": ".env.prod",
@@ -7781,14 +7823,21 @@
       "line": 331,
       "type": "file-path",
       "value": "app/stores/auth.ts",
-      "context": "- `app/stores/auth.ts` owns `user`, token cookies, `status`, `login`, `register`, `logout`, `fetchMe`, `refresh`, and `r"
+      "context": "- `app/stores/auth.ts` owns `user`, `status`, `login`, `register`, `logout`, `fetchMe`, `refresh`, and `reset`. It never"
+    },
+    {
+      "docFile": "docs/usage.md",
+      "line": 331,
+      "type": "file-path",
+      "value": "app/utils/auth-session.ts",
+      "context": "- `app/stores/auth.ts` owns `user`, `status`, `login`, `register`, `logout`, `fetchMe`, `refresh`, and `reset`. It never"
     },
     {
       "docFile": "docs/usage.md",
       "line": 331,
       "type": "symbol",
       "value": "fetchMe",
-      "context": "- `app/stores/auth.ts` owns `user`, token cookies, `status`, `login`, `register`, `logout`, `fetchMe`, `refresh`, and `r"
+      "context": "- `app/stores/auth.ts` owns `user`, `status`, `login`, `register`, `logout`, `fetchMe`, `refresh`, and `reset`. It never"
     },
     {
       "docFile": "docs/usage.md",
@@ -7801,8 +7850,8 @@
       "docFile": "docs/usage.md",
       "line": 333,
       "type": "file-path",
-      "value": "app/plugins/auth.ts",
-      "context": "- `app/plugins/auth.ts` hydrates `/api/me` on startup when token cookies are present."
+      "value": "app/plugins/auth.client.ts",
+      "context": "- `app/plugins/auth.client.ts` hydrates `/api/me` on startup when token cookies are present. It is client-only on purpos"
     },
     {
       "docFile": "docs/usage.md",
@@ -8100,210 +8149,217 @@
     },
     {
       "docFile": "README.md",
-      "line": 77,
+      "line": 71,
+      "type": "script",
+      "value": "docs:sync:manifest",
+      "context": "pnpm docs:sync:manifest # 新增或删除源文件后重新生成 manifest / batches / COVERAGE"
+    },
+    {
+      "docFile": "README.md",
+      "line": 78,
       "type": "file-path",
       "value": "docs/architecture.md",
       "context": "- `docs/architecture.md`: directory responsibilities, rendering strategy, and runtime flow."
     },
     {
       "docFile": "README.md",
-      "line": 78,
+      "line": 79,
       "type": "file-path",
       "value": "docs/usage.md",
       "context": "- `docs/usage.md`: adding pages, requests, SEO, languages, themes, workspace/editor, and auth."
     },
     {
       "docFile": "README.md",
-      "line": 79,
+      "line": 80,
       "type": "file-path",
       "value": "docs/conventions.md",
       "context": "- `docs/conventions.md`: config boundaries, design tokens (`tokens/` + `patterns/`), request, test, safety, and accessib"
     },
     {
       "docFile": "README.md",
-      "line": 80,
+      "line": 81,
       "type": "file-path",
       "value": "docs/deployment.md",
       "context": "- `docs/deployment.md`: local, Docker, Nginx deployment, and full-stack API pairing validation."
     },
     {
       "docFile": "README.md",
-      "line": 86,
+      "line": 87,
       "type": "script",
       "value": "dev:test",
       "context": "pnpm dev:test"
     },
     {
       "docFile": "README.md",
-      "line": 87,
+      "line": 88,
       "type": "script",
       "value": "dev:prod",
       "context": "pnpm dev:prod"
     },
     {
       "docFile": "README.md",
-      "line": 89,
+      "line": 90,
       "type": "script",
       "value": "build:dev",
       "context": "pnpm build:dev"
     },
     {
       "docFile": "README.md",
-      "line": 90,
+      "line": 91,
       "type": "script",
       "value": "build:test",
       "context": "pnpm build:test"
     },
     {
       "docFile": "README.md",
-      "line": 91,
+      "line": 92,
       "type": "script",
       "value": "build:prod",
       "context": "pnpm build:prod"
     },
     {
       "docFile": "README.md",
-      "line": 92,
+      "line": 93,
       "type": "script",
       "value": "preview",
       "context": "pnpm preview"
     },
     {
       "docFile": "README.md",
-      "line": 94,
+      "line": 95,
       "type": "script",
       "value": "format",
       "context": "pnpm format"
     },
     {
       "docFile": "README.md",
-      "line": 95,
+      "line": 96,
       "type": "script",
       "value": "format:check",
       "context": "pnpm format:check"
     },
     {
       "docFile": "README.md",
-      "line": 99,
+      "line": 100,
       "type": "script",
       "value": "test:watch",
       "context": "pnpm test:watch"
     },
     {
       "docFile": "README.md",
-      "line": 100,
+      "line": 101,
       "type": "script",
       "value": "quality",
       "context": "pnpm quality"
     },
     {
       "docFile": "README.md",
-      "line": 102,
+      "line": 104,
       "type": "script",
       "value": "docker:build",
       "context": "pnpm docker:build"
     },
     {
       "docFile": "README.md",
-      "line": 103,
+      "line": 105,
       "type": "script",
       "value": "docker:run",
       "context": "pnpm docker:run"
     },
     {
       "docFile": "README.md",
-      "line": 104,
+      "line": 106,
       "type": "script",
       "value": "docker:up",
       "context": "pnpm docker:up"
     },
     {
       "docFile": "README.md",
-      "line": 106,
+      "line": 108,
       "type": "script",
       "value": "docker:down",
       "context": "pnpm docker:down"
     },
     {
       "docFile": "README.md",
-      "line": 107,
+      "line": 109,
       "type": "script",
       "value": "docker:down:dev",
       "context": "pnpm docker:down:dev"
     },
     {
       "docFile": "README.md",
-      "line": 115,
+      "line": 117,
       "type": "env-file",
       "value": ".env.test",
       "context": "- `.env.test`: test/staging layer, used by `pnpm dev:test` and `pnpm build:test`."
     },
     {
       "docFile": "README.md",
-      "line": 116,
+      "line": 118,
       "type": "env-file",
       "value": ".env.prod",
       "context": "- `.env.prod`: production layer, used by `pnpm build`, `pnpm build:prod`, and `pnpm dev:prod`."
     },
     {
       "docFile": "README.md",
-      "line": 123,
+      "line": 125,
       "type": "env-var",
       "value": "NUXT_PUBLIC_SITE_URL",
       "context": "NUXT_PUBLIC_SITE_URL="
     },
     {
       "docFile": "README.md",
-      "line": 124,
+      "line": 126,
       "type": "env-var",
       "value": "NUXT_PUBLIC_API_BASE",
       "context": "NUXT_PUBLIC_API_BASE="
     },
     {
       "docFile": "README.md",
-      "line": 125,
+      "line": 127,
       "type": "env-var",
       "value": "NUXT_PUBLIC_GOOGLE_SITE_VERIFICATION",
       "context": "NUXT_PUBLIC_GOOGLE_SITE_VERIFICATION="
     },
     {
       "docFile": "README.md",
-      "line": 126,
+      "line": 128,
       "type": "env-var",
       "value": "NUXT_PUBLIC_BAIDU_SITE_VERIFICATION",
       "context": "NUXT_PUBLIC_BAIDU_SITE_VERIFICATION="
     },
     {
       "docFile": "README.md",
-      "line": 127,
+      "line": 129,
       "type": "env-var",
       "value": "NUXT_PUBLIC_ANALYTICS_ENABLED",
       "context": "NUXT_PUBLIC_ANALYTICS_ENABLED=false"
     },
     {
       "docFile": "README.md",
-      "line": 128,
+      "line": 130,
       "type": "env-var",
       "value": "NUXT_PUBLIC_ANALYTICS_SCRIPT_SRC",
       "context": "NUXT_PUBLIC_ANALYTICS_SCRIPT_SRC="
     },
     {
       "docFile": "README.md",
-      "line": 129,
+      "line": 131,
       "type": "env-var",
       "value": "NUXT_PUBLIC_ANALYTICS_DEFER_MS",
       "context": "NUXT_PUBLIC_ANALYTICS_DEFER_MS=3000"
     },
     {
       "docFile": "README.md",
-      "line": 132,
+      "line": 134,
       "type": "env-var",
       "value": "NUXT_PUBLIC_APP_ENV",
       "context": "Docker Compose also sets `NUXT_PUBLIC_APP_ENV=production` or `NUXT_PUBLIC_APP_ENV=development`, which controls auth cook"
     },
     {
       "docFile": "README.md",
-      "line": 151,
+      "line": 153,
       "type": "file-path",
       "value": "docker/nginx/gateway.docker.conf",
       "context": "For Nginx, run a reverse proxy with `docker/nginx/gateway.docker.conf` pointing at the Nuxt node-server and verify `/_nu"

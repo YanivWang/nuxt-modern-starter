@@ -10,7 +10,8 @@
     UserAccountMenu → /account、logout → localePath('/')
 
   【依赖关系】
-    - 依赖：useAuth、useUserAvatar、useLanguageSwitch、useLocalePath
+    - 依赖：useAuth、useUserAvatar、useLanguageSwitch、useLocalePath、useCoarsePointer、
+      LanguageOptionList
     - 被引用：AppShellHeader、ProductShell
 
   【渲染 / 数据】
@@ -18,6 +19,7 @@
 
   【边界与注意】
     handleSignOut：先 closeMenu，再 logout，再 router.push — 与 auth store 职责分离。
+    语言选项列表与公开站 LanguageSwitcher 共用 LanguageOptionList；本组件只负责子面板定位与开合。
 -->
 <template>
   <div ref="rootRef" class="user-account-menu">
@@ -102,34 +104,17 @@
           </div>
 
           <Transition name="user-account-menu-fade">
-            <div
+            <LanguageOptionList
               v-show="isLanguageOpen"
               class="user-account-menu__language-panel"
               :style="languagePanelStyle"
-              role="menu"
-              :aria-label="$t('userMenu.language')"
+              :languages="languages"
+              :current-language="currentLanguage"
+              :panel-label="$t('userMenu.language')"
+              @select="handleLanguageSelect"
               @mouseenter="openLanguagePanel"
               @mouseleave="scheduleCloseLanguagePanel"
-            >
-              <button
-                v-for="language in languages"
-                :key="language.locale"
-                type="button"
-                role="menuitem"
-                class="user-account-menu__language-item"
-                :class="{
-                  'user-account-menu__language-item--active': language.locale === currentLanguage
-                }"
-                @click="handleLanguageSelect(language.locale)"
-              >
-                <span>{{ language.label }}</span>
-                <CheckOutlined
-                  v-if="language.locale === currentLanguage"
-                  class="user-account-menu__language-check"
-                  aria-hidden="true"
-                />
-              </button>
-            </div>
+            />
           </Transition>
         </div>
       </div>
@@ -138,13 +123,7 @@
 </template>
 
 <script setup lang="ts">
-import {
-  CheckOutlined,
-  GlobalOutlined,
-  LogoutOutlined,
-  RightOutlined,
-  UserOutlined
-} from '../../utils/antdIcon'
+import { GlobalOutlined, LogoutOutlined, RightOutlined, UserOutlined } from '../../utils/antdIcon'
 import type { SupportedLocale } from '../../../config/site'
 
 const router = useRouter()
@@ -152,10 +131,10 @@ const { localePath } = useLocalePath()
 const { authStore, logout } = useAuth()
 const { displayName, avatarUrl, initials } = useUserAvatar()
 const { switchLanguage, languages, currentLanguage } = useLanguageSwitch()
+const { isCoarsePointer } = useCoarsePointer()
 
 const isOpen = ref(false)
 const isLanguageOpen = ref(false)
-const isCoarsePointer = ref(false)
 const rootRef = ref<HTMLElement | null>(null)
 const flyoutRef = ref<HTMLElement | null>(null)
 const languageTriggerRef = ref<HTMLElement | null>(null)
@@ -193,11 +172,6 @@ const handleDocumentClick = (event: MouseEvent) => {
     closeMenu()
   }
 }
-
-onMounted(() => {
-  // 触控/粗指针设备用 click 切换语言子面板；桌面 hover 打开
-  isCoarsePointer.value = window.matchMedia('(hover: none), (pointer: coarse)').matches
-})
 
 watch(isOpen, async (open) => {
   if (open) {
@@ -433,59 +407,9 @@ const handleSignOut = async () => {
 }
 
 .user-account-menu__language-panel {
+  // 面板外观由 LanguageOptionList 提供；这里只把子面板定位到触发项左侧
   position: absolute;
-  top: 0;
   right: calc(100% + 5px);
-  z-index: var(--app-z-index-base);
-  display: grid;
-  gap: 2px;
-  box-sizing: border-box;
-  width: max-content;
-  min-width: 120px;
-  padding: 4px;
-  border: 1px solid var(--app-color-border);
-  border-radius: 10px;
-  background: var(--app-color-bg);
-  box-shadow: var(--app-shadow-dropdown);
-}
-
-.user-account-menu__language-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  width: 100%;
-  min-height: 32px;
-  padding: 0 10px;
-  border: 0;
-  border-radius: 6px;
-  background: transparent;
-  color: var(--app-color-text);
-  cursor: pointer;
-  font: inherit;
-  font-size: var(--app-text-base);
-  line-height: 1.2;
-  text-align: left;
-  transition:
-    background-color 0.15s ease,
-    color 0.15s ease;
-
-  &:hover,
-  &:focus-visible {
-    background: var(--app-color-elevated);
-  }
-}
-
-.user-account-menu__language-item--active {
-  background: var(--app-color-elevated);
-  color: var(--app-color-primary);
-  font-weight: var(--app-weight-semibold);
-}
-
-.user-account-menu__language-check {
-  color: var(--app-color-primary);
-  font-size: var(--app-text-xs);
-  line-height: 1;
 }
 
 .user-account-menu-pop-enter-active,

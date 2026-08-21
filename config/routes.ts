@@ -8,6 +8,7 @@
 
   【主要导出 / 路由】
     productRoutePatterns、csrRouteRules、prerenderRoutes、swrRouteRules、
+    PRERENDER_BASE_PATHS、PRERENDER_LOCALES、SWR_BASE_PATHS、
     isProductPath、localizedProductPathToCanonical、localizedPath、publicLocalizedPaths
 
   【依赖关系】
@@ -16,7 +17,8 @@
       useLocalePath、server/utils/seo.ts
 
   【渲染 / 数据】
-    prerender：/、/about、/help 及 /en 变体；SWR：/news/** 及 /en 变体；/pricing 走默认 SSR；
+    prerender：PRERENDER_BASE_PATHS × PRERENDER_LOCALES；SWR：SWR_BASE_PATHS × 全部语言，
+    每条展开为「路径本身 + 子树」；/pricing 走默认 SSR；
     CSR（ssr: false）：/workspace/**、/docs/**、/account。
 
   【边界与注意】
@@ -79,23 +81,31 @@ export const localizedPath = (path: string, locale: SupportedLocale) => {
 export const publicLocalizedPaths = (locales: readonly SupportedLocale[] = SUPPORTED_LOCALES) =>
   locales.flatMap((locale) => PUBLIC_PAGE_PATHS.map((path) => localizedPath(path, locale)))
 
-const nonDefaultLocalePrefixes = SUPPORTED_LOCALES.filter(
-  (locale) => locale !== DEFAULT_LOCALE
-).map((locale) => SITE_LOCALE_PREFIX_MAP[locale])
+/** 构建时生成静态 HTML 的营销页；其余语言公开页走默认 SSR */
+export const PRERENDER_BASE_PATHS = ['/', '/about', '/help'] as const
+/** 只为主要市场预渲染，避免 15 个语言 × N 页把构建时间放大 */
+export const PRERENDER_LOCALES = ['zh-CN', 'en-US'] as const satisfies readonly SupportedLocale[]
 
-// 仅 zh-CN / en-US 六条营销页做 prerender；其余语言公开页走默认 SSR
-export const prerenderRoutes = publicLocalizedPaths(['zh-CN', 'en-US']).filter(
-  (path) =>
-    path === '/' ||
-    path === '/about' ||
-    path === '/help' ||
-    path === '/en' ||
-    path === '/en/about' ||
-    path === '/en/help'
+export const prerenderRoutes = PRERENDER_LOCALES.flatMap((locale) =>
+  PRERENDER_BASE_PATHS.map((path) => localizedPath(path, locale))
 )
 
-// 新闻等动态内容走 API，更新频率较低，适合 SWR 缓存 SSR 结果。
-export const swrRouteRules = [
-  '/news/**',
-  ...nonDefaultLocalePrefixes.map((prefix) => `/${prefix}/news/**`)
-] as const
+/** 走 SWR 的公开内容区根路径；新闻等内容走 API、更新频率低，适合缓存 SSR 结果 */
+export const SWR_BASE_PATHS = ['/news'] as const
+
+/**
+ * 每条 SWR 根路径展开为「路径本身 + 子树」两条规则。
+ *
+ * 必须两条都写：Nitro 会为每条 swr 规则单独注册一个被 cachedEventHandler 包裹的
+ * renderer handler，请求经 h3 router 派发；而 h3 router 里 '/news/**' 不匹配裸路径
+ * '/news'，只写子树会让列表页静默落到未缓存的 '/**' handler。
+ * 注意这与 routeRules 自身的 matcher 语义不同 —— 后者能匹配裸路径，
+ * 所以 csrRouteRules 的 '/workspace/**' 对 '/workspace' 仍然生效。
+ * 见 tests/unit/seo-routes.test.ts 的 SWR 规则断言。
+ */
+export const swrRouteRules = SUPPORTED_LOCALES.flatMap((locale) =>
+  SWR_BASE_PATHS.flatMap((path) => {
+    const localized = localizedPath(path, locale)
+    return [localized, `${localized}/**`]
+  })
+)
