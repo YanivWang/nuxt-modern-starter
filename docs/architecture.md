@@ -19,19 +19,19 @@
 - `app/lib/http`: shared HTTP wrapper, response types, header helpers, envelope validation (`assertApiSuccess`), error normalization, and typed `$fetch` client creation.
 - `app/api`: cross-feature request adapters (`public.ts`, `auth.ts`, `workspace-project.ts`) plus scenario client factories in `clients.ts` (`createPublicApiClient`, `createAuthApiClient`); `createProductApiClient()` lives in `auth.ts`.
 - `app/types`: shared domain types such as `document.ts` and `workspace-project.ts`. Types used by more than one feature belong here instead of inside a feature.
-- `app/composables`: shared runtime APIs — `useAuth`, `useLocalePath`, `usePageSeo`, `useTheme`, `useLanguageSwitch`, and `useUserAvatar`. Feature-specific composables belong under `app/features/<feature>/composables`; feature-only request adapters belong under `app/features/<feature>/api.ts`.
+- `app/composables`: shared runtime APIs — `useAuth`, `useAuthSession` consumers, `useLocalePath`, `usePageSeo`, `useTheme`, `useLanguageSwitch`, `useUserAvatar`, and `useCoarsePointer`. Feature-specific composables belong under `app/features/<feature>/composables`; feature-only request adapters belong under `app/features/<feature>/api.ts`.
 - `app/api/public.ts`: SEO-safe public content adapters. Public adapters must not depend on auth state or trigger token refresh.
 - `app/api/auth.ts`: Bearer Token auth adapter. It owns login, register, refresh, logout, `/me`, profile requests, response normalization, single-flight token refresh, and `createProductApiClient()`.
 - `app/api/workspace-project.ts`: authenticated workspace project adapters and editor route helpers.
 - `app/features/editor/api.ts`: authenticated editor document adapters.
-- `app/utils`: small shared runtime utilities such as `antdIcon.ts` for on-demand Ant Design SVG icons, `auth-session.ts` for token cookie helpers, `attribution-params.ts` for marketing attribution persistence, `safe-redirect.ts` for login redirect validation, and `load-script.ts` for deferred external script injection.
+- `app/utils`: small shared runtime utilities such as `antdIcon.ts` for on-demand Ant Design SVG icons, `auth-session.ts` as the single owner of the auth tokens (`useAuthSession`; tokens never enter Pinia state, which is serialized into the SSR payload), `attribution-params.ts` for marketing attribution persistence, `safe-redirect.ts` for login redirect validation, and `load-script.ts` for deferred external script injection.
 - `app/stores`: Pinia stores for language state, theme state, and opt-in auth state. Feature-specific stores belong under `app/features/<feature>/stores`.
 - `app/components/base`: reusable low-level examples such as `AppContainer`, `PageContainer`, `BaseLogo`, `BaseButton`, and `BasePicture`.
-- `app/components/layout`: shell components including `AppHeader`, `AppFooter`, `AppShellHeader`, `LanguageSwitcher`, `ThemeSwitch`, and `UserAccountMenu`.
+- `app/components/layout`: shell components including `AppHeader`, `AppHeaderSignedOutActions`, `AppFooter`, `AppShellHeader`, `LanguageSwitcher`, `LanguageOptionList`, `ThemeSwitch`, and `UserAccountMenu`. `LanguageOptionList` is shared by the public switcher and the product user menu.
 - `app/layouts`: route-level shells. `default` for public pages, `product` for sidebar-backed workspace routes, `editor` for full-screen editor routes, `account` for account settings, and `empty` for minimal pages.
 - `app/middleware/locale.global.ts`: global locale normalization before page rendering, including product canonical 301 redirects via `localizedProductPathToCanonical`.
 - `app/middleware/auth.ts`: named auth middleware for protected product routes (session, login redirect, RBAC). Does not handle product canonical redirects.
-- `app/plugins`: startup hooks such as `auth.ts` session hydration, `i18n.ts` setup, `attribution.client.ts` first-load and SPA attribution capture, and `analytics.client.ts` deferred third-party script loading behind env guards.
+- `app/plugins`: startup hooks such as `auth.client.ts` session hydration (client-only so prerendered and SWR-cached HTML never depends on who is signed in), `i18n.ts` setup, `attribution.client.ts` first-load and SPA attribution capture, and `analytics.client.ts` deferred third-party script loading behind env guards.
 - `app/assets/styles`: global SCSS entry (`main.scss`), layered tokens (`tokens/_variables.scss`, `_root.scss`, `_dark.scss`), public-page patterns (`patterns/_page.scss`), and runtime CSS var helpers (`tokens.ts`). Mounted from `nuxt.config.ts`; Sass variables are auto-injected into SFC style blocks.
 - `config`: site metadata, route lists, auth constants, theme tokens, and typed local content.
 - `config/site.ts`: site metadata, supported locales, navigation, and `PUBLIC_PAGE_PATHS` (`/`, `/pricing`, `/about`, `/help`, `/news`). Sign-in and sign-up are intentionally excluded.
@@ -50,7 +50,7 @@ Route rendering is centralized in `nuxt.config.ts` through `config/routes.ts`:
 
 - Default public routes: SSR.
 - `prerenderRoutes`: build-time static HTML for selected public pages such as `/`, `/about`, `/help`, and their `/en` variants.
-- `swrRouteRules`: SSR with 1-hour SWR cache for `/news/**` and `/en/news/**`. `/pricing` and `/en/pricing` use default SSR (no SWR).
+- `swrRouteRules`: SSR with 1-hour SWR cache, expanded from `SWR_BASE_PATHS` across every supported locale. Each base path registers **both** the bare path and the subtree (`/news` and `/news/**`): Nitro registers a dedicated cached handler per SWR rule, and h3's router does not match `/news/**` against `/news`. `/pricing` and `/en/pricing` use default SSR (no SWR).
 - `csrRouteRules`: client-only rendering for product routes (`/workspace/**`, `/docs/**`, `/account`).
 
 News SWR pages can also be invalidated on demand through `POST /api/revalidate` when `NUXT_REVALIDATE_SECRET` is configured. This avoids waiting for the 1-hour TTL after CMS/API content changes.

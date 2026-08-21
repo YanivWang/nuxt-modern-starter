@@ -44,24 +44,38 @@
 
 ## 文档站
 
-| 命令                     | 说明                                                       |
-| ------------------------ | ---------------------------------------------------------- |
-| `pnpm docs:dev`          | VitePress 开发预览                                         |
-| `pnpm docs:build`        | 构建静态文档（CI 会注入 `VITEPRESS_BASE=/<repo>/`）        |
-| `pnpm docs:preview`      | 预览文档 build                                             |
-| `pnpm docs:sync:check`   | 校验 manifest / 头注释 / doc-claims 与源码一致             |
-| `pnpm docs:sync:enrich`  | 为 doc-claims 生成 evidenceHint 行号并验证 33 文档覆盖     |
-| `pnpm docs:sync:reports` | 从 batches + doc-claims 生成 8 份带行号证据的 batch report |
+| 命令                      | 说明                                                       |
+| ------------------------- | ---------------------------------------------------------- |
+| `pnpm docs:dev`           | VitePress 开发预览                                         |
+| `pnpm docs:build`         | 构建静态文档（CI 会注入 `VITEPRESS_BASE=/<repo>/`）        |
+| `pnpm docs:preview`       | 预览文档 build                                             |
+| `pnpm docs:sync:check`    | 校验 manifest / 头注释 / doc-claims 与源码一致             |
+| `pnpm docs:sync:enrich`   | 为 doc-claims 生成 evidenceHint 行号并验证 33 文档覆盖     |
+| `pnpm docs:sync:reports`  | 从 batches + doc-claims 生成 8 份带行号证据的 batch report |
+| `pnpm docs:sync:manifest` | 新增/删除源文件后重新生成 manifest、batches 与 COVERAGE    |
+| `pnpm docs:sync:extract`  | 改动文档后重新生成 doc-references 快照                     |
+
+`docs-sync/` 的构成：
+
+| 文件                             | 作用                                                         |
+| -------------------------------- | ------------------------------------------------------------ |
+| `manifest.json` / `batches.json` | 覆盖范围快照，由 `docs:sync:manifest` 生成                   |
+| `doc-claims.json`                | 文档主张 → 源码符号与行号证据                                |
+| `doc-references.json`            | 文档引用快照，由 `docs:sync:extract` 生成，过期会被门禁拦下  |
+| `legacy-terms.json`              | 对外表述黑名单数据（模式本身是被禁字面量，故不写进测试代码） |
+| `lib/enumerate-sources.mjs`      | 覆盖范围的单一枚举来源，生成器与校验器共用                   |
+
+覆盖范围不锁硬编码计数：门禁对着真实文件树 diff，新增文件时报出的是文件名与
+`pnpm docs:sync:manifest` 提示。
 
 ## 多语言
 
-| 命令                      | 说明                                                                         |
-| ------------------------- | ---------------------------------------------------------------------------- |
-| `pnpm i18n:check`         | 校验 locale 配置、目录、resolver、AntD 映射、key 完整性与快照同步            |
-| `pnpm i18n:diff`          | 基于聚合后的运行时消息树输出 `scripts/i18n-diff.json`                        |
-| `pnpm i18n:scan`          | 先从源码重建 diff，再输出实际使用 key 到 `scripts/i18n-used.json`            |
-| `pnpm generate:theme`     | 从 `config/theme-palette.json` 生成 `tokens/_variables.scss` 与 `_dark.scss` |
-| `pnpm docs:sync:manifest` | 重新生成 `docs-sync/manifest.json`、`batches.json` 与 `COVERAGE.md`          |
+| 命令                  | 说明                                                                         |
+| --------------------- | ---------------------------------------------------------------------------- |
+| `pnpm i18n:check`     | 校验 locale 配置、目录、resolver、AntD 映射、key 完整性与快照同步            |
+| `pnpm i18n:diff`      | 基于聚合后的运行时消息树输出 `scripts/i18n-diff.json`                        |
+| `pnpm i18n:scan`      | 先从源码重建 diff，再输出实际使用 key 到 `scripts/i18n-used.json`            |
+| `pnpm generate:theme` | 从 `config/theme-palette.json` 生成 `tokens/_variables.scss` 与 `_dark.scss` |
 
 ## 引擎版本
 

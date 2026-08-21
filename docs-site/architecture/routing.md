@@ -25,7 +25,7 @@ UI 语言由 Pinia `languageStore` 控制，与 URL 路径解耦。
 | 策略                 | 路由                                    | 行为                                | 适用场景                   |
 | -------------------- | --------------------------------------- | ----------------------------------- | -------------------------- |
 | **prerender**        | `/`、`/about`、`/help` 及 `/en` 变体    | 构建时生成静态 HTML                 | 变化少、SEO 重要           |
-| **SWR 3600s**        | `/news/**` 及 `/en` 变体                | SSR + 1 小时 stale-while-revalidate | 内容来自 API、更新频率中等 |
+| **SWR 3600s**        | `/news`、`/news/**` 及各语言变体        | SSR + 1 小时 stale-while-revalidate | 内容来自 API、更新频率中等 |
 | **SSR**（默认）      | `/pricing`、`/sign-in` 等公开页         | 每次请求服务端渲染                  | 默认兜底                   |
 | **CSR** `ssr: false` | `/workspace/**`、`/docs/**`、`/account` | 纯客户端渲染                        | 强交互、依赖 session       |
 
@@ -33,7 +33,10 @@ UI 语言由 Pinia `languageStore` 控制，与 URL 路径解耦。
 // config/routes.ts（摘要）
 export const productRoutePatterns = ['/workspace/**', '/docs/**', '/account']
 export const prerenderRoutes = ['/', '/about', '/help', '/en', '/en/about', '/en/help']
-export const swrRouteRules = ['/news/**', '/en/news/**']
+// 每条 SWR 根路径必须同时注册裸路径与子树：
+// Nitro 为 swr 规则单独注册 handler，h3 router 里 '/news/**' 不匹配 '/news'
+export const SWR_BASE_PATHS = ['/news']
+export const swrRouteRules = ['/news', '/news/**', '/en/news', '/en/news/**' /* …全部语言 */]
 ```
 
 ### SWR 按需失效

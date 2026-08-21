@@ -40,6 +40,7 @@ Husky pre-commit 只跑 `lint-staged`。全量门禁属于 CI（`.github/workflo
 | 安全工具        | `safe-redirect.test.ts`                             |
 | HTTP 信封       | `lib-http.test.ts`                                  |
 | SWR 缓存失效    | `revalidate.test.ts`                                |
+| 鉴权 / 缓存边界 | `ssr-cache-safety.test.ts`                          |
 
 不必为纯 UI 样式写 trivial 测试。
 

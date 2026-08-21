@@ -1,6 +1,7 @@
 /*
   【文件职责】
     单测：doc-claims.json、doc-references.json 与 manifest 对齐；严格 100% 引用校验与 docs-sync 门禁一致。
+    覆盖范围对着真实文件树 diff（docs-sync/lib/enumerate-sources.mjs），不锁硬编码计数。
 */
 import fs from 'node:fs'
 import path from 'node:path'

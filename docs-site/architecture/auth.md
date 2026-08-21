@@ -17,9 +17,9 @@
 | 文件                         | 职责                                         |
 | ---------------------------- | -------------------------------------------- |
 | `config/auth.ts`             | 端点路径、cookie 键、过期时间、AuthUser 类型 |
-| `app/utils/auth-session.ts`  | cookie 读写、`clearAuthSession()`            |
+| `app/utils/auth-session.ts`  | 令牌唯一所有者：`useAuthSession()` 读/写/清  |
 | `app/api/auth.ts`            | login/register/refresh/logout/me/profile API |
-| `app/stores/auth.ts`         | Pinia：user、tokens、status、业务 action     |
+| `app/stores/auth.ts`         | Pinia：user、status、业务 action（无令牌）   |
 | `app/composables/useAuth.ts` | `ensureSession()`、`can()`、`hasRole()`      |
 | `app/middleware/auth.ts`     | 保护路由、RBAC、登录重定向                   |
 | `app/plugins/auth.client.ts` | 启动时 session 恢复（**仅客户端**）          |

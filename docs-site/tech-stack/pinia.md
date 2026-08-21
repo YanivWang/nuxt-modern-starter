@@ -4,7 +4,7 @@
 
 | Store      | 文件                     | 状态与职责                         |
 | ---------- | ------------------------ | ---------------------------------- |
-| `auth`     | `app/stores/auth.ts`     | user、tokens、login/logout/fetchMe |
+| `auth`     | `app/stores/auth.ts`     | user、status、login/logout/fetchMe |
 | `language` | `app/stores/language.ts` | currentLanguage、切换语言          |
 | `theme`    | `app/stores/theme.ts`    | light/dark、Ant Design theme token |
 

@@ -55,7 +55,7 @@
 
 - 不 log token/cookie（headers 已脱敏）
 - 登录 redirect 用 `resolveSafeRedirectPath()`
-- 归因数据只在 `logout()` 清除，不在 `reset()` 或 `clearAuthSession()` 中清除
+- 归因数据只在 `logout()` 清除，不在 `reset()` 或 `useAuthSession().clear()` 中清除
 - analytics 默认关闭，启用需同步更新 `nuxt.config.ts` 的 CSP `script-src`
 - 第三方脚本仅在明确需求下加载；交互控件需可访问标签、可见焦点与键盘支持
 - 面向欧盟等需 consent 的地区，fork 项目需自行添加 CMP（starter 未内置）

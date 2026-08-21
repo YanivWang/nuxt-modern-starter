@@ -64,13 +64,15 @@ import { FolderOutlined } from '~/utils/antdIcon'
 
 ## 布局组件使用场景
 
-| 组件               | 位置                    |
-| ------------------ | ----------------------- |
-| `AppHeader`        | 公开页顶栏              |
-| `AppShellHeader`   | 产品区顶栏              |
-| `UserAccountMenu`  | 产品/编辑器顶栏用户菜单 |
-| `LanguageSwitcher` | 语言切换                |
-| `ThemeSwitch`      | 主题切换                |
+| 组件                        | 位置                               |
+| --------------------------- | ---------------------------------- |
+| `AppHeader`                 | 公开页顶栏                         |
+| `AppShellHeader`            | 产品区顶栏                         |
+| `UserAccountMenu`           | 产品/编辑器顶栏用户菜单            |
+| `LanguageSwitcher`          | 语言切换                           |
+| `LanguageOptionList`        | 语言选项列表（公开站与产品区共用） |
+| `AppHeaderSignedOutActions` | 公开页顶栏未登录 CTA               |
+| `ThemeSwitch`               | 主题切换                           |
 
 ## 关闭暗色模式
 

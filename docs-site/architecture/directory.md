@@ -12,6 +12,8 @@ nuxt-modern-starter/
 ├── docker/              # Dockerfile、Compose、Nginx 样例
 ├── docs/                # 仓库内精简 Markdown 约定
 ├── docs-site/           # 本文档站（VitePress）
+├── docs-sync/           # 文档与代码一致性门禁（manifest / claims / 校验脚本）
+├── archive/             # 一次性过程产物归档，不参与门禁
 ├── public/              # 静态资源（og-default.png 等）
 ├── nuxt.config.ts       # Nuxt 配置、routeRules、runtimeConfig
 └── package.json
@@ -77,17 +79,17 @@ app/features/my-feature/
 
 ### 共享层（框架级）
 
-| 目录                     | 放什么                                                                                     | 不放什么                |
-| ------------------------ | ------------------------------------------------------------------------------------------ | ----------------------- |
-| `app/assets/styles/`     | `main.scss` 全局入口；`tokens/` 设计 token；`patterns/` 公开页模式；`tokens.ts` 运行时 API | feature 私有样式        |
-| `app/components/base/`   | AppContainer、PageContainer、BaseButton、BaseLogo、BasePicture 等通用组件                  | 业务页面块              |
-| `app/components/layout/` | AppHeader、AppFooter、AppShellHeader、LanguageSwitcher、ThemeSwitch、UserAccountMenu       | feature 专属 UI         |
-| `app/composables/`       | useAuth、usePageSeo、useLocalePath、useTheme、useLanguageSwitch、useUserAvatar             | feature 专属 composable |
-| `app/stores/`            | auth、language、theme                                                                      | feature 专属 store      |
-| `app/utils/`             | auth-session、safe-redirect、attribution-params、formatDate、antdIcon、load-script         | 业务逻辑                |
-| `app/layouts/`           | default、product、editor、account、empty                                                   | —                       |
-| `app/middleware/`        | locale.global、auth                                                                        | —                       |
-| `app/plugins/`           | i18n、auth、attribution、analytics                                                         | —                       |
+| 目录                     | 放什么                                                                                                                              | 不放什么                |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| `app/assets/styles/`     | `main.scss` 全局入口；`tokens/` 设计 token；`patterns/` 公开页模式；`tokens.ts` 运行时 API                                          | feature 私有样式        |
+| `app/components/base/`   | AppContainer、PageContainer、BaseButton、BaseLogo、BasePicture 等通用组件                                                           | 业务页面块              |
+| `app/components/layout/` | AppHeader、AppHeaderSignedOutActions、AppFooter、AppShellHeader、LanguageSwitcher、LanguageOptionList、ThemeSwitch、UserAccountMenu | feature 专属 UI         |
+| `app/composables/`       | useAuth、usePageSeo、useLocalePath、useTheme、useLanguageSwitch、useUserAvatar、useCoarsePointer                                    | feature 专属 composable |
+| `app/stores/`            | auth、language、theme                                                                                                               | feature 专属 store      |
+| `app/utils/`             | auth-session、safe-redirect、attribution-params、formatDate、antdIcon、load-script                                                  | 业务逻辑                |
+| `app/layouts/`           | default、product、editor、account、empty                                                                                            | —                       |
+| `app/middleware/`        | locale.global、auth                                                                                                                 | —                       |
+| `app/plugins/`           | i18n、auth.client（仅客户端）、attribution、analytics                                                                               | —                       |
 
 ### API 与 HTTP
 

@@ -179,7 +179,7 @@ Registration example:
 Storage lifecycle:
 
 - Attribution survives SPA navigation, full page refresh, and token refresh failure.
-- Attribution is **not** cleared inside generic `reset()` or `clearAuthSession()`.
+- Attribution is **not** cleared inside generic `reset()` or when `useAuthSession().clear()` drops the tokens.
 - Attribution is cleared only on explicit `logout()`.
 
 Shared-device note:

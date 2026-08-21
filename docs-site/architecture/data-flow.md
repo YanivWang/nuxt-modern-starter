@@ -91,7 +91,7 @@ refreshAccessTokenOnce()  ← 并发请求共享同一个 Promise
 POST /refresh { refreshToken }
     ↓
 成功 → 写 cookie → 用新 token 重试原请求一次
-失败 → clearAuthSession() → 抛错
+失败（401）→ useAuthSession().clear() → 抛错
 ```
 
 实现位置：`app/api/auth.ts` 的 `refreshAccessTokenOnce`。
