@@ -6,7 +6,8 @@
     共享类型层 — app/types，不属于任一 feature。
 
   【主要导出 / 路由】
-    WorkspaceProject、CreateWorkspaceProjectPayload、UpdateWorkspaceProjectPayload
+    WorkspaceProject、WorkspaceProjectAccent、CreateWorkspaceProjectPayload、
+    UpdateWorkspaceProjectPayload
 
   【依赖关系】
     - 依赖：无
@@ -23,7 +24,11 @@ export type WorkspaceProjectAccent = 'blue' | 'green' | 'violet' | 'amber' | 'cy
 export type WorkspaceProject = {
   id: string
   workspaceId: string
-  /** 关联编辑器文档 id；列表卡片跳转 /docs/:documentId */
+  /**
+   * 关联编辑器文档 id；可能为 null（项目尚未建文档）。
+   * 注意列表卡片跳的是 /docs/:projectId 而非 documentId —— 路由参数 :id 始终是项目 id，
+   * documentId 由 /docs/[id].vue 拉取项目后解析（见 useEditorPage）。
+   */
   documentId: string | null
   title: string
   description: string | null

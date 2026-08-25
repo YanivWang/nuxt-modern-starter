@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-25T17:09:04.753Z",
+  "generatedAt": "2026-08-25T17:36:36.597Z",
   "docFileCount": 33,
   "referenceCount": 1223,
   "pathAllowlist": [
@@ -2766,21 +2766,21 @@
     },
     {
       "docFile": "docs-site/development/add-page.md",
-      "line": 102,
+      "line": 115,
       "type": "file-path",
       "value": "app/pages/[[language]]/",
       "context": "- [ ] 文件在 `app/pages/[[language]]/`"
     },
     {
       "docFile": "docs-site/development/add-page.md",
-      "line": 103,
+      "line": 116,
       "type": "symbol",
       "value": "usePageSeo",
       "context": "- [ ] `usePageSeo` 已调用"
     },
     {
       "docFile": "docs-site/development/add-page.md",
-      "line": 104,
+      "line": 117,
       "type": "symbol",
       "value": "PUBLIC_PAGE_PATHS",
       "context": "- [ ] `PUBLIC_PAGE_PATHS` 已更新（若需 sitemap）"
@@ -8299,7 +8299,7 @@
       "line": 312,
       "type": "symbol",
       "value": "EditorWorkspaceHeader",
-      "context": "- The editor header (`EditorWorkspaceHeader`) includes back-to-workspace, inline title editing, autosave status, languag"
+      "context": "- The editor header (`EditorWorkspaceHeader`) includes back-to-workspace, inline title editing, autosave status, and `Us"
     },
     {
       "docFile": "docs/usage.md",

@@ -16,8 +16,6 @@
 #
 # 【边界与注意】
 #   HUSKY=0 禁用 git hooks；BUILD_ENV 默认 prod 对应 pnpm run build:prod。
-# 文件职责：生产镜像构建。
-# 多阶段安装依赖、编译 Nuxt，并在运行阶段只保留 .output 与非 root 用户。
 ARG PNPM_VERSION=11.5.2
 ARG NODE_IMAGE=node:22.22.3-alpine
 

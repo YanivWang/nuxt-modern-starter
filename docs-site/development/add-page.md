@@ -89,13 +89,26 @@ export const fetchMyPageContent = (locale: SupportedLocale) =>
   createPublicApiClient({ locale }).request('/content/my-page', { method: 'GET' })
 ```
 
-页面中：
+页面中（key 必须含 locale，否则切换语言时会命中旧缓存、handler 根本不重跑）：
 
 ```ts
-const { data } = await useAsyncData('my-page', () =>
-  fetchMyPageContent(languageStore.currentLanguage)
+const nuxtApp = useNuxtApp()
+
+const { data } = await useAsyncData(
+  () => `my-page:${languageStore.currentLanguage}`,
+  () => fetchMyPageContent(languageStore.currentLanguage).then((response) => response.data),
+  {
+    watch: [() => languageStore.currentLanguage],
+    // 复用 SSR payload，避免 hydration 后再请求一次
+    getCachedData(key) {
+      return nuxtApp.payload.data[key] ?? nuxtApp.static.data[key]
+    }
+  }
 )
 ```
+
+现有 `pricing.vue`、`news/index.vue`、`news/[slug].vue` 都是这个形状，可直接照抄。
+边界说明见 [添加 API 请求 — `useAsyncData` 的边界](/development/add-api#useasyncdata-的边界)。
 
 ## 检查清单
 

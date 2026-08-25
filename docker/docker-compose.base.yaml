@@ -17,8 +17,6 @@
 #
 # 【边界与注意】
 #   外部流量须经 gateway nginx；nuxt 不直接映射 host port（prod）。
-# 文件职责：Compose 公共服务定义。
-# 开发和生产 Compose 都复用这里的 Nuxt 构建、运行环境和健康检查。
 services:
   nuxt:
     # BUILD_ENV 控制 Dockerfile 多阶段目标（prod/dev）

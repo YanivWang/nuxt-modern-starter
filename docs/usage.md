@@ -309,7 +309,7 @@ Editor behavior:
 - Route param `:id` is the **project id** (or `new` via `WORKSPACE_NEW_PROJECT_ID`). The page keeps `cachedProject` to avoid loading flicker. Existing projects call `fetchWorkspaceProject(id)`, require a non-null `documentId`, then load/save the linked document through editor APIs.
 - Draft mode (`/docs/new`) skips project fetch; first non-blank content triggers `createWorkspaceProject()` + initial `saveEditorDocument()`, then `router.replace()` to `/docs/:id`.
 - Content autosaves after a 2-second debounce and flushes on route leave (`onBeforeRouteLeave`). Title edits persist through both `saveEditorDocument()` and `updateWorkspaceProject()`.
-- The editor header (`EditorWorkspaceHeader`) includes back-to-workspace, inline title editing, autosave status, language switching, and `UserAccountMenu`; it is not a sidebar nav item.
+- The editor header (`EditorWorkspaceHeader`) includes back-to-workspace, inline title editing, autosave status, and `UserAccountMenu` (which is where language switching lives — the header has no separate language control); it is not a sidebar nav item.
 
 Account behavior:
 

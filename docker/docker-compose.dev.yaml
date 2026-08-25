@@ -2,7 +2,8 @@
 #   开发 Compose 覆盖：源码 bind mount、匿名卷 node_modules/.nuxt、gateway 代理 dev server。
 #
 # 【架构位置】
-#   docker/ — pnpm docker:dev 本地联调栈。
+#   docker/ — pnpm docker:up:dev / docker:down:dev 的本地联调栈。
+#     （pnpm docker:dev 不存在于本仓库；那是 nuxt-modern-starter-api 后端仓的命令）
 #
 # 【主要导出 / 路由】
 #   gateway:3000 → nuxt dev :3000；HMR 24678 映射 host
@@ -16,8 +17,7 @@
 #
 # 【边界与注意】
 #   CI=true install 避免 interactive；卷 app_node_modules 防 host 污染。
-# 文件职责：开发环境 Compose 覆盖配置。
-# 绑定挂载源码，并通过 Nginx 网关提供与生产接近的入口。
+#   绑定挂载源码，并通过 Nginx 网关提供与生产接近的入口。
 name: nuxt-modern-starter-dev
 
 services:

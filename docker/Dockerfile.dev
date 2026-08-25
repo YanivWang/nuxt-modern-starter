@@ -16,8 +16,6 @@
 #
 # 【边界与注意】
 #   不包含生产 build；与 Dockerfile 多阶段分离。
-# 文件职责：开发镜像。
-# 提供 Node 与 pnpm，实际源码通过 docker-compose.dev.yaml 绑定挂载。
 ARG PNPM_VERSION=11.5.2
 ARG NODE_IMAGE=node:22.22.3-alpine
 FROM ${NODE_IMAGE}
