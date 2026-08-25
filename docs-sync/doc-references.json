@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-25T17:43:14.108Z",
+  "generatedAt": "2026-08-25T17:51:47.817Z",
   "docFileCount": 33,
   "referenceCount": 1223,
   "pathAllowlist": [
@@ -5170,98 +5170,98 @@
       "line": 170,
       "type": "symbol",
       "value": "a5",
-      "context": "| `--app-color-brand-a*`   | `a5` `a6` `a7` `a8` `a9` `a12` `a14` `a16` `a18` |"
+      "context": "| `--app-color-brand-a*`   | `a5` `a6` `a7` `a8` `a9` `a10` `a12` `a14` `a16` `a18` |"
     },
     {
       "docFile": "docs-site/tech-stack/styles.md",
       "line": 170,
       "type": "symbol",
       "value": "a6",
-      "context": "| `--app-color-brand-a*`   | `a5` `a6` `a7` `a8` `a9` `a12` `a14` `a16` `a18` |"
+      "context": "| `--app-color-brand-a*`   | `a5` `a6` `a7` `a8` `a9` `a10` `a12` `a14` `a16` `a18` |"
     },
     {
       "docFile": "docs-site/tech-stack/styles.md",
       "line": 170,
       "type": "symbol",
       "value": "a7",
-      "context": "| `--app-color-brand-a*`   | `a5` `a6` `a7` `a8` `a9` `a12` `a14` `a16` `a18` |"
+      "context": "| `--app-color-brand-a*`   | `a5` `a6` `a7` `a8` `a9` `a10` `a12` `a14` `a16` `a18` |"
     },
     {
       "docFile": "docs-site/tech-stack/styles.md",
       "line": 170,
       "type": "symbol",
       "value": "a8",
-      "context": "| `--app-color-brand-a*`   | `a5` `a6` `a7` `a8` `a9` `a12` `a14` `a16` `a18` |"
+      "context": "| `--app-color-brand-a*`   | `a5` `a6` `a7` `a8` `a9` `a10` `a12` `a14` `a16` `a18` |"
     },
     {
       "docFile": "docs-site/tech-stack/styles.md",
       "line": 170,
       "type": "symbol",
       "value": "a9",
-      "context": "| `--app-color-brand-a*`   | `a5` `a6` `a7` `a8` `a9` `a12` `a14` `a16` `a18` |"
+      "context": "| `--app-color-brand-a*`   | `a5` `a6` `a7` `a8` `a9` `a10` `a12` `a14` `a16` `a18` |"
+    },
+    {
+      "docFile": "docs-site/tech-stack/styles.md",
+      "line": 170,
+      "type": "symbol",
+      "value": "a10",
+      "context": "| `--app-color-brand-a*`   | `a5` `a6` `a7` `a8` `a9` `a10` `a12` `a14` `a16` `a18` |"
     },
     {
       "docFile": "docs-site/tech-stack/styles.md",
       "line": 170,
       "type": "symbol",
       "value": "a12",
-      "context": "| `--app-color-brand-a*`   | `a5` `a6` `a7` `a8` `a9` `a12` `a14` `a16` `a18` |"
+      "context": "| `--app-color-brand-a*`   | `a5` `a6` `a7` `a8` `a9` `a10` `a12` `a14` `a16` `a18` |"
     },
     {
       "docFile": "docs-site/tech-stack/styles.md",
       "line": 170,
       "type": "symbol",
       "value": "a14",
-      "context": "| `--app-color-brand-a*`   | `a5` `a6` `a7` `a8` `a9` `a12` `a14` `a16` `a18` |"
+      "context": "| `--app-color-brand-a*`   | `a5` `a6` `a7` `a8` `a9` `a10` `a12` `a14` `a16` `a18` |"
     },
     {
       "docFile": "docs-site/tech-stack/styles.md",
       "line": 170,
       "type": "symbol",
       "value": "a16",
-      "context": "| `--app-color-brand-a*`   | `a5` `a6` `a7` `a8` `a9` `a12` `a14` `a16` `a18` |"
+      "context": "| `--app-color-brand-a*`   | `a5` `a6` `a7` `a8` `a9` `a10` `a12` `a14` `a16` `a18` |"
     },
     {
       "docFile": "docs-site/tech-stack/styles.md",
       "line": 170,
       "type": "symbol",
       "value": "a18",
-      "context": "| `--app-color-brand-a*`   | `a5` `a6` `a7` `a8` `a9` `a12` `a14` `a16` `a18` |"
-    },
-    {
-      "docFile": "docs-site/tech-stack/styles.md",
-      "line": 171,
-      "type": "symbol",
-      "value": "a10",
-      "context": "| `--app-color-primary-a*` | `a7` `a8` `a10` `a13` `a16` `a20` `a22` `a32`    |"
+      "context": "| `--app-color-brand-a*`   | `a5` `a6` `a7` `a8` `a9` `a10` `a12` `a14` `a16` `a18` |"
     },
     {
       "docFile": "docs-site/tech-stack/styles.md",
       "line": 171,
       "type": "symbol",
       "value": "a13",
-      "context": "| `--app-color-primary-a*` | `a7` `a8` `a10` `a13` `a16` `a20` `a22` `a32`    |"
+      "context": "| `--app-color-primary-a*` | `a7` `a8` `a10` `a13` `a16` `a18` `a20` `a22` `a32`    |"
     },
     {
       "docFile": "docs-site/tech-stack/styles.md",
       "line": 171,
       "type": "symbol",
       "value": "a20",
-      "context": "| `--app-color-primary-a*` | `a7` `a8` `a10` `a13` `a16` `a20` `a22` `a32`    |"
+      "context": "| `--app-color-primary-a*` | `a7` `a8` `a10` `a13` `a16` `a18` `a20` `a22` `a32`    |"
     },
     {
       "docFile": "docs-site/tech-stack/styles.md",
       "line": 171,
       "type": "symbol",
       "value": "a22",
-      "context": "| `--app-color-primary-a*` | `a7` `a8` `a10` `a13` `a16` `a20` `a22` `a32`    |"
+      "context": "| `--app-color-primary-a*` | `a7` `a8` `a10` `a13` `a16` `a18` `a20` `a22` `a32`    |"
     },
     {
       "docFile": "docs-site/tech-stack/styles.md",
       "line": 171,
       "type": "symbol",
       "value": "a32",
-      "context": "| `--app-color-primary-a*` | `a7` `a8` `a10` `a13` `a16` `a20` `a22` `a32`    |"
+      "context": "| `--app-color-primary-a*` | `a7` `a8` `a10` `a13` `a16` `a18` `a20` `a22` `a32`    |"
     },
     {
       "docFile": "docs-site/tech-stack/styles.md",
