@@ -245,7 +245,9 @@ The style system is split into Ant Design component tokens and page-level CSS va
 | Sass build-time  | `app/assets/styles/tokens/_variables.scss`           | `$spacing-*`, `$color-*` for SCSS (generated)            |
 | Runtime JS       | `app/assets/styles/tokens.ts`                        | `cssVarTokens`, `getCssVar`, `setCssVar`                 |
 | Public patterns  | `app/assets/styles/patterns/_page.scss`              | `.page-panel`, `.page-faq`, etc.                         |
+| Home patterns    | `app/assets/styles/patterns/_home.scss`              | `.hero`, `.feature-card`, `.workflow-panel`, etc.        |
 | Product patterns | `app/assets/styles/patterns/_product.scss`           | `.workspace-card`, `.app-shell-nav`, etc.                |
+| Editor patterns  | `app/assets/styles/patterns/_editor.scss`            | `.editor-workspace`, `.editor-workspace-header`          |
 
 When changing colors, edit `config/theme-palette.json` and run `pnpm generate:theme`. Do not hand-edit `_variables.scss` or `_dark.scss`. Add derived tokens (gradients, alpha, typography) in `_root.scss` when needed. CSS variables are the preferred page styling API; pages should not hardcode brand colors, background colors, body text colors, or borders. `stylelint` enforces `color-no-hex` under `app/components`, `app/features`, `app/pages`, and `app/layouts`.
 
@@ -269,6 +271,9 @@ Committed dotenv layers (`.env.dev`, `.env.test`, `.env.prod`) provide non-secre
 | `NUXT_PUBLIC_ANALYTICS_SCRIPT_SRC`     | Single deferred third-party script URL                                                |
 | `NUXT_PUBLIC_ANALYTICS_DEFER_MS`       | Client defer before loading analytics script                                          |
 | `NUXT_PUBLIC_APP_ENV`                  | Controls auth cookie `secure` flag; Docker Compose sets `production` or `development` |
+| `NUXT_REVALIDATE_SECRET`               | Server-only secret for `POST /api/revalidate`; unset means the endpoint returns 503   |
+| `NUXT_CACHE_DRIVER`                    | SWR page-cache driver, `memory` (default) or `fs`; read at **build** time             |
+| `NUXT_CACHE_FS_BASE`                   | Storage directory for the `fs` driver (default `./.data/cache`)                       |
 
 See `docs/deployment.md` for deployment-specific notes and full-stack pairing defaults.
 

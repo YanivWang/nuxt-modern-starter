@@ -8,7 +8,8 @@
 
   【主要导出 / 路由】
     fetchWorkspaceProjects、fetchWorkspaceProject、createWorkspaceProject、
-    updateWorkspaceProject、deleteWorkspaceProject、getWorkspaceDocPath、WORKSPACE_NEW_PROJECT_ID
+    updateWorkspaceProject、deleteWorkspaceProject、getWorkspaceDocPath、
+    getWorkspaceNewDocPath、isNewWorkspaceProjectId、WORKSPACE_NEW_PROJECT_ID
 
   【依赖关系】
     - 依赖：app/api/auth.ts createProductApiClient、~/types/document、~/types/workspace-project

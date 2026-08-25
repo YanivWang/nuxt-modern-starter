@@ -7,7 +7,7 @@
     公开 SEO 区 — app/composables，被 [[language]] 公开页与产品页 noindex 场景消费。
 
   【主要导出 / 路由】
-    usePageSeo、buildPageSeoLinks、buildPageSeoMeta、buildPageSeoScripts
+    usePageSeo、buildPageSeoLinks、buildPageSeoMeta、buildPageSeoScripts、buildHtmlLang
 
   【依赖关系】
     - 依赖：config/site.ts、config/routes.ts（localizedPath）、Nuxt app i18n context、useLanguageStore

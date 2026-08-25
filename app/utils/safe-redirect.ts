@@ -4,14 +4,15 @@
     resolveSafeRedirectPath 在非法 redirect 时回退 fallback。
 
   【架构位置】
-    共享层 — app/utils，被 app/middleware/auth.ts、sign-in 页面消费。
+    共享层 — app/utils，被 sign-in 页面消费。
 
   【主要导出 / 路由】
     isSafeRedirectPath、resolveSafeRedirectPath
 
   【依赖关系】
     - 依赖：无
-    - 被引用：app/middleware/auth.ts、app/pages/[[language]]/sign-in.vue
+    - 被引用：app/pages/[[language]]/sign-in.vue
+      （app/middleware/auth.ts 只负责带上 ?redirect=，校验发生在 sign-in 页）
 
   【渲染 / 数据】
     无

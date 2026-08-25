@@ -7,7 +7,7 @@
     共享层 — app/composables，被 AppHeader、公开页链接、useLanguageSwitch 消费。
 
   【主要导出 / 路由】
-    useLocalePath — localePath、switchLocalePath
+    useLocalePath — localePath、switchLocalePath；另导出纯函数 createSwitchLocalePath
 
   【依赖关系】
     - 依赖：config/site.ts、config/routes.ts（isProductPath）、i18n（getSwitchLanguageUrl）

@@ -39,10 +39,24 @@ The three env files are intentionally committed as starter baselines. Keep them 
 | `NUXT_PUBLIC_ANALYTICS_DEFER_MS`       | Client defer before loading analytics script                          | `3000`                                                                   |
 | `NUXT_PUBLIC_APP_ENV`                  | Controls auth cookie `secure` flag via `runtimeConfig.public.appEnv`  | `development` locally; Docker Compose sets `production` or `development` |
 | `NUXT_REVALIDATE_SECRET`               | Server-only secret for `POST /api/revalidate` (`x-revalidate-secret`) | placeholder in tracked `.env.*`; override in real environments           |
+| `NUXT_CACHE_DRIVER`                    | SWR page-cache driver: `memory` or `fs`; read at **build** time       | `memory`                                                                 |
+| `NUXT_CACHE_FS_BASE`                   | Storage directory for the `fs` driver                                 | `./.data/cache`                                                          |
 
 Production auth cookies are marked `secure` when `NUXT_PUBLIC_APP_ENV=production`, so real login flows must be served over HTTPS.
 
 `NUXT_REVALIDATE_SECRET` is not exposed to the client (`runtimeConfig.revalidateSecret`). If it is unset, `/api/revalidate` returns 503 so unauthenticated cache purge is not available in production.
+
+### SWR page cache and multi-instance deployments
+
+`nitro.storage` comes from `config/cache.ts` and defaults to **in-process memory**. That is fine for a single process, but once you scale horizontally (pm2 cluster, multiple container replicas) each process keeps its own cache while `POST /api/revalidate` only reaches one of them — the rest keep serving stale HTML until the TTL expires.
+
+`NUXT_CACHE_DRIVER` and `NUXT_CACHE_FS_BASE` are read at **build** time (Nitro resolves `nitro.storage` during the build), so pass them as Docker build args rather than runtime env:
+
+```bash
+NUXT_CACHE_DRIVER=fs NUXT_CACHE_FS_BASE=/data/cache pnpm build
+```
+
+`fs` shares one directory, so mount a shared volume for same-host multi-process setups. Cross-host deployments need a shared driver such as redis; `config/cache.ts` only ships `memory` and `fs` to avoid extra dependencies — configure `nitro.storage.cache` in `nuxt.config.ts` directly for anything else. An unknown driver name fails the build instead of silently falling back to memory.
 
 ## Local Full-Stack Verification
 

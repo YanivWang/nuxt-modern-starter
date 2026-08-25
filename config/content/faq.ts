@@ -7,7 +7,7 @@
     config/content — 公开 SEO 区静态内容；独立于 i18n 文案包（独立内容域）。
 
   【主要导出 / 路由】
-    FaqItem、faqItems
+    FaqItem、LocalizedContent、faqItems、resolveLocalizedContent
 
   【依赖关系】
     - 依赖：config/site.ts（SupportedLocale 类型）

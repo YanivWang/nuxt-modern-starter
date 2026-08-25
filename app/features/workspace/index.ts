@@ -11,7 +11,7 @@
 
   【依赖关系】
     - 依赖：./components/WorkspaceDashboard.vue
-    - 被引用：app/pages/workspace/index.vue、app/pages/docs/[id].vue
+    - 被引用：app/pages/workspace/index.vue
 
   【渲染 / 数据】
     无 — 纯 re-export。

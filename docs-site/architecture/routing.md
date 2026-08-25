@@ -4,9 +4,12 @@
 
 ### 公开 SEO 路由
 
-- 路径模式：`/`、`/en/*`（通过 `[[language]]` 动态段）
+- 路径模式：`/`、`/<prefix>/*`（通过 `[[language]]` 动态段）
 - 默认语言（zh-CN）**无前缀**
-- 英文（en-US）使用 **`/en` 前缀**
+- 其余 14 种语言各用自己的前缀，来自 `config/site.ts` 的 `SITE_LOCALE_PREFIX_MAP`
+  （`/en`、`/kr`、`/zh-hk`、`/pt-br` …，完整清单见[国际化](/architecture/i18n#支持语言)）
+
+> 下文表格与示例统一用 `/en` 举例，实际对全部非默认语言前缀同样生效。
 
 ### 产品路由（语言中性）
 
@@ -117,12 +120,12 @@ digest(path).replace(/[-_]/g, '').slice(0, 10)
 
 ### 登录产品区
 
-| 页面   | 亮点                                                                                                                                                                                                        |
-| ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 工作台 | `product` layout + ProductShell 侧边栏；项目卡片网格；idle 预加载编辑器路由与 chunk；删除确认；noindex                                                                                                      |
-| 模板   | 6 张虚线占位卡片 + `a-empty` 空状态；无 API，可安全替换为真实模板功能                                                                                                                                       |
-| 编辑器 | `editor` 全屏 layout；`/docs/new` 草稿模式，首次非空保存后 `replace` 到 `/docs/:id`；`cachedProject` 防切换闪烁；YanivEditor PPT 模式；2s debounce 自动保存 + 路由离开 flush；标题同步 project/document API |
-| 账户   | `account` layout + AccountShell；头像 / 昵称 / 扩展 profile 字段；API 失败可重试；退出后回本地化首页                                                                                                        |
+| 页面   | 亮点                                                                                                                                                                                                                                                     |
+| ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 工作台 | `product` layout + ProductShell 侧边栏；项目卡片网格；idle 预加载编辑器路由与 chunk；删除确认；noindex                                                                                                                                                   |
+| 模板   | 6 张虚线占位卡片 + `a-empty` 空状态；无 API，可安全替换为真实模板功能                                                                                                                                                                                    |
+| 编辑器 | `editor` 全屏 layout；`/docs/new` 草稿模式，首次非空保存后 `replace` 到 `/docs/:id`；`cachedProject` 防切换闪烁；YanivEditor（`mode: edit`、`preset: full`、`appearance: custom`）；2s debounce 自动保存 + 路由离开 flush；标题同步 project/document API |
+| 账户   | `account` layout + AccountShell；头像 / 昵称 / 扩展 profile 字段；API 失败可重试；退出后回本地化首页                                                                                                                                                     |
 
 ## 路由决策流程
 

@@ -7,8 +7,9 @@
     i18n 层 — 被 app/middleware/locale.global.ts、language store、useLocalePath、plugins/i18n.ts 消费。
 
   【主要导出 / 路由】
-    createAppI18n、localeFromPrefix、resolvePreferredLocale、getSwitchLanguageUrl、
-    relativeLangPath、STORAGE_KEY_LANGUAGE
+    createAppI18n、localeFromPrefix、isSupportedLocale、resolveStoredLocale、
+    extractLanguagePrefixByPath、resolvePreferredLocale、getSwitchLanguageUrl、
+    relativeLangPath、STORAGE_KEY_LANGUAGE、LANGUAGE_COOKIE_MAX_AGE、AppI18nContext
 
   【依赖关系】
     - 依赖：config/site.ts、config/routes.ts（isProductPath）、i18n/zh-CN、i18n/en-US 及各 locale 包

@@ -8,7 +8,7 @@
 
   【主要导出 / 路由】
     productRoutePatterns、csrRouteRules、prerenderRoutes、swrRouteRules、
-    PRERENDER_BASE_PATHS、PRERENDER_LOCALES、SWR_BASE_PATHS、
+    PRERENDER_BASE_PATHS、PRERENDER_LOCALES、SWR_BASE_PATHS、PublicPagePath、
     isProductPath、localizedProductPathToCanonical、localizedPath、publicLocalizedPaths
 
   【依赖关系】

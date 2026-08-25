@@ -5,6 +5,7 @@
 `.env.dev` / `.env.test` / `.env.prod`：
 
 ```bash
+NUXT_PUBLIC_APP_ENV=development
 NUXT_PUBLIC_SITE_URL=http://localhost:3000
 NUXT_PUBLIC_API_BASE=http://localhost:2027/api
 
@@ -28,17 +29,23 @@ NUXT_REVALIDATE_SECRET=replace_with_random_revalidate_secret
 
 ## 完整变量表
 
-| 变量                                   | runtimeConfig 键                | 说明                      | 本地默认                    |
-| -------------------------------------- | ------------------------------- | ------------------------- | --------------------------- |
-| `NUXT_PUBLIC_SITE_URL`                 | `public.siteUrl`                | SEO canonical、sitemap    | `http://localhost:3000`     |
-| `NUXT_PUBLIC_API_BASE`                 | `public.apiBase`                | 后端 API 根（含 `/api`）  | `http://localhost:2027/api` |
-| `NUXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | `public.googleSiteVerification` | Google 站长验证           | 空                          |
-| `NUXT_PUBLIC_BAIDU_SITE_VERIFICATION`  | `public.baiduSiteVerification`  | 百度验证                  | 空                          |
-| `NUXT_PUBLIC_ANALYTICS_ENABLED`        | `public.analyticsEnabled`       | 必须精确为 `true` 才启用  | `false`                     |
-| `NUXT_PUBLIC_ANALYTICS_SCRIPT_SRC`     | `public.analyticsScriptSrc`     | 第三方脚本 URL            | 空                          |
-| `NUXT_PUBLIC_ANALYTICS_DEFER_MS`       | `public.analyticsDeferMs`       | 延迟毫秒                  | `3000`                      |
-| `NUXT_PUBLIC_APP_ENV`                  | `public.appEnv`                 | 控制 cookie `secure`      | `development`               |
-| `NUXT_REVALIDATE_SECRET`               | `revalidateSecret`              | SWR 按需失效 webhook 密钥 | 示例占位符（生产须替换）    |
+| 变量                                   | runtimeConfig 键                | 说明                           | 本地默认                    |
+| -------------------------------------- | ------------------------------- | ------------------------------ | --------------------------- |
+| `NUXT_PUBLIC_SITE_URL`                 | `public.siteUrl`                | SEO canonical、sitemap         | `http://localhost:3000`     |
+| `NUXT_PUBLIC_API_BASE`                 | `public.apiBase`                | 后端 API 根（含 `/api`）       | `http://localhost:2027/api` |
+| `NUXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | `public.googleSiteVerification` | Google 站长验证                | 空                          |
+| `NUXT_PUBLIC_BAIDU_SITE_VERIFICATION`  | `public.baiduSiteVerification`  | 百度验证                       | 空                          |
+| `NUXT_PUBLIC_ANALYTICS_ENABLED`        | `public.analyticsEnabled`       | 必须精确为 `true` 才启用       | `false`                     |
+| `NUXT_PUBLIC_ANALYTICS_SCRIPT_SRC`     | `public.analyticsScriptSrc`     | 第三方脚本 URL                 | 空                          |
+| `NUXT_PUBLIC_ANALYTICS_DEFER_MS`       | `public.analyticsDeferMs`       | 延迟毫秒                       | `3000`                      |
+| `NUXT_PUBLIC_APP_ENV`                  | `public.appEnv`                 | 控制 cookie `secure`           | `development`               |
+| `NUXT_REVALIDATE_SECRET`               | `revalidateSecret`              | SWR 按需失效 webhook 密钥      | 示例占位符（生产须替换）    |
+| `NUXT_CACHE_DRIVER`                    | —（构建期读）                   | SWR 缓存驱动：`memory` \| `fs` | `memory`                    |
+| `NUXT_CACHE_FS_BASE`                   | —（构建期读）                   | `fs` 驱动的存储目录            | `./.data/cache`             |
+
+`NUXT_CACHE_*` 不进 `runtimeConfig`：`nitro.storage` 是 **构建期** 配置，值在 `pnpm build` 时
+就写进 `.output`，运行时再改环境变量无效。多实例部署的取舍见
+[部署概览 — SWR 页面缓存与多实例](/deployment/overview#swr-页面缓存与多实例)。
 
 ## NUXT_PUBLIC_APP_ENV 与 Cookie
 

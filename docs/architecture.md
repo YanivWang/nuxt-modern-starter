@@ -4,7 +4,7 @@
 
 ## Directory Responsibilities
 
-- `app/pages/[[language]]`: localized public route entries. Default language has no prefix, English public pages use `/en`. Current pages include home, pricing, about, help, news list/detail, sign-in, sign-up, and the catch-all 404 handler.
+- `app/pages/[[language]]`: localized public route entries. The default language (`zh-CN`) has no prefix; each of the other 14 locales uses its own prefix from `SITE_LOCALE_PREFIX_MAP` (`/en`, `/kr`, `/zh-hk`, …). Current pages include home, pricing, about, help, news list/detail, sign-in, sign-up, and the catch-all 404 handler.
 - `app/pages/workspace`: logged-in workspace routes. `index.vue` maps to `/workspace`; `templates/index.vue` maps to `/workspace/templates` (optional template placeholder, no API).
 - `app/pages/docs/[id].vue`: full-screen editor at `/docs/:id` or `/docs/new` (`:id` is the project id, or `new` via `WORKSPACE_NEW_PROJECT_ID`). The page loads project metadata, keeps a `cachedProject` to avoid flicker on route changes, and mounts `EditorWorkspace`.
 - `app/pages/account.vue`: account settings at `/account`, reached from `UserAccountMenu`.
@@ -32,8 +32,8 @@
 - `app/middleware/locale.global.ts`: global locale normalization before page rendering, including product canonical 301 redirects via `localizedProductPathToCanonical`.
 - `app/middleware/auth.ts`: named auth middleware for protected product routes (session, login redirect, RBAC). Does not handle product canonical redirects.
 - `app/plugins`: startup hooks such as `auth.client.ts` session hydration (client-only so prerendered and SWR-cached HTML never depends on who is signed in), `i18n.ts` setup, `attribution.client.ts` first-load and SPA attribution capture, and `analytics.client.ts` deferred third-party script loading behind env guards.
-- `app/assets/styles`: global SCSS entry (`main.scss`), layered tokens (`tokens/_variables.scss`, `_root.scss`, `_dark.scss`), public-page patterns (`patterns/_page.scss`), and runtime CSS var helpers (`tokens.ts`). Mounted from `nuxt.config.ts`; Sass variables are auto-injected into SFC style blocks.
-- `config`: site metadata, route lists, auth constants, theme tokens, and typed local content.
+- `app/assets/styles`: global SCSS entry (`main.scss`), layered tokens (`tokens/_variables.scss`, `_root.scss`, `_dark.scss`), UI patterns (`patterns/_page.scss`, `_home.scss`, `_product.scss`, `_editor.scss`), and runtime CSS var helpers (`tokens.ts`). Mounted from `nuxt.config.ts`; Sass variables are auto-injected into SFC style blocks.
+- `config`: site metadata, route lists, auth constants, theme tokens, SWR cache driver selection (`cache.ts`), and typed local content.
 - `config/site.ts`: site metadata, supported locales, navigation, and `PUBLIC_PAGE_PATHS` (`/`, `/pricing`, `/about`, `/help`, `/news`). Sign-in and sign-up are intentionally excluded.
 - `config/auth.ts`: auth endpoint paths, cookie keys, token max ages, auth route meta types, and frontend redirect constants (`AUTH_REDIRECTS.login = '/sign-in'`).
 - `config/routes.ts`: public/product path helpers, prerender/SWR/CSR route rule sources, and localized product URL canonicalization (`isProductPath`, `localizedProductPathToCanonical`).
@@ -59,7 +59,7 @@ This keeps SEO pages cache-friendly while logged-in product pages stay session-a
 
 ## Runtime Flow
 
-`locale.global.ts` normalizes routes before page rendering. It removes trailing slashes, redirects `/zh` and `/zh/*` to default-language paths, redirects localized product paths such as `/en/workspace` to language-neutral `/workspace`, returns 404 for unsupported language prefixes such as `/fr/pricing`, loads locale messages, and updates the language store.
+`locale.global.ts` normalizes routes before page rendering. It removes trailing slashes, redirects `/zh` and `/zh/*` to default-language paths, redirects localized product paths such as `/en/workspace` to language-neutral `/workspace`, returns 404 for unsupported language prefixes such as `/xx/pricing` (note `/fr` is a supported prefix for `fr-FR`), loads locale messages, and updates the language store.
 
 `auth.ts` runs on protected product pages. It ensures session, redirects unauthenticated users to localized `/sign-in?redirect=` (via `localizedPath(AUTH_REDIRECTS.login, currentLanguage)`), and enforces optional role/permission meta. Product canonical redirects are handled only by locale middleware and server middleware.
 

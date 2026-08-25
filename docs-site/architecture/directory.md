@@ -8,6 +8,7 @@ nuxt-modern-starter/
 ├── config/              # 部署无关的静态配置
 ├── server/              # Nitro 服务端（SEO 路由、SWR 失效、301 中间件）
 ├── i18n/                # vue-i18n 语言包与 helper
+├── scripts/             # 构建/维护脚本（generate-theme、i18n-manager 及其快照）
 ├── tests/               # Vitest 单元测试 + Nuxt smoke
 ├── docker/              # Dockerfile、Compose、Nginx 样例
 ├── docs/                # 仓库内精简 Markdown 约定
@@ -96,9 +97,10 @@ app/features/my-feature/
 ```
 app/
 ├── api/
-│   ├── clients.ts      # createPublicApiClient / createAuthApiClient
-│   ├── public.ts       # 公开内容适配器
-│   └── auth.ts         # 鉴权适配器 + createProductApiClient
+│   ├── clients.ts             # createPublicApiClient / createAuthApiClient
+│   ├── public.ts              # 公开内容适配器
+│   ├── auth.ts                # 鉴权适配器 + createProductApiClient
+│   └── workspace-project.ts   # 跨 feature 的项目 CRUD + 编辑器链接 helper
 └── lib/http/
     ├── client.ts       # createApiClient（$fetch 封装）
     ├── error.ts        # assertApiSuccess、getApiErrorMessage
@@ -116,6 +118,7 @@ app/
 | `antd-locale.ts`     | Ant Design Vue locale 动态加载；`ph-PH` 回退 `en_US`           |
 | `theme.ts`           | Ant Design token 映射；与 `app/assets/styles/tokens/` 色板对齐 |
 | `theme-palette.json` | 色值唯一编辑源；`pnpm generate:theme` 生成 SCSS                |
+| `cache.ts`           | SWR 页面缓存驱动（`NUXT_CACHE_DRIVER`，构建期求值）            |
 | `content/faq.ts`     | 帮助页 FAQ 本地数据                                            |
 
 ## `server/` — 服务端

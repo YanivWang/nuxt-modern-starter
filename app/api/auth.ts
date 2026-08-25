@@ -7,8 +7,9 @@
     共享层 — app/api，被 auth store、共享产品 adapter、feature 私有 api adapter 消费。
 
   【主要导出 / 路由】
-    createProductApiClient、refreshAccessTokenOnce、loginApi、registerApi、logoutApi、
-    fetchMeApi、fetchProfileApi、updateProfileApi、normalizeAuthUser
+    createProductApiClient、refreshAccessTokenOnce、loginApi、registerApi、refreshApi、logoutApi、
+    fetchMeApi、fetchProfileApi、updateProfileApi、normalizeAuthUser；
+    并 re-export createAuthApiClient / AuthApiClientOptions
 
   【依赖关系】
     - 依赖：config/auth.ts、app/api/clients.ts、app/utils/auth-session.ts、app/utils/attribution-params.ts

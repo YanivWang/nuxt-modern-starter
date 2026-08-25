@@ -156,8 +156,10 @@ export const buildSourceIndex = (manifest) => {
     const content = readText(rel)
     if (!content) continue
     for (const m of content.matchAll(/--app-[a-z0-9-]+/g)) cssVars.add(m[0])
+    // 项目自有 class 前缀白名单；ant- / anticon 等第三方类不纳入索引。
+    // 新增 patterns/*.scss 引入新前缀时，这里要一并补，否则文档引用该类会被误报为「不存在」。
     for (const m of content.matchAll(
-      /\.(app-[a-z0-9-]+|page-[a-z0-9-]+|workspace-[a-z0-9-]+|auth-[a-z0-9-]+)/g
+      /\.(app-[a-z0-9-]+|page-[a-z0-9-]+|workspace-[a-z0-9-]+|auth-[a-z0-9-]+|editor-[a-z0-9-]+|home-[a-z0-9-]+|hero|feature-[a-z0-9-]+|workflow-[a-z0-9-]+|theme-templates-[a-z0-9-]+)/g
     )) {
       cssClasses.add(`.${m[1]}`)
     }

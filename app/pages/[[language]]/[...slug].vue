@@ -25,7 +25,7 @@
     SSR；无 API；HTTP 404 + noindex。
 
   【边界与注意】
-    不支持的语言前缀（如 /fr/*）由 app/middleware/locale.global.ts 单独 404，不走本页。
+    不支持的语言前缀（如 /xx/*）由 app/middleware/locale.global.ts 单独 404，不走本页。
     usePageSeo noindex 不输出 hreflang alternate。
 -->
 <script setup lang="ts">

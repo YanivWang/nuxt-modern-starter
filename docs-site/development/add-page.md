@@ -49,15 +49,18 @@ export const NAV_ITEMS = [
 
 `config/routes.ts`：
 
-```ts
-// 静态化
-export const prerenderRoutes = publicLocalizedPaths().filter(
-  (path) => path === '/my-page' || path === '/en/my-page' || /* 现有项 */
-)
+两条规则都由「基础路径 × 语言」展开，所以只需要往对应的基础路径数组里加一项：
 
-// 或 SWR（内容来自 API、需定期刷新）
-export const swrRouteRules = ['/my-page', '/en/my-page', /* 现有项 */] as const
+```ts
+// 静态化：会为 PRERENDER_LOCALES（zh-CN、en-US）各生成一条
+export const PRERENDER_BASE_PATHS = ['/', '/about', '/help', '/my-page'] as const
+
+// 或 SWR：会为全部 15 种语言各生成「裸路径 + 子树」两条
+export const SWR_BASE_PATHS = ['/news', '/my-page'] as const
 ```
+
+不要直接改 `prerenderRoutes` / `swrRouteRules` —— 它们是上面两个数组的派生结果。
+改完同步 `tests/unit/seo-routes.test.ts`。
 
 ### 4. 补充 i18n
 

@@ -7,7 +7,8 @@
     共享层 — app/composables，被 app/middleware/auth.ts、页面与 feature 组件消费。
 
   【主要导出 / 路由】
-    useAuth — ensureSession、login、register、logout、can、hasRole、isAuthenticated
+    useAuth — authStore、user、status、isAuthenticated、ensureSession、login、register、
+    logout、can、hasRole
 
   【依赖关系】
     - 依赖：app/stores/auth.ts、app/utils/auth-session.ts、config/auth.ts（Role、Permission 类型）

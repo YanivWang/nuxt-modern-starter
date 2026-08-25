@@ -10,7 +10,8 @@
 
   【依赖关系】
     - 依赖：./components/EditorWorkspace.vue、./composables/useEditorPage
-    - 被引用：app/pages/docs/[id].vue、WorkspaceDashboard prefetch
+    - 被引用：app/pages/docs/[id].vue
+      （WorkspaceDashboard 只 preloadRouteComponents('/docs/new') 预热路由 chunk，不 import 本 barrel）
 
   【渲染 / 数据】
     无 — 页面只使用 feature barrel，feature 内部组件/composables 不被页面深引。

@@ -106,7 +106,8 @@ export const resolveLocaleRouteDecision = (
 
   const locale = firstSegment ? localeFromPrefix(firstSegment) : undefined
 
-  // 形如 /fr/pricing 的两字母前缀但不在 SUPPORTED_LOCALES → 404
+  // 形如 /xx/pricing 的两字母前缀但不在 SUPPORTED_LOCALES → 404
+  // （注意 /fr 等已是受支持前缀，见 config/site.ts SUPPORTED_LOCALES）
   if (!locale && isLocaleLikePrefix(firstSegment)) {
     return {
       type: 'error',

@@ -41,7 +41,7 @@ pnpm build
 ## Core Features
 
 - Nuxt 4, TypeScript, pnpm, Pinia, Ant Design Vue, SCSS, and `vue-i18n`.
-- Default-language routes without a prefix and English routes under `/en`.
+- 15 built-in locales: the default language (`zh-CN`) has no URL prefix, other locales use their own prefix (`/en`, `/kr`, `/zh-hk`, …) from `SITE_LOCALE_PREFIX_MAP`.
 - Shared `useLocalePath`, `usePageSeo`, `useTheme`, and scenario-specific API clients.
 - Hybrid rendering: default SSR for unconfigured public routes, prerender for selected marketing routes, SWR for news, and CSR for product routes (`/workspace/**`, `/docs/**`, `/account`). Pricing uses default SSR.
 - On-demand SWR invalidation: `POST /api/revalidate` with `NUXT_REVALIDATE_SECRET` (webhook from the API after news changes).
@@ -99,6 +99,11 @@ pnpm stylelint
 pnpm typecheck
 pnpm test
 pnpm test:watch
+pnpm i18n:check
+pnpm i18n:diff
+pnpm i18n:scan
+pnpm i18n:unused
+pnpm generate:theme
 pnpm quality
 pnpm docs:sync:check
 pnpm docs:sync:manifest

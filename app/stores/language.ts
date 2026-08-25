@@ -7,7 +7,8 @@
     共享层 — app/stores，被 locale.global middleware、useLanguageSwitch、useLocalePath 消费。
 
   【主要导出 / 路由】
-    useLanguageStore — currentLanguage、chooseLanguage、toggleLanguage、pathPrefix、languages
+    useLanguageStore — currentLanguage、currentLanguageId、languages、pathPrefix、
+    chooseLanguage、toggleLanguage
 
   【依赖关系】
     - 依赖：config/site.ts、i18n/index.ts（cookie 常量与 locale 校验）

@@ -48,9 +48,34 @@ routeRules: {
 
 客户端和服务端均可 `useRuntimeConfig().public` 访问。
 
+### 服务端 runtimeConfig
+
+`revalidateSecret`（`NUXT_REVALIDATE_SECRET`）只在服务端可见，不进 `public`，供
+`server/api/revalidate.post.ts` 校验 `x-revalidate-secret`。
+
+### nitro.storage
+
+SWR 页面缓存的存储驱动，由 `config/cache.ts` 的 `resolveCacheStorage()` 在**构建期**求值：
+
+```ts
+nitro: {
+  storage: resolveCacheStorage() // memory → {}；fs → { cache: { driver: 'fsLite', base } }
+}
+```
+
+默认进程内存，多实例部署需换共享驱动 —— 见[部署概览](/deployment/overview#swr-页面缓存与多实例)。
+
+### vite.build
+
+内置富文本编辑器体积较大，用显式 `manualChunks` 切出 `vendor-ant-design`、
+`vendor-editor-document`、`vendor-vue`、`vendor-upload` 四个 vendor chunk，
+并把 `chunkSizeWarningLimit` 放宽到 3000KB。分包是否真的生效由
+`tests/unit/build-config.test.ts` 读 `.output` 产物校验。
+
 ### 其他要点
 
 - `compatibilityDate: '2026-07-04'`
+- `antd.extractStyle: true` — SSR 提取 Ant Design CSS-in-JS 样式
 - 全局 `/**` routeRules 注入 CSP、X-Frame-Options、nosniff 等安全响应头
 - 测试环境（`NODE_ENV=test` 或 `VITEST`）额外加载 `@nuxt/test-utils/module`
 

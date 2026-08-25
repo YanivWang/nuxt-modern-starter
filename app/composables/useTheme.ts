@@ -4,14 +4,15 @@
     onMounted 恢复 localStorage 偏好并监听 prefers-color-scheme 变化。
 
   【架构位置】
-    共享层 — app/composables，被 app/app.vue ConfigProvider、ThemeSwitcher 消费。
+    共享层 — app/composables，被 app/app.vue ConfigProvider、ThemeSwitch 消费。
 
   【主要导出 / 路由】
     useTheme — mode、resolvedMode、antdTheme、setThemeMode、toggleTheme
 
   【依赖关系】
     - 依赖：config/theme.ts、useThemeStore
-    - 被引用：app/app.vue、ThemeSwitcher 组件
+    - 被引用：app/app.vue、app/components/layout/ThemeSwitch.vue、
+      app/features/editor/components/EditorWorkspace.vue（按 resolvedMode 同步编辑器色板）
 
   【渲染 / 数据】
     SSR 默认 light；client onMounted 读 THEME_STORAGE_KEY 并应用 dataset.theme。

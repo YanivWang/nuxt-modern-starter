@@ -7,7 +7,7 @@
     共享层 — app/stores，被 useTheme composable、app/app.vue 消费。
 
   【主要导出 / 路由】
-    useThemeStore — mode、resolvedMode、setMode、setResolvedMode、toggleTheme
+    useThemeStore — mode、resolvedMode、storageKey、setMode、setResolvedMode、toggleTheme
 
   【依赖关系】
     - 依赖：config/theme.ts

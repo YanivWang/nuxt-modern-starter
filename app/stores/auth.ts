@@ -7,7 +7,8 @@
     登录产品区 — app/stores，被 useAuth composable、app/plugins/auth.client.ts 消费。
 
   【主要导出 / 路由】
-    useAuthStore — login、register、logout、fetchMe、refresh、hasRole、hasPermission
+    useAuthStore — user、status、isAuthenticated、login、register、logout、fetchMe、refresh、
+    setTokens、reset、hasRole、hasPermission
 
   【依赖关系】
     - 依赖：app/api/auth.ts、app/utils/auth-session.ts、app/utils/attribution-params.ts、config/auth.ts
@@ -22,7 +23,7 @@
   【边界与注意】
     logout() 只清 token / user / 归因，不 router.push；AccountPage、UserAccountMenu 在 await logout() 后跳转。
     register 不写令牌、不 fetchMe。修改 action 需同步 tests/unit/auth-store.test.ts。
-    新增 state 前先确认它对匿名访客可见也无害：state 会进入 SSR payload，见 tests/unit/ssr-payload-safety.test.ts。
+    新增 state 前先确认它对匿名访客可见也无害：state 会进入 SSR payload，见 tests/unit/ssr-cache-safety.test.ts。
 */
 import {
   loginApi,

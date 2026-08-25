@@ -6,7 +6,7 @@
     config 层 — 被 nuxt.config.ts 的 nitro.storage 消费。
 
   【主要导出 / 路由】
-    CACHE_DRIVERS、resolveCacheStorage
+    CACHE_DRIVERS、CacheDriver、DEFAULT_CACHE_FS_BASE、isCacheDriver、resolveCacheStorage
 
   【依赖关系】
     - 依赖：无（仅读 process.env）

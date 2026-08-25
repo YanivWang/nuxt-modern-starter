@@ -1,7 +1,8 @@
 /*
   【文件职责】
     sitemap.xml 与 robots.txt 生成逻辑：公开多语言路径展开、新闻 slug 动态拉取、XML 转义。
-    robots 显式 Disallow 产品区、鉴权页及 /en 变体；sitemap 仅含 PUBLIC_PAGE_PATHS 展开路径。
+    robots 显式 Disallow 产品区、鉴权页，以及它们在全部非默认语言前缀下的变体
+    （/en、/kr、/zh-hk … 见 SITE_LOCALE_PREFIX_MAP）；sitemap 仅含 PUBLIC_PAGE_PATHS 展开路径。
 
   【架构位置】
     server 层 — 被 server/routes/sitemap.xml.ts、server/routes/robots.txt.ts 调用。

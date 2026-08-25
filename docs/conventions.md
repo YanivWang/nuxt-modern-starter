@@ -7,10 +7,11 @@
 - `config/site.ts`: site metadata, supported locales, navigation, and public page base paths.
 - `config/auth.ts`: auth endpoint paths, cookie keys, token max ages, and auth route meta types.
 - `config/routes.ts`: public/product path helpers and route rule sources for prerender, SWR, and CSR.
+- `config/cache.ts`: SWR page-cache storage driver (`NUXT_CACHE_DRIVER`), evaluated at build time and consumed by `nitro.storage`.
 - `config/theme.ts`: TypeScript design tokens and Ant Design Vue token mapping.
 - `app/assets/styles/tokens/`: layered design tokens (`_variables.scss` for Sass build-time values, `_root.scss` for light `--app-*` CSS variables, `_dark.scss` for dark overrides).
 - `app/assets/styles/tokens.ts`: runtime `cssVarTokens` map and `getCssVar` / `setCssVar` helpers.
-- `app/assets/styles/patterns/`: reusable public-page pattern classes (`.page-panel`, `.page-faq`, etc.).
+- `app/assets/styles/patterns/`: reusable pattern classes — `_page.scss` (`.page-panel`, `.page-faq`), `_home.scss` (`.hero`, `.feature-card`), `_product.scss` (`.app-*`, `.workspace-card`), `_editor.scss` (`.editor-workspace*`).
 - `app/assets/styles/main.scss`: global style entry mounted from `nuxt.config.ts`.
 
 `runtimeConfig.public.siteUrl` should be set in production. Local development falls back to `http://localhost:3000`; production deployments should fail review if this remains unchanged.
@@ -108,7 +109,7 @@ Formatting and lint responsibilities are split on purpose:
 | Prettier       | Source of truth for JS/TS/Vue/Markdown/JSON/CSS/SCSS formatting                                              |
 | ESLint         | Code quality and Vue semantics; markup self-closing rules are aligned with Prettier output                   |
 | Stylelint      | SCSS/CSS/Vue style blocks only; does not format script or template markup                                    |
-| Husky          | `lint-staged` on commit, then full `pnpm lint`, `stylelint`, `typecheck`, and `test`                         |
+| Husky          | `lint-staged` on commit only; the full gate runs in CI (`.github/workflows/quality.yml`)                     |
 | `pnpm quality` | Release gate: adds `format:check`, `i18n:check`, and `build` before `test` so tests can inspect build output |
 
 Commit messages use Conventional Commits by meaning, not only by syntax: use `fix` for bug/security fixes, `docs` for documentation-only changes, `chore` for dependency/tooling maintenance, `test` for test-only changes, and `feat` only for user-visible product capability.

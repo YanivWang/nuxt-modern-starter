@@ -12,7 +12,8 @@
   【依赖关系】
     - 依赖：useAuth、useUserAvatar、useLanguageSwitch、useLocalePath、useCoarsePointer、
       LanguageOptionList
-    - 被引用：AppShellHeader、ProductShell
+    - 被引用：AppShellHeader（产品区默认 actions-after）、AccountShell、EditorWorkspaceHeader
+      （ProductShell 经 AppShellHeader 间接使用，不直接 import）
 
   【渲染 / 数据】
     CSR；产品区语言切换不改变 URL path，仅换 UI locale。

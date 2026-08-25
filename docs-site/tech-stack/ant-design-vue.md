@@ -48,11 +48,27 @@ antd: {
 
 不要全量引入 `@ant-design/icons-vue`：
 
+`app/utils/antdIcon.ts` 从 `@ant-design/icons-svg` 逐个 import 图标定义，再用 `createAntdIcon()`
+包成 Vue 组件具名导出 —— 只有显式列出的图标会进包：
+
 ```ts
 // app/utils/antdIcon.ts
-import FolderOutlined from '@ant-design/icons-vue/FolderOutlined'
-export { FolderOutlined }
+import AntdIcon from '@ant-design/icons-vue/es/components/AntdIcon'
+import FolderOutlinedSvg from '@ant-design/icons-svg/es/asn/FolderOutlined'
+
+export const createAntdIcon = (displayName: string, icon: IconDefinition) =>
+  defineComponent({
+    name: displayName,
+    inheritAttrs: false,
+    setup(_props, { attrs }) {
+      return () => h(AntdIcon, { ...attrs, icon })
+    }
+  })
+
+export const FolderOutlined = createAntdIcon('FolderOutlined', FolderOutlinedSvg)
 ```
+
+新增图标必须在此文件同时补 `import` 与 `export`。
 
 页面中：
 

@@ -112,7 +112,9 @@ server/utils/revalidate.ts → purgeRouteCaches()
 清除 nitro/routes 缓存条目 → 下次请求重新 SSR
 ```
 
-`slug` 快捷方式会展开为中英文新闻列表与详情四条路径。未配置 `revalidateSecret`（`NUXT_REVALIDATE_SECRET`）时返回 503。
+`slug` 快捷方式会展开为 **全部 `SUPPORTED_LOCALES`（15 种）的新闻列表 + 详情，共 30 条路径**
+（`getNewsRevalidatePaths()`，见 `tests/unit/revalidate.test.ts` 的 `SUPPORTED_LOCALES.length * 2` 断言）。
+未配置 `revalidateSecret`（`NUXT_REVALIDATE_SECRET`）时返回 503。
 
 ## API 端点地图
 

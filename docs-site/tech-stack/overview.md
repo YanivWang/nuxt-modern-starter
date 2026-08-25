@@ -54,7 +54,7 @@
 - `config/theme.ts` — Ant Design ConfigProvider token
 - `app/assets/styles/tokens/` — Sass `$` + CSS `--app-*` 变量（亮/暗）
 - `app/assets/styles/tokens.ts` — 运行时 `cssVarTokens`
-- `app/assets/styles/patterns/` — 公开页 `.page-*` 模式类
+- `app/assets/styles/patterns/` — 公开页 `.page-*`、首页、产品区 `.app-*` 与编辑器模式类
 - `app/assets/styles/main.scss` — 全局入口
 
 页面优先用 semantic `--app-*` 变量，避免硬编码品牌色。

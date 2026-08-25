@@ -11,8 +11,10 @@ app/assets/styles/
 │   └── index.scss        # 统一入口
 ├── patterns/
 │   ├── _page.scss        # 公开页 UI 模式（.page-panel、.page-faq 等）
+│   ├── _home.scss        # 营销首页（.hero、.feature-card、.workflow-panel 等）
 │   ├── _product.scss     # 产品区 UI 模式（.workspace-card、.app-shell-nav 等）
-│   └── index.scss
+│   ├── _editor.scss      # 编辑器全屏布局（.editor-workspace、.editor-workspace-header）
+│   └── index.scss        # @use 上述四个
 ├── tokens.ts             # cssVarTokens + getCssVar / setCssVar
 └── main.scss             # 全局入口（body、.app-shell、.page-title 等）
 ```
@@ -29,7 +31,9 @@ app/assets/styles/
 | Sass 构建期变量       | `tokens/_variables.scss`           | SCSS 编译期 `$color-primary` 等（由 palette 生成）   |
 | 运行时 JS API         | `app/assets/styles/tokens.ts`      | 图表、Canvas 等读取 `cssVarTokens`                   |
 | 公开页模式类          | `patterns/_page.scss`              | 可复用 `.page-*`、`.auth-page` 等                    |
+| 首页模式类            | `patterns/_home.scss`              | `.hero`、`.feature-card`、`.workflow-panel` 等       |
 | 产品区模式类          | `patterns/_product.scss`           | 工作台、账户、侧栏等 `.app-*`、`.workspace-card`     |
+| 编辑器模式类          | `patterns/_editor.scss`            | `.editor-workspace*`（YanivEditor 本体走 `--ye-*`）  |
 
 ## 命名约定
 

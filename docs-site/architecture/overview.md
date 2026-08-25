@@ -83,21 +83,21 @@ flowchart TD
 
 ## Feature 模块地图
 
-| Feature         | 职责                           | `index.ts` 对外导出                  | 内部组件 / 配置（勿跨 feature 直接引用）     |
-| --------------- | ------------------------------ | ------------------------------------ | -------------------------------------------- |
-| `product-shell` | 产品区侧边栏导航配置           | `ProductShell`, `productNavItems`, … | `productFooterNavItems` 等同目录 config 导出 |
-| `account-shell` | 账户区壳层                     | `AccountShell`                       | `accountNavItems`（`config.ts`，壳层内部用） |
-| `workspace`     | 项目列表/卡片、路由预加载      | `WorkspaceDashboard`, workspace API  | `WorkspaceProjectCard`                       |
-| `editor`        | PPT 编辑器、自动保存、标题编辑 | `EditorWorkspace`, editor API        | `EditorWorkspaceHeader`                      |
-| `templates`     | 主题模板占位                   | `ThemeTemplatesPage`                 | —                                            |
-| `account`       | 账户信息展示                   | `AccountPage`                        | —                                            |
+| Feature         | 职责                           | `index.ts` 对外导出                                                          | 内部组件 / 配置（勿跨 feature 直接引用）                                                |
+| --------------- | ------------------------------ | ---------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| `product-shell` | 产品区侧边栏导航配置           | `ProductShell`、`productNavItems`、`productFooterNavItems`、`ProductNavItem` | `ProductShell.vue` 内的 `navIconMap`                                                    |
+| `account-shell` | 账户区壳层                     | `AccountShell`                                                               | `accountNavItems`（`config.ts`，壳层内部用）                                            |
+| `workspace`     | 项目列表/卡片、路由预加载      | `WorkspaceDashboard`                                                         | `WorkspaceProjectCard`、`useWorkspaceProjects`（项目 API 在 `~/api/workspace-project`） |
+| `editor`        | PPT 编辑器、自动保存、标题编辑 | `EditorWorkspace`、`useEditorPage`                                           | `EditorWorkspaceHeader`、editor composables、`api.ts`                                   |
+| `templates`     | 主题模板占位                   | `ThemeTemplatesPage`                                                         | —                                                                                       |
+| `account`       | 账户信息展示                   | `AccountPage`                                                                | —                                                                                       |
 
 ## 插件启动链
 
 | 插件                    | 时机      | 作用                         |
 | ----------------------- | --------- | ---------------------------- |
 | `i18n.ts`               | universal | 按路由加载语言包             |
-| `auth.ts`               | universal | 有 cookie 时恢复 session     |
+| `auth.client.ts`        | client    | 有 cookie 时恢复 session     |
 | `attribution.client.ts` | client    | 捕获 UTM 等归因参数          |
 | `analytics.client.ts`   | client    | 延迟加载统计脚本（默认关闭） |
 
