@@ -1,8 +1,8 @@
 # Batch 4 Report: stores + layouts + components + app-root
 
-Generated: 2026-07-30（深度审阅 + doc-claims 证据）
+Generated: 2026-08-25（深度审阅 + doc-claims 证据）
 
-## 已读文件（21/21）
+## 已读文件（23/23）
 
 - app/app.vue
 - app/components/base/AppContainer.vue
@@ -12,7 +12,9 @@ Generated: 2026-07-30（深度审阅 + doc-claims 证据）
 - app/components/base/PageContainer.vue
 - app/components/layout/AppFooter.vue
 - app/components/layout/AppHeader.vue
+- app/components/layout/AppHeaderSignedOutActions.vue
 - app/components/layout/AppShellHeader.vue
+- app/components/layout/LanguageOptionList.vue
 - app/components/layout/LanguageSwitcher.vue
 - app/components/layout/ThemeSwitch.vue
 - app/components/layout/UserAccountMenu.vue
@@ -56,6 +58,6 @@ Generated: 2026-07-30（深度审阅 + doc-claims 证据）
 
 ## 完成标准
 
-- [x] 已读文件数量 = 21
+- [x] 已读文件数量 = 23
 - [x] doc-claims 关联符号可在源码定位（见上表 evidenceHint）
 - [x] `pnpm docs:sync:check --batch 4`

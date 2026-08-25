@@ -1,8 +1,8 @@
 # Batch 1 Report: config + nuxt.config
 
-Generated: 2026-07-30（深度审阅 + doc-claims 证据）
+Generated: 2026-08-25（深度审阅 + doc-claims 证据）
 
-## 已读文件（11/11）
+## 已读文件（12/12）
 
 - app/app.config.ts
 - app/shims.d.ts
@@ -10,6 +10,7 @@ Generated: 2026-07-30（深度审阅 + doc-claims 证据）
 - app/types/workspace-project.ts
 - config/antd-locale.ts
 - config/auth.ts
+- config/cache.ts
 - config/content/faq.ts
 - config/routes.ts
 - config/site.ts
@@ -84,6 +85,6 @@ Generated: 2026-07-30（深度审阅 + doc-claims 证据）
 
 ## 完成标准
 
-- [x] 已读文件数量 = 11
+- [x] 已读文件数量 = 12
 - [x] doc-claims 关联符号可在源码定位（见上表 evidenceHint）
 - [x] `pnpm docs:sync:check --batch 1`

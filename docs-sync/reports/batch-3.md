@@ -1,10 +1,11 @@
 # Batch 3 Report: middleware + plugins + composables + utils
 
-Generated: 2026-07-30（深度审阅 + doc-claims 证据）
+Generated: 2026-08-25（深度审阅 + doc-claims 证据）
 
-## 已读文件（18/18）
+## 已读文件（19/19）
 
 - app/composables/useAuth.ts
+- app/composables/useCoarsePointer.ts
 - app/composables/useLanguageSwitch.ts
 - app/composables/useLocalePath.ts
 - app/composables/usePageSeo.ts
@@ -14,7 +15,7 @@ Generated: 2026-07-30（深度审阅 + doc-claims 证据）
 - app/middleware/locale.global.ts
 - app/plugins/analytics.client.ts
 - app/plugins/attribution.client.ts
-- app/plugins/auth.ts
+- app/plugins/auth.client.ts
 - app/plugins/i18n.ts
 - app/utils/antdIcon.ts
 - app/utils/attribution-params.ts
@@ -65,6 +66,6 @@ Generated: 2026-07-30（深度审阅 + doc-claims 证据）
 
 ## 完成标准
 
-- [x] 已读文件数量 = 18
+- [x] 已读文件数量 = 19
 - [x] doc-claims 关联符号可在源码定位（见上表 evidenceHint）
 - [x] `pnpm docs:sync:check --batch 3`
