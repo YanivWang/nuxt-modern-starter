@@ -71,9 +71,9 @@ export const faqItems: FaqItem[] = [
     },
     answer: {
       'zh-CN':
-        '在 config/site.ts 中扩展 SUPPORTED_LOCALES 与 SITE_LOCALE_PREFIX_MAP，新增 i18n/<locale>/index.ts 文案文件，并同步更新路由、SEO 与 tests/unit 下的 locale 相关测试，确保 hreflang 与语言切换链接一致。',
+        '在 config/site.ts 中扩展 SUPPORTED_LOCALES、SITE_LOCALE_PREFIX_MAP、SITE_HREFLANG_MAP 与 SITE_LOCALE_OPTIONS（后两者是按 locale 穷举的映射，漏改会类型报错），新增 i18n/<locale>/modules/*.json 与 index.ts 并在 i18n/index.ts 注册 resolver，再补 config/antd-locale.ts 的语言包映射，最后运行 pnpm i18n:check 并更新 tests/unit 下的 locale 相关测试，确保 hreflang 与语言切换链接一致。',
       'en-US':
-        'Extend SUPPORTED_LOCALES and SITE_LOCALE_PREFIX_MAP in config/site.ts, add i18n/<locale>/index.ts messages, and update routing, SEO, and locale tests under tests/unit so hreflang and language switching stay consistent.'
+        'Extend SUPPORTED_LOCALES, SITE_LOCALE_PREFIX_MAP, SITE_HREFLANG_MAP, and SITE_LOCALE_OPTIONS in config/site.ts (the last two are exhaustive per-locale maps, so missing one is a type error), add i18n/<locale>/modules/*.json plus index.ts and register the resolver in i18n/index.ts, map the Ant Design locale in config/antd-locale.ts, then run pnpm i18n:check and update the locale tests under tests/unit so hreflang and language switching stay consistent.'
     }
   },
   {
@@ -84,9 +84,9 @@ export const faqItems: FaqItem[] = [
     },
     answer: {
       'zh-CN':
-        '项目提供可选 Bearer Token 鉴权示例，包含登录、注册、退出与 `/account`（用户菜单入口，独立 account layout）。受保护产品路由通过命名 auth 中间件控制，支持角色与权限校验；登录 redirect 使用 resolveSafeRedirectPath() 防止开放重定向。与 nuxt-modern-starter-api 联调时，工作台走 app/features/workspace/api.ts，编辑器走 app/features/editor/api.ts。',
+        '项目提供可选 Bearer Token 鉴权示例，包含登录、注册、退出与 `/account`（用户菜单入口，独立 account layout）。受保护产品路由通过命名 auth 中间件控制，支持角色与权限校验；登录 redirect 使用 resolveSafeRedirectPath() 防止开放重定向。与 nuxt-modern-starter-api 联调时，工作台项目 API 走 app/api/workspace-project.ts（跨 feature 共享），编辑器文档 API 走 app/features/editor/api.ts。',
       'en-US':
-        'The starter includes optional Bearer Token auth with sign-in, sign-up, logout, and `/account` (via the user menu, using a dedicated account layout). Protected product routes use the named auth middleware with role and permission checks; login redirect uses resolveSafeRedirectPath() to block open redirects. When paired with nuxt-modern-starter-api, workspace flows use app/features/workspace/api.ts and editor flows use app/features/editor/api.ts.'
+        'The starter includes optional Bearer Token auth with sign-in, sign-up, logout, and `/account` (via the user menu, using a dedicated account layout). Protected product routes use the named auth middleware with role and permission checks; login redirect uses resolveSafeRedirectPath() to block open redirects. When paired with nuxt-modern-starter-api, workspace project requests use app/api/workspace-project.ts (shared across features) and editor document requests use app/features/editor/api.ts.'
     }
   },
   {
@@ -97,9 +97,9 @@ export const faqItems: FaqItem[] = [
     },
     answer: {
       'zh-CN':
-        '先在 nuxt-modern-starter-api 后端仓库启动 Docker 栈（常见命令 pnpm docker:dev），保持前端 .env.dev 的 NUXT_PUBLIC_API_BASE=http://localhost:2026/api，后端 CORS_ORIGINS 包含 http://localhost:3000。登录后访问 /workspace，通过顶部「创建项目」按钮进入 /docs/new，或点击已有项目卡片打开 /docs/:id 并自动保存文档；也可删除项目刷新列表。',
+        '先在 nuxt-modern-starter-api 后端仓库启动 Docker 栈（常见命令 pnpm docker:dev），保持前端 .env.dev 的 NUXT_PUBLIC_API_BASE=http://localhost:2027/api，后端 CORS_ORIGINS 包含 http://localhost:3000。登录后访问 /workspace，通过顶部「创建项目」按钮进入 /docs/new，或点击已有项目卡片打开 /docs/:id 并自动保存文档；也可删除项目刷新列表。',
       'en-US':
-        'Start the nuxt-modern-starter-api backend stack first (commonly pnpm docker:dev in that repo), keep frontend .env.dev at NUXT_PUBLIC_API_BASE=http://localhost:2026/api, and include http://localhost:3000 in backend CORS_ORIGINS. After sign-in, open /workspace, use the primary Create button to enter /docs/new, or open an existing project card at /docs/:id for autosave; you can also delete projects from the list.'
+        'Start the nuxt-modern-starter-api backend stack first (commonly pnpm docker:dev in that repo), keep frontend .env.dev at NUXT_PUBLIC_API_BASE=http://localhost:2027/api, and include http://localhost:3000 in backend CORS_ORIGINS. After sign-in, open /workspace, use the primary Create button to enter /docs/new, or open an existing project card at /docs/:id for autosave; you can also delete projects from the list.'
     }
   },
   {
@@ -162,9 +162,9 @@ export const faqItems: FaqItem[] = [
     },
     answer: {
       'zh-CN':
-        '发布或部署前运行 pnpm quality。该命令依次执行 lint、format:check、stylelint、typecheck、i18n:check、test 与 build。日常提交仍由 Husky pre-commit 提供更快的 lint/stylelint/typecheck/test 反馈。若涉及部署变更，再补充 Docker 构建运行与 Nginx 反向代理验证，步骤可参考 docs/deployment.md。',
+        '发布或部署前运行 pnpm quality。该命令依次执行 lint、format:check、stylelint、typecheck、i18n:check、build 与 test —— build 排在 test 之前，产物体积相关的测试才能读到最新的 .output。日常提交只由 Husky pre-commit 跑 lint-staged（对暂存文件执行 prettier 与 eslint），全量门禁交给 CI。若涉及部署变更，再补充 Docker 构建运行与 Nginx 反向代理验证，步骤可参考 docs/deployment.md。',
       'en-US':
-        'Run pnpm quality before release or deployment. It executes lint, format:check, stylelint, typecheck, i18n:check, test, and build. Day-to-day commits still use the faster Husky pre-commit subset. If deployment changed, also validate Docker build/run and the Nginx reverse proxy. See docs/deployment.md for the validation flow.'
+        'Run pnpm quality before release or deployment. It executes lint, format:check, stylelint, typecheck, i18n:check, build, and test - build runs before test so output-budget tests can inspect the latest .output. Day-to-day commits only run lint-staged via the Husky pre-commit hook (prettier and eslint on staged files); the full gate belongs to CI. If deployment changed, also validate Docker build/run and the Nginx reverse proxy. See docs/deployment.md for the validation flow.'
     }
   }
 ]

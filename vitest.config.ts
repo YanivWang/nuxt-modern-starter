@@ -10,7 +10,8 @@
 
   【依赖关系】
     - 依赖：@nuxt/test-utils/config
-    - 被引用：pnpm test、Husky pre-commit
+    - 被引用：pnpm test / pnpm test:watch、pnpm quality、CI quality.yml
+      （Husky pre-commit 只跑 lint-staged，不跑 vitest）
 
   【渲染 / 数据】
     environment: nuxt；globals: true。
