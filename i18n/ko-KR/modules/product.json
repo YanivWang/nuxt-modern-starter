@@ -68,6 +68,7 @@
     "title": "PPT 프로젝트 관리",
     "defaultTitle": "제목 없는 프로젝트",
     "empty": "프로젝트가 없습니다. 위 버튼으로 생성하세요.",
+    "loadMore": "더 보기",
     "projectNotFound": "프로젝트를 찾을 수 없거나 접근이 거부되었습니다",
     "create": "새 빈 PPT",
     "edit": "편집",

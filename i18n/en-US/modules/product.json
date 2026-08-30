@@ -68,6 +68,7 @@
     "title": "Manage your PPT projects",
     "defaultTitle": "Untitled project",
     "empty": "No projects yet. Use the button above to create one.",
+    "loadMore": "Load more",
     "projectNotFound": "Project not found or access denied",
     "create": "New blank PPT",
     "edit": "Edit",

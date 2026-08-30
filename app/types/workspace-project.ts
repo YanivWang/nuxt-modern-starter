@@ -6,8 +6,8 @@
     共享类型层 — app/types，不属于任一 feature。
 
   【主要导出 / 路由】
-    WorkspaceProject、WorkspaceProjectAccent、CreateWorkspaceProjectPayload、
-    UpdateWorkspaceProjectPayload
+    WorkspaceProject、WorkspaceProjectAccent、WorkspaceProjectPagination、
+    WorkspaceProjectListQuery、CreateWorkspaceProjectPayload、UpdateWorkspaceProjectPayload
 
   【依赖关系】
     - 依赖：无
@@ -34,6 +34,22 @@ export type WorkspaceProject = {
   description: string | null
   updatedAt: string
   accent: WorkspaceProjectAccent
+}
+
+/**
+ * 列表分页元信息，与后端 shared/http/pagination 的约定一一对应。
+ * hasMore 由服务端按 offset + 本页条数 < total 计算，前端不要自己推断。
+ */
+export type WorkspaceProjectPagination = {
+  total: number
+  limit: number
+  offset: number
+  hasMore: boolean
+}
+
+export type WorkspaceProjectListQuery = {
+  limit?: number
+  offset?: number
 }
 
 export type CreateWorkspaceProjectPayload = {

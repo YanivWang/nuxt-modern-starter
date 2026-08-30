@@ -68,6 +68,7 @@
     "title": "管理你的 PPT 作品",
     "defaultTitle": "未命名作品",
     "empty": "暫無作品，點擊右上角按鈕創建。",
+    "loadMore": "載入更多",
     "projectNotFound": "項目不存在或無權訪問",
     "create": "新建空白 PPT",
     "edit": "編輯",

@@ -68,6 +68,7 @@
     "title": "Verwalten Sie Ihre PPT-Projekte",
     "defaultTitle": "Unbenanntes Projekt",
     "empty": "Noch keine Projekte. Nutzen Sie die Schaltfläche oben, um eines zu erstellen.",
+    "loadMore": "Mehr laden",
     "projectNotFound": "Projekt nicht gefunden oder Zugriff verweigert",
     "create": "Neues leeres PPT",
     "edit": "Bearbeiten",

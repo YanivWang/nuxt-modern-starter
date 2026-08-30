@@ -26,7 +26,8 @@ import { useWorkspaceProjects } from '../composables/useWorkspaceProjects'
 import WorkspaceProjectCard from './WorkspaceProjectCard.vue'
 
 const { localePath } = useLocalePath()
-const { projects, pending, error, refresh, deleteProject } = useWorkspaceProjects()
+const { projects, pending, error, refresh, deleteProject, hasMore, loadMore, loadingMore } =
+  useWorkspaceProjects()
 
 const navigatingToNewDoc = ref(false)
 const newDocPath = computed(() => localePath(getWorkspaceNewDocPath()))
@@ -107,15 +108,24 @@ const handleCreateProject = async () => {
       :description="$t('workspace.empty')"
     />
 
-    <div v-else class="workspace-grid">
-      <WorkspaceProjectCard
-        v-for="project in projects"
-        :key="project.id"
-        :project="project"
-        :doc-path="localePath(getWorkspaceDocPath(project.id))"
-        @delete="deleteProject(project.id)"
-      />
-    </div>
+    <template v-else>
+      <div class="workspace-grid">
+        <WorkspaceProjectCard
+          v-for="project in projects"
+          :key="project.id"
+          :project="project"
+          :doc-path="localePath(getWorkspaceDocPath(project.id))"
+          @delete="deleteProject(project.id)"
+        />
+      </div>
+
+      <!-- 列表接口分页返回，没有这个入口时超过单页容量的作品将无法访问 -->
+      <div v-if="hasMore" class="workspace-load-more">
+        <a-button :loading="loadingMore" @click="() => loadMore()">
+          {{ $t('workspace.loadMore') }}
+        </a-button>
+      </div>
+    </template>
   </section>
 </template>
 
@@ -123,6 +133,11 @@ const handleCreateProject = async () => {
 .workspace-dashboard {
   display: grid;
   gap: 24px;
+}
+
+.workspace-load-more {
+  display: flex;
+  justify-content: center;
 }
 
 .workspace-dashboard__header {

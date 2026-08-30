@@ -2430,6 +2430,24 @@
     "zh-HK": "暫無作品，點擊右上角按鈕創建。"
   },
   {
+    "key": "workspace.loadMore",
+    "de-DE": "Mehr laden",
+    "en-US": "Load more",
+    "es-ES": "Cargar más",
+    "fr-FR": "Charger plus",
+    "id-ID": "Muat lebih banyak",
+    "ja-JP": "もっと読み込む",
+    "ko-KR": "더 보기",
+    "ms-MY": "Muat lagi",
+    "ph-PH": "Mag-load pa",
+    "pt-BR": "Carregar mais",
+    "pt-PT": "Carregar mais",
+    "ru-RU": "Загрузить ещё",
+    "th-TH": "โหลดเพิ่มเติม",
+    "zh-CN": "加载更多",
+    "zh-HK": "載入更多"
+  },
+  {
     "key": "workspace.more",
     "de-DE": "Weitere Aktionen",
     "en-US": "More actions",

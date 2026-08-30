@@ -17,6 +17,7 @@
 
   【渲染 / 数据】
     adapter 相对路径：/projects、/projects/:id（base NUXT_PUBLIC_API_BASE 已含 /api）。
+    /projects 为分页接口：返回 { projects, pagination }，默认单页 20 条、服务端上限 100。
     WORKSPACE_NEW_PROJECT_ID = 'new' → /docs/new。
 
   【边界与注意】
@@ -29,7 +30,9 @@ import type { EditorDocument } from '~/types/document'
 import type {
   CreateWorkspaceProjectPayload,
   UpdateWorkspaceProjectPayload,
-  WorkspaceProject
+  WorkspaceProject,
+  WorkspaceProjectListQuery,
+  WorkspaceProjectPagination
 } from '~/types/workspace-project'
 
 export const WORKSPACE_NEW_PROJECT_ID = 'new'
@@ -41,9 +44,16 @@ export const getWorkspaceNewDocPath = () => getWorkspaceDocPath(WORKSPACE_NEW_PR
 
 export const isNewWorkspaceProjectId = (id: string) => id === WORKSPACE_NEW_PROJECT_ID
 
-export const fetchWorkspaceProjects = () =>
-  createProductApiClient().request<ApiResponse<{ projects: WorkspaceProject[] }>>('/projects', {
-    method: 'GET'
+/**
+ * 项目列表为分页接口。不传 query 时服务端按默认单页 20 条返回，
+ * 因此调用方必须读取 pagination 才知道是否还有后续页——直接用 projects 会静默丢数据。
+ */
+export const fetchWorkspaceProjects = (query: WorkspaceProjectListQuery = {}) =>
+  createProductApiClient().request<
+    ApiResponse<{ projects: WorkspaceProject[]; pagination: WorkspaceProjectPagination }>
+  >('/projects', {
+    method: 'GET',
+    query
   })
 
 export const fetchWorkspaceProject = (projectId: string) =>

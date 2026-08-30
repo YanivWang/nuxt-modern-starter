@@ -68,6 +68,7 @@
     "title": "Gestiona tus proyectos PPT",
     "defaultTitle": "Proyecto sin título",
     "empty": "Aún no hay proyectos. Usa el botón de arriba para crear uno.",
+    "loadMore": "Cargar más",
     "projectNotFound": "Proyecto no encontrado o acceso denegado",
     "create": "Nuevo PPT en blanco",
     "edit": "Editar",

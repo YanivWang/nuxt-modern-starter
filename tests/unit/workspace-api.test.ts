@@ -31,12 +31,23 @@ vi.mock('../../app/api/auth', async (importOriginal) => {
 })
 
 describe('workspace api', () => {
-  it('lists workspace projects', async () => {
+  it('lists workspace projects with default paging query', async () => {
     const { fetchWorkspaceProjects } = await import('../../app/api/workspace-project')
 
     await fetchWorkspaceProjects()
 
-    expect(request).toHaveBeenCalledWith('/projects', { method: 'GET' })
+    expect(request).toHaveBeenCalledWith('/projects', { method: 'GET', query: {} })
+  })
+
+  it('forwards limit and offset to the list endpoint', async () => {
+    const { fetchWorkspaceProjects } = await import('../../app/api/workspace-project')
+
+    await fetchWorkspaceProjects({ limit: 20, offset: 40 })
+
+    expect(request).toHaveBeenCalledWith('/projects', {
+      method: 'GET',
+      query: { limit: 20, offset: 40 }
+    })
   })
 
   it('creates workspace projects', async () => {
