@@ -19,8 +19,14 @@
   【边界与注意】
     仅描述项目领域数据形状，不包含请求实现或 UI 组件类型。
 */
+/** 与后端 ProjectAccent 同源；后端出库时会把越界取值归一化为 blue。 */
 export type WorkspaceProjectAccent = 'blue' | 'green' | 'violet' | 'amber' | 'cyan' | 'rose'
 
+/**
+ * 与后端 ProjectDto 一一对应。
+ * 后端曾返回 editPath / previewPath，但那是后端拼出的前端路径——既无人消费，
+ * 又会在前端改路由后变成错误数据，现已从契约中移除；路径统一由 getWorkspaceDocPath 生成。
+ */
 export type WorkspaceProject = {
   id: string
   workspaceId: string
