@@ -38,7 +38,7 @@
 - `config/auth.ts`: auth endpoint paths, cookie keys, token max ages, auth route meta types, and frontend redirect constants (`AUTH_REDIRECTS.login = '/sign-in'`).
 - `config/routes.ts`: public/product path helpers, prerender/SWR/CSR route rule sources, and localized product URL canonicalization (`isProductPath`, `localizedProductPathToCanonical`).
 - `config/content/faq.ts`: typed local FAQ content consumed by `~/api/public`.
-- `server/middleware/product-canonical.ts`: early server-side 301 redirect for localized product URLs, for example `/en/workspace` to `/workspace`.
+- `server/middleware/canonical-path.ts`: early server-side 301 redirect to the canonical request path. It covers trailing slashes (`/about/` to `/about`), the default-locale prefix (`/zh/pricing` to `/pricing`), and localized product URLs (`/en/workspace` to `/workspace`). This layer is required rather than optional: prerendered output (the index.html emitted for `/about`) is served by Nitro as a static asset, so the request never reaches the Nuxt app and the client middleware cannot normalize it.
 - `server/routes/robots.txt.ts` and `server/routes/sitemap.xml.ts`: SEO server routes. They include public localized pages and content detail pages while excluding sign-in, sign-up, and product routes.
 - `server/api/revalidate.post.ts` and `server/utils/revalidate.ts`: protected on-demand SWR cache invalidation. The backend webhook calls `POST /api/revalidate` with `x-revalidate-secret` after news changes; `slug` expands to localized news list/detail paths.
 - `i18n`: `vue-i18n` setup, locale message resolvers, and language-switch URL helpers. Locale metadata lives in `config/site.ts`.

@@ -6,13 +6,15 @@
 
   【架构位置】
     共享层 — app/middleware，全局注册，在命名 auth 中间件之前执行。
-    与 server/middleware/product-canonical.ts 构成双层产品 URL canonical（SSR 首请求 + 客户端导航）。
+    与 server/middleware/canonical-path.ts 构成双层 canonical（SSR 首请求 + 客户端导航），
+    尾斜杠 / 默认前缀 / 产品 URL 三条规则同源于 config/routes.ts。
 
   【主要导出 / 路由】
     resolveLocaleRouteDecision、LocaleRouteDecision；作用于全部路由（公开 SEO 区 + 产品 CSR 区）。
 
   【依赖关系】
-    - 依赖：config/site.ts、config/routes.ts（localizedProductPathToCanonical）、i18n（loadLocaleMessages、localeFromPrefix）
+    - 依赖：config/site.ts、config/routes.ts（localizedProductPathToCanonical、hasTrailingSlash、
+      withoutTrailingSlash）、i18n（loadLocaleMessages、localeFromPrefix）
     - 被引用：Nuxt 全局 middleware 自动注册；tests/unit/locale-routing.test.ts 直接测决策函数
 
   【渲染 / 数据】
@@ -24,7 +26,11 @@
     不支持的语言前缀（如 /xx/*）返回 404（error.unsupportedLanguage）。
 */
 import { DEFAULT_LOCALE, SITE_LOCALE_PREFIX_MAP, type SupportedLocale } from '../../config/site'
-import { localizedProductPathToCanonical } from '../../config/routes'
+import {
+  hasTrailingSlash,
+  localizedProductPathToCanonical,
+  withoutTrailingSlash
+} from '../../config/routes'
 import {
   localeFromPrefix,
   resolvePreferredLocale,
@@ -33,12 +39,6 @@ import {
 } from '../../i18n'
 
 const DEFAULT_PREFIX = SITE_LOCALE_PREFIX_MAP[DEFAULT_LOCALE]
-
-/** 非根路径且以 / 结尾时视为尾斜杠，需 301 规范化 */
-const hasTrailingSlash = (path: string) => path.length > 1 && path.endsWith('/')
-
-/** 去除末尾斜杠；全为斜杠时回退为 / */
-const withoutTrailingSlash = (path: string) => path.replace(/\/+$/, '') || '/'
 
 /** 形如 en、kr、zh-hk 的路径段但不在 SUPPORTED_LOCALES 时用于判定 unsupportedLanguage 404 */
 const isLocaleLikePrefix = (segment?: string) =>
@@ -95,7 +95,7 @@ export const resolveLocaleRouteDecision = (
     }
   }
 
-  // 产品区 URL 语言中性：/en/workspace → /workspace（与 server/middleware/product-canonical.ts 同规则）
+  // 产品区 URL 语言中性：/en/workspace → /workspace（与 server/middleware/canonical-path.ts 同规则）
   if (productCanonicalPath) {
     return {
       type: 'redirect',

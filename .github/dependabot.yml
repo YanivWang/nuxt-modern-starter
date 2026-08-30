@@ -1,0 +1,28 @@
+# 依赖更新机器人。分组提交，避免每周十几个独立 PR 淹没评审。
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: '/'
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    groups:
+      # 补丁与小版本合成一个 PR：这类升级由 pnpm quality 门禁兜底即可
+      minor-and-patch:
+        update-types: ['minor', 'patch']
+      # 框架大版本单独走，需要人工读 changelog
+      nuxt-ecosystem:
+        patterns: ['nuxt', '@nuxt/*', 'vue', 'vue-router', '@pinia/nuxt', 'pinia']
+        update-types: ['major']
+    ignore:
+      # 编辑器是私有包，升级须与后端上传契约一起验证，不走自动 PR
+      - dependency-name: '@yanivjs/yaniv-editor'
+
+  - package-ecosystem: github-actions
+    directory: '/'
+    schedule:
+      interval: monthly
+    groups:
+      actions:
+        patterns: ['*']

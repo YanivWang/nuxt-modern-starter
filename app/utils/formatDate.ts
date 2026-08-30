@@ -35,14 +35,25 @@ export const formatDateOnly = (isoDate: string) => {
   return date.toISOString().slice(0, 10)
 }
 
-export const formatPublishedDate = (isoDate: string, locale: SupportedLocale) =>
+export const formatPublishedDate = (isoDate: string, locale: SupportedLocale) => {
+  // publishedAt 既可能是纯日期（2026-07-04），也可能是完整时间戳（2026-07-04T17:58:23.000Z）。
+  // 必须先经 formatDateOnly 归一化：直接拼 `${isoDate}T00:00:00Z` 在后者上会得到
+  // "…000ZT00:00:00Z" → Invalid Date，而 Intl.format(Invalid Date) 抛 RangeError，
+  // 在 SSR 的 /news 与 /news/:slug 上表现为整页 500。见 tests/unit/format-date.test.ts。
+  const date = new Date(`${formatDateOnly(isoDate)}T00:00:00Z`)
+
+  if (Number.isNaN(date.getTime())) {
+    return isoDate
+  }
+
   // 新闻发布日期固定 UTC，避免用户时区导致「同一天」显示不一致
-  new Intl.DateTimeFormat(locale, {
+  return new Intl.DateTimeFormat(locale, {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
     timeZone: 'UTC'
-  }).format(new Date(`${isoDate}T00:00:00Z`))
+  }).format(date)
+}
 
 export const formatWorkspaceDateTime = (isoDate: string, locale: SupportedLocale) => {
   const date = new Date(isoDate)

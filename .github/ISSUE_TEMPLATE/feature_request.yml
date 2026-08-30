@@ -1,0 +1,30 @@
+name: 功能提议
+description: 提议一项改动或新能力
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: 要解决的问题
+      description: 先说问题，不要直接说方案
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 设想的方案
+    validations:
+      required: true
+  - type: dropdown
+    id: scope
+    attributes:
+      label: 这属于基座能力还是产品扩展？
+      description: |
+        基座能力对所有使用者通用；产品扩展（模板、AI 生成、导出、会员、订单等）
+        属于可选扩展，不进默认架构。
+      options:
+        - 基座能力（所有使用者都需要）
+        - 产品扩展（特定业务方向才需要）
+        - 不确定
+    validations:
+      required: true

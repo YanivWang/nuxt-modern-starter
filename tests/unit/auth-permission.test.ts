@@ -1,9 +1,11 @@
+// @vitest-environment nuxt
 /*
   【文件职责】
     单测：authStore hasRole / hasPermission helper（归一化 user 字段）。
 
   【架构位置】
-    tests/unit — Pinia，无 API mock。
+    tests/unit — Pinia，无 API mock。auth store 经 useAuthSession 读 useCookie，
+    需 Nuxt 运行时，故首行 `// @vitest-environment nuxt` 单独 opt-in。
 
   【主要导出 / 路由】
     describe auth permission helpers

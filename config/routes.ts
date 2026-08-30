@@ -9,11 +9,12 @@
   【主要导出 / 路由】
     productRoutePatterns、csrRouteRules、prerenderRoutes、swrRouteRules、
     PRERENDER_BASE_PATHS、PRERENDER_LOCALES、SWR_BASE_PATHS、PublicPagePath、
-    isProductPath、localizedProductPathToCanonical、localizedPath、publicLocalizedPaths
+    isProductPath、localizedProductPathToCanonical、canonicalRequestPath、
+    hasTrailingSlash、withoutTrailingSlash、localizedPath、publicLocalizedPaths
 
   【依赖关系】
     - 依赖：config/site.ts（PUBLIC_PAGE_PATHS、SITE_LOCALE_PREFIX_MAP、DEFAULT_LOCALE）
-    - 被引用：nuxt.config.ts、app/middleware/locale.global.ts、server/middleware/product-canonical.ts、
+    - 被引用：nuxt.config.ts、app/middleware/locale.global.ts、server/middleware/canonical-path.ts、
       useLocalePath、server/utils/seo.ts
 
   【渲染 / 数据】
@@ -23,6 +24,8 @@
 
   【边界与注意】
     产品 URL 永不由 localizedPath 加语言前缀；localizedProductPathToCanonical 仅对产品 path 返回 canonical。
+    canonicalRequestPath 是「路径规范化」的唯一来源，同时被 SSR 中间件与客户端 middleware 消费，
+    两侧规则必须同源，否则首屏与 SPA 导航会给出不同的 canonical URL。
     修改 prerender / SWR / CSR 列表需同步 tests/unit/product-routes.test.ts、tests/unit/seo-routes.test.ts。
 */
 import {
@@ -62,6 +65,43 @@ export const localizedProductPathToCanonical = (path: string): string | null => 
   const pathWithoutLocale = rest.length ? `/${rest.join('/')}` : '/'
 
   return isProductPath(pathWithoutLocale) ? pathWithoutLocale : null
+}
+
+/** 非根路径且以 / 结尾时视为尾斜杠，需 301 规范化 */
+export const hasTrailingSlash = (path: string) => path.length > 1 && path.endsWith('/')
+
+/** 去除末尾斜杠；全为斜杠时回退为 / */
+export const withoutTrailingSlash = (path: string) => path.replace(/\/+$/, '') || '/'
+
+/**
+ * 请求路径规范化的唯一来源：返回应当 301 过去的 canonical path，已规范则返回 null。
+ *
+ * 按优先级串联三条规则（与 app/middleware/locale.global.ts 的决策树同序）：
+ *   1. 去尾斜杠：/about/ → /about
+ *   2. 去默认语言前缀：/zh/pricing → /pricing
+ *   3. 产品 URL 语言中性：/en/workspace → /workspace
+ *
+ * 逐条化简而不是「命中即返回」，是为了让 /en/workspace/ 这类叠加情形一次收敛到 /workspace，
+ * 避免连跳两次 301。
+ */
+export const canonicalRequestPath = (path: string): string | null => {
+  const normalizedInput = path.startsWith('/') ? path : `/${path}`
+  let current = hasTrailingSlash(normalizedInput)
+    ? withoutTrailingSlash(normalizedInput)
+    : normalizedInput
+
+  const segments = current.split('/').filter(Boolean)
+  const defaultPrefix = SITE_LOCALE_PREFIX_MAP[DEFAULT_LOCALE]
+
+  // 默认语言（zh-CN）URL 不带前缀
+  if (segments[0] === defaultPrefix) {
+    const rest = segments.slice(1)
+    current = rest.length ? `/${rest.join('/')}` : '/'
+  }
+
+  current = localizedProductPathToCanonical(current) ?? current
+
+  return current === normalizedInput ? null : current
 }
 
 export const localizedPath = (path: string, locale: SupportedLocale) => {

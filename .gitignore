@@ -21,6 +21,7 @@ pnpm-debug.log*
 !.env.dev
 !.env.test
 !.env.prod
+!.env.e2e
 
 # IDE and OS
 .DS_Store

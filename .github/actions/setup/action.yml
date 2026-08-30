@@ -1,0 +1,26 @@
+name: Setup toolchain
+description: 统一安装 pnpm、Node 与依赖，供 quality 工作流的各个并行 job 复用。
+
+inputs:
+  install-args:
+    description: 传给 pnpm install 的额外参数
+    required: false
+    default: ''
+
+runs:
+  using: composite
+  steps:
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 11.5.2
+
+    - name: Setup Node
+      uses: actions/setup-node@v4
+      with:
+        node-version-file: .nvmrc
+        cache: pnpm
+
+    - name: Install dependencies
+      shell: bash
+      run: pnpm install --frozen-lockfile ${{ inputs.install-args }}

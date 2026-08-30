@@ -123,14 +123,14 @@ app/
 
 ## `server/` — 服务端
 
-| 文件                              | 作用                                           |
-| --------------------------------- | ---------------------------------------------- |
-| `api/revalidate.post.ts`          | `POST /api/revalidate`，按 paths/slug 清除 SWR |
-| `routes/sitemap.xml.ts`           | 动态 sitemap                                   |
-| `routes/robots.txt.ts`            | robots 规则                                    |
-| `middleware/product-canonical.ts` | `/en/workspace` → `/workspace` 301             |
-| `utils/seo.ts`                    | sitemap/robots 生成逻辑                        |
-| `utils/revalidate.ts`             | Nitro SWR cache key 与 `purgeRouteCaches`      |
+| 文件                           | 作用                                                  |
+| ------------------------------ | ----------------------------------------------------- |
+| `api/revalidate.post.ts`       | `POST /api/revalidate`，按 paths/slug 清除 SWR        |
+| `routes/sitemap.xml.ts`        | 动态 sitemap                                          |
+| `routes/robots.txt.ts`         | robots 规则                                           |
+| `middleware/canonical-path.ts` | 尾斜杠 / `/zh` 前缀 / `/en/workspace` → canonical 301 |
+| `utils/seo.ts`                 | sitemap/robots 生成逻辑                               |
+| `utils/revalidate.ts`          | Nitro SWR cache key 与 `purgeRouteCaches`             |
 
 ## `i18n/` — 国际化
 

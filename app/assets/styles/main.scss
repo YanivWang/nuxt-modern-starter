@@ -19,6 +19,7 @@
 
   【边界与注意】
     产品 feature 私有样式放 feature 目录；公开页复用 .page-title / .page-lead 等于此或 patterns/。
+    全局 prefers-reduced-motion 兜底放在本文件末尾，新增动效不需要各自重复处理。
 */
 // 全局入口：tokens 变量 + patterns 公开页/产品页样式块
 @use './tokens/index' as app-tokens;
@@ -210,4 +211,19 @@ a {
   font-size: clamp(var(--app-text-lg), 1.8vw, var(--app-text-xl));
   line-height: 1.75;
   text-wrap: pretty;
+}
+
+// 无障碍：尊重系统「减少动态效果」偏好。
+// 全站有大量 transition（顶栏、卡片、主题切换），对前庭功能障碍用户可能诱发不适。
+// 用一条全局兜底而不是逐个组件处理 —— 后者一定会在新增组件时被漏掉。
+// 不能直接设 0s：那样 transitionend / animationend 事件不再触发，依赖它们的逻辑会卡住。
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

@@ -12,6 +12,7 @@
         "config/auth.ts",
         "config/cache.ts",
         "config/content/faq.ts",
+        "config/observability.ts",
         "config/routes.ts",
         "config/site.ts",
         "config/theme.ts",
@@ -48,10 +49,12 @@
         "app/plugins/analytics.client.ts",
         "app/plugins/attribution.client.ts",
         "app/plugins/auth.client.ts",
+        "app/plugins/error-reporter.client.ts",
         "app/plugins/i18n.ts",
         "app/utils/antdIcon.ts",
         "app/utils/attribution-params.ts",
         "app/utils/auth-session.ts",
+        "app/utils/error-report.ts",
         "app/utils/formatDate.ts",
         "app/utils/load-script.ts",
         "app/utils/safe-redirect.ts"
@@ -116,6 +119,7 @@
         "app/features/workspace/components/WorkspaceProjectCard.vue",
         "app/features/workspace/composables/useWorkspaceProjects.ts",
         "app/features/workspace/composables/workspace-project-delete.ts",
+        "app/features/workspace/composables/workspace-project-load-more.ts",
         "app/features/workspace/index.ts",
         "app/pages/[[language]]/[...slug].vue",
         "app/pages/[[language]]/about.vue",
@@ -164,9 +168,16 @@
         "app/assets/styles/tokens/_variables.scss",
         "app/assets/styles/tokens/index.scss",
         "server/api/revalidate.post.ts",
-        "server/middleware/product-canonical.ts",
+        "server/api/telemetry/errors.post.ts",
+        "server/middleware/canonical-path.ts",
+        "server/middleware/request-id.ts",
+        "server/plugins/error-capture.ts",
+        "server/routes/healthz.get.ts",
+        "server/routes/readyz.get.ts",
         "server/routes/robots.txt.ts",
         "server/routes/sitemap.xml.ts",
+        "server/utils/logger.ts",
+        "server/utils/rate-limit.ts",
         "server/utils/revalidate.ts",
         "server/utils/seo.ts"
       ]
@@ -183,5 +194,5 @@
       ]
     }
   ],
-  "totalFiles": 134
+  "totalFiles": 145
 }

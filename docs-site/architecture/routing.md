@@ -131,7 +131,7 @@ digest(path).replace(/[-_]/g, '').slice(0, 10)
 
 ```mermaid
 flowchart TD
-    Req[收到请求 path] --> ServerMW{server product-canonical}
+    Req[收到请求 path] --> ServerMW{server canonical-path}
     ServerMW -->|/en/workspace 等| R301[301 到无语言前缀]
     ServerMW -->|其他| Locale[locale.global.ts]
     Locale --> Slash[去尾斜杠]

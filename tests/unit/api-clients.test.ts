@@ -1,9 +1,11 @@
+// @vitest-environment nuxt
 /*
   【文件职责】
     单测：createPublicApiClient / createAuthApiClient 请求头与 baseURL 行为。
 
   【架构位置】
-    tests/unit — Nuxt test env（useRuntimeConfig）。
+    tests/unit — 需 Nuxt 运行时（clients 读 useRuntimeConfig().public.apiBase），
+    故首行 `// @vitest-environment nuxt` 单独 opt-in；默认环境是 happy-dom。
 
   【主要导出 / 路由】
     describe api clients

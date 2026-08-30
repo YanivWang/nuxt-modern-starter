@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-21T11:48:56.606Z",
+  "generatedAt": "2026-08-30T15:08:32.967Z",
   "findCommand": "find app server config docker nuxt.config.ts vitest.config.ts -type f \\( -name \"*.ts\" -o -name \"*.vue\" -o -name \"*.js\" -o -name \"*.scss\" -o -name \"*.yaml\" -o -name \"*.conf\" \\) 2>/dev/null | sort",
-  "sourceFileCount": 134,
+  "sourceFileCount": 145,
   "docFileCount": 33,
   "sourceFiles": [
     {
@@ -523,6 +523,13 @@
       "hasHeaderComment": true
     },
     {
+      "path": "app/features/workspace/composables/workspace-project-load-more.ts",
+      "type": "ts",
+      "module": "feature-workspace",
+      "batch": 5,
+      "hasHeaderComment": true
+    },
+    {
       "path": "app/features/workspace/index.ts",
       "type": "ts",
       "module": "feature-workspace",
@@ -719,6 +726,13 @@
       "hasHeaderComment": true
     },
     {
+      "path": "app/plugins/error-reporter.client.ts",
+      "type": "ts",
+      "module": "plugins",
+      "batch": 3,
+      "hasHeaderComment": true
+    },
+    {
       "path": "app/plugins/i18n.ts",
       "type": "ts",
       "module": "plugins",
@@ -789,6 +803,13 @@
       "hasHeaderComment": true
     },
     {
+      "path": "app/utils/error-report.ts",
+      "type": "ts",
+      "module": "utils",
+      "batch": 3,
+      "hasHeaderComment": true
+    },
+    {
       "path": "app/utils/formatDate.ts",
       "type": "ts",
       "module": "utils",
@@ -832,6 +853,13 @@
     },
     {
       "path": "config/content/faq.ts",
+      "type": "ts",
+      "module": "config",
+      "batch": 1,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "config/observability.ts",
       "type": "ts",
       "module": "config",
       "batch": 1,
@@ -901,7 +929,42 @@
       "hasHeaderComment": true
     },
     {
-      "path": "server/middleware/product-canonical.ts",
+      "path": "server/api/telemetry/errors.post.ts",
+      "type": "ts",
+      "module": "server",
+      "batch": 7,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "server/middleware/canonical-path.ts",
+      "type": "ts",
+      "module": "server",
+      "batch": 7,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "server/middleware/request-id.ts",
+      "type": "ts",
+      "module": "server",
+      "batch": 7,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "server/plugins/error-capture.ts",
+      "type": "ts",
+      "module": "server",
+      "batch": 7,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "server/routes/healthz.get.ts",
+      "type": "ts",
+      "module": "server",
+      "batch": 7,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "server/routes/readyz.get.ts",
       "type": "ts",
       "module": "server",
       "batch": 7,
@@ -916,6 +979,20 @@
     },
     {
       "path": "server/routes/sitemap.xml.ts",
+      "type": "ts",
+      "module": "server",
+      "batch": 7,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "server/utils/logger.ts",
+      "type": "ts",
+      "module": "server",
+      "batch": 7,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "server/utils/rate-limit.ts",
       "type": "ts",
       "module": "server",
       "batch": 7,

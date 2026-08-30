@@ -1,3 +1,5 @@
+# 质量门禁。拆成并行 job 而不是一条串行链：
+# 一次 lint 失败不该等 build 跑完才暴露，而且每个 job 的失败点一眼可辨。
 name: Quality
 
 on:
@@ -6,32 +8,94 @@ on:
     branches:
       - main
 
+# 同一分支连续推送时取消上一次未跑完的运行，避免排队浪费 runner
+concurrency:
+  group: quality-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
 jobs:
-  quality:
-    name: Docs sync and quality gate
+  static:
+    name: Lint, format, docs sync and boundaries
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - run: pnpm lint
+      - run: pnpm format:check
+      - run: pnpm stylelint
+      - run: pnpm i18n:check
+      # 依赖图边界：循环依赖、跨 feature import、页面深引 feature 内部
+      - run: pnpm depcruise
+      # 头注释 / manifest / doc-claims 与源码一致
+      - run: pnpm docs:sync:check
+
+  typecheck:
+    name: Type check
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - run: pnpm typecheck
+
+  test:
+    name: Unit and component tests
     runs-on: ubuntu-latest
     timeout-minutes: 20
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      # 覆盖率阈值在 vitest.config.ts 里，未达标直接失败
+      - run: pnpm test:coverage
+      - name: Upload coverage
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
-          version: 11.5.2
+          name: coverage
+          path: coverage/
+          retention-days: 7
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+  build:
+    name: Production build and output budgets
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - run: pnpm build
+      # 产物预算断言必须在 build 之后跑，它读的是 .output 里的真实文件
+      - run: pnpm exec vitest run tests/unit/build-config.test.ts
+
+  e2e:
+    name: End-to-end
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - name: Install Playwright browser
+        run: pnpm exec playwright install --with-deps chromium
+      # test:e2e 内部会先 build:e2e，再由 playwright 拉起桩后端与 preview 服务
+      - run: pnpm test:e2e
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
         with:
-          node-version: 22.22.3
-          cache: pnpm
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Check docs sync
-        run: pnpm docs:sync:check
-
-      - name: Run quality gate
-        run: pnpm quality
+  audit:
+    name: Dependency audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      # 只在 high / critical 上失败：moderate 及以下由 Dependabot 按周处理，
+      # 否则上游一个低危公告就能把所有 PR 卡住。
+      - run: pnpm audit --audit-level high

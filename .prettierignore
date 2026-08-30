@@ -5,3 +5,8 @@
 node_modules
 coverage
 pnpm-lock.yaml
+playwright-report
+test-results
+.playwright
+docs-site/.vitepress/dist
+docs-site/.vitepress/cache

@@ -1,3 +1,4 @@
+// @vitest-environment nuxt
 /*
   【文件职责】
     单测：缓存安全不变量 —— SSR 输出不得依赖登录态，令牌不得进入 SSR payload。
@@ -6,6 +7,7 @@
 
   【架构位置】
     tests/unit — Pinia 行为断言 + 公开页组件可达性静态检查，无运行时服务。
+    令牌 cookie 走 useCookie，需 Nuxt 运行时，故首行 `// @vitest-environment nuxt` opt-in。
 
   【主要导出 / 路由】
     describe SSR cache safety

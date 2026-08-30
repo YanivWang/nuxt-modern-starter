@@ -1,0 +1,14 @@
+# 默认所有改动都需要仓库维护者审阅。
+* @YanivWang
+
+# 架构边界与渲染策略的单一来源，改动影响面最大。
+/config/                    @YanivWang
+/nuxt.config.ts             @YanivWang
+/server/                    @YanivWang
+
+# 门禁与流水线：放松这里等于放松所有其他规则。
+/.github/workflows/         @YanivWang
+/vitest.config.ts           @YanivWang
+/playwright.config.ts       @YanivWang
+/.dependency-cruiser.cjs    @YanivWang
+/docs-sync/                 @YanivWang

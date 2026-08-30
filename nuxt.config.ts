@@ -2,7 +2,8 @@
   【文件职责】
     Nuxt 主配置：modules、runtimeConfig（服务端 revalidateSecret + public）、
     routeRules（prerender/SWR/CSR）、CSP headers、nitro.storage（SWR 缓存驱动）、vite manualChunks。
-    routeRules 数据来自 config/routes.ts 单一来源；缓存驱动来自 config/cache.ts。
+    routeRules 数据来自 config/routes.ts 单一来源；缓存驱动来自 config/cache.ts；
+    日志级别由 NUXT_LOG_LEVEL 在运行时读取，见 config/observability.ts。
 
   【架构位置】
     根配置 — 构建与 SSR/CSR 策略入口。
@@ -111,7 +112,10 @@ export default defineNuxtConfig({
       analyticsDeferMs: (() => {
         const parsed = Number(process.env.NUXT_PUBLIC_ANALYTICS_DEFER_MS)
         return Number.isFinite(parsed) && parsed >= 0 ? parsed : 3000
-      })()
+      })(),
+      // 默认开启：上报走第一方 /api/telemetry/errors，不引入第三方服务，
+      // CSP 的 connect-src 'self' 已覆盖。显式设为 'false' 可关闭。
+      errorReportingEnabled: process.env.NUXT_PUBLIC_ERROR_REPORTING_ENABLED !== 'false'
     }
   },
   antd: {

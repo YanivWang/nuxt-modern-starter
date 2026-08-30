@@ -1,0 +1,48 @@
+name: Bug 报告
+description: 报告一个可复现的缺陷
+labels: [bug]
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: 发生了什么
+      description: 实际行为，以及你期望的行为
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 复现步骤
+      placeholder: |
+        1. pnpm dev
+        2. 打开 /workspace
+        3. ...
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: 影响区域
+      options:
+        - 公开 SEO 区（首页 / 定价 / 新闻 / 帮助）
+        - 登录产品区（工作台 / 编辑器 / 账户）
+        - 鉴权与会话
+        - 渲染与缓存（SSR / prerender / SWR）
+        - 国际化
+        - 构建与部署
+        - 其他
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: 版本信息
+      description: 提交 hash，以及 node / pnpm 版本
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: 日志
+      description: 服务端结构化日志（含 requestId）或浏览器控制台输出
+      render: shell

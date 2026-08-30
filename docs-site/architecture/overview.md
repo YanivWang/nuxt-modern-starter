@@ -60,8 +60,12 @@ flowchart TD
 
 ## 中间件执行顺序
 
-1. **`server/middleware/product-canonical.ts`**（服务端最早）
-   - `/en/workspace` → 301 → `/workspace`
+1. **`server/middleware/canonical-path.ts`**（服务端最早）
+   - `/about/` → 301 → `/about`（尾斜杠）
+   - `/zh/pricing` → 301 → `/pricing`（默认语言前缀）
+   - `/en/workspace` → 301 → `/workspace`（产品 URL 语言中性）
+   - 这一层不可省：prerender 产物（`/about` 对应的 index.html 静态文件）会被 Nitro 直接命中，
+     请求不进 Nuxt 应用，客户端 middleware 的规范化对首屏无效
 
 2. **`locale.global.ts`**（全局，每个路由）
    - 去尾斜杠、/zh 重定向、不支持语言 404、加载 i18n、更新 language store

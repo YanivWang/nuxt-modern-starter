@@ -26,7 +26,7 @@ The quick-start target is `pnpm install && pnpm dev`: a new project should be ab
 | ant-design-vue        | 4.2.6   |
 | @ant-design-vue/nuxt  | 1.4.6   |
 | @yanivjs/yaniv-editor | 0.1.4   |
-| Vitest                | 4.1.9   |
+| Vitest                | 4.1.11  |
 
 When upgrading dependencies, update this section and run at least:
 

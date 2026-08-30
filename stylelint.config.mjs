@@ -1,6 +1,17 @@
 export default {
   extends: ['stylelint-config-standard-scss'],
-  ignoreFiles: ['**/node_modules/**', '**/.output/**', '**/.nuxt/**'],
+  // 构建产物与各类报告目录里的 CSS 不是本项目的源码，必须排除 ——
+  // 否则一次 pnpm test:coverage 生成的报告就能让 stylelint 报出几十个「错误」。
+  ignoreFiles: [
+    '**/node_modules/**',
+    '**/.output/**',
+    '**/.nuxt/**',
+    'coverage/**',
+    'playwright-report/**',
+    'test-results/**',
+    'docs-site/.vitepress/dist/**',
+    'docs-site/.vitepress/cache/**'
+  ],
   overrides: [
     {
       files: ['**/*.vue'],

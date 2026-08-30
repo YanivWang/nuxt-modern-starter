@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-25T17:51:47.817Z",
+  "generatedAt": "2026-08-30T15:15:53.430Z",
   "docFileCount": 33,
-  "referenceCount": 1223,
+  "referenceCount": 1254,
   "pathAllowlist": [
     "app/features/my-feature/",
     "app/features/my-feature/components/",
@@ -1089,14 +1089,14 @@
       "line": 131,
       "type": "route",
       "value": "/en/workspace",
-      "context": "| `middleware/product-canonical.ts` | `/en/workspace` → `/workspace` 301             |"
+      "context": "| `middleware/canonical-path.ts` | 尾斜杠 / `/zh` 前缀 / `/en/workspace` → canonical 301 |"
     },
     {
       "docFile": "docs-site/architecture/directory.md",
       "line": 133,
       "type": "symbol",
       "value": "purgeRouteCaches",
-      "context": "| `utils/revalidate.ts`             | Nitro SWR cache key 与 `purgeRouteCaches`      |"
+      "context": "| `utils/revalidate.ts`          | Nitro SWR cache key 与 `purgeRouteCaches`             |"
     },
     {
       "docFile": "docs-site/architecture/directory.md",
@@ -1298,159 +1298,180 @@
       "docFile": "docs-site/architecture/overview.md",
       "line": 63,
       "type": "file-path",
-      "value": "server/middleware/product-canonical.ts",
-      "context": "1. **`server/middleware/product-canonical.ts`**（服务端最早）"
+      "value": "server/middleware/canonical-path.ts",
+      "context": "1. **`server/middleware/canonical-path.ts`**（服务端最早）"
     },
     {
       "docFile": "docs-site/architecture/overview.md",
       "line": 64,
+      "type": "route",
+      "value": "/about/",
+      "context": "   - `/about/` → 301 → `/about`（尾斜杠）"
+    },
+    {
+      "docFile": "docs-site/architecture/overview.md",
+      "line": 64,
+      "type": "route",
+      "value": "/about",
+      "context": "   - `/about/` → 301 → `/about`（尾斜杠）"
+    },
+    {
+      "docFile": "docs-site/architecture/overview.md",
+      "line": 65,
+      "type": "route",
+      "value": "/pricing",
+      "context": "   - `/zh/pricing` → 301 → `/pricing`（默认语言前缀）"
+    },
+    {
+      "docFile": "docs-site/architecture/overview.md",
+      "line": 66,
       "type": "route",
       "value": "/en/workspace",
-      "context": "   - `/en/workspace` → 301 → `/workspace`"
+      "context": "   - `/en/workspace` → 301 → `/workspace`（产品 URL 语言中性）"
     },
     {
       "docFile": "docs-site/architecture/overview.md",
-      "line": 64,
+      "line": 66,
       "type": "route",
       "value": "/workspace",
-      "context": "   - `/en/workspace` → 301 → `/workspace`"
+      "context": "   - `/en/workspace` → 301 → `/workspace`（产品 URL 语言中性）"
     },
     {
       "docFile": "docs-site/architecture/overview.md",
-      "line": 88,
+      "line": 92,
       "type": "symbol",
       "value": "ProductShell",
       "context": "| `product-shell` | 产品区侧边栏导航配置           | `ProductShell`、`productNavItems`、`productFooterNavItems`、`ProductNavItem` | `"
     },
     {
       "docFile": "docs-site/architecture/overview.md",
-      "line": 88,
+      "line": 92,
       "type": "symbol",
       "value": "productNavItems",
       "context": "| `product-shell` | 产品区侧边栏导航配置           | `ProductShell`、`productNavItems`、`productFooterNavItems`、`ProductNavItem` | `"
     },
     {
       "docFile": "docs-site/architecture/overview.md",
-      "line": 88,
+      "line": 92,
       "type": "symbol",
       "value": "productFooterNavItems",
       "context": "| `product-shell` | 产品区侧边栏导航配置           | `ProductShell`、`productNavItems`、`productFooterNavItems`、`ProductNavItem` | `"
     },
     {
       "docFile": "docs-site/architecture/overview.md",
-      "line": 88,
+      "line": 92,
       "type": "symbol",
       "value": "ProductNavItem",
       "context": "| `product-shell` | 产品区侧边栏导航配置           | `ProductShell`、`productNavItems`、`productFooterNavItems`、`ProductNavItem` | `"
     },
     {
       "docFile": "docs-site/architecture/overview.md",
-      "line": 88,
+      "line": 92,
       "type": "symbol",
       "value": "navIconMap",
       "context": "| `product-shell` | 产品区侧边栏导航配置           | `ProductShell`、`productNavItems`、`productFooterNavItems`、`ProductNavItem` | `"
     },
     {
       "docFile": "docs-site/architecture/overview.md",
-      "line": 89,
+      "line": 93,
       "type": "symbol",
       "value": "AccountShell",
       "context": "| `account-shell` | 账户区壳层                     | `AccountShell`                                                          "
     },
     {
       "docFile": "docs-site/architecture/overview.md",
-      "line": 89,
+      "line": 93,
       "type": "symbol",
       "value": "accountNavItems",
       "context": "| `account-shell` | 账户区壳层                     | `AccountShell`                                                          "
     },
     {
       "docFile": "docs-site/architecture/overview.md",
-      "line": 90,
+      "line": 94,
       "type": "symbol",
       "value": "WorkspaceDashboard",
       "context": "| `workspace`     | 项目列表/卡片、路由预加载      | `WorkspaceDashboard`                                                         | "
     },
     {
       "docFile": "docs-site/architecture/overview.md",
-      "line": 90,
+      "line": 94,
       "type": "symbol",
       "value": "WorkspaceProjectCard",
       "context": "| `workspace`     | 项目列表/卡片、路由预加载      | `WorkspaceDashboard`                                                         | "
     },
     {
       "docFile": "docs-site/architecture/overview.md",
-      "line": 90,
+      "line": 94,
       "type": "symbol",
       "value": "useWorkspaceProjects",
       "context": "| `workspace`     | 项目列表/卡片、路由预加载      | `WorkspaceDashboard`                                                         | "
     },
     {
       "docFile": "docs-site/architecture/overview.md",
-      "line": 91,
+      "line": 95,
       "type": "symbol",
       "value": "EditorWorkspace",
       "context": "| `editor`        | PPT 编辑器、自动保存、标题编辑 | `EditorWorkspace`、`useEditorPage`                                           | `E"
     },
     {
       "docFile": "docs-site/architecture/overview.md",
-      "line": 91,
+      "line": 95,
       "type": "symbol",
       "value": "useEditorPage",
       "context": "| `editor`        | PPT 编辑器、自动保存、标题编辑 | `EditorWorkspace`、`useEditorPage`                                           | `E"
     },
     {
       "docFile": "docs-site/architecture/overview.md",
-      "line": 91,
+      "line": 95,
       "type": "symbol",
       "value": "EditorWorkspaceHeader",
       "context": "| `editor`        | PPT 编辑器、自动保存、标题编辑 | `EditorWorkspace`、`useEditorPage`                                           | `E"
     },
     {
       "docFile": "docs-site/architecture/overview.md",
-      "line": 92,
+      "line": 96,
       "type": "symbol",
       "value": "ThemeTemplatesPage",
       "context": "| `templates`     | 主题模板占位                   | `ThemeTemplatesPage`                                                     "
     },
     {
       "docFile": "docs-site/architecture/overview.md",
-      "line": 93,
+      "line": 97,
       "type": "symbol",
       "value": "AccountPage",
       "context": "| `account`       | 账户信息展示                   | `AccountPage`                                                            "
     },
     {
       "docFile": "docs-site/architecture/overview.md",
-      "line": 110,
+      "line": 114,
       "type": "file-path",
       "value": "config/site.ts",
       "context": "| 公开页路径列表             | `config/site.ts` → `PUBLIC_PAGE_PATHS`     |"
     },
     {
       "docFile": "docs-site/architecture/overview.md",
-      "line": 110,
+      "line": 114,
       "type": "symbol",
       "value": "PUBLIC_PAGE_PATHS",
       "context": "| 公开页路径列表             | `config/site.ts` → `PUBLIC_PAGE_PATHS`     |"
     },
     {
       "docFile": "docs-site/architecture/overview.md",
-      "line": 111,
+      "line": 115,
       "type": "file-path",
       "value": "config/routes.ts",
       "context": "| prerender / SWR / CSR 规则 | `config/routes.ts`                         |"
     },
     {
       "docFile": "docs-site/architecture/overview.md",
-      "line": 113,
+      "line": 117,
       "type": "file-path",
       "value": "config/auth.ts",
       "context": "| 鉴权端点与 cookie 键       | `config/auth.ts`                           |"
     },
     {
       "docFile": "docs-site/architecture/overview.md",
-      "line": 114,
+      "line": 118,
       "type": "file-path",
       "value": "server/utils/seo.ts",
       "context": "| hreflang / sitemap         | `config/routes.ts` + `server/utils/seo.ts` |"
@@ -2909,81 +2930,277 @@
       "line": 6,
       "type": "script",
       "value": "test",
-      "context": "pnpm test          # Vitest 一次运行（38 文件 / 159 测试）"
-    },
-    {
-      "docFile": "docs-site/development/testing.md",
-      "line": 6,
-      "type": "test-count",
-      "value": "38/159",
-      "context": "pnpm test          # Vitest 一次运行（38 文件 / 159 测试）"
+      "context": "pnpm test            # Vitest 全量（单元 + 组件）"
     },
     {
       "docFile": "docs-site/development/testing.md",
       "line": 7,
       "type": "script",
-      "value": "test:watch",
-      "context": "pnpm test:watch    # 监听模式"
+      "value": "test:unit",
+      "context": "pnpm test:unit       # 仅 tests/unit，happy-dom，秒级反馈"
     },
     {
       "docFile": "docs-site/development/testing.md",
       "line": 8,
       "type": "script",
-      "value": "typecheck",
-      "context": "pnpm typecheck     # vue-tsc + Nuxt 类型"
+      "value": "test:component",
+      "context": "pnpm test:component  # 仅 tests/component + tests/nuxt，需要 Nuxt 运行时"
     },
     {
       "docFile": "docs-site/development/testing.md",
       "line": 9,
+      "type": "script",
+      "value": "test:coverage",
+      "context": "pnpm test:coverage   # 带覆盖率阈值"
+    },
+    {
+      "docFile": "docs-site/development/testing.md",
+      "line": 10,
+      "type": "script",
+      "value": "test:e2e",
+      "context": "pnpm test:e2e        # 先 build:e2e，再用 Playwright 跑真实浏览器"
+    },
+    {
+      "docFile": "docs-site/development/testing.md",
+      "line": 11,
+      "type": "script",
+      "value": "test:e2e:only",
+      "context": "pnpm test:e2e:only   # 复用已有 .output，跳过重新构建"
+    },
+    {
+      "docFile": "docs-site/development/testing.md",
+      "line": 12,
+      "type": "script",
+      "value": "typecheck",
+      "context": "pnpm typecheck       # vue-tsc + Nuxt 类型"
+    },
+    {
+      "docFile": "docs-site/development/testing.md",
+      "line": 13,
       "type": "script",
       "value": "lint",
       "context": "pnpm lint            # ESLint"
     },
     {
       "docFile": "docs-site/development/testing.md",
-      "line": 10,
+      "line": 14,
       "type": "script",
       "value": "stylelint",
       "context": "pnpm stylelint       # 样式"
     },
     {
       "docFile": "docs-site/development/testing.md",
-      "line": 11,
+      "line": 15,
+      "type": "script",
+      "value": "depcruise",
+      "context": "pnpm depcruise       # 依赖图边界"
+    },
+    {
+      "docFile": "docs-site/development/testing.md",
+      "line": 16,
       "type": "script",
       "value": "quality",
       "context": "pnpm quality         # 发布全量门禁"
     },
     {
       "docFile": "docs-site/development/testing.md",
-      "line": 14,
+      "line": 23,
       "type": "file-path",
-      "value": "vitest.config.ts",
-      "context": "`vitest.config.ts` 使用 `defineVitestConfig`，`environment: 'nuxt'`，`include: ['tests/**/*.{test,spec}.ts']`。"
+      "value": "tests/unit/",
+      "context": "| `tests/unit/`      | happy-dom  | 纯函数、middleware 决策、API 适配器、配置常量、源码静态扫描              |"
     },
     {
       "docFile": "docs-site/development/testing.md",
       "line": 24,
-      "type": "script",
-      "value": "docs:sync:check",
-      "context": "Husky pre-commit 只跑 `lint-staged`。全量门禁属于 CI（`.github/workflows/quality.yml` 跑 `pnpm docs:sync:check` 与 `pnpm quality`）——"
+      "type": "file-path",
+      "value": "tests/nuxt/",
+      "context": "| `tests/nuxt/`      | nuxt       | 需要 `useRuntimeConfig` / `useCookie` / `useNuxtApp` 的运行时行为        |"
+    },
+    {
+      "docFile": "docs-site/development/testing.md",
+      "line": 24,
+      "type": "symbol",
+      "value": "useRuntimeConfig",
+      "context": "| `tests/nuxt/`      | nuxt       | 需要 `useRuntimeConfig` / `useCookie` / `useNuxtApp` 的运行时行为        |"
+    },
+    {
+      "docFile": "docs-site/development/testing.md",
+      "line": 24,
+      "type": "symbol",
+      "value": "useCookie",
+      "context": "| `tests/nuxt/`      | nuxt       | 需要 `useRuntimeConfig` / `useCookie` / `useNuxtApp` 的运行时行为        |"
+    },
+    {
+      "docFile": "docs-site/development/testing.md",
+      "line": 24,
+      "type": "symbol",
+      "value": "useNuxtApp",
+      "context": "| `tests/nuxt/`      | nuxt       | 需要 `useRuntimeConfig` / `useCookie` / `useNuxtApp` 的运行时行为        |"
+    },
+    {
+      "docFile": "docs-site/development/testing.md",
+      "line": 25,
+      "type": "file-path",
+      "value": "tests/component/",
+      "context": "| `tests/component/` | nuxt       | 用 @nuxt/test-utils 的 mountSuspended 真实挂载组件与页面，断言渲染与交互 |"
+    },
+    {
+      "docFile": "docs-site/development/testing.md",
+      "line": 26,
+      "type": "file-path",
+      "value": "tests/e2e/",
+      "context": "| `tests/e2e/`       | Playwright | 真实浏览器跑生产构建，覆盖 301 / SEO / 鉴权闭环 / 编辑器主流程           |"
     },
     {
       "docFile": "docs-site/development/testing.md",
       "line": 30,
       "type": "file-path",
-      "value": "tests/unit/",
-      "context": "| `tests/unit/` | 纯函数、middleware 决策、API 适配器、route helper |"
+      "value": "vitest.config.ts",
+      "context": "`vitest.config.ts` 的默认环境是 **happy-dom**。需要 Nuxt 运行时的文件在首行写："
     },
     {
       "docFile": "docs-site/development/testing.md",
-      "line": 31,
+      "line": 38,
+      "type": "symbol",
+      "value": "maxWorkers",
+      "context": "「单独跑全绿、跑全量随机挂几个」。同样的原因，`maxWorkers` 被显式压到 6。"
+    },
+    {
+      "docFile": "docs-site/development/testing.md",
+      "line": 40,
+      "type": "symbol",
+      "value": "hookTimeout",
+      "context": "`hookTimeout` 也必须显式放宽：`@nuxt/test-utils` 的 `setupNuxt()` 跑在 `beforeAll` 里，"
+    },
+    {
+      "docFile": "docs-site/development/testing.md",
+      "line": 40,
+      "type": "symbol",
+      "value": "beforeAll",
+      "context": "`hookTimeout` 也必须显式放宽：`@nuxt/test-utils` 的 `setupNuxt()` 跑在 `beforeAll` 里，"
+    },
+    {
+      "docFile": "docs-site/development/testing.md",
+      "line": 46,
       "type": "file-path",
-      "value": "tests/nuxt/",
-      "context": "| `tests/nuxt/` | Nuxt 环境 smoke                                   |"
+      "value": "tests/e2e/stub-api/server.mjs",
+      "context": "`tests/e2e/stub-api/server.mjs` 是零依赖的 Node http 服务，实现了"
     },
     {
       "docFile": "docs-site/development/testing.md",
-      "line": 51,
+      "line": 48,
+      "type": "route",
+      "value": "/news",
+      "context": "`/news`、`/pricing` 是 SSR / SWR 页面，请求由 Nitro 在**服务端**发出，浏览器拦截够不到。"
+    },
+    {
+      "docFile": "docs-site/development/testing.md",
+      "line": 48,
+      "type": "route",
+      "value": "/pricing",
+      "context": "`/news`、`/pricing` 是 SSR / SWR 页面，请求由 Nitro 在**服务端**发出，浏览器拦截够不到。"
+    },
+    {
+      "docFile": "docs-site/development/testing.md",
+      "line": 56,
+      "type": "file-path",
+      "value": "tests/component",
+      "context": "- 全局阈值偏低是预期内的 —— `.vue` 的渲染路径主要由 `tests/component` 与 `tests/e2e` 覆盖，"
+    },
+    {
+      "docFile": "docs-site/development/testing.md",
+      "line": 56,
+      "type": "file-path",
+      "value": "tests/e2e",
+      "context": "- 全局阈值偏低是预期内的 —— `.vue` 的渲染路径主要由 `tests/component` 与 `tests/e2e` 覆盖，"
+    },
+    {
+      "docFile": "docs-site/development/testing.md",
+      "line": 58,
+      "type": "file-path",
+      "value": "app/lib/http",
+      "context": "- 纯逻辑层（`app/lib/http`、`app/utils`、`config`、`server/utils`）单独设了高得多的阈值，"
+    },
+    {
+      "docFile": "docs-site/development/testing.md",
+      "line": 58,
+      "type": "file-path",
+      "value": "app/utils",
+      "context": "- 纯逻辑层（`app/lib/http`、`app/utils`、`config`、`server/utils`）单独设了高得多的阈值，"
+    },
+    {
+      "docFile": "docs-site/development/testing.md",
+      "line": 58,
+      "type": "file-path",
+      "value": "server/utils",
+      "context": "- 纯逻辑层（`app/lib/http`、`app/utils`、`config`、`server/utils`）单独设了高得多的阈值，"
+    },
+    {
+      "docFile": "docs-site/development/testing.md",
+      "line": 68,
+      "type": "file-path",
+      "value": "tests/unit/page-structure.test.ts",
+      "context": "| feature 之间不互相 import；页面只用 feature barrel  | `pnpm depcruise` + `tests/unit/page-structure.test.ts`                    "
+    },
+    {
+      "docFile": "docs-site/development/testing.md",
+      "line": 71,
+      "type": "file-path",
+      "value": "tests/unit/ssr-cache-safety.test.ts",
+      "context": "| 令牌不进 SSR payload；登录态 UI 必须包 `ClientOnly` | `tests/unit/ssr-cache-safety.test.ts` + `tests/component/app-header.test.ts"
+    },
+    {
+      "docFile": "docs-site/development/testing.md",
+      "line": 71,
+      "type": "file-path",
+      "value": "tests/component/app-header.test.ts",
+      "context": "| 令牌不进 SSR payload；登录态 UI 必须包 `ClientOnly` | `tests/unit/ssr-cache-safety.test.ts` + `tests/component/app-header.test.ts"
+    },
+    {
+      "docFile": "docs-site/development/testing.md",
+      "line": 71,
+      "type": "symbol",
+      "value": "ClientOnly",
+      "context": "| 令牌不进 SSR payload；登录态 UI 必须包 `ClientOnly` | `tests/unit/ssr-cache-safety.test.ts` + `tests/component/app-header.test.ts"
+    },
+    {
+      "docFile": "docs-site/development/testing.md",
+      "line": 72,
+      "type": "file-path",
+      "value": "tests/unit/build-config.test.ts",
+      "context": "| 构建产物分包与体积预算                              | `tests/unit/build-config.test.ts`（读 `.output` 真实文件）                   |"
+    },
+    {
+      "docFile": "docs-site/development/testing.md",
+      "line": 73,
+      "type": "file-path",
+      "value": "tests/unit/revalidate-nitro-contract.test.ts",
+      "context": "| SWR 缓存 key 算法与 Nitro 一致                      | `tests/unit/revalidate-nitro-contract.test.ts`                         "
+    },
+    {
+      "docFile": "docs-site/development/testing.md",
+      "line": 85,
+      "type": "symbol",
+      "value": "e2e",
+      "context": "`build` / `e2e` / `audit`。一次 lint 失败不该等 build 跑完才暴露。"
+    },
+    {
+      "docFile": "docs-site/development/testing.md",
+      "line": 101,
+      "type": "path-pattern",
+      "value": "tests/component/*.test.ts",
+      "context": "| 组件渲染分支       | `tests/component/*.test.ts`                                           |"
+    },
+    {
+      "docFile": "docs-site/development/testing.md",
+      "line": 102,
+      "type": "path-pattern",
+      "value": "tests/e2e/specs/*.spec.ts",
+      "context": "| 跨页面的用户流程   | `tests/e2e/specs/*.spec.ts`                                           |"
+    },
+    {
+      "docFile": "docs-site/development/testing.md",
+      "line": 112,
       "type": "script",
       "value": "docker:build",
       "context": "pnpm docker:build   # 若涉及部署"
@@ -3329,14 +3546,14 @@
       "line": 92,
       "type": "file-path",
       "value": "vitest.config.ts",
-      "context": "| 测试   | Vitest 4.1.9 + @nuxt/test-utils 4.0.3；`vitest.config.ts` 用 `defineVitestConfig` + `include: tests/**/*.test.ts`"
+      "context": "| 测试   | Vitest 4.1.11 + @nuxt/test-utils 4.0.3；`vitest.config.ts` 用 `defineVitestConfig` + `include: tests/**/*.test.ts"
     },
     {
       "docFile": "docs-site/guide/overview.md",
       "line": 92,
       "type": "test-count",
-      "value": "38/159",
-      "context": "| 测试   | Vitest 4.1.9 + @nuxt/test-utils 4.0.3；`vitest.config.ts` 用 `defineVitestConfig` + `include: tests/**/*.test.ts`"
+      "value": "49/236",
+      "context": "| 测试   | Vitest 4.1.11 + @nuxt/test-utils 4.0.3；`vitest.config.ts` 用 `defineVitestConfig` + `include: tests/**/*.test.ts"
     },
     {
       "docFile": "docs-site/index.md",
@@ -3707,21 +3924,14 @@
       "line": 170,
       "type": "route",
       "value": "/en/workspace",
-      "context": "| `middleware/product-canonical.ts` | `/en/workspace` → `/workspace` 301             |"
-    },
-    {
-      "docFile": "docs-site/reference/config.md",
-      "line": 170,
-      "type": "route",
-      "value": "/workspace",
-      "context": "| `middleware/product-canonical.ts` | `/en/workspace` → `/workspace` 301             |"
+      "context": "| `middleware/canonical-path.ts` | 尾斜杠 / `/zh` 前缀 / `/en/workspace` → canonical 301 |"
     },
     {
       "docFile": "docs-site/reference/config.md",
       "line": 172,
       "type": "symbol",
       "value": "purgeRouteCaches",
-      "context": "| `utils/revalidate.ts`             | Nitro cache key 计算与 `purgeRouteCaches`      |"
+      "context": "| `utils/revalidate.ts`          | Nitro cache key 计算与 `purgeRouteCaches`             |"
     },
     {
       "docFile": "docs-site/reference/config.md",
@@ -6443,8 +6653,15 @@
       "docFile": "docs/architecture.md",
       "line": 41,
       "type": "file-path",
-      "value": "server/middleware/product-canonical.ts",
-      "context": "- `server/middleware/product-canonical.ts`: early server-side 301 redirect for localized product URLs, for example `/en/"
+      "value": "server/middleware/canonical-path.ts",
+      "context": "- `server/middleware/canonical-path.ts`: early server-side 301 redirect to the canonical request path. It covers trailin"
+    },
+    {
+      "docFile": "docs/architecture.md",
+      "line": 41,
+      "type": "route",
+      "value": "/about/",
+      "context": "- `server/middleware/canonical-path.ts`: early server-side 301 redirect to the canonical request path. It covers trailin"
     },
     {
       "docFile": "docs/architecture.md",
@@ -8487,8 +8704,8 @@
       "docFile": "README.md",
       "line": 29,
       "type": "version",
-      "value": "Vitest=4.1.9",
-      "context": "| Vitest                | 4.1.9   |"
+      "value": "Vitest=4.1.11",
+      "context": "| Vitest                | 4.1.11  |"
     },
     {
       "docFile": "README.md",

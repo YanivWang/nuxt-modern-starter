@@ -7,7 +7,8 @@
 
   【边界与注意】
     使用 NUXT_REVALIDATE_SECRET 鉴权；未配置 secret 时返回 503。
-    限流使用单实例内存 Map（10 次 / 分钟），多实例部署需在网关层补共享限流。
+    限流复用 server/utils/rate-limit.ts 的单实例内存限流器（10 次 / 分钟），
+    多实例部署需在网关层补共享限流。
 */
 import { createHash, timingSafeEqual } from 'node:crypto'
 import {
@@ -19,43 +20,26 @@ import {
   setResponseStatus
 } from 'h3'
 import { isRevalidatablePath, purgeRouteCaches, resolveRevalidatePaths } from '../utils/revalidate'
+import { createRateLimiter } from '../utils/rate-limit'
 
 const REVALIDATE_RATE_LIMIT_WINDOW_MS = 60_000
 const REVALIDATE_RATE_LIMIT_MAX = 10
 
-type RateLimitBucket = {
-  count: number
-  resetAt: number
-}
-
-const rateLimitBuckets = new Map<string, RateLimitBucket>()
+const rateLimiter = createRateLimiter({
+  windowMs: REVALIDATE_RATE_LIMIT_WINDOW_MS,
+  max: REVALIDATE_RATE_LIMIT_MAX
+})
 
 const digestSecret = (secret: string) => createHash('sha256').update(secret).digest()
 
 export const isAuthorizedRevalidateSecret = (providedSecret: string, expectedSecret: string) =>
   timingSafeEqual(digestSecret(providedSecret), digestSecret(expectedSecret))
 
-export const consumeRevalidateRateLimit = (key: string, now = Date.now()) => {
-  const currentBucket = rateLimitBuckets.get(key)
-
-  if (!currentBucket || currentBucket.resetAt <= now) {
-    rateLimitBuckets.set(key, {
-      count: 1,
-      resetAt: now + REVALIDATE_RATE_LIMIT_WINDOW_MS
-    })
-    return true
-  }
-
-  if (currentBucket.count >= REVALIDATE_RATE_LIMIT_MAX) {
-    return false
-  }
-
-  currentBucket.count += 1
-  return true
-}
+export const consumeRevalidateRateLimit = (key: string, now = Date.now()) =>
+  rateLimiter.consume(key, now)
 
 export const resetRevalidateRateLimitForTests = () => {
-  rateLimitBuckets.clear()
+  rateLimiter.reset()
 }
 
 const getRateLimitKey = (event: Parameters<typeof getRequestIP>[0]) =>

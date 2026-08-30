@@ -13,7 +13,7 @@
 #   - 被引用：docker-compose.yaml、docker-compose.dev.yaml
 #
 # 【渲染 / 数据】
-#   healthcheck GET /；BUILD_ENV 默认 prod。
+#   healthcheck GET /healthz；BUILD_ENV 默认 prod。
 #
 # 【边界与注意】
 #   外部流量须经 gateway nginx；nuxt 不直接映射 host port（prod）。
@@ -31,11 +31,12 @@ services:
       HOST: 0.0.0.0
       PORT: '3000'
     healthcheck:
-      # gateway depends_on condition: service_healthy 依赖此探活
+      # gateway depends_on condition: service_healthy 依赖此探活。
+      # 打 /healthz 而不是 /：后者会跑一遍完整页面渲染栈，页面出错会被误判成进程已死并触发重启。
       test:
         [
           'CMD-SHELL',
-          'node -e "fetch(''http://127.0.0.1:3000/'').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"'
+          'node -e "fetch(''http://127.0.0.1:3000/healthz'').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"'
         ]
       interval: 10s
       timeout: 5s

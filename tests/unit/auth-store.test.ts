@@ -1,9 +1,11 @@
+// @vitest-environment nuxt
 /*
   【文件职责】
     单测：auth store 登录 / 注册 / logout / refresh 与 cookie 绑定行为。
 
   【架构位置】
     tests/unit — Pinia + vi.mock app/api/auth、attribution-params。
+    令牌 cookie 走 useCookie/useNuxtApp，需 Nuxt 运行时，故首行 `// @vitest-environment nuxt` opt-in。
 
   【主要导出 / 路由】
     describe auth store（多 it 块）

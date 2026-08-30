@@ -1,9 +1,11 @@
+// @vitest-environment nuxt
 /*
   【文件职责】
     Nuxt 环境冒烟：确认 @nuxt/test-utils vitest 可读取 runtimeConfig。
 
   【架构位置】
-    tests/nuxt — environment: nuxt（vitest.config）。
+    tests/nuxt — 首行 `// @vitest-environment nuxt` 单独 opt-in。
+    这条 pragma 不能省：默认环境是 happy-dom，缺了它本用例就不再验证 Nuxt 运行时，变成空断言。
 
   【主要导出 / 路由】
     describe starter smoke test
