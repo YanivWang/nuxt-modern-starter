@@ -14,13 +14,15 @@
     - 被引用：tests/e2e/specs/*.spec.ts
 
   【边界与注意】
-    端口刻意避开 3000 / 2027：那是 Nuxt 与后端的常用默认端口，本机常有别的服务占着。
+    端口刻意避开 3000 / 3100 / 2027 这些常用值：开发机上同时跑好几个项目是常态。
+    被占用时用 E2E_APP_PORT / STUB_API_PORT 覆盖，三处（本文件、playwright.config.ts、
+    .env.e2e）必须一起改。
     Playwright 的 reuseExistingServer 一旦复用了别人的服务，跑出来的是那个服务的行为，
     表现为大面积莫名失败（连 robots.txt 都对不上）。改端口须同步 .env.e2e 与 playwright.config.ts。
 */
 import { expect, type APIRequestContext, type Page } from '@playwright/test'
 
-const APP_PORT = Number(process.env.E2E_APP_PORT || 3100)
+const APP_PORT = Number(process.env.E2E_APP_PORT || 3399)
 const STUB_API_PORT = Number(process.env.STUB_API_PORT || 2127)
 
 export const APP_ORIGIN = `http://127.0.0.1:${APP_PORT}`
