@@ -16,7 +16,7 @@
     - 被引用：workspace feature、editor feature、tests/unit/workspace-api.test.ts
 
   【渲染 / 数据】
-    adapter 相对路径：/projects、/projects/:id（base NUXT_PUBLIC_API_BASE 已含 /api）。
+    adapter 相对路径：/projects、/projects/:id（base NUXT_PUBLIC_API_BASE 已含 /api/v1）。
     /projects 为分页接口：返回 { projects, pagination }，默认单页 20 条、服务端上限 100。
     WORKSPACE_NEW_PROJECT_ID = 'new' → /docs/new。
 

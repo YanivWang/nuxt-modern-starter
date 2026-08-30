@@ -30,6 +30,9 @@ jobs:
       - run: pnpm i18n:check
       # 依赖图边界：循环依赖、跨 feature import、页面深引 feature 内部
       - run: pnpm depcruise
+      # 后端契约副本是否落后于上游（CI 上通常没有后端源码，此时自动跳过；
+      # 漂移由 tests/unit/api-contract.test.ts 在副本上兜底）
+      - run: pnpm contract:check
       # 头注释 / manifest / doc-claims 与源码一致
       - run: pnpm docs:sync:check
 

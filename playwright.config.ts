@@ -57,7 +57,7 @@ export default defineConfig({
   webServer: [
     {
       command: 'node tests/e2e/stub-api/server.mjs',
-      url: `http://127.0.0.1:${STUB_API_PORT}/api/content/news`,
+      url: `http://127.0.0.1:${STUB_API_PORT}/api/v1/content/news`,
       reuseExistingServer: false,
       timeout: 30_000,
       env: { STUB_API_PORT: String(STUB_API_PORT) }

@@ -13,7 +13,7 @@
     - 被引用：editor composables、tests/unit/editor-api.test.ts
 
   【渲染 / 数据】
-    adapter 相对路径：/documents/:id（base 已含 /api）；401 单飞 refresh。
+    adapter 相对路径：/documents/:id（base 已含 /api/v1）；401 单飞 refresh。
 
   【边界与注意】
     新建 flow 先 createWorkspaceProject 得 documentId，再 saveEditorDocument 写入初始内容。
@@ -29,7 +29,7 @@ export type SaveEditorDocumentPayload = {
 
 const editorDocumentPath = (documentId: string) => `/documents/${documentId}`
 
-// 相对路径 /documents/:id；base NUXT_PUBLIC_API_BASE 已含 /api
+// 相对路径 /documents/:id；base NUXT_PUBLIC_API_BASE 已含 /api/v1
 export const fetchEditorDocument = (documentId: string) =>
   createProductApiClient().request<ApiResponse<{ document: EditorDocument }>>(
     editorDocumentPath(documentId),

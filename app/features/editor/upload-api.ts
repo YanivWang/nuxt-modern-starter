@@ -13,7 +13,7 @@
     - 被引用：upload composables、tests/unit/editor-upload-api.test.ts
 
   【渲染 / 数据】
-    相对路径 /uploads、/uploads/large/*（base 已含 /api）；返回绝对媒体 URL。
+    相对路径 /uploads、/uploads/large/*（base 已含 /api/v1）；返回绝对媒体 URL。
 
   【边界与注意】
     FormData 请求勿手动设 Content-Type，由浏览器带 multipart boundary。
@@ -66,7 +66,7 @@ type LargeUploadInitBody = {
   fileMd5: string
 }
 
-/** 大文件分片上传 API（与 API /uploads/large/* 对齐）；路径相对 apiBase（已含 /api） */
+/** 大文件分片上传 API（与 API /uploads/large/* 对齐）；路径相对 apiBase（已含 /api/v1） */
 export const createLargeFileUploadApi = () => {
   // 每次请求新建 client，与其它 Product adapter 一致，避免长传过程中 token 过期仍用旧凭证
   const request = <T>(

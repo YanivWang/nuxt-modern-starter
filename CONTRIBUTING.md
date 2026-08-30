@@ -20,7 +20,7 @@ Husky 的 pre-commit 只跑 `lint-staged`（快）。完整门禁在 CI，本地
 pnpm quality
 ```
 
-它串联：lint → format:check → stylelint → typecheck → i18n:check → depcruise → docs:sync:check → build → test。
+它串联：lint → format:check → stylelint → typecheck → i18n:check → depcruise → contract:check → docs:sync:check → build → test。
 
 迭代期间用更快的子集：
 
@@ -76,7 +76,30 @@ pnpm docs:sync:extract    # 重新生成 doc-references 快照
 
 修 bug 时先写一个能复现的失败用例，再修。
 
-### 4. 面向用户的文案一律走 i18n
+### 4. 后端契约是引入的，不是口头约定
+
+`contracts/openapi.yaml` 是后端 `nuxt-modern-starter-api` 的 OpenAPI 副本，随仓库追踪。
+它被 prettier 忽略，必须与上游逐字节一致。
+
+```bash
+pnpm contract:sync    # 从后端仓库同步（默认 ../nuxt-modern-starter-api）
+pnpm contract:check   # 只比对；后端仓库不存在时自动跳过
+```
+
+`tests/unit/api-contract.test.ts` 在这份副本上校验三件事：
+
+- 四个环境层的 `NUXT_PUBLIC_API_BASE` 都指向 spec 里的版本前缀（当前 `/api/v1`）
+- 前端消费的每个端点都存在于契约中
+- E2E 桩后端与真实后端用同一个前缀，且不实现前端不消费的端点
+
+新增调用后端的 adapter 时，在该测试的 `CONSUMED_ENDPOINTS` 里登记端点。
+这是手工清单：adapter 里的路径字面量和前端路由字面量在文本上无法可靠区分，
+自动抽取只会带来假阳性。换来的是端点被后端改名或删除时立刻失败。
+
+后端接口变更的协作顺序：后端改 → 后端 `pnpm openapi:generate` → 前端 `pnpm contract:sync`
+→ 前端跑 `pnpm test` 看契约测试是否变红 → 按需调整 adapter、类型与桩后端。
+
+### 5. 面向用户的文案一律走 i18n
 
 15 个语言包在 `i18n/<locale>/modules/`。新增 key 后：
 
@@ -85,7 +108,7 @@ pnpm i18n:check    # 检查各语言 key 是否齐平
 pnpm i18n:unused   # 找出没人用的 key
 ```
 
-### 5. 颜色只用 design token
+### 6. 颜色只用 design token
 
 产品与公开 UI 代码里禁止硬编码 hex（stylelint `color-no-hex` 强制）。
 色值唯一来源是 `config/theme-palette.json`，改完跑 `pnpm generate:theme`。

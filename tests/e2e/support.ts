@@ -24,7 +24,8 @@ const APP_PORT = Number(process.env.E2E_APP_PORT || 3100)
 const STUB_API_PORT = Number(process.env.STUB_API_PORT || 2127)
 
 export const APP_ORIGIN = `http://127.0.0.1:${APP_PORT}`
-export const STUB_API_ORIGIN = `http://127.0.0.1:${STUB_API_PORT}`
+/** 含版本前缀；与后端 API_VERSION_PREFIX 及 .env.e2e 的 NUXT_PUBLIC_API_BASE 一致 */
+export const STUB_API_ORIGIN = `http://127.0.0.1:${STUB_API_PORT}/api/v1`
 
 export const CREDENTIALS = { username: 'alice', password: 'correct-horse' }
 
@@ -44,7 +45,7 @@ export const waitForHydration = (page: Page) =>
 
 /** 重置桩后端到确定性初始状态；projects 可指定生成的项目条数 */
 export const resetStub = (request: APIRequestContext, projects = 1) =>
-  request.post(`${STUB_API_ORIGIN}/api/__reset`, { data: { projects } })
+  request.post(`${STUB_API_ORIGIN}/__reset`, { data: { projects } })
 
 /**
  * 走真实登录表单，落到 /workspace。

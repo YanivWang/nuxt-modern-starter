@@ -27,7 +27,7 @@
   - 被引用：sign-in 默认 redirect、AppHeader 已登录 CTA、product-shell 侧边栏
 
   【渲染 / 数据】
-    CSR + noindex；adapter /projects、DELETE /projects/:id（Product API client，base 已含 /api）。
+    CSR + noindex；adapter /projects、DELETE /projects/:id（Product API client，base 已含 /api/v1）。
     getWorkspaceNewDocPath → /docs/new；getWorkspaceDocPath(id) → /docs/:id。
 
   子组件：

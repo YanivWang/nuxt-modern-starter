@@ -26,7 +26,7 @@
   - 被引用：AppHeader、首页 CTA、product-shell 底部定价链接
 
   【渲染 / 数据】
-    SSR；fetchPricingPage → adapter /content/pricing（网关 GET /api/content/pricing，base 已含 /api）。
+    SSR；fetchPricingPage → adapter /content/pricing（网关 GET /api/v1/content/pricing，base 已含 /api/v1）。
     useAsyncData 水合复用 payload。
 
   子组件：

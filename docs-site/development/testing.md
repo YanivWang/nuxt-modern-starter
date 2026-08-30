@@ -13,6 +13,8 @@ pnpm typecheck       # vue-tsc + Nuxt 类型
 pnpm lint            # ESLint
 pnpm stylelint       # 样式
 pnpm depcruise       # 依赖图边界
+pnpm contract:check  # 引入的后端契约是否落后于上游
+pnpm contract:sync   # 从后端仓库同步 contracts/openapi.yaml
 pnpm quality         # 发布全量门禁
 ```
 
@@ -78,7 +80,7 @@ pnpm quality         # 发布全量门禁
 ## quality 门禁内容
 
 ```
-lint → format:check → stylelint → typecheck → i18n:check → depcruise → docs:sync:check → build → test
+lint → format:check → stylelint → typecheck → i18n:check → depcruise → contract:check → docs:sync:check → build → test
 ```
 
 CI（`.github/workflows/quality.yml`）把它拆成并行 job：`static` / `typecheck` / `test` /

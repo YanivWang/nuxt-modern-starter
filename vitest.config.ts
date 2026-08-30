@@ -42,7 +42,11 @@ export default defineVitestConfig({
     // 每个 nuxt 环境文件都会在自己的 worker 里构建一个完整 Nuxt 实例。
     // 放开默认并行度（cpus-1）会让十几个实例同时抢 CPU，把本来 1s 的纯函数用例饿到超时 ——
     // 表现为「单独跑全绿、跑全量随机挂几个」。上限拿掉前先确认全量套件仍稳定。
-    maxWorkers: 6,
+    //
+    // CI 上再收紧一档：GitHub 托管 runner 只有 2 核，而 test job 跑的是带插桩的
+    // test:coverage，开销比本地更大。按 6 个 worker 会超额订阅三倍，
+    // 同样会把纯函数用例饿到 20s 超时。
+    maxWorkers: process.env.CI ? 2 : 6,
     coverage: {
       provider: 'v8',
       reporter: ['text-summary', 'json-summary', 'lcov'],

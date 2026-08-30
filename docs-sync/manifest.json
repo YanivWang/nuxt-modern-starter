@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-30T15:08:32.967Z",
+  "generatedAt": "2026-08-30T16:43:07.661Z",
   "findCommand": "find app server config docker nuxt.config.ts vitest.config.ts -type f \\( -name \"*.ts\" -o -name \"*.vue\" -o -name \"*.js\" -o -name \"*.scss\" -o -name \"*.yaml\" -o -name \"*.conf\" \\) 2>/dev/null | sort",
   "sourceFileCount": 145,
   "docFileCount": 33,

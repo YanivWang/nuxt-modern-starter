@@ -14,7 +14,7 @@
     - 被引用：app/api/public.ts、app/api/auth.ts、tests/unit/api-clients.test.ts
 
   【渲染 / 数据】
-    baseURL 为 NUXT_PUBLIC_API_BASE（已含 /api 前缀）；Public client 安全用于 SSR / prerender / SWR。
+    baseURL 为 NUXT_PUBLIC_API_BASE（已含 /api/v1 前缀）；Public client 安全用于 SSR / prerender / SWR。
 
   【边界与注意】
     createProductApiClient 定义在 app/api/auth.ts，不在本文件。

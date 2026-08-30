@@ -24,7 +24,7 @@
   - 被引用：app/middleware/auth.ts 未登录 redirect、AppHeader sign-in 链接
 
   【渲染 / 数据】
-    SSR；loginApi → POST /login（base 已含 /api）；登录后 setTokens + fetchMe。
+    SSR；loginApi → POST /login（base 已含 /api/v1）；登录后 setTokens + fetchMe。
 
   表单校验：
   - username、password 均为必填

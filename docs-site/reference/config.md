@@ -17,16 +17,16 @@
 
 ### `runtimeConfig.public` 默认值（`nuxt.config.ts`）
 
-| 键                       | 默认                        | 说明                                                          |
-| ------------------------ | --------------------------- | ------------------------------------------------------------- |
-| `appEnv`                 | `development`               | 为 `production` 时 auth cookie 置 `secure`                    |
-| `apiBase`                | `http://localhost:2027/api` | 已含 `/api` 前缀；adapter 写 `/projects` 而非 `/api/projects` |
-| `siteUrl`                | `http://localhost:3000`     | canonical / sitemap 基础 URL                                  |
-| `googleSiteVerification` | 空                          | 传入 `usePageSeo({ siteVerification })`；空值不输出 meta      |
-| `baiduSiteVerification`  | 空                          | 同上                                                          |
-| `analyticsEnabled`       | `false`                     | 启用第三方脚本需同步放宽 CSP `script-src`                     |
-| `analyticsScriptSrc`     | 空                          | 为空时 analytics 插件静默跳过                                 |
-| `analyticsDeferMs`       | `3000`                      | 无效或非数字时回退 3000                                       |
+| 键                       | 默认                           | 说明                                                                |
+| ------------------------ | ------------------------------ | ------------------------------------------------------------------- |
+| `appEnv`                 | `development`                  | 为 `production` 时 auth cookie 置 `secure`                          |
+| `apiBase`                | `http://localhost:2027/api/v1` | 已含 `/api/v1` 前缀；adapter 写 `/projects` 而非 `/api/v1/projects` |
+| `siteUrl`                | `http://localhost:3000`        | canonical / sitemap 基础 URL                                        |
+| `googleSiteVerification` | 空                             | 传入 `usePageSeo({ siteVerification })`；空值不输出 meta            |
+| `baiduSiteVerification`  | 空                             | 同上                                                                |
+| `analyticsEnabled`       | `false`                        | 启用第三方脚本需同步放宽 CSP `script-src`                           |
+| `analyticsScriptSrc`     | 空                             | 为空时 analytics 插件静默跳过                                       |
+| `analyticsDeferMs`       | `3000`                         | 无效或非数字时回退 3000                                             |
 
 `routeRules` 由 `config/routes.ts` 展开：`prerenderRoutes`（6 条）、`swrRouteRules`（`swr: 3600`）、`csrRouteRules`（`ssr: false`）。
 

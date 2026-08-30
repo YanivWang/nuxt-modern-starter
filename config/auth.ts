@@ -1,7 +1,7 @@
 /*
   【文件职责】
     鉴权模块常量与类型单一来源：API 相对路径、Cookie 键、redirect 目标、token 有效期、用户与路由 meta 类型。
-    AUTH_API_ENDPOINTS 为 adapter 相对路径（不含重复 /api，base 由 NUXT_PUBLIC_API_BASE 提供）。
+    AUTH_API_ENDPOINTS 为 adapter 相对路径（不含 /api/v1 前缀，base 由 NUXT_PUBLIC_API_BASE 提供）。
 
   【架构位置】
     config 层 — 被 auth store、app/middleware/auth.ts、app/api/auth.ts 共享引用。

@@ -10,3 +10,6 @@ test-results
 .playwright
 docs-site/.vitepress/dist
 docs-site/.vitepress/cache
+
+# 后端契约的引入副本：必须与上游逐字节一致，格式化会让 contract:check 永远失败
+contracts/openapi.yaml

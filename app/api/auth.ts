@@ -16,7 +16,7 @@
     - 被引用：app/stores/auth.ts、app/api/workspace-project.ts、app/features/editor/api.ts
 
   【渲染 / 数据】
-    adapter 相对路径：/login、/register、/refresh、/me 等（base 已含 /api）。
+    adapter 相对路径：/login、/register、/refresh、/me 等（base 已含 /api/v1）。
     register 合并归因参数；Product client 默认从 cookie 读 accessToken。
 
   【边界与注意】

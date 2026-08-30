@@ -71,7 +71,7 @@ All request helpers use `runtimeConfig.public.apiBase` in both SSR and browser c
 Local full-stack development with `nuxt-modern-starter-api` Docker defaults to:
 
 - Nuxt app: `http://localhost:3000`
-- API gateway: `http://localhost:2027/api`
+- API gateway: `http://localhost:2027/api/v1`
 - Backend `CORS_ORIGINS` must include the Nuxt origin, for example `http://localhost:3000`.
 
 The app-level API contract uses `{ code, message, data }` for every business response. `message` is the only human-readable status field, and business payloads must live under `data`. The shared HTTP client validates `code === 200` through `assertApiSuccess()` and throws a normalized failure otherwise.
@@ -264,7 +264,7 @@ Committed dotenv layers (`.env.dev`, `.env.test`, `.env.prod`) provide non-secre
 | Variable                               | Purpose                                                                               |
 | -------------------------------------- | ------------------------------------------------------------------------------------- |
 | `NUXT_PUBLIC_SITE_URL`                 | Canonical site origin for SEO, sitemap, and robots                                    |
-| `NUXT_PUBLIC_API_BASE`                 | Backend API origin including `/api` prefix                                            |
+| `NUXT_PUBLIC_API_BASE`                 | Backend API origin including the `/api/v1` prefix                                     |
 | `NUXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | Google Search Console verification token                                              |
 | `NUXT_PUBLIC_BAIDU_SITE_VERIFICATION`  | Baidu verification token                                                              |
 | `NUXT_PUBLIC_ANALYTICS_ENABLED`        | Must be exactly `true` to enable analytics                                            |
@@ -293,7 +293,7 @@ API boundaries:
 
 - Workspace adapters in `app/api/workspace-project.ts`: `fetchWorkspaceProjects()`, `createWorkspaceProject()`, `fetchWorkspaceProject()`, `updateWorkspaceProject()`, and `deleteWorkspaceProject()` via `createProductApiClient()`. `getWorkspaceDocPath(projectId)` returns `/docs/:id`; `getWorkspaceNewDocPath()` returns `/docs/new`.
 - Editor adapters in `app/features/editor/api.ts`: `fetchEditorDocument()` and `saveEditorDocument()` via `createProductApiClient()`.
-- Relative request paths are `/projects` and `/documents/:documentId`; `runtimeConfig.public.apiBase` already includes the `/api` prefix.
+- Relative request paths are `/projects` and `/documents/:documentId`; `runtimeConfig.public.apiBase` already includes the `/api/v1` prefix.
 - Both use the backend envelope `{ code, message, data }` and retry once after a single-flight refresh on 401.
 
 Current UI scope:
@@ -319,7 +319,7 @@ Account behavior:
 Local full-stack defaults:
 
 - Nuxt: `http://localhost:3000`
-- API gateway: `http://localhost:2027/api`
+- API gateway: `http://localhost:2027/api/v1`
 - Backend `CORS_ORIGINS` must include `http://localhost:3000`
 
 For Docker and Nginx deployment validation, see `docs/deployment.md`.
@@ -328,7 +328,7 @@ For Docker and Nginx deployment validation, see `docs/deployment.md`.
 
 Auth is implemented as an opt-in Bearer Token module for the current application API.
 
-- Backend endpoints use the `/api` prefix and return the standard `{ code, message, data }` envelope. Auth calls use `~/api/auth` through `createAuthApiClient()`, and stores/pages consume token, user, and profile payloads from `data`.
+- Backend endpoints live under the `/api/v1` prefix and return the standard `{ code, message, data }` envelope. Auth calls use `~/api/auth` through `createAuthApiClient()`, and stores/pages consume token, user, and profile payloads from `data`.
 - HTTP endpoint paths are centralized in `config/auth.ts`: `/register`, `/login`, `/refresh`, `/logout`, `/me`, and `/me/profile`. Frontend auth pages use `/sign-in` and `/sign-up`; `AUTH_REDIRECTS.login = '/sign-in'`.
 - `POST /api/register` creates an account but does not log the user in. The sign-up page redirects users to sign-in after success.
 - `POST /api/login` and `POST /api/refresh` return `accessToken` and `refreshToken`. Tokens are stored in JS-readable Nuxt cookies for client-side product workflows.

@@ -10,7 +10,7 @@ pnpm install
 pnpm dev
 ```
 
-When pairing with `nuxt-modern-starter-api`, start the backend Docker stack from that repo first (commonly `pnpm docker:dev` there; this frontend uses `pnpm docker:up:dev` for its own Compose stack) and keep `.env.dev` pointed at `http://localhost:2027/api`. Adapter paths such as `/projects` are relative to that base URL, which already includes the `/api` prefix.
+When pairing with `nuxt-modern-starter-api`, start the backend Docker stack from that repo first (commonly `pnpm docker:dev` there; this frontend uses `pnpm docker:up:dev` for its own Compose stack) and keep `.env.dev` pointed at `http://localhost:2027/api/v1`. Adapter paths such as `/projects` are relative to that base URL, which already includes the `/api/v1` prefix. The backend no longer serves the unversioned `/api` alias — pointing the base URL at it returns 404.
 
 The quick-start target is `pnpm install && pnpm dev`: a new project should be able to run locally within 30 minutes after cloning, excluding full quality gates and Docker/Nginx validation.
 
@@ -54,6 +54,7 @@ pnpm build
 - Editor at `/docs/:id` and `/docs/new` (`:id` is the project id or `new`): resolves `documentId`, loads content with `GET /api/documents/:documentId`, autosaves with `PATCH /api/documents/:documentId` (2s debounce, flush on route leave), and updates titles with `PATCH /api/projects/:projectId` through `@yanivjs/yaniv-editor` (PPT editor, `mode: edit`, `preset: full`).
 - Product account at `/account`: dedicated account layout, profile payload, and logout (via user menu).
 - Authenticated business responses use the shared `{ code, message, data }` envelope with automatic `code === 200` validation in the HTTP client.
+- The backend OpenAPI contract is vendored at `contracts/openapi.yaml` and checked by `tests/unit/api-contract.test.ts`: every environment layer must point at the versioned API prefix, every consumed endpoint must exist in the contract, and the E2E stub must serve the same prefix. Run `pnpm contract:sync` after the backend changes its contract.
 - Public pages for home, pricing, about, help, news list, news detail, sign-in, sign-up, and 404.
 - Canonical, hreflang, OG metadata, Twitter Card metadata, noindex handling, Article JSON-LD, and home-page WebPage / Organization JSON-LD opt-ins.
 - Channel attribution persistence, registration body merge, and deferred analytics plugin slot.
@@ -107,6 +108,8 @@ pnpm generate:theme
 pnpm quality
 pnpm docs:sync:check
 pnpm docs:sync:manifest
+pnpm contract:sync
+pnpm contract:check
 pnpm docker:build
 pnpm docker:run
 pnpm docker:up

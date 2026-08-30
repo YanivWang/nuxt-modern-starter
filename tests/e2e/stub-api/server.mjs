@@ -9,10 +9,12 @@
     tests/e2e — 仅供 Playwright webServer 启动，不参与应用构建，也不进 Docker 镜像。
 
   【主要导出 / 路由】
-    POST /api/login|register|refresh|logout、GET /api/me|/api/me/profile、
-    GET|POST /api/projects（列表分页：limit/offset）、GET|PATCH|DELETE /api/projects/:id、
-    GET|PATCH /api/documents/:id、GET /api/content/news|/api/content/news/:slug|/api/content/pricing、
-    POST /api/__reset（仅测试用，重置内存状态）
+    统一挂在 API_PREFIX（/api/v1）下，路由表里写的是剥掉前缀后的相对路径，
+    与前端 adapter 的写法一致：
+    POST /login|register|refresh|logout、GET /me|/me/profile、
+    GET|POST /projects（列表分页：limit/offset）、GET|PATCH|DELETE /projects/:id、
+    GET|PATCH /documents/:id、GET /content/news|/content/news/:slug|/content/pricing、
+    POST /__reset（仅测试用，重置内存状态）
 
   【渲染 / 数据】
     进程内内存状态；每个 spec 通过 POST /api/__reset 拿到确定性初始数据，
@@ -27,10 +29,15 @@
   【边界与注意】
     只实现 E2E 用得到的行为，不追求与真实后端逐字段等价；
     鉴权失败一律返回业务 code 401，用于验证前端 refresh / 重定向链路。
+    前缀必须与真实后端一致：后端已下线无版本的 /api 别名，只提供 /api/v1。
+    桩这边同样不提供别名 —— 否则前端把 base 写错，E2E 依然会绿。
 */
 import { createServer } from 'node:http'
 
 const PORT = Number(process.env.STUB_API_PORT || 2127)
+
+/** 与后端 API_VERSION_PREFIX 一致；无版本别名已下线，这里也不提供 */
+const API_PREFIX = '/api/v1'
 
 const ACCESS_TOKEN = 'e2e-access-token'
 const REFRESH_TOKEN = 'e2e-refresh-token'
@@ -189,7 +196,7 @@ const pricingPage = {
 const routes = [
   {
     method: 'POST',
-    match: (p) => p === '/api/__reset',
+    match: (p) => p === '/__reset',
     handle: async (req, res) => {
       const body = await readBody(req)
       const count = Number(body?.projects)
@@ -199,7 +206,7 @@ const routes = [
   },
   {
     method: 'POST',
-    match: (p) => p === '/api/login',
+    match: (p) => p === '/login',
     handle: async (req, res) => {
       const body = await readBody(req)
 
@@ -212,12 +219,12 @@ const routes = [
   },
   {
     method: 'POST',
-    match: (p) => p === '/api/register',
+    match: (p) => p === '/register',
     handle: (_req, res) => send(res, 200, envelope(null))
   },
   {
     method: 'POST',
-    match: (p) => p === '/api/refresh',
+    match: (p) => p === '/refresh',
     handle: async (req, res) => {
       const body = await readBody(req)
 
@@ -230,12 +237,12 @@ const routes = [
   },
   {
     method: 'POST',
-    match: (p) => p === '/api/logout',
+    match: (p) => p === '/logout',
     handle: (_req, res) => send(res, 200, envelope(null))
   },
   {
     method: 'GET',
-    match: (p) => p === '/api/me',
+    match: (p) => p === '/me',
     handle: (req, res) =>
       isAuthorized(req)
         ? send(
@@ -256,7 +263,7 @@ const routes = [
   },
   {
     method: 'GET',
-    match: (p) => p === '/api/me/profile',
+    match: (p) => p === '/me/profile',
     handle: (req, res) =>
       isAuthorized(req)
         ? send(res, 200, envelope({ profile: { company: 'Acme', plan: 'growth' } }))
@@ -264,7 +271,7 @@ const routes = [
   },
   {
     method: 'GET',
-    match: (p) => p === '/api/projects',
+    match: (p) => p === '/projects',
     handle: (req, res, { searchParams }) => {
       if (!isAuthorized(req)) return unauthorized(res)
 
@@ -291,7 +298,7 @@ const routes = [
   },
   {
     method: 'POST',
-    match: (p) => p === '/api/projects',
+    match: (p) => p === '/projects',
     handle: async (req, res) => {
       if (!isAuthorized(req)) return unauthorized(res)
 
@@ -325,7 +332,7 @@ const routes = [
   },
   {
     method: 'GET',
-    match: (p) => /^\/api\/projects\/[^/]+$/.test(p),
+    match: (p) => /^\/projects\/[^/]+$/.test(p),
     handle: (req, res, { pathname }) => {
       if (!isAuthorized(req)) return unauthorized(res)
 
@@ -339,7 +346,7 @@ const routes = [
   },
   {
     method: 'PATCH',
-    match: (p) => /^\/api\/projects\/[^/]+$/.test(p),
+    match: (p) => /^\/projects\/[^/]+$/.test(p),
     handle: async (req, res, { pathname }) => {
       if (!isAuthorized(req)) return unauthorized(res)
 
@@ -356,7 +363,7 @@ const routes = [
   },
   {
     method: 'DELETE',
-    match: (p) => /^\/api\/projects\/[^/]+$/.test(p),
+    match: (p) => /^\/projects\/[^/]+$/.test(p),
     handle: (req, res, { pathname }) => {
       if (!isAuthorized(req)) return unauthorized(res)
 
@@ -368,7 +375,7 @@ const routes = [
   },
   {
     method: 'GET',
-    match: (p) => /^\/api\/documents\/[^/]+$/.test(p),
+    match: (p) => /^\/documents\/[^/]+$/.test(p),
     handle: (req, res, { pathname }) => {
       if (!isAuthorized(req)) return unauthorized(res)
 
@@ -381,7 +388,7 @@ const routes = [
   },
   {
     method: 'PATCH',
-    match: (p) => /^\/api\/documents\/[^/]+$/.test(p),
+    match: (p) => /^\/documents\/[^/]+$/.test(p),
     handle: async (req, res, { pathname }) => {
       if (!isAuthorized(req)) return unauthorized(res)
 
@@ -403,12 +410,12 @@ const routes = [
   },
   {
     method: 'GET',
-    match: (p) => p === '/api/content/news',
+    match: (p) => p === '/content/news',
     handle: (_req, res) => send(res, 200, envelope({ articles: newsArticles }))
   },
   {
     method: 'GET',
-    match: (p) => /^\/api\/content\/news\/[^/]+$/.test(p),
+    match: (p) => /^\/content\/news\/[^/]+$/.test(p),
     handle: (_req, res, { pathname }) => {
       const slug = pathname.split('/').pop()
       const article = newsArticles.find((item) => item.slug === slug)
@@ -420,7 +427,7 @@ const routes = [
   },
   {
     method: 'GET',
-    match: (p) => p === '/api/content/pricing',
+    match: (p) => p === '/content/pricing',
     handle: (_req, res) => send(res, 200, envelope({ pricing: pricingPage }))
   }
 ]
@@ -431,13 +438,21 @@ const server = createServer(async (req, res) => {
   }
 
   const { pathname, searchParams } = new URL(req.url, `http://localhost:${PORT}`)
-  const route = routes.find((item) => item.method === req.method && item.match(pathname))
 
-  if (!route) {
+  // 前缀不匹配直接 404：这正是真实后端下线 /api 别名后的行为，
+  // 前端一旦把 base 写回旧前缀，E2E 必须立刻红，而不是照常通过。
+  if (pathname !== API_PREFIX && !pathname.startsWith(`${API_PREFIX}/`)) {
     return send(res, 200, envelope(null, 404, `No stub route for ${req.method} ${pathname}`))
   }
 
-  await route.handle(req, res, { pathname, searchParams })
+  const apiPath = pathname.slice(API_PREFIX.length) || '/'
+  const route = routes.find((item) => item.method === req.method && item.match(apiPath))
+
+  if (!route) {
+    return send(res, 200, envelope(null, 404, `No stub route for ${req.method} ${apiPath}`))
+  }
+
+  await route.handle(req, res, { pathname: apiPath, searchParams })
 })
 
 server.listen(PORT, () => {
