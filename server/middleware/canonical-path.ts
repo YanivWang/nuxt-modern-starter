@@ -21,8 +21,15 @@
     仅 SSR 首请求；纯 path 重定向，保留 query string；不访问 API。
 
   【边界与注意】
-    这一层不能省：prerender 出来的 /about/index.html 会被 Nitro 当静态资源直接命中，
-    请求根本不进 Nuxt 应用，客户端 middleware 的尾斜杠 301 因此对首屏无效。
+    这一层不能省：客户端 middleware 只在 Nuxt 应用内导航时生效，SSR 首请求够不到。
+
+    但它也有前提 —— Nitro 把静态资源中间件注册在用户中间件之前（见构建产物
+    .output/server/chunks/nitro/nitro.mjs 的 handlers 顺序）。只要某个带尾斜杠的路径
+    仍能命中预渲染的目录索引（about/index.html），请求就会在本文件之前被短路，
+    301 永远不会发生。因此 nuxt.config.ts 设了 nitro.prerender.autoSubfolderIndex: false，
+    让预渲染产物写成 about.html，/about/ 不再命中静态资源，才会落到这里。
+    两处改动是一组的，只改一处不生效。
+
     /en/pricing 等公开页语言前缀是 canonical 的一部分，不在此处理。
 */
 import { defineEventHandler, getRequestURL, sendRedirect } from 'h3'

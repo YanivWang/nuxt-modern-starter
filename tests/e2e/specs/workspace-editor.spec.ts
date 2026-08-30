@@ -1,7 +1,7 @@
 /*
   【文件职责】
-    E2E：产品主闭环 —— 工作台列表、创建草稿、编辑器自动保存并把 /docs/new 换成真实项目、
-    标题同步与删除项目。
+    E2E：产品主闭环 —— 工作台列表与分页「加载更多」、创建草稿、编辑器自动保存并把
+    /docs/new 换成真实项目、标题同步与删除项目。
 
   【架构位置】
     tests/e2e/specs — Playwright，对 .output preview 服务运行。
@@ -15,20 +15,11 @@
     不依赖它的内部 DOM 结构，否则升级编辑器版本就会误报。
 */
 import { expect, test } from '@playwright/test'
-
-const CREDENTIALS = { username: 'alice', password: 'correct-horse' }
-
-const signIn = async (page: import('@playwright/test').Page) => {
-  await page.goto('/sign-in')
-  await page.locator('input[autocomplete="username"]').fill(CREDENTIALS.username)
-  await page.locator('input[autocomplete="current-password"]').fill(CREDENTIALS.password)
-  await page.getByRole('button', { name: /登录|Sign in/i }).click()
-  await expect(page).toHaveURL(/\/workspace$/)
-}
+import { resetStub, signInToWorkspace as signIn } from '../support'
 
 test.describe('workspace and editor', () => {
   test.beforeEach(async ({ request }) => {
-    await request.post('http://127.0.0.1:2027/api/__reset')
+    await resetStub(request)
   })
 
   test('lists projects and opens one in the editor', async ({ page }) => {
@@ -37,6 +28,28 @@ test.describe('workspace and editor', () => {
 
     await expect(page).toHaveURL(/\/docs\/project_1$/)
     await expect(page.locator('.editor-workspace-header__title')).toHaveText('Quarterly plan')
+  })
+
+  test('hides the load-more control when a single page covers everything', async ({ page }) => {
+    await signIn(page)
+
+    await expect(page.locator('.workspace-card')).toHaveCount(1)
+    await expect(page.locator('.workspace-load-more')).toHaveCount(0)
+  })
+
+  test('pages through projects that exceed one page', async ({ page, request }) => {
+    await resetStub(request, 25)
+    await signIn(page)
+
+    // 首屏只拿第一页；超出单页的项目必须仍可见 —— 这正是分页改造要解决的问题
+    await expect(page.locator('.workspace-card')).toHaveCount(20)
+    await expect(page.locator('.workspace-load-more')).toBeVisible()
+
+    await page.locator('.workspace-load-more button').click()
+
+    await expect(page.locator('.workspace-card')).toHaveCount(25)
+    // 全部加载完后按钮消失，且不会重复追加已有项目
+    await expect(page.locator('.workspace-load-more')).toHaveCount(0)
   })
 
   test('creates a draft from the single create entry', async ({ page }) => {
@@ -68,12 +81,11 @@ test.describe('workspace and editor', () => {
     await signIn(page)
     await expect(page.locator('.workspace-card')).toHaveCount(1)
 
+    // 用类选择器而不是按钮文案：Ant Design Vue 会在两个汉字之间插空格（「删除」→「删 除」），
+    // 按文案匹配会漏掉 Popconfirm 里的确认按钮，删除请求根本不会发出。
     await page.locator('.workspace-card__more').click()
-    await page.getByRole('button', { name: /^删除$|^Delete$/i }).click()
-    await page
-      .getByRole('button', { name: /^删除$|^Delete$/i })
-      .last()
-      .click()
+    await page.locator('.workspace-card__menu-delete').click()
+    await page.locator('.ant-popconfirm-buttons button.ant-btn-primary').click()
 
     await expect(page.locator('.workspace-empty')).toBeVisible()
   })

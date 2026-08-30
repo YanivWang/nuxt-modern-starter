@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-30T15:29:15.654Z",
+  "generatedAt": "2026-08-30T16:04:09.048Z",
   "docFileCount": 33,
-  "referenceCount": 1254,
+  "referenceCount": 1291,
   "pathAllowlist": [
     "app/features/my-feature/",
     "app/features/my-feature/components/",
@@ -2031,14 +2031,14 @@
     },
     {
       "docFile": "docs-site/deployment/docker.md",
-      "line": 40,
+      "line": 41,
       "type": "env-var",
       "value": "NUXT_PUBLIC_APP_ENV",
       "context": "- 环境：`NUXT_PUBLIC_APP_ENV=production`"
     },
     {
       "docFile": "docs-site/deployment/docker.md",
-      "line": 41,
+      "line": 42,
       "type": "symbol",
       "value": "GATEWAY_HOST_PORT",
       "context": "- 网关端口：`GATEWAY_HOST_PORT` 或默认 3000"
@@ -2132,137 +2132,200 @@
       "line": 34,
       "type": "symbol",
       "value": "NUXT_PUBLIC_SITE_URL",
-      "context": "| `NUXT_PUBLIC_SITE_URL`                 | `public.siteUrl`                | SEO canonical、sitemap         | `http://loc"
+      "context": "| `NUXT_PUBLIC_SITE_URL`                 | `public.siteUrl`                | SEO canonical、sitemap                      "
     },
     {
       "docFile": "docs-site/deployment/env.md",
       "line": 35,
       "type": "symbol",
       "value": "NUXT_PUBLIC_API_BASE",
-      "context": "| `NUXT_PUBLIC_API_BASE`                 | `public.apiBase`                | 后端 API 根（含 `/api`）       | `http://localhos"
+      "context": "| `NUXT_PUBLIC_API_BASE`                 | `public.apiBase`                | 后端 API 根（含 `/api`）                        |"
     },
     {
       "docFile": "docs-site/deployment/env.md",
       "line": 36,
       "type": "symbol",
       "value": "NUXT_PUBLIC_GOOGLE_SITE_VERIFICATION",
-      "context": "| `NUXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | `public.googleSiteVerification` | Google 站长验证                | 空             "
+      "context": "| `NUXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | `public.googleSiteVerification` | Google 站长验证                                "
     },
     {
       "docFile": "docs-site/deployment/env.md",
       "line": 37,
       "type": "symbol",
       "value": "NUXT_PUBLIC_BAIDU_SITE_VERIFICATION",
-      "context": "| `NUXT_PUBLIC_BAIDU_SITE_VERIFICATION`  | `public.baiduSiteVerification`  | 百度验证                       | 空             "
+      "context": "| `NUXT_PUBLIC_BAIDU_SITE_VERIFICATION`  | `public.baiduSiteVerification`  | 百度验证                                       "
     },
     {
       "docFile": "docs-site/deployment/env.md",
       "line": 38,
       "type": "symbol",
       "value": "NUXT_PUBLIC_ANALYTICS_ENABLED",
-      "context": "| `NUXT_PUBLIC_ANALYTICS_ENABLED`        | `public.analyticsEnabled`       | 必须精确为 `true` 才启用       | `false`           "
+      "context": "| `NUXT_PUBLIC_ANALYTICS_ENABLED`        | `public.analyticsEnabled`       | 必须精确为 `true` 才启用                        | `"
     },
     {
       "docFile": "docs-site/deployment/env.md",
       "line": 39,
       "type": "symbol",
       "value": "NUXT_PUBLIC_ANALYTICS_SCRIPT_SRC",
-      "context": "| `NUXT_PUBLIC_ANALYTICS_SCRIPT_SRC`     | `public.analyticsScriptSrc`     | 第三方脚本 URL                 | 空              "
+      "context": "| `NUXT_PUBLIC_ANALYTICS_SCRIPT_SRC`     | `public.analyticsScriptSrc`     | 第三方脚本 URL                                  "
     },
     {
       "docFile": "docs-site/deployment/env.md",
       "line": 40,
       "type": "symbol",
       "value": "NUXT_PUBLIC_ANALYTICS_DEFER_MS",
-      "context": "| `NUXT_PUBLIC_ANALYTICS_DEFER_MS`       | `public.analyticsDeferMs`       | 延迟毫秒                       | `3000`        "
+      "context": "| `NUXT_PUBLIC_ANALYTICS_DEFER_MS`       | `public.analyticsDeferMs`       | 延迟毫秒                                       "
     },
     {
       "docFile": "docs-site/deployment/env.md",
       "line": 41,
       "type": "symbol",
       "value": "NUXT_PUBLIC_APP_ENV",
-      "context": "| `NUXT_PUBLIC_APP_ENV`                  | `public.appEnv`                 | 控制 cookie `secure`           | `development"
+      "context": "| `NUXT_PUBLIC_APP_ENV`                  | `public.appEnv`                 | 控制 cookie `secure`                         "
     },
     {
       "docFile": "docs-site/deployment/env.md",
       "line": 42,
       "type": "symbol",
       "value": "NUXT_REVALIDATE_SECRET",
-      "context": "| `NUXT_REVALIDATE_SECRET`               | `revalidateSecret`              | SWR 按需失效 webhook 密钥      | 示例占位符（生产须替换）    "
+      "context": "| `NUXT_REVALIDATE_SECRET`               | `revalidateSecret`              | SWR 按需失效 webhook 密钥                       |"
     },
     {
       "docFile": "docs-site/deployment/env.md",
       "line": 42,
       "type": "symbol",
       "value": "revalidateSecret",
-      "context": "| `NUXT_REVALIDATE_SECRET`               | `revalidateSecret`              | SWR 按需失效 webhook 密钥      | 示例占位符（生产须替换）    "
+      "context": "| `NUXT_REVALIDATE_SECRET`               | `revalidateSecret`              | SWR 按需失效 webhook 密钥                       |"
     },
     {
       "docFile": "docs-site/deployment/env.md",
       "line": 43,
       "type": "env-var",
       "value": "NUXT_CACHE_DRIVER",
-      "context": "| `NUXT_CACHE_DRIVER`                    | —（构建期读）                   | SWR 缓存驱动：`memory` \\| `fs` | `memory`             "
+      "context": "| `NUXT_CACHE_DRIVER`                    | —（构建期读）                   | SWR 缓存驱动：`memory` \\| `fs`                  | `mem"
     },
     {
       "docFile": "docs-site/deployment/env.md",
       "line": 43,
       "type": "symbol",
       "value": "NUXT_CACHE_DRIVER",
-      "context": "| `NUXT_CACHE_DRIVER`                    | —（构建期读）                   | SWR 缓存驱动：`memory` \\| `fs` | `memory`             "
+      "context": "| `NUXT_CACHE_DRIVER`                    | —（构建期读）                   | SWR 缓存驱动：`memory` \\| `fs`                  | `mem"
     },
     {
       "docFile": "docs-site/deployment/env.md",
       "line": 44,
       "type": "env-var",
       "value": "NUXT_CACHE_FS_BASE",
-      "context": "| `NUXT_CACHE_FS_BASE`                   | —（构建期读）                   | `fs` 驱动的存储目录            | `./.data/cache`        "
+      "context": "| `NUXT_CACHE_FS_BASE`                   | —（构建期读）                   | `fs` 驱动的存储目录                             | `./.da"
     },
     {
       "docFile": "docs-site/deployment/env.md",
       "line": 44,
       "type": "symbol",
       "value": "NUXT_CACHE_FS_BASE",
-      "context": "| `NUXT_CACHE_FS_BASE`                   | —（构建期读）                   | `fs` 驱动的存储目录            | `./.data/cache`        "
+      "context": "| `NUXT_CACHE_FS_BASE`                   | —（构建期读）                   | `fs` 驱动的存储目录                             | `./.da"
+    },
+    {
+      "docFile": "docs-site/deployment/env.md",
+      "line": 45,
+      "type": "env-var",
+      "value": "NUXT_LOG_LEVEL",
+      "context": "| `NUXT_LOG_LEVEL`                       | —（进程启动时读）               | 服务端日志级别 `debug`\\|`info`\\|`warn`\\|`error` | `info`（`"
+    },
+    {
+      "docFile": "docs-site/deployment/env.md",
+      "line": 45,
+      "type": "symbol",
+      "value": "NUXT_LOG_LEVEL",
+      "context": "| `NUXT_LOG_LEVEL`                       | —（进程启动时读）               | 服务端日志级别 `debug`\\|`info`\\|`warn`\\|`error` | `info`（`"
     },
     {
       "docFile": "docs-site/deployment/env.md",
       "line": 46,
+      "type": "env-var",
+      "value": "NUXT_PUBLIC_ERROR_REPORTING_ENABLED",
+      "context": "| `NUXT_PUBLIC_ERROR_REPORTING_ENABLED`  | `public.errorReportingEnabled`  | 客户端错误上报开关，设 `false` 关闭             | `true`"
+    },
+    {
+      "docFile": "docs-site/deployment/env.md",
+      "line": 46,
+      "type": "symbol",
+      "value": "NUXT_PUBLIC_ERROR_REPORTING_ENABLED",
+      "context": "| `NUXT_PUBLIC_ERROR_REPORTING_ENABLED`  | `public.errorReportingEnabled`  | 客户端错误上报开关，设 `false` 关闭             | `true`"
+    },
+    {
+      "docFile": "docs-site/deployment/env.md",
+      "line": 48,
       "type": "env-var",
       "value": "NUXT_CACHE_",
       "context": "`NUXT_CACHE_*` 不进 `runtimeConfig`：`nitro.storage` 是 **构建期** 配置，值在 `pnpm build` 时"
     },
     {
       "docFile": "docs-site/deployment/env.md",
-      "line": 46,
+      "line": 48,
       "type": "script",
       "value": "build",
       "context": "`NUXT_CACHE_*` 不进 `runtimeConfig`：`nitro.storage` 是 **构建期** 配置，值在 `pnpm build` 时"
     },
     {
       "docFile": "docs-site/deployment/env.md",
-      "line": 46,
+      "line": 48,
       "type": "symbol",
       "value": "runtimeConfig",
       "context": "`NUXT_CACHE_*` 不进 `runtimeConfig`：`nitro.storage` 是 **构建期** 配置，值在 `pnpm build` 时"
     },
     {
       "docFile": "docs-site/deployment/env.md",
-      "line": 52,
+      "line": 54,
+      "type": "file-path",
+      "value": "server/utils/logger.ts",
+      "context": "服务端日志是**单行 JSON**（`server/utils/logger.ts`），可被 Loki、CloudWatch、Datadog 这类采集器直接解析，"
+    },
+    {
+      "docFile": "docs-site/deployment/env.md",
+      "line": 59,
+      "type": "file-path",
+      "value": "config/observability.ts",
+      "context": "  白名单唯一来源是 `config/observability.ts` 的 `SENSITIVE_KEY_PATTERNS`。"
+    },
+    {
+      "docFile": "docs-site/deployment/env.md",
+      "line": 59,
+      "type": "symbol",
+      "value": "SENSITIVE_KEY_PATTERNS",
+      "context": "  白名单唯一来源是 `config/observability.ts` 的 `SENSITIVE_KEY_PATTERNS`。"
+    },
+    {
+      "docFile": "docs-site/deployment/env.md",
+      "line": 61,
+      "type": "symbol",
+      "value": "requestId",
+      "context": "- 每个请求都有 `requestId`（沿用上游 `x-request-id`，缺失则生成），同名响应头回写，"
+    },
+    {
+      "docFile": "docs-site/deployment/env.md",
+      "line": 65,
+      "type": "file-path",
+      "value": "app/plugins/error-reporter.client.ts",
+      "context": "`app/plugins/error-reporter.client.ts` 去重后 POST 到第一方端点 `/api/telemetry/errors`，"
+    },
+    {
+      "docFile": "docs-site/deployment/env.md",
+      "line": 81,
       "type": "file-path",
       "value": "app/utils/auth-session.ts",
       "context": "`app/utils/auth-session.ts`："
     },
     {
       "docFile": "docs-site/deployment/env.md",
-      "line": 60,
+      "line": 89,
       "type": "script",
       "value": "dev",
       "context": "| 本地 pnpm dev | 默认 `development`         | false         |"
     },
     {
       "docFile": "docs-site/deployment/env.md",
-      "line": 70,
+      "line": 99,
       "type": "symbol",
       "value": "siteUrl",
       "context": "- `siteUrl` 生产必须改为真实域名"
@@ -3552,7 +3615,7 @@
       "docFile": "docs-site/guide/overview.md",
       "line": 92,
       "type": "test-count",
-      "value": "49/236",
+      "value": "49/238",
       "context": "| 测试   | Vitest 4.1.11 + @nuxt/test-utils 4.0.3；`vitest.config.ts` 用 `defineVitestConfig` + `include: tests/**/*.test.ts"
     },
     {
@@ -7281,17 +7344,157 @@
     },
     {
       "docFile": "docs/conventions.md",
-      "line": 113,
+      "line": 105,
+      "type": "file-path",
+      "value": "tests/unit",
+      "context": "| `tests/unit`      | happy-dom   | Pure functions, middleware decisions, adapters, config, static scans                "
+    },
+    {
+      "docFile": "docs/conventions.md",
+      "line": 106,
+      "type": "file-path",
+      "value": "tests/nuxt",
+      "context": "| `tests/nuxt`      | nuxt        | Behavior needing `useRuntimeConfig`, `useCookie`, `useNuxtApp`                      "
+    },
+    {
+      "docFile": "docs/conventions.md",
+      "line": 106,
+      "type": "symbol",
+      "value": "useRuntimeConfig",
+      "context": "| `tests/nuxt`      | nuxt        | Behavior needing `useRuntimeConfig`, `useCookie`, `useNuxtApp`                      "
+    },
+    {
+      "docFile": "docs/conventions.md",
+      "line": 106,
+      "type": "symbol",
+      "value": "useCookie",
+      "context": "| `tests/nuxt`      | nuxt        | Behavior needing `useRuntimeConfig`, `useCookie`, `useNuxtApp`                      "
+    },
+    {
+      "docFile": "docs/conventions.md",
+      "line": 106,
+      "type": "symbol",
+      "value": "useNuxtApp",
+      "context": "| `tests/nuxt`      | nuxt        | Behavior needing `useRuntimeConfig`, `useCookie`, `useNuxtApp`                      "
+    },
+    {
+      "docFile": "docs/conventions.md",
+      "line": 107,
+      "type": "file-path",
+      "value": "tests/component",
+      "context": "| `tests/component` | nuxt        | Real mounting via mountSuspended from @nuxt/test-utils; rendering and interaction as"
+    },
+    {
+      "docFile": "docs/conventions.md",
+      "line": 108,
+      "type": "file-path",
+      "value": "tests/e2e",
+      "context": "| `tests/e2e`       | Playwright  | Real browser against the production build, backed by `tests/e2e/stub-api`           "
+    },
+    {
+      "docFile": "docs/conventions.md",
+      "line": 108,
+      "type": "file-path",
+      "value": "tests/e2e/stub-api",
+      "context": "| `tests/e2e`       | Playwright  | Real browser against the production build, backed by `tests/e2e/stub-api`           "
+    },
+    {
+      "docFile": "docs/conventions.md",
+      "line": 112,
+      "type": "symbol",
+      "value": "hookTimeout",
+      "context": "`hookTimeout` must stay explicitly raised. `setupNuxt()` runs inside `beforeAll` and its cold start exceeds Vitest's 10s"
+    },
+    {
+      "docFile": "docs/conventions.md",
+      "line": 112,
+      "type": "symbol",
+      "value": "beforeAll",
+      "context": "`hookTimeout` must stay explicitly raised. `setupNuxt()` runs inside `beforeAll` and its cold start exceeds Vitest's 10s"
+    },
+    {
+      "docFile": "docs/conventions.md",
+      "line": 114,
+      "type": "file-path",
+      "value": "server/plugins",
+      "context": "Coverage thresholds in `vitest.config.ts` are a ratchet: raise them, never lower them to make CI green. Thin Nitro entry"
+    },
+    {
+      "docFile": "docs/conventions.md",
+      "line": 114,
+      "type": "file-path",
+      "value": "server/middleware",
+      "context": "Coverage thresholds in `vitest.config.ts` are a ratchet: raise them, never lower them to make CI green. Thin Nitro entry"
+    },
+    {
+      "docFile": "docs/conventions.md",
+      "line": 114,
+      "type": "file-path",
+      "value": "server/routes",
+      "context": "Coverage thresholds in `vitest.config.ts` are a ratchet: raise them, never lower them to make CI green. Thin Nitro entry"
+    },
+    {
+      "docFile": "docs/conventions.md",
+      "line": 114,
+      "type": "file-path",
+      "value": "server/utils",
+      "context": "Coverage thresholds in `vitest.config.ts` are a ratchet: raise them, never lower them to make CI green. Thin Nitro entry"
+    },
+    {
+      "docFile": "docs/conventions.md",
+      "line": 114,
+      "type": "file-path",
+      "value": "vitest.config.ts",
+      "context": "Coverage thresholds in `vitest.config.ts` are a ratchet: raise them, never lower them to make CI green. Thin Nitro entry"
+    },
+    {
+      "docFile": "docs/conventions.md",
+      "line": 116,
+      "type": "file-path",
+      "value": "tests/unit/page-structure.test.ts",
+      "context": "Architecture boundaries are enforced by `pnpm depcruise` on the real dependency graph, and by `tests/unit/page-structure"
+    },
+    {
+      "docFile": "docs/conventions.md",
+      "line": 116,
+      "type": "script",
+      "value": "depcruise",
+      "context": "Architecture boundaries are enforced by `pnpm depcruise` on the real dependency graph, and by `tests/unit/page-structure"
+    },
+    {
+      "docFile": "docs/conventions.md",
+      "line": 128,
       "type": "script",
       "value": "quality",
       "context": "| `pnpm quality` | Release gate: adds `format:check`, `i18n:check`, and `build` before `test` so tests can inspect build"
     },
     {
       "docFile": "docs/conventions.md",
-      "line": 124,
+      "line": 139,
       "type": "script",
       "value": "lint",
       "context": "`pnpm lint` runs with `--max-warnings 0`. Fix or align rules instead of ignoring formatting warnings in Vue templates."
+    },
+    {
+      "docFile": "docs/conventions.md",
+      "line": 143,
+      "type": "file-path",
+      "value": "server/utils/logger.ts",
+      "context": "Do not log secrets, tokens, or cookies. Server-side logging goes through `server/utils/logger.ts`, never `console.*` dir"
+    },
+    {
+      "docFile": "docs/conventions.md",
+      "line": 143,
+      "type": "file-path",
+      "value": "config/observability.ts",
+      "context": "Do not log secrets, tokens, or cookies. Server-side logging goes through `server/utils/logger.ts`, never `console.*` dir"
+    },
+    {
+      "docFile": "docs/conventions.md",
+      "line": 143,
+      "type": "symbol",
+      "value": "SENSITIVE_KEY_PATTERNS",
+      "context": "Do not log secrets, tokens, or cookies. Server-side logging goes through `server/utils/logger.ts`, never `console.*` dir"
     },
     {
       "docFile": "docs/deployment.md",
@@ -7505,14 +7708,49 @@
     },
     {
       "docFile": "docs/deployment.md",
-      "line": 51,
+      "line": 44,
+      "type": "env-var",
+      "value": "NUXT_LOG_LEVEL",
+      "context": "| `NUXT_LOG_LEVEL`                       | Server log level: `debug`, `info`, `warn`, `error`                    | `info"
+    },
+    {
+      "docFile": "docs/deployment.md",
+      "line": 44,
+      "type": "env-file",
+      "value": ".env.dev",
+      "context": "| `NUXT_LOG_LEVEL`                       | Server log level: `debug`, `info`, `warn`, `error`                    | `info"
+    },
+    {
+      "docFile": "docs/deployment.md",
+      "line": 44,
+      "type": "symbol",
+      "value": "NUXT_LOG_LEVEL",
+      "context": "| `NUXT_LOG_LEVEL`                       | Server log level: `debug`, `info`, `warn`, `error`                    | `info"
+    },
+    {
+      "docFile": "docs/deployment.md",
+      "line": 45,
+      "type": "env-var",
+      "value": "NUXT_PUBLIC_ERROR_REPORTING_ENABLED",
+      "context": "| `NUXT_PUBLIC_ERROR_REPORTING_ENABLED`  | Set to `false` to disable client error reporting                      | `true"
+    },
+    {
+      "docFile": "docs/deployment.md",
+      "line": 45,
+      "type": "symbol",
+      "value": "NUXT_PUBLIC_ERROR_REPORTING_ENABLED",
+      "context": "| `NUXT_PUBLIC_ERROR_REPORTING_ENABLED`  | Set to `false` to disable client error reporting                      | `true"
+    },
+    {
+      "docFile": "docs/deployment.md",
+      "line": 53,
       "type": "file-path",
       "value": "config/cache.ts",
       "context": "`nitro.storage` comes from `config/cache.ts` and defaults to **in-process memory**. That is fine for a single process, b"
     },
     {
       "docFile": "docs/deployment.md",
-      "line": 59,
+      "line": 61,
       "type": "file-path",
       "value": "nuxt.config.ts",
       "context": "`fs` shares one directory, so mount a shared volume for same-host multi-process setups. Cross-host deployments need a sh"
@@ -7520,132 +7758,153 @@
     {
       "docFile": "docs/deployment.md",
       "line": 65,
+      "type": "file-path",
+      "value": "server/utils/logger.ts",
+      "context": "Server logs are single-line JSON (`server/utils/logger.ts`) so log collectors parse them without a custom parser. `warn`"
+    },
+    {
+      "docFile": "docs/deployment.md",
+      "line": 67,
+      "type": "symbol",
+      "value": "requestId",
+      "context": "Every request carries a `requestId` (reusing an upstream `x-request-id` when its shape is valid, otherwise generated) th"
+    },
+    {
+      "docFile": "docs/deployment.md",
+      "line": 69,
+      "type": "file-path",
+      "value": "config/observability.ts",
+      "context": "Log fields are redacted recursively by key name; `config/observability.ts` owns the pattern list. Do not call `console.*"
+    },
+    {
+      "docFile": "docs/deployment.md",
+      "line": 71,
+      "type": "file-path",
+      "value": "app/plugins/error-reporter.client.ts",
+      "context": "Client-side errors (Vue render errors, `window.onerror`, unhandled rejections) are deduplicated and posted to the first-"
+    },
+    {
+      "docFile": "docs/deployment.md",
+      "line": 86,
       "type": "external-script",
       "value": "docker:dev",
       "context": "1. Start the API stack from the **`nuxt-modern-starter-api` backend repo** (commonly `pnpm docker:dev` there; this front"
     },
     {
       "docFile": "docs/deployment.md",
-      "line": 65,
+      "line": 86,
       "type": "script",
       "value": "docker:up:dev",
       "context": "1. Start the API stack from the **`nuxt-modern-starter-api` backend repo** (commonly `pnpm docker:dev` there; this front"
     },
     {
       "docFile": "docs/deployment.md",
-      "line": 66,
-      "type": "env-file",
-      "value": ".env.dev",
-      "context": "2. Keep frontend `.env.dev` aligned with the API gateway: `NUXT_PUBLIC_API_BASE=http://localhost:2027/api`."
-    },
-    {
-      "docFile": "docs/deployment.md",
-      "line": 67,
+      "line": 88,
       "type": "env-file",
       "value": ".env.development",
       "context": "3. Keep backend `.env.development` `CORS_ORIGINS` aligned with the Nuxt dev origin: `http://localhost:3000`."
     },
     {
       "docFile": "docs/deployment.md",
-      "line": 67,
+      "line": 88,
       "type": "symbol",
       "value": "CORS_ORIGINS",
       "context": "3. Keep backend `.env.development` `CORS_ORIGINS` aligned with the Nuxt dev origin: `http://localhost:3000`."
     },
     {
       "docFile": "docs/deployment.md",
-      "line": 68,
+      "line": 89,
       "type": "route",
       "value": "/workspace",
       "context": "4. Run `pnpm dev` in this repo and verify sign-in, `/workspace` list/create/delete, `/docs/new` and `/docs/:id` editor l"
     },
     {
       "docFile": "docs/deployment.md",
-      "line": 68,
+      "line": 89,
       "type": "route",
       "value": "/docs/new",
       "context": "4. Run `pnpm dev` in this repo and verify sign-in, `/workspace` list/create/delete, `/docs/new` and `/docs/:id` editor l"
     },
     {
       "docFile": "docs/deployment.md",
-      "line": 68,
+      "line": 89,
       "type": "route",
       "value": "/docs/:id",
       "context": "4. Run `pnpm dev` in this repo and verify sign-in, `/workspace` list/create/delete, `/docs/new` and `/docs/:id` editor l"
     },
     {
       "docFile": "docs/deployment.md",
-      "line": 68,
+      "line": 89,
       "type": "route",
       "value": "/workspace/templates",
       "context": "4. Run `pnpm dev` in this repo and verify sign-in, `/workspace` list/create/delete, `/docs/new` and `/docs/:id` editor l"
     },
     {
       "docFile": "docs/deployment.md",
-      "line": 68,
+      "line": 89,
       "type": "route",
       "value": "/account",
       "context": "4. Run `pnpm dev` in this repo and verify sign-in, `/workspace` list/create/delete, `/docs/new` and `/docs/:id` editor l"
     },
     {
       "docFile": "docs/deployment.md",
-      "line": 68,
+      "line": 89,
       "type": "symbol",
       "value": "documentId",
       "context": "4. Run `pnpm dev` in this repo and verify sign-in, `/workspace` list/create/delete, `/docs/new` and `/docs/:id` editor l"
     },
     {
       "docFile": "docs/deployment.md",
-      "line": 75,
+      "line": 96,
       "type": "script",
       "value": "quality",
       "context": "pnpm quality"
     },
     {
       "docFile": "docs/deployment.md",
-      "line": 85,
+      "line": 106,
       "type": "script",
       "value": "docker:build",
       "context": "pnpm docker:build"
     },
     {
       "docFile": "docs/deployment.md",
-      "line": 86,
+      "line": 107,
       "type": "script",
       "value": "docker:run",
       "context": "pnpm docker:run"
     },
     {
       "docFile": "docs/deployment.md",
-      "line": 94,
+      "line": 115,
       "type": "script",
       "value": "docker:up",
       "context": "pnpm docker:up      # production stack, reads .env.prod, sets NUXT_PUBLIC_APP_ENV=production"
     },
     {
       "docFile": "docs/deployment.md",
-      "line": 96,
+      "line": 117,
       "type": "script",
       "value": "docker:down",
       "context": "pnpm docker:down"
     },
     {
       "docFile": "docs/deployment.md",
-      "line": 97,
+      "line": 118,
       "type": "script",
       "value": "docker:down:dev",
       "context": "pnpm docker:down:dev"
     },
     {
       "docFile": "docs/deployment.md",
-      "line": 100,
+      "line": 121,
       "type": "symbol",
       "value": "GATEWAY_HOST_PORT",
       "context": "Production Compose exposes the Nginx gateway on `GATEWAY_HOST_PORT` or `3000` by default."
     },
     {
       "docFile": "docs/deployment.md",
-      "line": 104,
+      "line": 125,
       "type": "file-path",
       "value": "docker/nginx/gateway.docker.conf",
       "context": "`docker/nginx/gateway.docker.conf` proxies requests to the Nuxt app upstream named `nuxt:3000`. Browser API calls go dir"

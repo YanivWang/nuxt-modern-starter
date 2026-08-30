@@ -125,7 +125,16 @@ export default defineNuxtConfig({
     // SWR 页面缓存的存储驱动。默认进程内存 —— 单进程部署够用，
     // 但横向扩容后 POST /api/revalidate 只会清掉收到请求的那个进程。
     // 见 config/cache.ts 与 docs-site/deployment/overview.md。
-    storage: resolveCacheStorage()
+    storage: resolveCacheStorage(),
+    prerender: {
+      // 预渲染产物写成 about.html 而不是 about/index.html。
+      // 这不是排版偏好，是尾斜杠 canonical 的前提：Nitro 把静态资源中间件注册在
+      // 用户中间件之前，只要 /about/ 能命中目录索引 about/index.html，请求就在
+      // server/middleware/canonical-path.ts 之前被短路，301 永远不会发生，
+      // /about 与 /about/ 变成两个都返回 200 的重复 URL。
+      // 关掉目录索引后 /about/ 不再命中静态资源，才会落到中间件被规范化。
+      autoSubfolderIndex: false
+    }
   },
   typescript: {
     strict: true,

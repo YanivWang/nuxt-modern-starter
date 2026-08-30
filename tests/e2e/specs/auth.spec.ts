@@ -14,19 +14,11 @@
     不能只看首个响应的状态码。
 */
 import { expect, test } from '@playwright/test'
-
-const CREDENTIALS = { username: 'alice', password: 'correct-horse' }
-
-const signIn = async (page: import('@playwright/test').Page, target = '/sign-in') => {
-  await page.goto(target)
-  await page.locator('input[autocomplete="username"]').fill(CREDENTIALS.username)
-  await page.locator('input[autocomplete="current-password"]').fill(CREDENTIALS.password)
-  await page.getByRole('button', { name: /登录|Sign in/i }).click()
-}
+import { APP_ORIGIN, CREDENTIALS, resetStub, signIn, waitForHydration } from '../support'
 
 test.describe('authentication', () => {
   test.beforeEach(async ({ request }) => {
-    await request.post('http://127.0.0.1:2027/api/__reset')
+    await resetStub(request)
   })
 
   test('sends an anonymous visitor from a protected route to sign-in with a redirect back', async ({
@@ -34,7 +26,7 @@ test.describe('authentication', () => {
   }) => {
     await page.goto('/workspace')
 
-    await expect(page).toHaveURL(/\/sign-in\?redirect=%2Fworkspace$/)
+    await expect(page).toHaveURL(`${APP_ORIGIN}/sign-in?redirect=/workspace`)
   })
 
   test('signs in and lands on the workspace', async ({ page }) => {
@@ -50,7 +42,7 @@ test.describe('authentication', () => {
 
     await page.locator('input[autocomplete="username"]').fill(CREDENTIALS.username)
     await page.locator('input[autocomplete="current-password"]').fill(CREDENTIALS.password)
-    await page.getByRole('button', { name: /登录|Sign in/i }).click()
+    await page.locator('form button[type="submit"]').click()
 
     await expect(page).toHaveURL(/\/workspace\/templates$/)
   })
@@ -59,14 +51,14 @@ test.describe('authentication', () => {
     await signIn(page, '/sign-in?redirect=https%3A%2F%2Fevil.example.com')
 
     // 开放重定向必须被 resolveSafeRedirectPath 挡掉并回退到默认目标
-    await expect(page).toHaveURL(/127\.0\.0\.1:3000\/workspace$/)
+    await expect(page).toHaveURL(`${APP_ORIGIN}/workspace`)
   })
 
   test('rejects bad credentials without creating a session', async ({ page }) => {
     await page.goto('/sign-in')
     await page.locator('input[autocomplete="username"]').fill(CREDENTIALS.username)
     await page.locator('input[autocomplete="current-password"]').fill('wrong')
-    await page.getByRole('button', { name: /登录|Sign in/i }).click()
+    await page.locator('form button[type="submit"]').click()
 
     await expect(page).toHaveURL(/\/sign-in/)
     await page.goto('/workspace')
@@ -89,7 +81,7 @@ test.describe('authentication', () => {
     await signIn(page)
     await page.goto('/en/workspace')
 
-    await expect(page).toHaveURL(/127\.0\.0\.1:3000\/workspace$/)
+    await expect(page).toHaveURL(`${APP_ORIGIN}/workspace`)
   })
 
   test('keeps the public header anonymous for cache safety while signed in', async ({ page }) => {
@@ -109,10 +101,15 @@ test.describe('authentication', () => {
     await signIn(page)
     await page.goto('/account')
 
+    await waitForHydration(page)
     await page.locator('.user-account-menu__trigger').click()
-    await page.getByText(/退出登录|Sign out/i).click()
+    // 账户页正文里也有一个「退出登录」按钮，必须限定在用户菜单内，否则命中两个元素
+    await page
+      .locator('.user-account-menu__flyout')
+      .getByText(/退出登录|Sign out/i)
+      .click()
 
-    await expect(page).toHaveURL(/127\.0\.0\.1:3000\/$/)
+    await expect(page).toHaveURL(`${APP_ORIGIN}/`)
     await page.goto('/workspace')
     await expect(page).toHaveURL(/\/sign-in\?redirect=/)
   })

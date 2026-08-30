@@ -41,6 +41,8 @@ The three env files are intentionally committed as starter baselines. Keep them 
 | `NUXT_REVALIDATE_SECRET`               | Server-only secret for `POST /api/revalidate` (`x-revalidate-secret`) | placeholder in tracked `.env.*`; override in real environments           |
 | `NUXT_CACHE_DRIVER`                    | SWR page-cache driver: `memory` or `fs`; read at **build** time       | `memory`                                                                 |
 | `NUXT_CACHE_FS_BASE`                   | Storage directory for the `fs` driver                                 | `./.data/cache`                                                          |
+| `NUXT_LOG_LEVEL`                       | Server log level: `debug`, `info`, `warn`, `error`                    | `info` (`debug` in `.env.dev`)                                           |
+| `NUXT_PUBLIC_ERROR_REPORTING_ENABLED`  | Set to `false` to disable client error reporting                      | `true`                                                                   |
 
 Production auth cookies are marked `secure` when `NUXT_PUBLIC_APP_ENV=production`, so real login flows must be served over HTTPS.
 
@@ -57,6 +59,25 @@ NUXT_CACHE_DRIVER=fs NUXT_CACHE_FS_BASE=/data/cache pnpm build
 ```
 
 `fs` shares one directory, so mount a shared volume for same-host multi-process setups. Cross-host deployments need a shared driver such as redis; `config/cache.ts` only ships `memory` and `fs` to avoid extra dependencies — configure `nitro.storage.cache` in `nuxt.config.ts` directly for anything else. An unknown driver name fails the build instead of silently falling back to memory.
+
+## Observability
+
+Server logs are single-line JSON (`server/utils/logger.ts`) so log collectors parse them without a custom parser. `warn` and `error` go to stderr, everything else to stdout.
+
+Every request carries a `requestId` (reusing an upstream `x-request-id` when its shape is valid, otherwise generated) that is echoed back in the response header. Server logs, unhandled server errors, and client error reports all share that key.
+
+Log fields are redacted recursively by key name; `config/observability.ts` owns the pattern list. Do not call `console.*` from application code — that bypasses redaction and level control.
+
+Client-side errors (Vue render errors, `window.onerror`, unhandled rejections) are deduplicated and posted to the first-party endpoint `/api/telemetry/errors`, which is size-capped and rate-limited per IP. Swapping in Sentry or Datadog means replacing the `send` implementation in `app/plugins/error-reporter.client.ts`; capture and dedupe stay unchanged.
+
+Two probes are exposed:
+
+| Endpoint   | Role      | Semantics                                                               |
+| ---------- | --------- | ----------------------------------------------------------------------- |
+| `/healthz` | liveness  | Always 200, touches no dependency. Used by the Compose healthcheck.     |
+| `/readyz`  | readiness | 200 when runtime config is complete, 503 listing the missing variables. |
+
+Keep them separate on purpose: when the process is alive but misconfigured, `healthz` stays 200 while `readyz` returns 503, so the orchestrator drains the instance instead of restarting it in a loop.
 
 ## Local Full-Stack Verification
 

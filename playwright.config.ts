@@ -18,12 +18,15 @@
 
   【边界与注意】
     webServer 顺序无关，Playwright 会并行等待两个端口就绪。
-    改端口须同步 .env.e2e 的 NUXT_PUBLIC_API_BASE 与 STUB_API_PORT。
+    改端口须同步 .env.e2e 的 NUXT_PUBLIC_SITE_URL / NUXT_PUBLIC_API_BASE 与 tests/e2e/support.ts。
+    端口避开 3000 / 2027：那是 Nuxt 与后端的常用默认端口，本机常有别的服务占着。
+    reuseExistingServer 一律关闭：pnpm test:e2e 每次都会重新构建，
+    复用一个恰好占着端口的旧服务，跑的就是那个旧服务的行为 —— 会表现为大面积莫名失败。
 */
 import { defineConfig, devices } from '@playwright/test'
 
-const APP_PORT = Number(process.env.E2E_APP_PORT || 3000)
-const STUB_API_PORT = Number(process.env.STUB_API_PORT || 2027)
+const APP_PORT = Number(process.env.E2E_APP_PORT || 3100)
+const STUB_API_PORT = Number(process.env.STUB_API_PORT || 2127)
 const baseURL = `http://127.0.0.1:${APP_PORT}`
 
 export default defineConfig({
@@ -31,11 +34,14 @@ export default defineConfig({
   // 端到端断言依赖网络与真实渲染，给的余量比单测大
   timeout: 60_000,
   expect: { timeout: 10_000 },
-  fullyParallel: true,
+  // 桩后端是单进程全局状态（POST /api/__reset 会重置所有用例共享的数据），
+  // 并行跑会让一个用例的 seed 覆盖另一个用例的前置条件 —— 表现为每次挂的用例都不一样。
+  // 要恢复并行，得先让桩状态按用例隔离（例如按请求头分租户）。
+  fullyParallel: false,
   // CI 上禁止 test.only 混入
   forbidOnly: Boolean(process.env.CI),
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 2 : undefined,
+  workers: 1,
   reporter: process.env.CI ? [['github'], ['html', { open: 'never' }]] : [['list']],
   use: {
     baseURL,
@@ -52,7 +58,7 @@ export default defineConfig({
     {
       command: 'node tests/e2e/stub-api/server.mjs',
       url: `http://127.0.0.1:${STUB_API_PORT}/api/content/news`,
-      reuseExistingServer: !process.env.CI,
+      reuseExistingServer: false,
       timeout: 30_000,
       env: { STUB_API_PORT: String(STUB_API_PORT) }
     },
@@ -60,7 +66,7 @@ export default defineConfig({
       // preview 服务 .output，因此必须先 pnpm build:e2e（pnpm test:e2e 已串好）
       command: `corepack pnpm exec nuxt preview --dotenv .env.e2e --port ${APP_PORT}`,
       url: baseURL,
-      reuseExistingServer: !process.env.CI,
+      reuseExistingServer: false,
       timeout: 120_000
     }
   ]

@@ -30,7 +30,8 @@ pnpm docker:down:dev
 - 构建：完整源码复制后重新执行 `nuxt prepare`，再运行 `pnpm build:${BUILD_ENV}`
 - 启动：`node .output/server/index.mjs`
 - 端口：3000
-- 健康检查：由 `docker-compose.base.yaml` 的 `healthcheck` 定义（HTTP probe 访问 `http://127.0.0.1:3000/`），非 Dockerfile 内置
+- 健康检查：由 `docker-compose.base.yaml` 的 `healthcheck` 定义（HTTP probe 访问 `http://127.0.0.1:3000/healthz`），非 Dockerfile 内置。
+  探活刻意不打首页：打 `/` 会连带跑一遍页面渲染栈，页面本身出错时会被误判成进程已死并触发无谓重启
 
 ## Compose 生产栈
 

@@ -29,23 +29,52 @@ NUXT_REVALIDATE_SECRET=replace_with_random_revalidate_secret
 
 ## 完整变量表
 
-| 变量                                   | runtimeConfig 键                | 说明                           | 本地默认                    |
-| -------------------------------------- | ------------------------------- | ------------------------------ | --------------------------- |
-| `NUXT_PUBLIC_SITE_URL`                 | `public.siteUrl`                | SEO canonical、sitemap         | `http://localhost:3000`     |
-| `NUXT_PUBLIC_API_BASE`                 | `public.apiBase`                | 后端 API 根（含 `/api`）       | `http://localhost:2027/api` |
-| `NUXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | `public.googleSiteVerification` | Google 站长验证                | 空                          |
-| `NUXT_PUBLIC_BAIDU_SITE_VERIFICATION`  | `public.baiduSiteVerification`  | 百度验证                       | 空                          |
-| `NUXT_PUBLIC_ANALYTICS_ENABLED`        | `public.analyticsEnabled`       | 必须精确为 `true` 才启用       | `false`                     |
-| `NUXT_PUBLIC_ANALYTICS_SCRIPT_SRC`     | `public.analyticsScriptSrc`     | 第三方脚本 URL                 | 空                          |
-| `NUXT_PUBLIC_ANALYTICS_DEFER_MS`       | `public.analyticsDeferMs`       | 延迟毫秒                       | `3000`                      |
-| `NUXT_PUBLIC_APP_ENV`                  | `public.appEnv`                 | 控制 cookie `secure`           | `development`               |
-| `NUXT_REVALIDATE_SECRET`               | `revalidateSecret`              | SWR 按需失效 webhook 密钥      | 示例占位符（生产须替换）    |
-| `NUXT_CACHE_DRIVER`                    | —（构建期读）                   | SWR 缓存驱动：`memory` \| `fs` | `memory`                    |
-| `NUXT_CACHE_FS_BASE`                   | —（构建期读）                   | `fs` 驱动的存储目录            | `./.data/cache`             |
+| 变量                                   | runtimeConfig 键                | 说明                                            | 本地默认                        |
+| -------------------------------------- | ------------------------------- | ----------------------------------------------- | ------------------------------- |
+| `NUXT_PUBLIC_SITE_URL`                 | `public.siteUrl`                | SEO canonical、sitemap                          | `http://localhost:3000`         |
+| `NUXT_PUBLIC_API_BASE`                 | `public.apiBase`                | 后端 API 根（含 `/api`）                        | `http://localhost:2027/api`     |
+| `NUXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | `public.googleSiteVerification` | Google 站长验证                                 | 空                              |
+| `NUXT_PUBLIC_BAIDU_SITE_VERIFICATION`  | `public.baiduSiteVerification`  | 百度验证                                        | 空                              |
+| `NUXT_PUBLIC_ANALYTICS_ENABLED`        | `public.analyticsEnabled`       | 必须精确为 `true` 才启用                        | `false`                         |
+| `NUXT_PUBLIC_ANALYTICS_SCRIPT_SRC`     | `public.analyticsScriptSrc`     | 第三方脚本 URL                                  | 空                              |
+| `NUXT_PUBLIC_ANALYTICS_DEFER_MS`       | `public.analyticsDeferMs`       | 延迟毫秒                                        | `3000`                          |
+| `NUXT_PUBLIC_APP_ENV`                  | `public.appEnv`                 | 控制 cookie `secure`                            | `development`                   |
+| `NUXT_REVALIDATE_SECRET`               | `revalidateSecret`              | SWR 按需失效 webhook 密钥                       | 示例占位符（生产须替换）        |
+| `NUXT_CACHE_DRIVER`                    | —（构建期读）                   | SWR 缓存驱动：`memory` \| `fs`                  | `memory`                        |
+| `NUXT_CACHE_FS_BASE`                   | —（构建期读）                   | `fs` 驱动的存储目录                             | `./.data/cache`                 |
+| `NUXT_LOG_LEVEL`                       | —（进程启动时读）               | 服务端日志级别 `debug`\|`info`\|`warn`\|`error` | `info`（`.env.dev` 为 `debug`） |
+| `NUXT_PUBLIC_ERROR_REPORTING_ENABLED`  | `public.errorReportingEnabled`  | 客户端错误上报开关，设 `false` 关闭             | `true`                          |
 
 `NUXT_CACHE_*` 不进 `runtimeConfig`：`nitro.storage` 是 **构建期** 配置，值在 `pnpm build` 时
 就写进 `.output`，运行时再改环境变量无效。多实例部署的取舍见
 [部署概览 — SWR 页面缓存与多实例](/deployment/overview#swr-页面缓存与多实例)。
+
+## 可观测性
+
+服务端日志是**单行 JSON**（`server/utils/logger.ts`），可被 Loki、CloudWatch、Datadog 这类采集器直接解析，
+无需自定义 parser。`warn` / `error` 走 stderr，其余走 stdout，方便按流分级。
+
+- `NUXT_LOG_LEVEL` 无效值不会让进程起不来，会回退到 `info`。
+- 日志按键名递归脱敏（`authorization`、`cookie`、`token`、`password` 等），
+  白名单唯一来源是 `config/observability.ts` 的 `SENSITIVE_KEY_PATTERNS`。
+  **业务代码不要直接 `console.*`** —— 那会绕过脱敏与级别控制。
+- 每个请求都有 `requestId`（沿用上游 `x-request-id`，缺失则生成），同名响应头回写，
+  服务端日志、未捕获错误、客户端上报共用这一个关联键。
+
+客户端错误（Vue 渲染错误、`window.onerror`、未处理的 Promise rejection）经
+`app/plugins/error-reporter.client.ts` 去重后 POST 到第一方端点 `/api/telemetry/errors`，
+由服务端写进同一条日志流。该端点有体积上限与按 IP 限流。要换成 Sentry / Datadog，
+只需替换该插件里的 `send` 实现，捕获与去重逻辑不用动。
+
+探针：
+
+| 端点       | 用途                     | 语义                                                  |
+| ---------- | ------------------------ | ----------------------------------------------------- |
+| `/healthz` | liveness（进程是否活着） | 恒 200，不查任何下游；Docker Compose healthcheck 用它 |
+| `/readyz`  | readiness（能否接流量）  | 运行期配置齐全返回 200，缺失返回 503 并列出缺哪些变量 |
+
+两者分工的意义：进程活着但配置缺失时 `healthz` 200 而 `readyz` 503，
+编排系统据此把实例摘出负载均衡，而不是反复重启它。
 
 ## NUXT_PUBLIC_APP_ENV 与 Cookie
 

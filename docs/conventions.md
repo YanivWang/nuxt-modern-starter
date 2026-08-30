@@ -98,7 +98,22 @@ Auth redirect query values must stay on same-origin relative paths. Use `resolve
 
 ## Tests
 
-Use Nuxt test environment for composables, route middleware, server routes, and status code behavior. Pure utilities can use plain Vitest.
+Tests are layered, and the environment is opt-in per file rather than global:
+
+| Directory         | Environment | Scope                                                                                        |
+| ----------------- | ----------- | -------------------------------------------------------------------------------------------- |
+| `tests/unit`      | happy-dom   | Pure functions, middleware decisions, adapters, config, static scans                         |
+| `tests/nuxt`      | nuxt        | Behavior needing `useRuntimeConfig`, `useCookie`, `useNuxtApp`                               |
+| `tests/component` | nuxt        | Real mounting via mountSuspended from @nuxt/test-utils; rendering and interaction assertions |
+| `tests/e2e`       | Playwright  | Real browser against the production build, backed by `tests/e2e/stub-api`                    |
+
+Files needing the Nuxt runtime declare it on their first line with `// @vitest-environment nuxt`. Do not switch the global default back to `nuxt`: every such file builds a full Nuxt instance in its own worker, and running a dozen of them in parallel starves the pure-function tests into timeouts — which shows up as "green individually, randomly red in full runs".
+
+`hookTimeout` must stay explicitly raised. `setupNuxt()` runs inside `beforeAll` and its cold start exceeds Vitest's 10s default, which fails the whole file with `Hook timed out` and silently marks every case in it as skipped.
+
+Coverage thresholds in `vitest.config.ts` are a ratchet: raise them, never lower them to make CI green. Thin Nitro entry points (`server/plugins`, `server/middleware`, `server/routes`) are excluded because they only execute inside a real server process; their logic lives in `server/utils` and `config`, which carry high thresholds, and their behavior is asserted by E2E.
+
+Architecture boundaries are enforced by `pnpm depcruise` on the real dependency graph, and by `tests/unit/page-structure.test.ts` on source text. The overlap is deliberate: the graph catches re-export chains and transitive edges, the text scan catches patterns that have not become a dependency edge yet.
 
 ## Tooling And Formatting
 
@@ -125,7 +140,9 @@ Do not hand-edit Vue template void/empty tags into a style that Prettier will re
 
 ## Safety and Accessibility
 
-Do not log secrets, tokens, or cookies. Keep images sized and optimized before adding them to public pages.
+Do not log secrets, tokens, or cookies. Server-side logging goes through `server/utils/logger.ts`, never `console.*` directly: the logger owns level filtering and recursive key-based redaction, and calling `console.*` bypasses both. New credential-bearing field names must be added to `SENSITIVE_KEY_PATTERNS` in `config/observability.ts`, which is the single source for redaction.
+
+Keep images sized and optimized before adding them to public pages.
 
 Third-party analytics scripts should stay behind explicit env toggles. The starter ships an analytics plugin slot, but analytics remains disabled by default. When enabling it, relax `script-src` in `nuxt.config.ts` for the script origin and keep `connect-src` aligned with the analytics provider if needed.
 

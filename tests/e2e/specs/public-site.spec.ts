@@ -14,6 +14,7 @@
     产品区 URL 语言中性，公开页带语言前缀；两条规则的分界由本文件与 auth.spec.ts 共同守住。
 */
 import { expect, test } from '@playwright/test'
+import { APP_ORIGIN } from '../support'
 
 test.describe('public site', () => {
   test('serves the prerendered home page with organization structured data', async ({ page }) => {
@@ -21,10 +22,7 @@ test.describe('public site', () => {
 
     await expect(page.locator('.app-nav a').first()).toBeVisible()
     // 根路径的 canonical 不带尾斜杠（absoluteUrl 对 '/' 不追加字符），与 sitemap 写法一致
-    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
-      'href',
-      'http://127.0.0.1:3000'
-    )
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', APP_ORIGIN)
 
     const jsonLd = await page.locator('script[type="application/ld+json"]').allTextContents()
     const types = jsonLd.map((raw) => JSON.parse(raw)['@type'])
@@ -40,7 +38,7 @@ test.describe('public site', () => {
     await expect(alternates).toHaveCount(16)
     await expect(page.locator('link[rel="alternate"][hreflang="x-default"]')).toHaveAttribute(
       'href',
-      'http://127.0.0.1:3000/pricing'
+      `${APP_ORIGIN}/pricing`
     )
   })
 
@@ -126,14 +124,14 @@ test.describe('public site', () => {
     expect(robots).toContain('Disallow: /workspace')
     expect(robots).toContain('Disallow: /docs/')
     expect(robots).toContain('Disallow: /account')
-    expect(robots).toContain('Sitemap: http://127.0.0.1:3000/sitemap.xml')
+    expect(robots).toContain(`Sitemap: ${APP_ORIGIN}/sitemap.xml`)
   })
 
   test('lists only public pages in sitemap.xml', async ({ request }) => {
     const sitemap = await (await request.get('/sitemap.xml')).text()
 
-    expect(sitemap).toContain('<loc>http://127.0.0.1:3000/pricing</loc>')
-    expect(sitemap).toContain('<loc>http://127.0.0.1:3000/en/pricing</loc>')
+    expect(sitemap).toContain(`<loc>${APP_ORIGIN}/pricing</loc>`)
+    expect(sitemap).toContain(`<loc>${APP_ORIGIN}/en/pricing</loc>`)
     // 新闻 slug 来自桩后端，证明 sitemap 真的走了动态拉取而不是 fallback
     expect(sitemap).toContain('/news/deployment-guide')
     expect(sitemap).not.toContain('/workspace')

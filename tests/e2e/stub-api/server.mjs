@@ -10,12 +10,17 @@
 
   【主要导出 / 路由】
     POST /api/login|register|refresh|logout、GET /api/me|/api/me/profile、
-    GET|POST /api/projects、GET|PATCH|DELETE /api/projects/:id、
+    GET|POST /api/projects（列表分页：limit/offset）、GET|PATCH|DELETE /api/projects/:id、
     GET|PATCH /api/documents/:id、GET /api/content/news|/api/content/news/:slug|/api/content/pricing、
     POST /api/__reset（仅测试用，重置内存状态）
 
   【渲染 / 数据】
-    进程内内存状态；每个 spec 通过 POST /api/__reset 拿到确定性初始数据。
+    进程内内存状态；每个 spec 通过 POST /api/__reset 拿到确定性初始数据，
+    可传 { projects: N } 生成 N 条项目，用于验证「加载更多」的翻页行为。
+
+    GET /api/projects 的分页语义与后端 shared/http/pagination 保持一致：
+    limit 默认 20、上限 100，offset 默认 0，hasMore = offset + 本页条数 < total，
+    排序 updatedAt DESC。桩与真实后端在这里必须逐字段一致 —— 它就是契约本身。
     公开内容端点必须真实存在：/news 与 /pricing 是 SSR / SWR 页面，
     请求由 Nitro 在服务端发出，浏览器侧的 route 拦截够不到。
 
@@ -25,37 +30,60 @@
 */
 import { createServer } from 'node:http'
 
-const PORT = Number(process.env.STUB_API_PORT || 2027)
+const PORT = Number(process.env.STUB_API_PORT || 2127)
 
 const ACCESS_TOKEN = 'e2e-access-token'
 const REFRESH_TOKEN = 'e2e-refresh-token'
 const VALID_USER = { username: 'alice', password: 'correct-horse' }
 
-const seed = () => ({
-  projects: [
-    {
-      id: 'project_1',
-      workspaceId: 'workspace_1',
-      documentId: 'document_1',
-      title: 'Quarterly plan',
-      description: null,
-      updatedAt: '2026-07-09T00:00:00.000Z',
-      accent: 'violet'
-    }
-  ],
-  documents: {
-    document_1: {
-      id: 'document_1',
-      projectId: 'project_1',
-      title: 'Quarterly plan',
-      content: '<p>Existing content</p>',
-      updatedAt: '2026-07-09T00:00:00.000Z'
-    }
-  },
-  nextId: 2
+/** 生成第 n 个种子项目；updatedAt 递减，保证与后端一样按 updatedAt DESC 稳定排序 */
+const seedProject = (n) => ({
+  id: `project_${n}`,
+  workspaceId: 'workspace_1',
+  documentId: `document_${n}`,
+  title: n === 1 ? 'Quarterly plan' : `Seeded project ${n}`,
+  description: null,
+  updatedAt: new Date(Date.UTC(2026, 6, 9, 0, 0, 0) - n * 60_000).toISOString(),
+  accent: 'violet'
+})
+
+const seed = (projectCount = 1) => ({
+  projects: Array.from({ length: projectCount }, (_, index) => seedProject(index + 1)),
+  documents: Object.fromEntries(
+    Array.from({ length: projectCount }, (_, index) => {
+      const n = index + 1
+      return [
+        `document_${n}`,
+        {
+          id: `document_${n}`,
+          projectId: `project_${n}`,
+          title: n === 1 ? 'Quarterly plan' : `Seeded project ${n}`,
+          content: '<p>Existing content</p>',
+          updatedAt: seedProject(n).updatedAt
+        }
+      ]
+    })
+  ),
+  nextId: projectCount + 1
 })
 
 let state = seed()
+
+/** 与后端 paginationQuerySchema 同语义：limit 默认 20 / 1~100，offset 默认 0 / 非负 */
+const DEFAULT_PAGE_LIMIT = 20
+const MAX_PAGE_LIMIT = 100
+
+const parsePagination = (searchParams) => {
+  const rawLimit = Number(searchParams.get('limit'))
+  const rawOffset = Number(searchParams.get('offset'))
+  const limit =
+    Number.isFinite(rawLimit) && rawLimit >= 1
+      ? Math.min(rawLimit, MAX_PAGE_LIMIT)
+      : DEFAULT_PAGE_LIMIT
+  const offset = Number.isFinite(rawOffset) && rawOffset >= 0 ? rawOffset : 0
+
+  return { limit: Math.trunc(limit), offset: Math.trunc(offset) }
+}
 
 const envelope = (data, code = 200, message = 'ok') => ({ code, message, data })
 
@@ -162,8 +190,10 @@ const routes = [
   {
     method: 'POST',
     match: (p) => p === '/api/__reset',
-    handle: (_req, res) => {
-      state = seed()
+    handle: async (req, res) => {
+      const body = await readBody(req)
+      const count = Number(body?.projects)
+      state = seed(Number.isFinite(count) && count >= 0 ? count : 1)
       send(res, 200, envelope(null))
     }
   },
@@ -235,8 +265,29 @@ const routes = [
   {
     method: 'GET',
     match: (p) => p === '/api/projects',
-    handle: (req, res) =>
-      isAuthorized(req) ? send(res, 200, envelope({ projects: state.projects })) : unauthorized(res)
+    handle: (req, res, { searchParams }) => {
+      if (!isAuthorized(req)) return unauthorized(res)
+
+      const { limit, offset } = parsePagination(searchParams)
+      // 与后端一致按 updatedAt DESC 排序后再切片，否则翻页会出现重复或漏项
+      const ordered = [...state.projects].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
+      const rows = ordered.slice(offset, offset + limit)
+
+      send(
+        res,
+        200,
+        envelope({
+          projects: rows,
+          pagination: {
+            total: ordered.length,
+            limit,
+            offset,
+            // hasMore 由服务端算，前端不推断（见 app/types/workspace-project.ts）
+            hasMore: offset + rows.length < ordered.length
+          }
+        })
+      )
+    }
   },
   {
     method: 'POST',
@@ -379,14 +430,14 @@ const server = createServer(async (req, res) => {
     return send(res, 204, null)
   }
 
-  const { pathname } = new URL(req.url, `http://localhost:${PORT}`)
+  const { pathname, searchParams } = new URL(req.url, `http://localhost:${PORT}`)
   const route = routes.find((item) => item.method === req.method && item.match(pathname))
 
   if (!route) {
     return send(res, 200, envelope(null, 404, `No stub route for ${req.method} ${pathname}`))
   }
 
-  await route.handle(req, res, { pathname })
+  await route.handle(req, res, { pathname, searchParams })
 })
 
 server.listen(PORT, () => {
