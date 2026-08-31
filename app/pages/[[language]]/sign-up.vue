@@ -39,6 +39,7 @@
 import { message } from 'ant-design-vue'
 import { useI18n } from 'vue-i18n'
 import { getApiErrorMessage } from '~/lib/http/error'
+import { pushSafely } from '~/utils/navigate-safely'
 
 const router = useRouter()
 const languageStore = useLanguageStore()
@@ -83,7 +84,8 @@ const handleSubmit = async () => {
       password: form.password
     })
     message.success(t('auth.register.success'))
-    await router.push({
+    // 注册已经成功了：跳转失败不该被 catch 成「注册失败」提示，那是误导
+    await pushSafely(router, {
       path: localePath('/sign-in'),
       query: { username: form.username }
     })

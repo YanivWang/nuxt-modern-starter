@@ -135,7 +135,31 @@ pnpm contract:check   # 校验副本完整性；有后端仓库时再比对上�
 后端接口变更的协作顺序：后端改 → 后端 `pnpm openapi:generate` → 前端 `pnpm contract:sync`
 → 前端跑 `pnpm test` 看契约测试是否变红 → 按需调整 adapter、类型与桩后端。
 
-### 5. 面向用户的文案一律走 i18n
+### 5. 事后跳转不要裸调 router.push
+
+`switchLanguage`、`handleLogout`、登录/注册成功后的跳转，都是 click handler 里 fire-and-forget
+调用的 async 函数——它们的返回值没人接。`router.push` 一旦 reject，应用里就没有任何 catch，
+只会变成一条 unhandled rejection：浏览器里被全局 error reporter 记一笔，
+测试里则表现为随机归属到某个正在跑的用例上的 unhandled error。
+
+而这条 rejection 本身是重复的：路由 middleware 抛错时 Nuxt 已经在 `beforeEach` 里
+用 `showError` 渲染了错误页，随后又把 Error 返回给 vue-router，于是 `push()` 再 reject 一次。
+
+所以这类「动作已经完成，跳转只是把 URL 对齐」的场景一律走 `app/utils/navigate-safely.ts`：
+
+```ts
+import { pushSafely, replaceSafely } from '~/utils/navigate-safely'
+
+await pushSafely(router, localePath('/'))
+```
+
+两个例外**不**适用：
+
+- 路由 middleware 里的 `navigateTo` 是 return 给 Nuxt 的导航指令，由 Nuxt 接管
+- 调用方真的要对失败做点什么时（如 `WorkspaceDashboard` 跳转失败要复位 loading 态），
+  写自己的 `try/catch` 才对，那不是「吞掉」
+
+### 6. 面向用户的文案一律走 i18n
 
 15 个语言包在 `i18n/<locale>/modules/`。新增 key 后：
 
@@ -144,7 +168,7 @@ pnpm i18n:check    # 检查各语言 key 是否齐平
 pnpm i18n:unused   # 找出没人用的 key
 ```
 
-### 6. 颜色只用 design token
+### 7. 颜色只用 design token
 
 产品与公开 UI 代码里禁止硬编码 hex（stylelint `color-no-hex` 强制）。
 色值唯一来源是 `config/theme-palette.json`，改完跑 `pnpm generate:theme`。

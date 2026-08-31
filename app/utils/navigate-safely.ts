@@ -6,7 +6,7 @@
     共享层 — app/utils，被切换语言与退出登录这类 click handler 消费。
 
   【主要导出 / 路由】
-    pushSafely
+    pushSafely、replaceSafely
 
   【依赖关系】
     - 依赖：vue-router 类型
@@ -28,13 +28,23 @@
 
     导航被中断或重复不会走到这里：vue-router 对那两种情况是 resolve 出 NavigationFailure，
     本来就不 reject。
+
+    路由 middleware 里的 navigateTo 不适用本模块：那里是 return 给 Nuxt 的导航指令，
+    由 Nuxt 自己接管，不存在没人接的 rejection。
 */
 import type { RouteLocationRaw, Router } from 'vue-router'
 
-export const pushSafely = async (router: Router, to: RouteLocationRaw): Promise<void> => {
+const navigateSafely = async (navigate: () => Promise<unknown>): Promise<void> => {
   try {
-    await router.push(to)
+    await navigate()
   } catch {
     // 错误页与错误上报都已由 Nuxt 与全局 reporter 覆盖，这里只负责不再往外抛
   }
 }
+
+export const pushSafely = (router: Router, to: RouteLocationRaw): Promise<void> =>
+  navigateSafely(() => router.push(to))
+
+/** replace 用于「跳过去之后不该能后退回来」的场景，如草稿页换成真实文档页。 */
+export const replaceSafely = (router: Router, to: RouteLocationRaw): Promise<void> =>
+  navigateSafely(() => router.replace(to))

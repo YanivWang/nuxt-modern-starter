@@ -6,7 +6,7 @@
     tests/unit — 纯函数，用假 router 断言，无 Nuxt 运行时。
 
   【主要导出 / 路由】
-    describe pushSafely
+    describe pushSafely、describe replaceSafely
 
   【依赖关系】
     - 依赖：app/utils/navigate-safely.ts
@@ -22,9 +22,10 @@
 */
 import { describe, expect, it, vi } from 'vitest'
 import type { Router } from 'vue-router'
-import { pushSafely } from '../../app/utils/navigate-safely'
+import { pushSafely, replaceSafely } from '../../app/utils/navigate-safely'
 
-const fakeRouter = (push: Router['push']) => ({ push }) as unknown as Router
+const fakeRouter = (navigate: Router['push']) =>
+  ({ push: navigate, replace: navigate }) as unknown as Router
 
 describe('pushSafely', () => {
   it('forwards the target to router.push on the happy path', async () => {
@@ -46,5 +47,21 @@ describe('pushSafely', () => {
     const push = vi.fn().mockRejectedValue('nope')
 
     await expect(pushSafely(fakeRouter(push), '/en')).resolves.toBeUndefined()
+  })
+})
+
+describe('replaceSafely', () => {
+  it('forwards the target to router.replace on the happy path', async () => {
+    const replace = vi.fn().mockResolvedValue(undefined)
+
+    await expect(replaceSafely(fakeRouter(replace), '/docs/1')).resolves.toBeUndefined()
+    expect(replace).toHaveBeenCalledWith('/docs/1')
+  })
+
+  it('swallows a rejected replace as well', async () => {
+    // 草稿页换成真实文档页时用 replace；它由自动保存链路触发，同样没人接 rejection
+    const replace = vi.fn().mockRejectedValue(new Error('aborted'))
+
+    await expect(replaceSafely(fakeRouter(replace), '/docs/1')).resolves.toBeUndefined()
   })
 })

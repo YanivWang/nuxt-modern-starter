@@ -39,6 +39,7 @@ import { message } from 'ant-design-vue'
 import { useI18n } from 'vue-i18n'
 import { getApiErrorMessage } from '~/lib/http/error'
 import { resolveSafeRedirectPath } from '~/utils/safe-redirect'
+import { pushSafely } from '~/utils/navigate-safely'
 
 const route = useRoute()
 const router = useRouter()
@@ -75,7 +76,8 @@ const handleSubmit = async () => {
   try {
     await login(form)
     message.success(t('auth.login.success'))
-    await router.push(redirectTarget.value)
+    // 登录已经成功了：跳转失败不该被 catch 成「登录失败」提示，那是误导
+    await pushSafely(router, redirectTarget.value)
   } catch (error) {
     message.error(getApiErrorMessage(error, t('auth.errors.loginFailed')))
   } finally {

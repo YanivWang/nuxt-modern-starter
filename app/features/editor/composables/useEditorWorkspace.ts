@@ -30,6 +30,7 @@ import {
 import type { WorkspaceProject } from '~/types/workspace-project'
 import { saveEditorDocument } from '../api'
 import { EDITOR_AUTOSAVE_DEBOUNCE_MS, type EditorProjectContext } from '../types'
+import { replaceSafely } from '~/utils/navigate-safely'
 import { useDraftProject } from './useDraftProject'
 import { useEditorAutosave } from './useEditorAutosave'
 import { useEditorDocument } from './useEditorDocument'
@@ -100,7 +101,8 @@ export const useEditorWorkspace = ({
     getTitle,
     createProject: createWorkspaceProject,
     saveDocument: saveEditorDocument,
-    navigateToProject: (projectId) => router.replace(localePath(getWorkspaceDocPath(projectId))),
+    navigateToProject: (projectId) =>
+      replaceSafely(router, localePath(getWorkspaceDocPath(projectId))),
     onProjectCreated
   })
 
