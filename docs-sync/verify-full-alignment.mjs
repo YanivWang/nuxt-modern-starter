@@ -231,6 +231,15 @@ for (const ref of docRefs.references) {
  * 拿不到真实计数只有两种情况，都不该让这项比对给出结论：
  * 自己就跑在 vitest 里（再嵌套跑一次会递归），或者那次运行失败了 ——
  * 后者说明测试本来就挂了，quality 链后面的 test 步骤会红，不需要这里再报一个假原因。
+ *
+ * 这意味着 pnpm quality 会跑两遍 vitest（这里一遍、链尾 test 一遍）。已经评估过，保持现状：
+ * - CI 的 quality.yml 里 static / test 是无 needs 的并行 job，这一遍不占流水线时间；
+ *   本地多花约 20 秒，而这个门禁的大头是分钟级的 build。
+ * - 想省掉它只能让本步骤复用 test 步骤的 JSON 报告，但 CI 里两者是不同 job，
+ *   得靠 artifact 跨 job 传递 —— 为省 20 秒把并行度打掉，不划算。
+ * - 顺带确认过它在 CI 里不是空转：static job 不跑 build，而 build-config 用例
+ *   在缺少 .output 时走的是 ctx.skip()，skipped 仍计入 numTotalTests，
+ *   所以有没有构建产物这里都得到同一个数。
  */
 const runtimeTestCount = () => {
   try {
