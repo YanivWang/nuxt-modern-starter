@@ -51,6 +51,26 @@ pnpm quality         # 发布全量门禁
 
 它同时是「前端假设的后端契约」的可执行文档：契约漂移会让 E2E 直接失败。
 
+### E2E 不覆盖第三方编辑器内部
+
+编辑器由第三方包 @yanivjs/yaniv-editor 提供。图片与大文件上传的入口是以 props 形式
+传进这个组件的（见 `useEditorMediaUpload`），要在浏览器里触发它，就得驱动该包自己的 DOM。
+
+**刻意不做这类测试**：它会把测试套件耦合到一个依赖的实现细节上，包一升级就碎，
+而碎了并不说明我们的产品有问题 —— 这种测试的维护成本全是噪声，没有信号。
+
+上传并非因此失去保护，只是保护不在浏览器层：
+
+| 层次             | 覆盖方式                                                    |
+| ---------------- | ----------------------------------------------------------- |
+| 端点与响应字段   | `tests/unit/api-contract.test.ts`（对着引入的契约副本断言） |
+| adapter 请求行为 | `tests/unit/editor-upload-api.test.ts`（mock client）       |
+| 真实响应形状     | nuxt-modern-starter-api 的 response-contract 集成测试       |
+| 真实错误状态码   | nuxt-modern-starter-api 的 error-contract 集成测试          |
+
+如果哪天真的需要浏览器级覆盖，正确做法是加一条只在测试构建里存在的 harness 路由直接调
+上传 composable，而不是去点第三方编辑器的按钮。
+
 ## 覆盖率
 
 `pnpm test:coverage` 采集 v8 覆盖率，阈值写在 `vitest.config.ts`：

@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-31T04:49:04.221Z",
+  "generatedAt": "2026-08-31T04:58:44.579Z",
   "docFileCount": 33,
-  "referenceCount": 1300,
+  "referenceCount": 1302,
   "pathAllowlist": [
     "app/features/my-feature/",
     "app/features/my-feature/components/",
@@ -3186,119 +3186,133 @@
     },
     {
       "docFile": "docs-site/development/testing.md",
-      "line": 58,
+      "line": 57,
+      "type": "symbol",
+      "value": "useEditorMediaUpload",
+      "context": "传进这个组件的（见 `useEditorMediaUpload`），要在浏览器里触发它，就得驱动该包自己的 DOM。"
+    },
+    {
+      "docFile": "docs-site/development/testing.md",
+      "line": 66,
+      "type": "file-path",
+      "value": "tests/unit/api-contract.test.ts",
+      "context": "| 端点与响应字段   | `tests/unit/api-contract.test.ts`（对着引入的契约副本断言） |"
+    },
+    {
+      "docFile": "docs-site/development/testing.md",
+      "line": 67,
+      "type": "file-path",
+      "value": "tests/unit/editor-upload-api.test.ts",
+      "context": "| adapter 请求行为 | `tests/unit/editor-upload-api.test.ts`（mock client）       |"
+    },
+    {
+      "docFile": "docs-site/development/testing.md",
+      "line": 78,
       "type": "file-path",
       "value": "tests/component",
       "context": "- 全局阈值偏低是预期内的 —— `.vue` 的渲染路径主要由 `tests/component` 与 `tests/e2e` 覆盖，"
     },
     {
       "docFile": "docs-site/development/testing.md",
-      "line": 58,
+      "line": 78,
       "type": "file-path",
       "value": "tests/e2e",
       "context": "- 全局阈值偏低是预期内的 —— `.vue` 的渲染路径主要由 `tests/component` 与 `tests/e2e` 覆盖，"
     },
     {
       "docFile": "docs-site/development/testing.md",
-      "line": 60,
+      "line": 80,
       "type": "file-path",
       "value": "app/lib/http",
       "context": "- 纯逻辑层（`app/lib/http`、`app/utils`、`config`、`server/utils`）单独设了高得多的阈值，"
     },
     {
       "docFile": "docs-site/development/testing.md",
-      "line": 60,
+      "line": 80,
       "type": "file-path",
       "value": "app/utils",
       "context": "- 纯逻辑层（`app/lib/http`、`app/utils`、`config`、`server/utils`）单独设了高得多的阈值，"
     },
     {
       "docFile": "docs-site/development/testing.md",
-      "line": 60,
+      "line": 80,
       "type": "file-path",
       "value": "server/utils",
       "context": "- 纯逻辑层（`app/lib/http`、`app/utils`、`config`、`server/utils`）单独设了高得多的阈值，"
     },
     {
       "docFile": "docs-site/development/testing.md",
-      "line": 70,
+      "line": 90,
       "type": "file-path",
       "value": "tests/unit/page-structure.test.ts",
       "context": "| feature 之间不互相 import；页面只用 feature barrel  | `pnpm depcruise` + `tests/unit/page-structure.test.ts`                    "
     },
     {
       "docFile": "docs-site/development/testing.md",
-      "line": 73,
+      "line": 93,
       "type": "file-path",
       "value": "tests/unit/ssr-cache-safety.test.ts",
       "context": "| 令牌不进 SSR payload；登录态 UI 必须包 `ClientOnly` | `tests/unit/ssr-cache-safety.test.ts` + `tests/component/app-header.test.ts"
     },
     {
       "docFile": "docs-site/development/testing.md",
-      "line": 73,
+      "line": 93,
       "type": "file-path",
       "value": "tests/component/app-header.test.ts",
       "context": "| 令牌不进 SSR payload；登录态 UI 必须包 `ClientOnly` | `tests/unit/ssr-cache-safety.test.ts` + `tests/component/app-header.test.ts"
     },
     {
       "docFile": "docs-site/development/testing.md",
-      "line": 73,
+      "line": 93,
       "type": "symbol",
       "value": "ClientOnly",
       "context": "| 令牌不进 SSR payload；登录态 UI 必须包 `ClientOnly` | `tests/unit/ssr-cache-safety.test.ts` + `tests/component/app-header.test.ts"
     },
     {
       "docFile": "docs-site/development/testing.md",
-      "line": 74,
+      "line": 94,
       "type": "file-path",
       "value": "tests/unit/build-config.test.ts",
       "context": "| 构建产物分包与体积预算                              | `tests/unit/build-config.test.ts`（读 `.output` 真实文件）                   |"
     },
     {
       "docFile": "docs-site/development/testing.md",
-      "line": 75,
+      "line": 95,
       "type": "file-path",
       "value": "tests/unit/revalidate-nitro-contract.test.ts",
       "context": "| SWR 缓存 key 算法与 Nitro 一致                      | `tests/unit/revalidate-nitro-contract.test.ts`                         "
     },
     {
       "docFile": "docs-site/development/testing.md",
-      "line": 76,
-      "type": "file-path",
-      "value": "tests/unit/api-contract.test.ts",
-      "context": "| 后端响应字段形状与前端领域类型一致                  | `tests/unit/api-contract.test.ts`                                            |"
-    },
-    {
-      "docFile": "docs-site/development/testing.md",
-      "line": 77,
+      "line": 97,
       "type": "file-path",
       "value": "tests/unit/stub-api-contract.test.ts",
       "context": "| E2E 桩后端的成功响应与后端契约逐字段等价            | `tests/unit/stub-api-contract.test.ts`（ajv 校验真实响应）                   |"
     },
     {
       "docFile": "docs-site/development/testing.md",
-      "line": 89,
+      "line": 109,
       "type": "symbol",
       "value": "e2e",
       "context": "`build` / `e2e` / `audit`。一次 lint 失败不该等 build 跑完才暴露。"
     },
     {
       "docFile": "docs-site/development/testing.md",
-      "line": 105,
+      "line": 125,
       "type": "path-pattern",
       "value": "tests/component/*.test.ts",
       "context": "| 组件渲染分支       | `tests/component/*.test.ts`                                           |"
     },
     {
       "docFile": "docs-site/development/testing.md",
-      "line": 106,
+      "line": 126,
       "type": "path-pattern",
       "value": "tests/e2e/specs/*.spec.ts",
       "context": "| 跨页面的用户流程   | `tests/e2e/specs/*.spec.ts`                                           |"
     },
     {
       "docFile": "docs-site/development/testing.md",
-      "line": 116,
+      "line": 136,
       "type": "script",
       "value": "docker:build",
       "context": "pnpm docker:build   # 若涉及部署"
