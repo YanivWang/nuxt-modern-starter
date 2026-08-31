@@ -99,7 +99,7 @@
     "husky": "^9.1.7",
     "js-yaml": "^5.4.1",
     "lint-staged": "^17.0.8",
-    "postcss-html": "^1.8.1",
+    "postcss-html": "^2.0.0",
     "postcss-scss": "^4.0.9",
     "prettier": "^3.7.4",
     "sass": "^1.97.0",
