@@ -86,6 +86,16 @@ try {
 - `NUXT_PUBLIC_API_BASE` = `http://localhost:2027/api/v1`
 - 适配器内 path = `/projects`（**不要**重复 `/api`）
 
+## 登记到后端契约
+
+新 adapter 调用的是真实后端端点时，要在 `tests/unit/api-contract.test.ts` 里登记两处：
+
+- 端点清单 CONSUMED_ENDPOINTS：`METHOD /path`（去掉 `/api/v1` 前缀，与 adapter 的相对路径写法一致）
+- 响应形状清单 RESPONSE_DATA_KEYS：该端点响应 `data` 的顶层必填字段
+
+漏登记会直接失败，不会静默通过。响应实体如果有对应的前端领域类型，再补一张
+`Record<keyof T, FieldSpec>` 映射，这样领域类型和契约任何一侧变化都会被抓住。
+
 ## 测试
 
 为新适配器添加 `tests/unit/<feature>-api.test.ts`，mock `createProductApiClient` 或 `createPublicApiClient`。

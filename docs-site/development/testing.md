@@ -73,6 +73,7 @@ pnpm quality         # 发布全量门禁
 | 令牌不进 SSR payload；登录态 UI 必须包 `ClientOnly` | `tests/unit/ssr-cache-safety.test.ts` + `tests/component/app-header.test.ts` |
 | 构建产物分包与体积预算                              | `tests/unit/build-config.test.ts`（读 `.output` 真实文件）                   |
 | SWR 缓存 key 算法与 Nitro 一致                      | `tests/unit/revalidate-nitro-contract.test.ts`                               |
+| 后端响应字段形状与前端领域类型一致                  | `tests/unit/api-contract.test.ts`                                            |
 
 `depcruise` 与 `page-structure.test.ts` 是有意重叠的：前者解析真实依赖图，能抓到 re-export 链
 与传递依赖；后者扫源码文本，能抓到还没形成依赖边的写法。

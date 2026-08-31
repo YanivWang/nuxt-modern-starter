@@ -86,15 +86,31 @@ pnpm contract:sync    # 从后端仓库同步（默认 ../nuxt-modern-starter-ap
 pnpm contract:check   # 只比对；后端仓库不存在时自动跳过
 ```
 
-`tests/unit/api-contract.test.ts` 在这份副本上校验三件事：
+`tests/unit/api-contract.test.ts` 在这份副本上校验：
+
+**路径层**
 
 - 四个环境层的 `NUXT_PUBLIC_API_BASE` 都指向 spec 里的版本前缀（当前 `/api/v1`）
 - 前端消费的每个端点都存在于契约中
 - E2E 桩后端与真实后端用同一个前缀，且不实现前端不消费的端点
 
-新增调用后端的 adapter 时，在该测试的 `CONSUMED_ENDPOINTS` 里登记端点。
-这是手工清单：adapter 里的路径字面量和前端路由字面量在文本上无法可靠区分，
-自动抽取只会带来假阳性。换来的是端点被后端改名或删除时立刻失败。
+**字段层**
+
+- 每个消费端点的响应 `data` 在契约里真的描述了形状（不是等价于「任意值」的空 schema）
+- 每个消费端点 `data` 的顶层必填字段与登记的清单**精确相等**——加字段和删字段两个方向都会红
+- 前端领域类型（`WorkspaceProject`、`EditorDocument`、`PricingPageContent` 等）的每个字段
+  都存在于契约中，且 JSON 类型一致
+
+字段层靠 `Record<keyof T, FieldSpec>` 把两头焊死：领域类型增删字段而映射表没跟上是**编译错误**，
+映射表与 spec 不一致是**测试失败**。所以这里不引入 openapi-typescript 之类的生成器——
+生成物本身又是一份要维护同步的产物，而这条链路已经不需要它了。
+
+前端明知故犯不消费的后端必填字段（当前是 `status`、`slideCount`）登记在 `ignoredRequired` 里。
+这份清单也会被校验：后端新增或删除必填字段时它就不再准确，测试会要求人工复核一次。
+
+新增调用后端的 adapter 时，要在该测试里登记两处：`CONSUMED_ENDPOINTS` 的端点，
+和 `RESPONSE_DATA_KEYS` 的 `data` 形状。这是手工清单：adapter 里的路径字面量和前端路由字面量
+在文本上无法可靠区分，自动抽取只会带来假阳性。换来的是端点被后端改名、删除或改字段时立刻失败。
 
 后端接口变更的协作顺序：后端改 → 后端 `pnpm openapi:generate` → 前端 `pnpm contract:sync`
 → 前端跑 `pnpm test` 看契约测试是否变红 → 按需调整 adapter、类型与桩后端。

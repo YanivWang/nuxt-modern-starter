@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-30T16:41:56.092Z",
+  "generatedAt": "2026-08-31T00:55:17.095Z",
   "docFileCount": 33,
-  "referenceCount": 1296,
+  "referenceCount": 1298,
   "pathAllowlist": [
     "app/features/my-feature/",
     "app/features/my-feature/components/",
@@ -2648,27 +2648,34 @@
     {
       "docFile": "docs-site/development/add-api.md",
       "line": 91,
+      "type": "file-path",
+      "value": "tests/unit/api-contract.test.ts",
+      "context": "新 adapter 调用的是真实后端端点时，要在 `tests/unit/api-contract.test.ts` 里登记两处："
+    },
+    {
+      "docFile": "docs-site/development/add-api.md",
+      "line": 101,
       "type": "path-pattern",
       "value": "tests/unit/<feature>-api.test.ts",
       "context": "为新适配器添加 `tests/unit/<feature>-api.test.ts`，mock `createProductApiClient` 或 `createPublicApiClient`。"
     },
     {
       "docFile": "docs-site/development/add-api.md",
-      "line": 91,
+      "line": 101,
       "type": "symbol",
       "value": "createProductApiClient",
       "context": "为新适配器添加 `tests/unit/<feature>-api.test.ts`，mock `createProductApiClient` 或 `createPublicApiClient`。"
     },
     {
       "docFile": "docs-site/development/add-api.md",
-      "line": 91,
+      "line": 101,
       "type": "symbol",
       "value": "createPublicApiClient",
       "context": "为新适配器添加 `tests/unit/<feature>-api.test.ts`，mock `createProductApiClient` 或 `createPublicApiClient`。"
     },
     {
       "docFile": "docs-site/development/add-api.md",
-      "line": 93,
+      "line": 103,
       "type": "file-path",
       "value": "tests/unit/workspace-api.test.ts",
       "context": "参考：`tests/unit/workspace-api.test.ts`"
@@ -3256,28 +3263,35 @@
     },
     {
       "docFile": "docs-site/development/testing.md",
-      "line": 87,
+      "line": 76,
+      "type": "file-path",
+      "value": "tests/unit/api-contract.test.ts",
+      "context": "| 后端响应字段形状与前端领域类型一致                  | `tests/unit/api-contract.test.ts`                                            |"
+    },
+    {
+      "docFile": "docs-site/development/testing.md",
+      "line": 88,
       "type": "symbol",
       "value": "e2e",
       "context": "`build` / `e2e` / `audit`。一次 lint 失败不该等 build 跑完才暴露。"
     },
     {
       "docFile": "docs-site/development/testing.md",
-      "line": 103,
+      "line": 104,
       "type": "path-pattern",
       "value": "tests/component/*.test.ts",
       "context": "| 组件渲染分支       | `tests/component/*.test.ts`                                           |"
     },
     {
       "docFile": "docs-site/development/testing.md",
-      "line": 104,
+      "line": 105,
       "type": "path-pattern",
       "value": "tests/e2e/specs/*.spec.ts",
       "context": "| 跨页面的用户流程   | `tests/e2e/specs/*.spec.ts`                                           |"
     },
     {
       "docFile": "docs-site/development/testing.md",
-      "line": 114,
+      "line": 115,
       "type": "script",
       "value": "docker:build",
       "context": "pnpm docker:build   # 若涉及部署"
@@ -3629,7 +3643,7 @@
       "docFile": "docs-site/guide/overview.md",
       "line": 92,
       "type": "test-count",
-      "value": "50/244",
+      "value": "50/252",
       "context": "| 测试   | Vitest 4.1.11 + @nuxt/test-utils 4.0.3；`vitest.config.ts` 用 `defineVitestConfig` + `include: tests/**/*.test.ts"
     },
     {
@@ -9160,14 +9174,14 @@
       "line": 57,
       "type": "file-path",
       "value": "tests/unit/api-contract.test.ts",
-      "context": "- The backend OpenAPI contract is vendored at `contracts/openapi.yaml` and checked by `tests/unit/api-contract.test.ts`:"
+      "context": "- The backend OpenAPI contract is vendored at `contracts/openapi.yaml` and checked by `tests/unit/api-contract.test.ts` "
     },
     {
       "docFile": "README.md",
       "line": 57,
       "type": "script",
       "value": "contract:sync",
-      "context": "- The backend OpenAPI contract is vendored at `contracts/openapi.yaml` and checked by `tests/unit/api-contract.test.ts`:"
+      "context": "- The backend OpenAPI contract is vendored at `contracts/openapi.yaml` and checked by `tests/unit/api-contract.test.ts` "
     },
     {
       "docFile": "README.md",
