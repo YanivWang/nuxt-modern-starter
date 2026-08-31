@@ -10,7 +10,7 @@
     useLanguageSwitch — switchLanguage、languages、currentLanguage
 
   【依赖关系】
-    - 依赖：config/site.ts、useLanguageStore、useLocalePath
+    - 依赖：config/site.ts、useLanguageStore、useLocalePath、app/utils/navigate-safely.ts
     - 被引用：LanguageSwitcher、product-shell 用户菜单
 
   【渲染 / 数据】
@@ -18,8 +18,11 @@
 
   【边界与注意】
     相同 locale 或不在 SUPPORTED_LOCALES 时 no-op。
+    跳转走 pushSafely：switchLanguage 由 click handler fire-and-forget 调用，
+    直接 await router.push 会让路由 guard 抛出的错误变成没人接的 unhandled rejection。
 */
 import { SUPPORTED_LOCALES, type SupportedLocale } from '../../config/site'
+import { pushSafely } from '../utils/navigate-safely'
 
 export const useLanguageSwitch = () => {
   const router = useRouter()
@@ -34,7 +37,8 @@ export const useLanguageSwitch = () => {
 
     // 先更新 store 与 i18n 文案，再导航；公开页改 URL，产品区 path 不变（见 getSwitchLanguageUrl）
     await languageStore.chooseLanguage(locale)
-    await router.push(switchLocalePath(locale))
+    // 语言已经落到 store 与 cookie，跳转只是把 URL 对齐；它失败不该冒泡成 unhandled rejection
+    await pushSafely(router, switchLocalePath(locale))
   }
 
   const languages = computed(() => languageStore.languages)

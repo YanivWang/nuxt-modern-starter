@@ -34,11 +34,21 @@
     - 后端把项目列表从 { projects } 改成 { projects, pagination }，当时契约里
       data 是空的 {}（等价于「任意值」），同样没有任何一侧能报警。
 */
-import { readFileSync } from 'node:fs'
-import { resolve } from 'node:path'
-import { load as parseYaml } from 'js-yaml'
 import { describe, expect, it } from 'vitest'
 import { AUTH_API_ENDPOINTS } from '../../config/auth'
+import {
+  API_PREFIX,
+  deref,
+  jsonTypesOf,
+  navigate,
+  nonNullBranch,
+  readRepoFile,
+  requestBodySchema,
+  specEndpoints,
+  successDataSchema,
+  type JsonType,
+  type SchemaNode
+} from './support/openapi-contract'
 // 全部是 import type：编译后被擦除，不会在 happy-dom 环境里拉起 Nuxt 自动导入
 import type { BackendUser, TokenData } from '../../app/api/auth'
 import type {
@@ -48,6 +58,11 @@ import type {
   PricingPlan
 } from '../../app/api/public'
 import type { EditorDocument } from '../../app/types/document'
+import type {
+  UserProfile,
+  UserProfileGender,
+  WritableUserProfileFields
+} from '../../app/types/user-profile'
 import type {
   WorkspaceProject,
   WorkspaceProjectAccent,
@@ -59,57 +74,6 @@ import type {
   LargeUploadMergeResponse,
   LargeUploadStatusResponse
 } from '../../app/features/editor/upload/types'
-
-const projectRoot = resolve(__dirname, '../..')
-const read = (rel: string) => readFileSync(resolve(projectRoot, rel), 'utf8')
-
-/** spec 里出现的 JSON 类型；integer 与 number 在 OpenAPI 里是两种写法，不做归一 */
-type JsonType = 'string' | 'number' | 'integer' | 'boolean' | 'array' | 'object' | 'null'
-
-type SchemaNode = {
-  $ref?: string
-  type?: JsonType | JsonType[]
-  /** 判别联合的标记值，如 instant 分支的 const: true */
-  const?: unknown
-  enum?: string[]
-  anyOf?: SchemaNode[]
-  oneOf?: SchemaNode[]
-  properties?: Record<string, SchemaNode>
-  required?: string[]
-  items?: SchemaNode
-}
-
-type Operation = {
-  responses: Record<string, { content?: Record<string, { schema: SchemaNode }> }>
-}
-
-type OpenApiSpec = {
-  paths: Record<string, Record<string, Operation>>
-  components: { schemas: Record<string, SchemaNode> }
-}
-
-const spec = parseYaml(read('contracts/openapi.yaml')) as OpenApiSpec
-
-/** 业务路径的版本前缀。/health、/ready 不带前缀，不参与推导。 */
-const API_PREFIX = (() => {
-  const versioned = Object.keys(spec.paths).filter((path) => path.startsWith('/api/'))
-  const prefixes = new Set(versioned.map((path) => path.split('/').slice(0, 3).join('/')))
-
-  expect([...prefixes], 'spec 里出现了多个业务前缀；无版本别名应当已经下线').toHaveLength(1)
-
-  return [...prefixes][0]!
-})()
-
-/** 去掉版本前缀后的端点集合，与 adapter 的相对路径写法对齐 */
-const specEndpoints = new Set(
-  Object.entries(spec.paths).flatMap(([path, operations]) =>
-    path.startsWith(`${API_PREFIX}/`)
-      ? Object.keys(operations).map(
-          (method) => `${method.toUpperCase()} ${path.slice(API_PREFIX.length)}`
-        )
-      : []
-  )
-)
 
 /** 前端实际调用的端点；新增 adapter 时在此登记 */
 const CONSUMED_ENDPOINTS = [
@@ -141,67 +105,11 @@ const CONSUMED_ENDPOINTS = [
 const ENV_FILES = ['.env.dev', '.env.test', '.env.prod', '.env.e2e'] as const
 
 const readApiBase = (envFile: string) =>
-  read(envFile)
+  readRepoFile(envFile)
     .split('\n')
     .find((line) => line.startsWith('NUXT_PUBLIC_API_BASE='))
     ?.slice('NUXT_PUBLIC_API_BASE='.length)
     .trim()
-
-/* ------------------------------------------------------------------ *
- * spec 导航：把 endpoint 解析到响应 data 的某个子 schema
- * ------------------------------------------------------------------ */
-
-/** 顺着 $ref 取出真正的节点；components 里同一个实体只声明一次，其余位置都是引用。 */
-const deref = (node: SchemaNode): SchemaNode => {
-  if (!node.$ref) return node
-
-  const name = node.$ref.replace('#/components/schemas/', '')
-  const target = spec.components.schemas[name]
-
-  expect(target, `契约里缺少 component ${name}`).toBeDefined()
-
-  return deref(target!)
-}
-
-/** 该节点允许的 JSON 类型集合；可空字段在 spec 里是 anyOf [T, null]。 */
-const jsonTypesOf = (node: SchemaNode): JsonType[] => {
-  const resolved = deref(node)
-  const branches = resolved.anyOf ?? resolved.oneOf
-
-  if (branches) return [...new Set(branches.flatMap(jsonTypesOf))].sort()
-  if (Array.isArray(resolved.type)) return [...resolved.type].sort()
-
-  return resolved.type ? [resolved.type] : []
-}
-
-/** 成功响应可能是 200 也可能是 201（创建类接口），按前缀找而不是写死。 */
-const successDataSchema = (endpoint: string): SchemaNode => {
-  const [method, path] = endpoint.split(' ') as [string, string]
-  const operation = spec.paths[`${API_PREFIX}${path}`]?.[method.toLowerCase()]
-
-  expect(operation, `契约里没有 ${endpoint}`).toBeDefined()
-
-  const success = Object.entries(operation!.responses).find(([status]) => status.startsWith('2'))
-  const body = success?.[1].content?.['application/json']?.schema
-
-  expect(body, `${endpoint} 的成功响应没有 JSON schema`).toBeDefined()
-
-  const data = deref(body!).properties?.data
-
-  expect(data, `${endpoint} 的成功响应没有描述 data`).toBeDefined()
-
-  return deref(data!)
-}
-
-/** 段名 '[]' 进数组元素，其余进对象属性。 */
-const navigate = (node: SchemaNode, ...segments: string[]): SchemaNode =>
-  segments.reduce((current, segment) => {
-    const next = segment === '[]' ? current.items : current.properties?.[segment]
-
-    expect(next, `契约里找不到子 schema：${segment}`).toBeDefined()
-
-    return deref(next!)
-  }, node)
 
 /* ------------------------------------------------------------------ *
  * 字段级断言
@@ -326,6 +234,8 @@ const PROJECT_ACCENTS = exhaustive<WorkspaceProjectAccent>()([
 
 const PRICING_PLAN_KEYS = exhaustive<PricingPlan['key']>()(['starter', 'growth', 'custom'])
 
+const USER_PROFILE_GENDERS = exhaustive<UserProfileGender>()(['male', 'female', 'unknown'])
+
 /** CTA 只允许指向站内既有页面；后端加一个新路径时前端要先有那个路由 */
 const PRICING_CTA_PATHS = exhaustive<PricingPlan['ctaPath']>()(['/sign-up', '/help'])
 
@@ -347,6 +257,49 @@ const PAGINATION_FIELDS: Record<keyof WorkspaceProjectPagination, FieldSpec> = {
   limit: 'integer',
   offset: 'integer',
   hasMore: 'boolean'
+}
+
+/**
+ * 扩展资料的可空列一律 anyOf [T, null]：服务端把未填写的列归一化成 null 后下发，
+ * 字段本身始终存在。前端曾把它整体类型成 Record<string, unknown>，
+ * 于是这一整张表在契约上完全不设防。
+ */
+const USER_PROFILE_FIELDS: Record<keyof UserProfile, FieldSpec> = {
+  id: 'integer',
+  userId: 'integer',
+  nickname: ['string', 'null'],
+  avatar: ['string', 'null'],
+  gender: ['string', 'null'],
+  birthday: ['string', 'null'],
+  bio: ['string', 'null'],
+  address: ['string', 'null'],
+  company: ['string', 'null'],
+  jobTitle: ['string', 'null'],
+  isMarried: ['boolean', 'null'],
+  mom: ['string', 'null'],
+  father: ['string', 'null'],
+  university: ['string', 'null'],
+  createdAt: 'string',
+  updatedAt: 'string'
+}
+
+/**
+ * PATCH /me/profile 的可写字段。后端 body schema 是 strict 的（additionalProperties: false），
+ * 多一个键返回 400 而不是被忽略 —— 所以这里必须与契约精确对齐，不能靠「反正后端会忽略」。
+ */
+const UPDATE_PROFILE_FIELDS: Record<keyof WritableUserProfileFields, FieldSpec> = {
+  nickname: ['string', 'null'],
+  avatar: ['string', 'null'],
+  gender: ['string', 'null'],
+  birthday: ['string', 'null'],
+  bio: ['string', 'null'],
+  address: ['string', 'null'],
+  company: ['string', 'null'],
+  jobTitle: ['string', 'null'],
+  isMarried: ['boolean', 'null'],
+  mom: ['string', 'null'],
+  father: ['string', 'null'],
+  university: ['string', 'null']
 }
 
 const EDITOR_DOCUMENT_FIELDS: Record<keyof EditorDocument, FieldSpec> = {
@@ -497,14 +450,14 @@ describe('backend API contract', () => {
   })
 
   it('keeps the E2E stub on the same prefix as the real backend', () => {
-    const stub = read('tests/e2e/stub-api/server.mjs')
+    const stub = readRepoFile('tests/e2e/stub-api/server.mjs')
 
     // 桩若还提供旧前缀，前端把 base 写错时 E2E 依然会绿
     expect(stub).toContain(`const API_PREFIX = '${API_PREFIX}'`)
   })
 
   it('covers every stub route with the consumed contract', () => {
-    const stub = read('tests/e2e/stub-api/server.mjs')
+    const stub = readRepoFile('tests/e2e/stub-api/server.mjs')
     const stubPaths = [...stub.matchAll(/p === '(\/[^']*)'/g)]
       .map((match) => match[1]!)
       // __reset 是桩自己的测试夹具，真实后端没有
@@ -575,6 +528,48 @@ describe('backend API contract', () => {
         { ignoredRequired: PROJECT_FIELDS_NOT_CONSUMED }
       )
     }
+  })
+
+  it('matches the user profile domain type on both read and write', () => {
+    // GET 在用户从未填写过资料时返回 null，因此 data.profile 是 anyOf [UserProfile, null]
+    expectShape(
+      nonNullBranch(navigate(successDataSchema('GET /me/profile'), 'profile')),
+      USER_PROFILE_FIELDS,
+      'UserProfile（GET /me/profile）'
+    )
+    expect(
+      jsonTypesOf(navigate(successDataSchema('GET /me/profile'), 'profile')),
+      'GET /me/profile 的 profile 必须允许 null，否则前端的空态分支就是死代码'
+    ).toEqual(['null', 'object'])
+
+    // PATCH 之后必定非空
+    expectShape(
+      navigate(successDataSchema('PATCH /me/profile'), 'profile'),
+      USER_PROFILE_FIELDS,
+      'UserProfile（PATCH /me/profile）'
+    )
+    expect(
+      jsonTypesOf(navigate(successDataSchema('PATCH /me/profile'), 'profile')),
+      'PATCH /me/profile 的 profile 不该是可空的'
+    ).toEqual(['object'])
+  })
+
+  it('matches the writable profile fields on the request side', () => {
+    const body = requestBodySchema('PATCH /me/profile')
+
+    expect(body, 'PATCH /me/profile 应当有 JSON 请求体').not.toBeNull()
+    expectShape(body!, UPDATE_PROFILE_FIELDS, 'UpdateProfilePayload')
+
+    // 后端 body 是 strict 的：前端类型比契约宽一个键，用户就会拿到 400 而不是被忽略
+    expect(
+      body!.additionalProperties,
+      'PATCH /me/profile 的 body 不再拒绝未知字段，UpdateProfilePayload 可以放宽了'
+    ).toBe(false)
+
+    const gender = nonNullBranch(navigate(body!, 'gender'))
+    expect([...(gender.enum ?? [])].sort(), 'gender 取值集合与 UserProfileGender 不一致').toEqual(
+      [...USER_PROFILE_GENDERS].sort()
+    )
   })
 
   it('matches the editor document domain type', () => {

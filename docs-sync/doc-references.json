@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-31T00:55:17.095Z",
+  "generatedAt": "2026-08-31T01:39:22.690Z",
   "docFileCount": 33,
-  "referenceCount": 1298,
+  "referenceCount": 1300,
   "pathAllowlist": [
     "app/features/my-feature/",
     "app/features/my-feature/components/",
@@ -3270,28 +3270,35 @@
     },
     {
       "docFile": "docs-site/development/testing.md",
-      "line": 88,
+      "line": 77,
+      "type": "file-path",
+      "value": "tests/unit/stub-api-contract.test.ts",
+      "context": "| E2E 桩后端的成功响应与后端契约逐字段等价            | `tests/unit/stub-api-contract.test.ts`（ajv 校验真实响应）                   |"
+    },
+    {
+      "docFile": "docs-site/development/testing.md",
+      "line": 89,
       "type": "symbol",
       "value": "e2e",
       "context": "`build` / `e2e` / `audit`。一次 lint 失败不该等 build 跑完才暴露。"
     },
     {
       "docFile": "docs-site/development/testing.md",
-      "line": 104,
+      "line": 105,
       "type": "path-pattern",
       "value": "tests/component/*.test.ts",
       "context": "| 组件渲染分支       | `tests/component/*.test.ts`                                           |"
     },
     {
       "docFile": "docs-site/development/testing.md",
-      "line": 105,
+      "line": 106,
       "type": "path-pattern",
       "value": "tests/e2e/specs/*.spec.ts",
       "context": "| 跨页面的用户流程   | `tests/e2e/specs/*.spec.ts`                                           |"
     },
     {
       "docFile": "docs-site/development/testing.md",
-      "line": 115,
+      "line": 116,
       "type": "script",
       "value": "docker:build",
       "context": "pnpm docker:build   # 若涉及部署"
@@ -3643,7 +3650,7 @@
       "docFile": "docs-site/guide/overview.md",
       "line": 92,
       "type": "test-count",
-      "value": "50/252",
+      "value": "52/274",
       "context": "| 测试   | Vitest 4.1.11 + @nuxt/test-utils 4.0.3；`vitest.config.ts` 用 `defineVitestConfig` + `include: tests/**/*.test.ts"
     },
     {
@@ -9179,6 +9186,20 @@
     {
       "docFile": "README.md",
       "line": 57,
+      "type": "file-path",
+      "value": "tests/unit/stub-api-contract.test.ts",
+      "context": "- The backend OpenAPI contract is vendored at `contracts/openapi.yaml` and checked by `tests/unit/api-contract.test.ts` "
+    },
+    {
+      "docFile": "README.md",
+      "line": 57,
+      "type": "script",
+      "value": "contract:check",
+      "context": "- The backend OpenAPI contract is vendored at `contracts/openapi.yaml` and checked by `tests/unit/api-contract.test.ts` "
+    },
+    {
+      "docFile": "README.md",
+      "line": 57,
       "type": "script",
       "value": "contract:sync",
       "context": "- The backend OpenAPI contract is vendored at `contracts/openapi.yaml` and checked by `tests/unit/api-contract.test.ts` "
@@ -9357,13 +9378,6 @@
       "type": "script",
       "value": "quality",
       "context": "pnpm quality"
-    },
-    {
-      "docFile": "README.md",
-      "line": 112,
-      "type": "script",
-      "value": "contract:check",
-      "context": "pnpm contract:check"
     },
     {
       "docFile": "README.md",

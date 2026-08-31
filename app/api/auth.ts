@@ -12,7 +12,8 @@
     并 re-export createAuthApiClient / AuthApiClientOptions
 
   【依赖关系】
-    - 依赖：config/auth.ts、app/api/clients.ts、app/utils/auth-session.ts、app/utils/attribution-params.ts
+    - 依赖：config/auth.ts、app/api/clients.ts、app/utils/auth-session.ts、app/utils/attribution-params.ts、
+      app/types/user-profile.ts
     - 被引用：app/stores/auth.ts、app/api/workspace-project.ts、app/features/editor/api.ts
 
   【渲染 / 数据】
@@ -27,6 +28,7 @@
 */
 import { AUTH_API_ENDPOINTS, type AuthUser, type Permission, type Role } from '../../config/auth'
 import type { ApiResponse } from '../lib/http/types'
+import type { UserProfile, WritableUserProfileFields } from '../types/user-profile'
 import { createAuthApiClient, type AuthApiClientOptions } from './clients'
 import { useAuthSession } from '../utils/auth-session'
 import { mergeAttributionIntoBody } from '../utils/attribution-params'
@@ -68,12 +70,17 @@ type MeData = {
 export type MeResponse = ApiResponse<MeData>
 
 type ProfileData = {
-  profile: Record<string, unknown> | null
+  /** 用户从未填写过资料时为 null；PATCH 之后必定非空 */
+  profile: UserProfile | null
 }
 
 export type ProfileResponse = ApiResponse<ProfileData>
 
-export type UpdateProfilePayload = Record<string, string | number | boolean | null | undefined>
+/**
+ * 后端 PATCH body schema 是 strict 的：多一个键返回 400 而不是被忽略。
+ * 因此这里必须收敛到可写字段，不能写成 Record<string, ...> 由调用方自由发挥。
+ */
+export type UpdateProfilePayload = Partial<WritableUserProfileFields>
 
 export type ProductApiClientOptions = Omit<AuthApiClientOptions, 'refreshAccessToken'>
 

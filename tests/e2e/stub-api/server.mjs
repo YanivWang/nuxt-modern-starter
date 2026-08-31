@@ -9,7 +9,10 @@
     tests/e2e — 仅供 Playwright webServer 启动，不参与应用构建，也不进 Docker 镜像。
 
   【主要导出 / 路由】
-    统一挂在 API_PREFIX（/api/v1）下，路由表里写的是剥掉前缀后的相对路径，
+    createStubApiServer、resetStubState、stubRoutes（供 tests/unit/stub-api-contract.test.ts 用）。
+    直接 node 运行时才会监听 STUB_API_PORT，被 import 时不监听。
+
+    路由统一挂在 API_PREFIX（/api/v1）下，路由表里写的是剥掉前缀后的相对路径，
     与前端 adapter 的写法一致：
     POST /login|register|refresh|logout、GET /me|/me/profile、
     GET|POST /projects（列表分页：limit/offset）、GET|PATCH|DELETE /projects/:id、
@@ -27,12 +30,19 @@
     请求由 Nitro 在服务端发出，浏览器侧的 route 拦截够不到。
 
   【边界与注意】
-    只实现 E2E 用得到的行为，不追求与真实后端逐字段等价；
-    鉴权失败一律返回业务 code 401，用于验证前端 refresh / 重定向链路。
+    只实现 E2E 用得到的**端点**，但已实现端点的成功响应必须与真实后端逐字段等价 ——
+    tests/unit/stub-api-contract.test.ts 会用 contracts/openapi.yaml 逐条校验状态码与响应体。
+    桩比真实后端少返回字段时，E2E 会在一份现实中不存在的响应上通过。
+
+    唯一刻意的偏差：鉴权失败返回 HTTP 200 + 业务 code 401（真实后端是 HTTP 401 + ErrorBody），
+    用于验证前端 assertApiSuccess 对「HTTP 成功但业务失败」这条分支的处理。
+    契约校验因此只覆盖成功响应。
     前缀必须与真实后端一致：后端已下线无版本的 /api 别名，只提供 /api/v1。
     桩这边同样不提供别名 —— 否则前端把 base 写错，E2E 依然会绿。
 */
 import { createServer } from 'node:http'
+import { resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
 const PORT = Number(process.env.STUB_API_PORT || 2127)
 
@@ -43,15 +53,52 @@ const ACCESS_TOKEN = 'e2e-access-token'
 const REFRESH_TOKEN = 'e2e-refresh-token'
 const VALID_USER = { username: 'alice', password: 'correct-horse' }
 
-/** 生成第 n 个种子项目；updatedAt 递减，保证与后端一样按 updatedAt DESC 稳定排序 */
+/**
+ * 真实后端的 /login 与 /refresh 一定带这两个有效期字段（秒）。
+ * 桩少返回它们，前端就会在一份现实中不存在的响应上被验证。
+ */
+const tokenPair = () => ({
+  accessToken: ACCESS_TOKEN,
+  refreshToken: REFRESH_TOKEN,
+  accessTokenExpiresIn: 900,
+  refreshTokenExpiresIn: 2_592_000
+})
+
+/** 与后端 UserProfile 契约同形：未填写的列一律归一化成 null，字段本身始终存在 */
+const userProfile = {
+  id: 1,
+  userId: 1,
+  nickname: 'Alice',
+  avatar: null,
+  gender: null,
+  birthday: null,
+  bio: null,
+  address: null,
+  company: 'Acme',
+  jobTitle: null,
+  isMarried: null,
+  mom: null,
+  father: null,
+  university: null,
+  createdAt: '2026-07-09T00:00:00.000Z',
+  updatedAt: '2026-07-09T00:00:00.000Z'
+}
+
+/**
+ * 生成第 n 个种子项目；updatedAt 递减，保证与后端一样按 updatedAt DESC 稳定排序。
+ * status / slideCount 前端当前不消费，但后端 ProjectDto 里是必填 ——
+ * 桩少返回它们就不再是「真实后端的等价物」，契约测试会失败。
+ */
 const seedProject = (n) => ({
   id: `project_${n}`,
   workspaceId: 'workspace_1',
   documentId: `document_${n}`,
   title: n === 1 ? 'Quarterly plan' : `Seeded project ${n}`,
   description: null,
-  updatedAt: new Date(Date.UTC(2026, 6, 9, 0, 0, 0) - n * 60_000).toISOString(),
-  accent: 'violet'
+  status: 'draft',
+  slideCount: 0,
+  accent: 'violet',
+  updatedAt: new Date(Date.UTC(2026, 6, 9, 0, 0, 0) - n * 60_000).toISOString()
 })
 
 const seed = (projectCount = 1) => ({
@@ -193,18 +240,26 @@ const pricingPage = {
   }
 }
 
+/**
+ * 每条路由用 contract 标注它实现的是契约里的哪个端点（去掉 /api/v1 前缀）。
+ * tests/unit/stub-api-contract.test.ts 据此反查：新增桩路由却没给它写契约用例时直接失败，
+ * 否则桩可以悄悄多出一条谁也没校验过的响应。
+ */
 const routes = [
   {
+    // 桩自己的测试夹具，真实后端没有；contract 为 null 表示不参与契约校验
+    contract: null,
     method: 'POST',
     match: (p) => p === '/__reset',
     handle: async (req, res) => {
       const body = await readBody(req)
       const count = Number(body?.projects)
-      state = seed(Number.isFinite(count) && count >= 0 ? count : 1)
+      resetStubState(Number.isFinite(count) && count >= 0 ? count : 1)
       send(res, 200, envelope(null))
     }
   },
   {
+    contract: 'POST /login',
     method: 'POST',
     match: (p) => p === '/login',
     handle: async (req, res) => {
@@ -214,15 +269,17 @@ const routes = [
         return send(res, 200, envelope(null, 401, 'Invalid username or password'))
       }
 
-      send(res, 200, envelope({ accessToken: ACCESS_TOKEN, refreshToken: REFRESH_TOKEN }))
+      send(res, 200, envelope(tokenPair()))
     }
   },
   {
+    contract: 'POST /register',
     method: 'POST',
     match: (p) => p === '/register',
     handle: (_req, res) => send(res, 200, envelope(null))
   },
   {
+    contract: 'POST /refresh',
     method: 'POST',
     match: (p) => p === '/refresh',
     handle: async (req, res) => {
@@ -232,15 +289,17 @@ const routes = [
         return send(res, 200, envelope(null, 401, 'Unauthorized'))
       }
 
-      send(res, 200, envelope({ accessToken: ACCESS_TOKEN, refreshToken: REFRESH_TOKEN }))
+      send(res, 200, envelope(tokenPair()))
     }
   },
   {
+    contract: 'POST /logout',
     method: 'POST',
     match: (p) => p === '/logout',
     handle: (_req, res) => send(res, 200, envelope(null))
   },
   {
+    contract: 'GET /me',
     method: 'GET',
     match: (p) => p === '/me',
     handle: (req, res) =>
@@ -248,28 +307,28 @@ const routes = [
         ? send(
             res,
             200,
+            // 后端 /me 不返回 roles / permissions，前端由 normalizeAuthUser 兜底成空数组。
+            // 桩若发出它们，等于在一份现实中不存在的响应上验证角色链路。
             envelope({
               user: {
                 id: 1,
                 username: VALID_USER.username,
                 nickname: 'Alice',
-                avatar: null,
-                roles: ['member'],
-                permissions: ['project:read', 'project:write']
+                avatar: null
               }
             })
           )
         : unauthorized(res)
   },
   {
+    contract: 'GET /me/profile',
     method: 'GET',
     match: (p) => p === '/me/profile',
     handle: (req, res) =>
-      isAuthorized(req)
-        ? send(res, 200, envelope({ profile: { company: 'Acme', plan: 'growth' } }))
-        : unauthorized(res)
+      isAuthorized(req) ? send(res, 200, envelope({ profile: userProfile })) : unauthorized(res)
   },
   {
+    contract: 'GET /projects',
     method: 'GET',
     match: (p) => p === '/projects',
     handle: (req, res, { searchParams }) => {
@@ -297,6 +356,7 @@ const routes = [
     }
   },
   {
+    contract: 'POST /projects',
     method: 'POST',
     match: (p) => p === '/projects',
     handle: async (req, res) => {
@@ -313,8 +373,10 @@ const routes = [
         documentId,
         title: body.title || 'Untitled',
         description: body.description ?? null,
-        updatedAt: new Date().toISOString(),
-        accent: 'blue'
+        status: 'draft',
+        slideCount: 0,
+        accent: 'blue',
+        updatedAt: new Date().toISOString()
       }
       const document = {
         id: documentId,
@@ -327,10 +389,12 @@ const routes = [
       state.projects = [project, ...state.projects]
       state.documents[documentId] = document
 
-      send(res, 200, envelope({ project, document }))
+      // 真实后端创建成功回 201（信封里的 code 仍是 200）
+      send(res, 201, envelope({ project, document }))
     }
   },
   {
+    contract: 'GET /projects/{projectId}',
     method: 'GET',
     match: (p) => /^\/projects\/[^/]+$/.test(p),
     handle: (req, res, { pathname }) => {
@@ -345,6 +409,7 @@ const routes = [
     }
   },
   {
+    contract: 'PATCH /projects/{projectId}',
     method: 'PATCH',
     match: (p) => /^\/projects\/[^/]+$/.test(p),
     handle: async (req, res, { pathname }) => {
@@ -362,6 +427,7 @@ const routes = [
     }
   },
   {
+    contract: 'DELETE /projects/{projectId}',
     method: 'DELETE',
     match: (p) => /^\/projects\/[^/]+$/.test(p),
     handle: (req, res, { pathname }) => {
@@ -374,6 +440,7 @@ const routes = [
     }
   },
   {
+    contract: 'GET /documents/{documentId}',
     method: 'GET',
     match: (p) => /^\/documents\/[^/]+$/.test(p),
     handle: (req, res, { pathname }) => {
@@ -387,6 +454,7 @@ const routes = [
     }
   },
   {
+    contract: 'PATCH /documents/{documentId}',
     method: 'PATCH',
     match: (p) => /^\/documents\/[^/]+$/.test(p),
     handle: async (req, res, { pathname }) => {
@@ -409,11 +477,13 @@ const routes = [
     }
   },
   {
+    contract: 'GET /content/news',
     method: 'GET',
     match: (p) => p === '/content/news',
     handle: (_req, res) => send(res, 200, envelope({ articles: newsArticles }))
   },
   {
+    contract: 'GET /content/news/{slug}',
     method: 'GET',
     match: (p) => /^\/content\/news\/[^/]+$/.test(p),
     handle: (_req, res, { pathname }) => {
@@ -426,35 +496,57 @@ const routes = [
     }
   },
   {
+    contract: 'GET /content/pricing',
     method: 'GET',
     match: (p) => p === '/content/pricing',
     handle: (_req, res) => send(res, 200, envelope({ pricing: pricingPage }))
   }
 ]
 
-const server = createServer(async (req, res) => {
-  if (req.method === 'OPTIONS') {
-    return send(res, 204, null)
-  }
+/** 路由表：供契约测试反查覆盖面。 */
+export const stubRoutes = routes
 
-  const { pathname, searchParams } = new URL(req.url, `http://localhost:${PORT}`)
+/** 重置进程内内存状态；POST /__reset 与单测共用同一份逻辑。 */
+export const resetStubState = (projectCount = 1) => {
+  state = seed(projectCount)
+}
 
-  // 前缀不匹配直接 404：这正是真实后端下线 /api 别名后的行为，
-  // 前端一旦把 base 写回旧前缀，E2E 必须立刻红，而不是照常通过。
-  if (pathname !== API_PREFIX && !pathname.startsWith(`${API_PREFIX}/`)) {
-    return send(res, 200, envelope(null, 404, `No stub route for ${req.method} ${pathname}`))
-  }
+/**
+ * 只建服务器、不监听：契约单测用 listen(0) 拿一个空闲端口，
+ * 不去抢开发机上可能已被占用的固定端口。
+ */
+export const createStubApiServer = () =>
+  createServer(async (req, res) => {
+    if (req.method === 'OPTIONS') {
+      return send(res, 204, null)
+    }
 
-  const apiPath = pathname.slice(API_PREFIX.length) || '/'
-  const route = routes.find((item) => item.method === req.method && item.match(apiPath))
+    // 只用于解析 pathname / query，host 部分不参与任何判定
+    const { pathname, searchParams } = new URL(req.url, 'http://stub.invalid')
 
-  if (!route) {
-    return send(res, 200, envelope(null, 404, `No stub route for ${req.method} ${apiPath}`))
-  }
+    // 前缀不匹配直接 404：这正是真实后端下线 /api 别名后的行为，
+    // 前端一旦把 base 写回旧前缀，E2E 必须立刻红，而不是照常通过。
+    if (pathname !== API_PREFIX && !pathname.startsWith(`${API_PREFIX}/`)) {
+      return send(res, 200, envelope(null, 404, `No stub route for ${req.method} ${pathname}`))
+    }
 
-  await route.handle(req, res, { pathname: apiPath, searchParams })
-})
+    const apiPath = pathname.slice(API_PREFIX.length) || '/'
+    const route = routes.find((item) => item.method === req.method && item.match(apiPath))
 
-server.listen(PORT, () => {
-  console.log(`[stub-api] listening on http://127.0.0.1:${PORT}`)
-})
+    if (!route) {
+      return send(res, 200, envelope(null, 404, `No stub route for ${req.method} ${apiPath}`))
+    }
+
+    await route.handle(req, res, { pathname: apiPath, searchParams })
+  })
+
+// 只有被 node 直接运行时才监听。被 import 时监听会让单测一加载就占住 2127，
+// 而那个端口此刻可能正被另一轮 E2E 用着。
+const runAsScript =
+  Boolean(process.argv[1]) && resolve(process.argv[1]) === fileURLToPath(import.meta.url)
+
+if (runAsScript) {
+  createStubApiServer().listen(PORT, () => {
+    console.log(`[stub-api] listening on http://127.0.0.1:${PORT}`)
+  })
+}

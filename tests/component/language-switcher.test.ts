@@ -19,8 +19,13 @@
 
   【边界与注意】
     切换语言必须同时改 store 与（公开页）URL；产品区 URL 不变的分支由 locale-path 单测覆盖。
+
+    点击后必须 flushPromises：trigger('click') 只等一个 nextTick，而 handler 是 async 的，
+    里面还有 i18n 文案加载与路由跳转。不等它结束，这条链会挂在用例边界之外继续跑，
+    之后无论出什么问题都会记到「当时正好在跑的那个用例」头上。
 */
 import { beforeEach, describe, expect, it } from 'vitest'
+import { flushPromises } from '@vue/test-utils'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import LanguageSwitcher from '../../app/components/layout/LanguageSwitcher.vue'
 import { SITE_LOCALE_OPTIONS, SUPPORTED_LOCALES } from '../../config/site'
@@ -50,6 +55,7 @@ describe('LanguageSwitcher', () => {
     const englishIndex = SUPPORTED_LOCALES.indexOf('en-US')
 
     await wrapper.findAll('.language-option-list__item')[englishIndex]?.trigger('click')
+    await flushPromises()
 
     expect(languageStore.currentLanguage).toBe('en-US')
   })

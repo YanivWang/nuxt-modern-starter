@@ -407,7 +407,7 @@
     {
       "id": "guide-ov-001",
       "docFile": "docs-site/guide/overview.md",
-      "claim": "Vitest 50 个测试文件、252 个用例",
+      "claim": "Vitest 52 个测试文件、274 个用例",
       "symbols": ["include"],
       "sourceFiles": ["vitest.config.ts"],
       "evidenceHint": "vitest.config.ts:4 (include)"

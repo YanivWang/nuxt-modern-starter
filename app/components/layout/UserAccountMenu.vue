@@ -1,7 +1,7 @@
 <!--
   【文件职责】
     产品区用户菜单：头像、语言子面板、账户链接、退出登录。
-    退出时 await logout() 后 router.push 回首页（store logout 本身不跳转）。
+    退出时 await logout() 后经 pushSafely 跳回首页（store logout 本身不跳转）。
 
   【架构位置】
     登录产品区 — app/components/layout，AppShellHeader 默认 actions-after。
@@ -11,7 +11,7 @@
 
   【依赖关系】
     - 依赖：useAuth、useUserAvatar、useLanguageSwitch、useLocalePath、useCoarsePointer、
-      LanguageOptionList
+      LanguageOptionList、app/utils/navigate-safely.ts
     - 被引用：AppShellHeader（产品区默认 actions-after）、AccountShell、EditorWorkspaceHeader
       （ProductShell 经 AppShellHeader 间接使用，不直接 import）
 
@@ -19,7 +19,9 @@
     CSR；产品区语言切换不改变 URL path，仅换 UI locale。
 
   【边界与注意】
-    handleSignOut：先 closeMenu，再 logout，再 router.push — 与 auth store 职责分离。
+    handleSignOut：先 closeMenu，再 logout，再 pushSafely 跳转 — 与 auth store 职责分离。
+    跳转不用裸 router.push：这个 handler 由 click fire-and-forget 调用，
+    push 一旦 reject 就没人接得住，只会变成一条 unhandled rejection。
     语言选项列表与公开站 LanguageSwitcher 共用 LanguageOptionList；本组件只负责子面板定位与开合。
 -->
 <template>
@@ -125,6 +127,7 @@
 
 <script setup lang="ts">
 import { GlobalOutlined, LogoutOutlined, RightOutlined, UserOutlined } from '../../utils/antdIcon'
+import { pushSafely } from '../../utils/navigate-safely'
 import type { SupportedLocale } from '../../../config/site'
 
 const router = useRouter()
@@ -252,8 +255,8 @@ const handleLanguageSelect = async (locale: SupportedLocale) => {
 const handleSignOut = async () => {
   closeMenu()
   await logout()
-  // store logout 不跳转；UI 层 push 回公开首页
-  await router.push(localePath('/'))
+  // store logout 不跳转；UI 层 push 回公开首页。会话已经清掉了，跳转失败不该再抛出去
+  await pushSafely(router, localePath('/'))
 }
 </script>
 

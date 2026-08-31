@@ -83,8 +83,12 @@ pnpm docs:sync:extract    # 重新生成 doc-references 快照
 
 ```bash
 pnpm contract:sync    # 从后端仓库同步（默认 ../nuxt-modern-starter-api）
-pnpm contract:check   # 只比对；后端仓库不存在时自动跳过
+pnpm contract:check   # 校验副本完整性；有后端仓库时再比对上游
 ```
+
+同步会把内容摘要与上游 commit 记进 `contracts/SOURCE.json`。
+`contract:check` 先核对摘要——这一步不需要后端仓库，所以前端 CI 里也能挡住「有人直接改了引入副本」；
+再在后端仓库存在时比对上游是否已经走在前面。**引入副本只由 `contract:sync` 生成，不要手工编辑。**
 
 `tests/unit/api-contract.test.ts` 在这份副本上校验：
 
@@ -104,6 +108,13 @@ pnpm contract:check   # 只比对；后端仓库不存在时自动跳过
 字段层靠 `Record<keyof T, FieldSpec>` 把两头焊死：领域类型增删字段而映射表没跟上是**编译错误**，
 映射表与 spec 不一致是**测试失败**。所以这里不引入 openapi-typescript 之类的生成器——
 生成物本身又是一份要维护同步的产物，而这条链路已经不需要它了。
+
+**桩后端层**
+
+`tests/unit/stub-api-contract.test.ts` 用 0 端口起一个桩实例，对它实现的每个端点发真实请求，
+再用 ajv 按契约校验状态码与响应体。E2E 跑的是桩不是真实后端，桩少返回一个后端必填字段，
+整轮 E2E 就是在一份现实中不存在的响应上通过。覆盖面由桩自己的路由表反查：
+新增桩路由却没登记契约用例会直接失败。
 
 前端明知故犯不消费的后端必填字段（当前是 `status`、`slideCount`）登记在 `ignoredRequired` 里。
 这份清单也会被校验：后端新增或删除必填字段时它就不再准确，测试会要求人工复核一次。

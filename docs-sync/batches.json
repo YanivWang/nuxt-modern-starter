@@ -7,6 +7,7 @@
         "app/app.config.ts",
         "app/shims.d.ts",
         "app/types/document.ts",
+        "app/types/user-profile.ts",
         "app/types/workspace-project.ts",
         "config/antd-locale.ts",
         "config/auth.ts",
@@ -57,6 +58,7 @@
         "app/utils/error-report.ts",
         "app/utils/formatDate.ts",
         "app/utils/load-script.ts",
+        "app/utils/navigate-safely.ts",
         "app/utils/safe-redirect.ts"
       ]
     },
@@ -194,5 +196,5 @@
       ]
     }
   ],
-  "totalFiles": 145
+  "totalFiles": 147
 }
