@@ -221,40 +221,34 @@ for (const ref of docRefs.references) {
 }
 
 // ── 2. Test counts in docs vs vitest ──
-let actualTests
-const countTestsFromSources = () => {
-  let total = 0
-  const walk = (dir) => {
-    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-      const full = path.join(dir, entry.name)
-      if (entry.isDirectory()) walk(full)
-      else if (entry.name.endsWith('.test.ts')) {
-        const content = fs.readFileSync(full, 'utf8')
-        // 只认行首的 it( / test(（含 it.each、it.skip 等修饰）：
-        // \btest\s*\( 会把 regex.test(source)、date.test(...) 这类调用也算成用例。
-        total += (content.match(/^\s*(?:it|test)(?:\.\w+)*\s*\(/gm) ?? []).length
-      }
-    }
-  }
-  walk(path.join(ROOT, 'tests'))
-  return total
-}
-
-if (process.env.VITEST) {
-  actualTests = countTestsFromSources()
-} else {
+/**
+ * 用例数只认真实跑一遍 vitest 得到的结果，拿不到就不比。
+ *
+ * 这里曾经在拿不到时回退成「静态数源码里的 it( 行数」。那个数字数不了 it.each ——
+ * 一个 it.each 可能展开成十几个用例，于是回退值系统性偏低，却被当成权威值去和文档比对，
+ * 门禁以一条误导性的错误变红（doc 278 vs vitest 263），而文档其实是对的。
+ *
+ * 拿不到真实计数只有两种情况，都不该让这项比对给出结论：
+ * 自己就跑在 vitest 里（再嵌套跑一次会递归），或者那次运行失败了 ——
+ * 后者说明测试本来就挂了，quality 链后面的 test 步骤会红，不需要这里再报一个假原因。
+ */
+const runtimeTestCount = () => {
   try {
     const out = execSync('pnpm exec vitest run --reporter=json 2>/dev/null', {
       cwd: ROOT,
       encoding: 'utf8',
       maxBuffer: 20 * 1024 * 1024
     })
-    const jsonLine = out.trim().split('\n').pop()
-    const report = JSON.parse(jsonLine)
-    actualTests = report.numTotalTests ?? 0
+    return JSON.parse(out.trim().split('\n').pop()).numTotalTests ?? 0
   } catch {
-    actualTests = countTestsFromSources()
+    return 0
   }
+}
+
+const actualTests = process.env.VITEST ? 0 : runtimeTestCount()
+
+if (actualTests === 0) {
+  console.log('[align] 未取得 vitest 实跑用例数，跳过用例数比对（测试文件数仍然校验）')
 }
 
 const testFileCount = index.testFileCount
