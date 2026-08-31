@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-31T01:39:22.690Z",
+  "generatedAt": "2026-08-31T02:07:39.588Z",
   "docFileCount": 33,
   "referenceCount": 1300,
   "pathAllowlist": [
@@ -3650,7 +3650,7 @@
       "docFile": "docs-site/guide/overview.md",
       "line": 92,
       "type": "test-count",
-      "value": "52/274",
+      "value": "52/276",
       "context": "| 测试   | Vitest 4.1.11 + @nuxt/test-utils 4.0.3；`vitest.config.ts` 用 `defineVitestConfig` + `include: tests/**/*.test.ts"
     },
     {

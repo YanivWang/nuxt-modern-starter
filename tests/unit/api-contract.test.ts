@@ -39,6 +39,8 @@ import { AUTH_API_ENDPOINTS } from '../../config/auth'
 import {
   API_PREFIX,
   deref,
+  errorStatusesOf,
+  isSecured,
   jsonTypesOf,
   navigate,
   nonNullBranch,
@@ -417,6 +419,51 @@ const RESPONSE_DATA_KEYS: Record<string, readonly string[] | null> = {
 /** init 的 data 是 instant 判别联合，没有顶层 required，单独断言两条分支。 */
 const UNION_DATA_ENDPOINTS = ['POST /uploads/large/init'] as const
 
+/**
+ * 每个消费端点声明的非 2xx 状态码，精确相等。
+ *
+ * 前端对这些码有真实分支：401 触发单飞 refresh 并重试一次，404 走空态，
+ * 409 在注册页提示用户名已占用，410 意味着分片上传任务过期、必须重新发起。
+ * 后端新增或去掉一个状态码而前端不知道，表现就是「线上偶发一个没人处理的错误」。
+ *
+ * 注意 DELETE /uploads/large/{uploadId} 没有 404：取消是幂等的，
+ * 任务不存在时同样返回成功——这条容易被想当然地补上，写在这里正是为了钉住它。
+ */
+const CONSUMED_ERROR_STATUSES: Record<string, readonly string[]> = {
+  'POST /register': ['400', '409', '429', '500'],
+  'POST /login': ['400', '401', '429', '500'],
+  'POST /refresh': ['400', '401', '403', '429', '500'],
+  'POST /logout': ['400', '401', '429', '500'],
+  'GET /me': ['400', '401', '429', '500'],
+  'GET /me/profile': ['400', '401', '429', '500'],
+  'PATCH /me/profile': ['400', '401', '429', '500'],
+  'GET /projects': ['400', '401', '429', '500'],
+  'POST /projects': ['400', '401', '429', '500'],
+  'GET /projects/{projectId}': ['400', '401', '404', '429', '500'],
+  'PATCH /projects/{projectId}': ['400', '401', '404', '429', '500'],
+  'DELETE /projects/{projectId}': ['400', '401', '404', '429', '500'],
+  'GET /documents/{documentId}': ['400', '401', '404', '429', '500'],
+  'PATCH /documents/{documentId}': ['400', '401', '404', '429', '500'],
+  'POST /uploads': ['400', '401', '429', '500'],
+  'POST /uploads/large/init': ['400', '401', '429', '500'],
+  'GET /uploads/large/{uploadId}/status': ['400', '401', '403', '404', '410', '429', '500'],
+  'PUT /uploads/large/{uploadId}/chunks/{chunkIndex}': [
+    '400',
+    '401',
+    '403',
+    '404',
+    '409',
+    '410',
+    '429',
+    '500'
+  ],
+  'POST /uploads/large/{uploadId}/merge': ['400', '401', '403', '404', '409', '410', '429', '500'],
+  'DELETE /uploads/large/{uploadId}': ['400', '401', '403', '429', '500'],
+  'GET /content/news': ['400', '429', '500'],
+  'GET /content/news/{slug}': ['400', '404', '429', '500'],
+  'GET /content/pricing': ['400', '429', '500']
+}
+
 describe('backend API contract', () => {
   it('derives a single versioned prefix from the spec', () => {
     expect(API_PREFIX).toBe('/api/v1')
@@ -503,6 +550,32 @@ describe('backend API contract', () => {
         [...expected].sort()
       )
     }
+  })
+
+  it('declares the error statuses of every consumed endpoint', () => {
+    const undeclared = CONSUMED_ENDPOINTS.filter(
+      (endpoint) => !(endpoint in CONSUMED_ERROR_STATUSES)
+    )
+
+    expect(undeclared, '新增消费端点后要在 CONSUMED_ERROR_STATUSES 里登记它会返回的错误码').toEqual(
+      []
+    )
+
+    for (const [endpoint, expected] of Object.entries(CONSUMED_ERROR_STATUSES)) {
+      expect(errorStatusesOf(endpoint), `${endpoint} 的错误状态码发生变化`).toEqual(
+        [...expected].sort()
+      )
+    }
+  })
+
+  it('backs the 401 refresh-and-retry path with the contract', () => {
+    // createApiClient 在 401 时会单飞 refresh 并重试一次。
+    // 若某个需要鉴权的端点没声明 401，那条重试路径在契约上就是无依据的。
+    const missing401 = CONSUMED_ENDPOINTS.filter(
+      (endpoint) => isSecured(endpoint) && !errorStatusesOf(endpoint).includes('401')
+    )
+
+    expect(missing401, '这些端点需要鉴权却没声明 401，401 重试链失去契约依据').toEqual([])
   })
 
   it('matches the workspace project and pagination domain types', () => {

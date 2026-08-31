@@ -48,6 +48,7 @@ export type SchemaNode = {
 }
 
 type Operation = {
+  security?: Array<Record<string, string[]>>
   requestBody?: { content?: Record<string, { schema: SchemaNode }> }
   responses: Record<string, { content?: Record<string, { schema: SchemaNode }> }>
 }
@@ -146,6 +147,16 @@ export const successDataSchema = (endpoint: string): SchemaNode => {
 
   return deref(data!)
 }
+
+/** 该端点声明的非 2xx 状态码。 */
+export const errorStatusesOf = (endpoint: string): string[] =>
+  Object.keys(operationOf(endpoint).responses)
+    .filter((status) => !status.startsWith('2'))
+    .sort()
+
+/** 该端点是否声明了 Bearer 鉴权。 */
+export const isSecured = (endpoint: string): boolean =>
+  Boolean((operationOf(endpoint) as { security?: unknown[] }).security?.length)
 
 /** 请求体 schema；没有 requestBody 的端点返回 null。 */
 export const requestBodySchema = (endpoint: string): SchemaNode | null => {
