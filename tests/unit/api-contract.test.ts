@@ -50,6 +50,7 @@ import type {
 import type { EditorDocument } from '../../app/types/document'
 import type {
   WorkspaceProject,
+  WorkspaceProjectAccent,
   WorkspaceProjectPagination
 } from '../../app/types/workspace-project'
 import type { UploadImagesResult } from '../../app/features/editor/upload-api'
@@ -70,6 +71,7 @@ type SchemaNode = {
   type?: JsonType | JsonType[]
   /** 判别联合的标记值，如 instant 分支的 const: true */
   const?: unknown
+  enum?: string[]
   anyOf?: SchemaNode[]
   oneOf?: SchemaNode[]
   properties?: Record<string, SchemaNode>
@@ -205,11 +207,32 @@ const navigate = (node: SchemaNode, ...segments: string[]): SchemaNode =>
  * 字段级断言
  * ------------------------------------------------------------------ */
 
-/** 期望 spec 侧的 JSON 类型；数组用于可空字段这类联合。 */
-type FieldSpec = JsonType | readonly JsonType[]
+/**
+ * 期望 spec 侧的 JSON 类型；数组用于可空字段这类联合。
+ * 取值受限的字段再带上 enum：只比 `type: string` 挡不住「后端新增一个枚举取值」，
+ * 而那会让前端按旧联合拼出的 CSS 类名落空，静默渲染成无样式元素。
+ */
+type EnumSpec = { type: JsonType; enum: readonly string[] }
+
+type FieldSpec = JsonType | readonly JsonType[] | EnumSpec
+
+const isEnumSpec = (field: FieldSpec): field is EnumSpec =>
+  typeof field === 'object' && !Array.isArray(field) && 'enum' in field
 
 const asTypes = (field: FieldSpec): JsonType[] =>
-  (Array.isArray(field) ? [...field] : [field as JsonType]).sort()
+  isEnumSpec(field)
+    ? [field.type]
+    : (Array.isArray(field) ? [...field] : [field as JsonType]).sort()
+
+/**
+ * 断言字面量数组恰好覆盖联合 T 的全部成员。
+ * TS 运行时枚举不出联合成员，只能手写一份再两头钉死：
+ * 多写一个成员违反 `V extends readonly T[]`，漏写一个则参数类型塌成 never，两种都编译不过。
+ */
+const exhaustive =
+  <T extends string>() =>
+  <const V extends readonly T[]>(values: [T] extends [V[number]] ? V : never) =>
+    values
 
 type ShapeOptions = {
   /**
@@ -244,6 +267,16 @@ const expectShape = (
     .map((key) => ({ key, spec: jsonTypesOf(properties[key]!), want: asTypes(declared[key]!) }))
     .filter((entry) => entry.spec.join('|') !== entry.want.join('|'))
   expect(mismatched, `${label}：字段类型与契约不一致`).toEqual([])
+
+  const enumDrift = consumed
+    .filter((key) => key in properties && isEnumSpec(declared[key]!))
+    .map((key) => ({
+      key,
+      spec: [...(deref(properties[key]!).enum ?? [])].sort(),
+      want: [...(declared[key] as EnumSpec).enum].sort()
+    }))
+    .filter((entry) => entry.spec.join('|') !== entry.want.join('|'))
+  expect(enumDrift, `${label}：枚举取值集合与契约不一致`).toEqual([])
 
   const unexpected = frontendOnly.filter((key) => key in properties)
   expect(unexpected, `${label}：契约现在提供了这些字段，前端的本地默认值可以让位了`).toEqual([])
@@ -281,6 +314,21 @@ const BACKEND_USER_FIELDS: Record<keyof BackendUser, FieldSpec> = {
   permissions: 'array'
 }
 
+/** 与后端 ProjectAccent 同源；取值超出集合会让卡片拼不出主题色类名。 */
+const PROJECT_ACCENTS = exhaustive<WorkspaceProjectAccent>()([
+  'blue',
+  'green',
+  'violet',
+  'amber',
+  'cyan',
+  'rose'
+])
+
+const PRICING_PLAN_KEYS = exhaustive<PricingPlan['key']>()(['starter', 'growth', 'custom'])
+
+/** CTA 只允许指向站内既有页面；后端加一个新路径时前端要先有那个路由 */
+const PRICING_CTA_PATHS = exhaustive<PricingPlan['ctaPath']>()(['/sign-up', '/help'])
+
 const WORKSPACE_PROJECT_FIELDS: Record<keyof WorkspaceProject, FieldSpec> = {
   id: 'string',
   workspaceId: 'string',
@@ -288,7 +336,7 @@ const WORKSPACE_PROJECT_FIELDS: Record<keyof WorkspaceProject, FieldSpec> = {
   title: 'string',
   description: ['string', 'null'],
   updatedAt: 'string',
-  accent: 'string'
+  accent: { type: 'string', enum: PROJECT_ACCENTS }
 }
 
 /** 后端 ProjectDto 必填、但前端卡片不渲染的字段。要用时先加进 WorkspaceProject。 */
@@ -331,9 +379,9 @@ const PRICING_PAGE_FIELDS: Record<keyof PricingPageContent, FieldSpec> = {
 }
 
 const PRICING_PLAN_FIELDS: Record<keyof PricingPlan, FieldSpec> = {
-  key: 'string',
+  key: { type: 'string', enum: PRICING_PLAN_KEYS },
   featured: 'boolean',
-  ctaPath: 'string',
+  ctaPath: { type: 'string', enum: PRICING_CTA_PATHS },
   name: 'string',
   badge: 'string',
   price: 'string',
