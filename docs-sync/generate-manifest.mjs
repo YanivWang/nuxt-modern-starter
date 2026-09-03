@@ -98,8 +98,9 @@ const batchRules = [
   },
   {
     id: 8,
-    name: 'docker + vitest.config + doc-review',
-    match: (p) => p.startsWith('docker/') || p === 'vitest.config.ts'
+    name: 'docker + 测试配置 + doc-review',
+    match: (p) =>
+      p.startsWith('docker/') || p === 'vitest.config.ts' || p === 'playwright.config.ts'
   }
 ]
 
@@ -128,7 +129,6 @@ const batches = batchRules.map((rule) => ({
 }))
 
 const manifest = {
-  generatedAt: new Date().toISOString(),
   findCommand: FIND_CMD,
   sourceFileCount: sourceFiles.length,
   docFileCount: docPaths.length,
@@ -145,7 +145,7 @@ fs.writeFileSync(
 
 const coverage = `# Coverage Report
 
-Generated: ${manifest.generatedAt}
+Source: docs-sync/manifest.json（内容变化才会产生 diff，不含生成时间）
 
 ## Enumeration
 

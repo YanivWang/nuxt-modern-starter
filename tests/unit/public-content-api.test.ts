@@ -19,7 +19,12 @@
     不覆盖 SSR useAsyncData 水合；FAQ 不测远程 CMS。
 */
 import { describe, expect, it, vi } from 'vitest'
-import { fetchNewsArticles, fetchPricingPage, getFaqItems } from '../../app/api/public'
+import {
+  fetchLocalizedNewsArticle,
+  fetchNewsArticles,
+  fetchPricingPage,
+  getFaqItems
+} from '../../app/api/public'
 import { createPublicApiClient } from '../../app/api/clients'
 
 vi.mock('../../app/api/clients', () => ({
@@ -56,7 +61,53 @@ describe('public content api', () => {
     await fetchNewsArticles('en-US')
 
     expect(createPublicApiClient).toHaveBeenCalledWith({ locale: 'en-US' })
-    expect(request).toHaveBeenCalledWith('/content/news', { method: 'GET' })
+    expect(request).toHaveBeenCalledWith('/content/news', {
+      method: 'GET',
+      query: { locale: 'en-US' }
+    })
+  })
+
+  it('asks for English content on locales the backend does not serve', async () => {
+    // 后端内容只有 zh-CN / en-US。不映射的话它按 accept-language 判断，
+    // 除英文外一律落到 zh-CN —— 法语页面外壳是法语、正文却是中文。
+    const request = vi.fn().mockResolvedValue({ code: 200, message: 'ok', data: { articles: [] } })
+    vi.mocked(createPublicApiClient).mockReturnValue({ request })
+
+    await fetchNewsArticles('fr-FR')
+
+    expect(createPublicApiClient).toHaveBeenCalledWith({ locale: 'en-US' })
+    expect(request).toHaveBeenCalledWith('/content/news', {
+      method: 'GET',
+      query: { locale: 'en-US' }
+    })
+  })
+
+  it('fetches a single news article through the public client', async () => {
+    const request = vi.fn().mockResolvedValue({
+      code: 200,
+      message: 'ok',
+      data: { article: { slug: 'starter-release', title: 't', description: 'd', body: [] } }
+    })
+    vi.mocked(createPublicApiClient).mockReturnValue({ request })
+
+    const article = await fetchLocalizedNewsArticle('starter-release', 'de-DE')
+
+    expect(article.data.article.slug).toBe('starter-release')
+    // de-DE 后端不提供，按 SITE_CONTENT_LOCALE_MAP 落到 en-US
+    expect(createPublicApiClient).toHaveBeenCalledWith({ locale: 'en-US' })
+    expect(request).toHaveBeenCalledWith('/content/news/starter-release', {
+      method: 'GET',
+      query: { locale: 'en-US' }
+    })
+  })
+
+  it('keeps Traditional Chinese readers on Chinese content', async () => {
+    const request = vi.fn().mockResolvedValue({ code: 200, message: 'ok', data: { articles: [] } })
+    vi.mocked(createPublicApiClient).mockReturnValue({ request })
+
+    await fetchNewsArticles('zh-HK')
+
+    expect(createPublicApiClient).toHaveBeenCalledWith({ locale: 'zh-CN' })
   })
 
   it('fetches pricing content through the public client', async () => {
@@ -70,6 +121,9 @@ describe('public content api', () => {
     await fetchPricingPage('zh-CN')
 
     expect(createPublicApiClient).toHaveBeenCalledWith({ locale: 'zh-CN' })
-    expect(request).toHaveBeenCalledWith('/content/pricing', { method: 'GET' })
+    expect(request).toHaveBeenCalledWith('/content/pricing', {
+      method: 'GET',
+      query: { locale: 'zh-CN' }
+    })
   })
 })

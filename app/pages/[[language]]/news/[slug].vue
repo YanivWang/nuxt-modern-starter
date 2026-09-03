@@ -34,6 +34,7 @@
 <script setup lang="ts">
 import { ArrowRightOutlined } from '~/utils/antdIcon'
 import { fetchLocalizedNewsArticle } from '~/api/public'
+import { resolveUpstreamPageStatus } from '~/lib/http/error'
 import { formatPublishedDate } from '../../../utils/formatDate'
 
 const route = useRoute()
@@ -56,8 +57,18 @@ const { data: article, error } = await useAsyncData(
   }
 )
 
-if (error.value || !article.value) {
-  // slug 不存在或 API 失败 → 404（非 500），与 SEO 死链处理一致
+if (error.value) {
+  // 「这篇文章不存在」和「后端此刻挂了」必须区分开，判据见 resolveUpstreamPageStatus
+  const statusCode = resolveUpstreamPageStatus(error.value)
+
+  throw createError({
+    statusCode,
+    statusMessage: statusCode === 404 ? 'news.notFound' : 'error.title'
+  })
+}
+
+if (!article.value) {
+  // 后端返回成功但没有这篇：确实是死链
   throw createError({
     statusCode: 404,
     statusMessage: 'news.notFound'

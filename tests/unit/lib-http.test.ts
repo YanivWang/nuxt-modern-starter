@@ -25,7 +25,8 @@ import {
   assertApiSuccess,
   getApiErrorMessage,
   isUnauthorizedError,
-  normalizeApiError
+  normalizeApiError,
+  resolveUpstreamPageStatus
 } from '../../app/lib/http/error'
 import { createApiClient } from '../../app/lib/http/client'
 import { createBearerHeaders, sanitizeHeaders } from '../../app/lib/http/headers'
@@ -189,5 +190,26 @@ describe('lib/http', () => {
     })
     expect(onUnauthorized).toHaveBeenCalledOnce()
     expect(fetcher).toHaveBeenCalledTimes(2)
+  })
+})
+
+describe('resolveUpstreamPageStatus', () => {
+  it('keeps a genuine 404 as 404', () => {
+    expect(resolveUpstreamPageStatus(createApiError({ statusCode: 404 }))).toBe(404)
+    // useAsyncData 会把原始错误包一层，真实状态码在 cause 上
+    expect(resolveUpstreamPageStatus({ cause: createApiError({ statusCode: 404 }) })).toBe(404)
+  })
+
+  it('reports a backend outage as 503 instead of 404', () => {
+    // 404 对搜索引擎是「永久没有了，删掉」，503 才是「稍后再来」。
+    // 后端抖一下就把有效内容 URL 报成 404，等于主动请求把它们移出索引。
+    for (const statusCode of [500, 502, 503, 429]) {
+      expect(resolveUpstreamPageStatus(createApiError({ statusCode }))).toBe(503)
+    }
+
+    // 传输层失败没有响应可读，同样归到「暂时不可用」
+    expect(resolveUpstreamPageStatus(new Error('Failed to fetch'))).toBe(503)
+    expect(resolveUpstreamPageStatus(null)).toBe(503)
+    expect(resolveUpstreamPageStatus(undefined)).toBe(503)
   })
 })

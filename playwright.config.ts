@@ -20,7 +20,8 @@
     webServer 顺序无关，Playwright 会并行等待两个端口就绪。
     改端口须同步 .env.e2e 的 NUXT_PUBLIC_SITE_URL / NUXT_PUBLIC_API_BASE 与 tests/e2e/support.ts。
     端口刻意避开 3000 / 3100 / 2027 这些常用值：开发机上同时跑好几个项目是常态，
-    撞端口会直接让整轮 E2E 失去意义。被占用时可用 E2E_APP_PORT / STUB_API_PORT 覆盖。
+    撞端口会直接让整轮 E2E 失去意义。被占用时用 E2E_APP_PORT / STUB_API_PORT 覆盖即可 ——
+    这两个变量会一并注入 preview 的 siteUrl / apiBase，不需要再手改 .env.e2e。
     reuseExistingServer 一律关闭：pnpm test:e2e 每次都会重新构建，
     复用一个恰好占着端口的旧服务，跑的就是那个旧服务的行为 —— 会表现为大面积莫名失败。
     关掉之后，端口被占会是一条明确的报错，而不是一堆看不懂的断言失败。
@@ -69,7 +70,15 @@ export default defineConfig({
       command: `corepack pnpm exec nuxt preview --dotenv .env.e2e --port ${APP_PORT}`,
       url: baseURL,
       reuseExistingServer: false,
-      timeout: 120_000
+      timeout: 120_000,
+      // 端口一旦被覆盖，.env.e2e 里写死的这两个值就对不上了：
+      // siteUrl 会让 canonical / hreflang / sitemap 指向没在跑的端口，apiBase 会指向另一个桩。
+      // dotenv 不覆盖已存在的 env，所以这里显式传入的值优先级更高 ——
+      // 于是「只改 E2E_APP_PORT / STUB_API_PORT」这条逃生口才真正成立。
+      env: {
+        NUXT_PUBLIC_SITE_URL: baseURL,
+        NUXT_PUBLIC_API_BASE: `http://127.0.0.1:${STUB_API_PORT}/api/v1`
+      }
     }
   ]
 })

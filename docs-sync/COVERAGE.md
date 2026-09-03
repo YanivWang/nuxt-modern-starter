@@ -1,14 +1,14 @@
 # Coverage Report
 
-Generated: 2026-09-02T00:58:26.101Z
+Source: docs-sync/manifest.json（内容变化才会产生 diff，不含生成时间）
 
 ## Enumeration
 
 ```bash
-find app server config docker nuxt.config.ts vitest.config.ts -type f \( -name "*.ts" -o -name "*.vue" -o -name "*.js" -o -name "*.scss" -o -name "*.yaml" -o -name "*.conf" \) 2>/dev/null | sort
+find app server config docker nuxt.config.ts vitest.config.ts playwright.config.ts -type f \( -name "*.ts" -o -name "*.vue" -o -name "*.js" -o -name "*.scss" -o -name "*.yaml" -o -name "*.conf" \) 2>/dev/null | sort
 ```
 
-**Source file count:** 148
+**Source file count:** 149
 
 **Documentation file count:** 33
 
@@ -21,7 +21,7 @@ find app server config docker nuxt.config.ts vitest.config.ts -type f \( -name "
 - Batch 5 (pages + feature-workspace + feature-editor): 41 files
 - Batch 6 (feature-account + product-shell + templates): 10 files
 - Batch 7 (server + assets/styles): 25 files
-- Batch 8 (docker + vitest.config + doc-review): 5 files
+- Batch 8 (docker + 测试配置 + doc-review): 6 files
 
 ## Missing header comments
 

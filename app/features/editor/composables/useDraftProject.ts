@@ -10,6 +10,7 @@
 
   【依赖关系】
     - 依赖：workspace createProject、editor saveDocument、editor-content.ts
+    - 入参：ensureDraftProject(contentToSave) —— 内容由调用方给，见该函数注释
     - 被引用：useEditorWorkspace.ts、tests/unit/editor-draft-project.test.ts
 
   【渲染 / 数据】
@@ -34,7 +35,6 @@ export type UseDraftProjectOptions = {
   effectiveDocumentId: Ref<string | null>
   draftDocumentId: Ref<string | null>
   document: Ref<EditorDocument | null | undefined>
-  getContentHtml: () => string
   getTitle: () => string
   createProject: (payload: CreateWorkspaceProjectPayload) => CreateProjectResponse
   saveDocument: (documentId: string, payload: SaveEditorDocumentPayload) => SaveDocumentResponse
@@ -46,7 +46,6 @@ export const useDraftProject = ({
   effectiveDocumentId,
   draftDocumentId,
   document,
-  getContentHtml,
   getTitle,
   createProject,
   saveDocument,
@@ -55,12 +54,17 @@ export const useDraftProject = ({
 }: UseDraftProjectOptions) => {
   const isDraftMode = computed(() => !effectiveDocumentId.value && !draftDocumentId.value)
 
-  const ensureDraftProject = async (): Promise<string | null> => {
+  /**
+   * 要落盘的内容由调用方传入，本模块不再自己去读编辑器。
+   *
+   * 调用方（useEditorAutosave）必须知道「这一轮究竟存下去的是哪一份内容」，
+   * 才能在 await 结束后拿它和当前内容比对、判断用户在这期间有没有继续输入。
+   * 两边各自 getContentHtml() 的话，那次比对就变成了「和自己比」，永远相等。
+   */
+  const ensureDraftProject = async (contentToSave: string): Promise<string | null> => {
     if (effectiveDocumentId.value) {
       return effectiveDocumentId.value
     }
-
-    const contentToSave = getContentHtml()
 
     // 空白内容不创建项目，与 scheduleAutosave 的空草稿 guard 对齐
     if (isBlankEditorContent(contentToSave)) {

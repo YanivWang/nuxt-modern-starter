@@ -172,7 +172,7 @@ Capture behavior:
 
 Registration example:
 
-- `registerApi()` merges stored attribution into the request body before sending.
+- `registerApi()` merges stored attribution into the request body before sending. Note that `nuxt-modern-starter-api` does **not** consume these fields today: its register schema parses `{ username, password }` with a non-strict Zod object, so the extra keys are silently stripped and never persisted. The client-side capture is still useful (the values stay in `localStorage` for your own analytics), but treat server-side attribution as not yet implemented rather than assuming it is being recorded.
 - Backend acceptance of these fields is a fork-specific API contract.
 - Login conversion is not wired in v1; call `mergeAttributionIntoBody()` inside `loginApi()` in fork projects when needed.
 

@@ -20,6 +20,8 @@
 
   【边界与注意】
     MD5 append 必须保持分片顺序；并发只用于 arrayBuffer 读取，不能并发 append。
+    调度同时受两个上限约束：并发读数量，以及「已排出但未 append」的窗口 ——
+    只限前者的话 buffers 的上限是整个文件大小，见 schedule() 内的注释。
     AbortError 以字符串 message 回传，主线程再还原为 DOMException。
 */
 import SparkMD5 from 'spark-md5'
@@ -110,7 +112,20 @@ const runImpl = (init: WorkerInit, finishedRef: { v: boolean }) => {
       endMessage({ type: 'error', message: 'AbortError' }, finishedRef)
       return
     }
-    while (inFlight < readConcurrency && nextSchedule < chunkCount) {
+    // 除了限制并发读，还要限制「读完但还没轮到 append」的窗口。
+    //
+    // 只看 inFlight 的话，buffers 的上限是**整个文件**而不是并发数：
+    // 每完成一片就立刻再排一片，而 append 必须按序，所以只要 0 号片读得慢，
+    // 后面所有已完成的片都会堆在 buffers 里等它。1GB 文件 / 8MB 分片 ≈ 最多堆到 1GB，
+    // 足以让这个 Worker 直接 OOM。加上窗口后上限收敛到 readConcurrency × partSize。
+    //
+    // 不会死锁：inFlight 归零时，已排出去的片必然全部完成并被 tryAppend 顺序消费完，
+    // nextAppend 追平 nextSchedule，窗口必然重新打开。
+    while (
+      inFlight < readConcurrency &&
+      nextSchedule - nextAppend < readConcurrency &&
+      nextSchedule < chunkCount
+    ) {
       const i = nextSchedule++
       inFlight++
       const start = i * partSize

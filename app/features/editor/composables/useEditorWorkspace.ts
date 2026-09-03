@@ -97,7 +97,6 @@ export const useEditorWorkspace = ({
     effectiveDocumentId,
     draftDocumentId,
     document,
-    getContentHtml: getEditorContentHtml,
     getTitle,
     createProject: createWorkspaceProject,
     saveDocument: saveEditorDocument,

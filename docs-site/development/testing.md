@@ -7,7 +7,7 @@ pnpm test            # Vitest 全量（单元 + 组件）
 pnpm test:unit       # 仅 tests/unit，happy-dom，秒级反馈
 pnpm test:component  # 仅 tests/component + tests/nuxt，需要 Nuxt 运行时
 pnpm test:coverage   # 带覆盖率阈值
-pnpm test:e2e        # 先 build:e2e，再用 Playwright 跑真实浏览器
+pnpm test:e2e        # 经 scripts/run-e2e.mjs：先 build:e2e，再用 Playwright 跑真实浏览器
 pnpm test:e2e:only   # 复用已有 .output，跳过重新构建
 pnpm typecheck       # vue-tsc + Nuxt 类型
 pnpm lint            # ESLint
@@ -135,6 +135,19 @@ pnpm quality
 pnpm test:e2e
 pnpm docker:build   # 若涉及部署
 ```
+
+### 端口被占用时
+
+E2E 默认用 3399（应用）与 2127（桩后端）。本机若已有别的服务占着，覆盖这两个变量即可：
+
+```bash
+E2E_APP_PORT=3411 STUB_API_PORT=2131 pnpm test:e2e
+```
+
+不需要改 `.env.e2e`。`scripts/run-e2e.mjs` 会把对应的 `NUXT_PUBLIC_SITE_URL` /
+`NUXT_PUBLIC_API_BASE` 同时传给**构建**和 Playwright —— 两个阶段必须拿到同一份端口：
+预渲染页在构建时就把 siteUrl 烤进了 canonical / hreflang / JSON-LD，只改运行端口的话，
+首页断言会拿到上一次构建留下的地址。
 
 ## 下一步
 

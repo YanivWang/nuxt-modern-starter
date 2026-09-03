@@ -10,7 +10,8 @@
     无（框架错误路由）
 
   【依赖关系】
-    - 依赖：vue-i18n error.*、config/site SITE_NAME、empty layout
+    - 依赖：vue-i18n error.*、config/site SITE_NAME、config/routes localizedPath、
+      language store（回首页要回当前语言的首页）、empty layout
     - 被引用：createError、middleware 403/404
 
   【渲染 / 数据】
@@ -18,10 +19,12 @@
 
   【边界与注意】
     公开 catch-all 404 用 [[language]]/[...slug].vue；middleware 404 走本页或 dedicated error。
+    「返回首页」必须经 localizedPath 加当前语言前缀，不能写死 '/'。
 -->
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { SITE_NAME } from '../config/site'
+import { localizedPath } from '../config/routes'
 
 const props = defineProps<{
   error: {
@@ -32,7 +35,18 @@ const props = defineProps<{
 }>()
 
 const { t, te } = useI18n()
-const handleError = () => clearError({ redirect: '/' })
+const languageStore = useLanguageStore()
+
+/**
+ * 回首页要回**当前语言**的首页。
+ *
+ * 写死 '/' 的话，英文（以及其余 13 个语言）用户点完会落到中文站：
+ * '/' 是 zh-CN 的 canonical 首页，而 resolvePreferredLocale 对非产品路径
+ * 一律返回 DEFAULT_LOCALE，连语言 cookie 都不看 —— 于是错误页说着英文，
+ * 按钮却把人送去中文站。
+ */
+const handleError = () =>
+  clearError({ redirect: localizedPath('/', languageStore.currentLanguage) })
 
 const errorTitle = computed(() => {
   const { statusCode, statusMessage } = props.error

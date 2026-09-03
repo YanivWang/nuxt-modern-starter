@@ -77,8 +77,52 @@ describe('useEditorAutosave', () => {
     html = '<p>Draft</p>'
     await autosave.persistDocument()
 
-    expect(ensureDraftProject).toHaveBeenCalled()
+    expect(ensureDraftProject).toHaveBeenCalledWith('<p>Draft</p>')
     expect(saveDocument).not.toHaveBeenCalled()
     expect(autosave.dirty.value).toBe(false)
+  })
+
+  it('keeps content typed while the draft project is being created', async () => {
+    // 建项目 + 存初稿 + 换路由是好几个来回，用户完全来得及继续敲。
+    // 这里曾经无条件 resetDirtyBaseline()，把这期间新敲的内容当成已保存：
+    // 用户不再输入就永远不会再触发保存，离开页面时 flush 看到的也是 dirty=false —— 内容直接丢。
+    vi.useFakeTimers()
+    let html = '<p></p>'
+    const effectiveDocumentId = ref<string | null>(null)
+    const ensureDraftProject = vi.fn().mockImplementation(async () => {
+      // 模拟创建期间用户继续输入
+      html = '<p>Draft and more</p>'
+      effectiveDocumentId.value = 'document_1'
+      return 'document_1'
+    })
+    const saveDocument = vi.fn().mockResolvedValue({ data: { document: editorDocumentFixture } })
+    const autosave = useEditorAutosave({
+      effectiveDocumentId,
+      isDraftMode: ref(true),
+      document: ref(null),
+      lastSavedAt: ref(null),
+      getContentHtml: () => html,
+      getTitle: () => 'Draft',
+      ensureDraftProject,
+      saveDocument,
+      notifyError: vi.fn(),
+      formatSaving: () => 'Saving',
+      formatFailed: () => 'Failed',
+      formatSaved: (time) => `Saved ${time}`,
+      debounceMs: 10
+    })
+
+    autosave.markEditorReady()
+    autosave.resetDirtyBaseline()
+    html = '<p>Draft</p>'
+    await autosave.persistDocument()
+
+    // 新敲的那段还没落盘，必须仍然是脏的，并且已经重新排上了一次 autosave
+    expect(autosave.dirty.value).toBe(true)
+    await vi.advanceTimersByTimeAsync(20)
+    expect(saveDocument).toHaveBeenCalledWith('document_1', {
+      title: 'Draft',
+      content: '<p>Draft and more</p>'
+    })
   })
 })

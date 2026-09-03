@@ -21,6 +21,7 @@
     在 SSR 的 /news 上表现为整页 500。
 */
 import { describe, expect, it } from 'vitest'
+import { SITE_INTL_LOCALE_MAP, SUPPORTED_LOCALES } from '../../config/site'
 import { formatDateOnly, formatPublishedDate } from '../../app/utils/formatDate'
 
 describe('formatDateOnly', () => {
@@ -50,5 +51,24 @@ describe('formatPublishedDate', () => {
   it('returns the raw value instead of throwing on an unparsable date', () => {
     expect(formatPublishedDate('not-a-date', 'en-US')).toBe('not-a-date')
     expect(formatPublishedDate('', 'zh-CN')).toBe('')
+  })
+})
+
+describe('Intl locale tags', () => {
+  it('uses a language tag Intl actually resolves for every supported locale', () => {
+    // 站点内部标识不保证是合法 BCP 47：'ph' 不是语言码，Intl 不报错、直接回退到默认语言，
+    // 于是菲律宾语下的日期全是英文格式而没有任何迹象。新增语言时这条会挡住同类问题。
+    const fellBack = SUPPORTED_LOCALES.map((locale) => {
+      const tag = SITE_INTL_LOCALE_MAP[locale]
+      const resolved = new Intl.DateTimeFormat(tag).resolvedOptions().locale
+
+      return { locale, tag, resolved }
+    }).filter((entry) => entry.resolved.split('-')[0] !== entry.tag.split('-')[0])
+
+    expect(fellBack, '这些 locale 的 Intl 标签被静默回退到了别的语言').toEqual([])
+  })
+
+  it('formats Filipino dates in Filipino rather than English', () => {
+    expect(formatPublishedDate('2026-07-04', 'ph-PH')).toBe('Hulyo 4, 2026')
   })
 })

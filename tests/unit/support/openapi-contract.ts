@@ -7,8 +7,8 @@
     不以 .test.ts 结尾，因此不会被 vitest 当成用例文件收集。
 
   【主要导出 / 路由】
-    spec、API_PREFIX、specEndpoints、readRepoFile、
-    deref、jsonTypesOf、successResponse、successDataSchema、navigate
+    spec、API_PREFIX、specEndpoints、readRepoFile、deref、jsonTypesOf、
+    successResponse、successDataSchema、queryParamEnum、navigate
 
   【依赖关系】
     - 依赖：contracts/openapi.yaml（后端 OpenAPI 的引入副本）
@@ -47,8 +47,16 @@ export type SchemaNode = {
   items?: SchemaNode
 }
 
+type Parameter = {
+  name: string
+  in: 'query' | 'path' | 'header'
+  required?: boolean
+  schema?: SchemaNode
+}
+
 type Operation = {
   security?: Array<Record<string, string[]>>
+  parameters?: Parameter[]
   requestBody?: { content?: Record<string, { schema: SchemaNode }> }
   responses: Record<string, { content?: Record<string, { schema: SchemaNode }> }>
 }
@@ -157,6 +165,15 @@ export const errorStatusesOf = (endpoint: string): string[] =>
 /** 该端点是否声明了 Bearer 鉴权。 */
 export const isSecured = (endpoint: string): boolean =>
   Boolean((operationOf(endpoint) as { security?: unknown[] }).security?.length)
+
+/** 某个查询参数声明的枚举取值；参数不存在或未声明枚举时返回 null。 */
+export const queryParamEnum = (endpoint: string, name: string): string[] | null => {
+  const parameter = operationOf(endpoint).parameters?.find(
+    (item) => item.in === 'query' && item.name === name
+  )
+
+  return parameter?.schema?.enum ? [...parameter.schema.enum].sort() : null
+}
 
 /** 请求体 schema；没有 requestBody 的端点返回 null。 */
 export const requestBodySchema = (endpoint: string): SchemaNode | null => {

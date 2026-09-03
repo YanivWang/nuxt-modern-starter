@@ -162,9 +162,9 @@ export const faqItems: FaqItem[] = [
     },
     answer: {
       'zh-CN':
-        '发布或部署前运行 pnpm quality。该命令依次执行 lint、format:check、stylelint、typecheck、i18n:check、build 与 test —— build 排在 test 之前，产物体积相关的测试才能读到最新的 .output。日常提交只由 Husky pre-commit 跑 lint-staged（对暂存文件执行 prettier 与 eslint），全量门禁交给 CI。若涉及部署变更，再补充 Docker 构建运行与 Nginx 反向代理验证，步骤可参考 docs/deployment.md。',
+        '发布或部署前运行 pnpm quality。该命令依次执行 lint、format:check、stylelint、typecheck、i18n:check、depcruise、contract:check、docs:sync:check、build 与 test —— build 排在 test 之前，产物体积相关的测试才能读到最新的 .output。日常提交只由 Husky pre-commit 跑 lint-staged（对暂存文件执行 prettier 与 eslint），全量门禁交给 CI。若涉及部署变更，再补充 Docker 构建运行与 Nginx 反向代理验证，步骤可参考 docs/deployment.md。',
       'en-US':
-        'Run pnpm quality before release or deployment. It executes lint, format:check, stylelint, typecheck, i18n:check, build, and test - build runs before test so output-budget tests can inspect the latest .output. Day-to-day commits only run lint-staged via the Husky pre-commit hook (prettier and eslint on staged files); the full gate belongs to CI. If deployment changed, also validate Docker build/run and the Nginx reverse proxy. See docs/deployment.md for the validation flow.'
+        'Run pnpm quality before release or deployment. It executes lint, format:check, stylelint, typecheck, i18n:check, depcruise, contract:check, docs:sync:check, build, and test - build runs before test so output-budget tests can inspect the latest .output. Day-to-day commits only run lint-staged via the Husky pre-commit hook (prettier and eslint on staged files); the full gate belongs to CI. If deployment changed, also validate Docker build/run and the Nginx reverse proxy. See docs/deployment.md for the validation flow.'
     }
   }
 ]

@@ -15,8 +15,8 @@
 
   【边界与注意】
     端口刻意避开 3000 / 3100 / 2027 这些常用值：开发机上同时跑好几个项目是常态。
-    被占用时用 E2E_APP_PORT / STUB_API_PORT 覆盖，三处（本文件、playwright.config.ts、
-    .env.e2e）必须一起改。
+    被占用时只需设 E2E_APP_PORT / STUB_API_PORT：本文件与 playwright.config.ts 都读它们，
+    而 playwright 会把对应的 siteUrl / apiBase 注入 preview 进程覆盖 .env.e2e 的默认值。
     Playwright 的 reuseExistingServer 一旦复用了别人的服务，跑出来的是那个服务的行为，
     表现为大面积莫名失败（连 robots.txt 都对不上）。改端口须同步 .env.e2e 与 playwright.config.ts。
 */

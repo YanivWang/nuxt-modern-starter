@@ -18,12 +18,14 @@
   【边界与注意】
     不覆盖 GET /sitemap.xml handler；断言不含 workspace/docs/sign-in。
 */
-import { describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   buildRobotsTxt,
   buildSitemapXml,
   getSitemapEntries,
-  normalizeSiteUrl
+  normalizeSiteUrl,
+  fetchNewsSlugs,
+  resetNewsSlugsCacheForTests
 } from '../../server/utils/seo'
 
 describe('SEO server route helpers', () => {
@@ -65,5 +67,47 @@ describe('SEO server route helpers', () => {
     expect(robots).toContain('Disallow: /sign-in')
     expect(robots).toContain('Disallow: /sign-up')
     expect(robots).toContain('Sitemap: https://example.com/sitemap.xml')
+  })
+})
+
+describe('news slug cache', () => {
+  beforeEach(() => {
+    resetNewsSlugsCacheForTests()
+  })
+
+  it('reuses the cached slugs instead of calling the backend on every sitemap request', async () => {
+    // /sitemap.xml 是公开端点；后端限流按 IP 计，整个 SSR 服务器只算一个客户端，
+    // 不缓存的话任何人反复拉 sitemap 都在烧全站共享的那份配额。
+    const $fetch = vi.fn().mockResolvedValue({
+      code: 200,
+      message: 'ok',
+      data: { articles: [{ slug: 'a' }, { slug: 'b' }] }
+    })
+    vi.stubGlobal('$fetch', $fetch)
+
+    await expect(fetchNewsSlugs('http://api.test/api/v1')).resolves.toEqual(['a', 'b'])
+    await expect(fetchNewsSlugs('http://api.test/api/v1')).resolves.toEqual(['a', 'b'])
+
+    expect($fetch).toHaveBeenCalledTimes(1)
+
+    // TTL 过后重新拉取
+    await fetchNewsSlugs('http://api.test/api/v1', Date.now() + 61 * 60 * 1000)
+    expect($fetch).toHaveBeenCalledTimes(2)
+
+    vi.unstubAllGlobals()
+  })
+
+  it('does not cache the fallback, so recovery takes effect immediately', async () => {
+    const $fetch = vi.fn().mockRejectedValue(new Error('backend down'))
+    vi.stubGlobal('$fetch', $fetch)
+
+    const first = await fetchNewsSlugs('http://api.test/api/v1')
+    expect(first.length).toBeGreaterThan(0)
+
+    // 后端恢复：下一次就该拿真实数据，而不是继续用一小时的兜底列表
+    $fetch.mockResolvedValue({ code: 200, message: 'ok', data: { articles: [{ slug: 'live' }] } })
+    await expect(fetchNewsSlugs('http://api.test/api/v1')).resolves.toEqual(['live'])
+
+    vi.unstubAllGlobals()
   })
 })

@@ -16,8 +16,10 @@
     CSR；保存 HTML content + title，lastSavedAt 只作为 UI 提示时间，不作为后端版本控制。
 
   【边界与注意】
-    空 /docs/new 不创建项目；首次非空保存先 ensureDraftProject，再重置 dirty baseline。
+    空 /docs/new 不创建项目；首次非空保存先 ensureDraftProject。
     保存期间继续输入会让 dirty 保持 true，并在保存完成后重新调度 autosave。
+    实现要点：dirty baseline 始终等于「服务端上存着的那份内容」。
+    落盘后把 baseline 设成当前编辑器内容，会把落盘期间新敲的部分当作已保存而永久丢掉。
 */
 import { computed, ref, type Ref } from 'vue'
 import { isBlankEditorContent, formatEditorSavedAt } from './editor-content'
@@ -33,7 +35,7 @@ export type UseEditorAutosaveOptions = {
   lastSavedAt: Ref<number | null>
   getContentHtml: () => string
   getTitle: () => string
-  ensureDraftProject: () => Promise<string | null>
+  ensureDraftProject: (contentToSave: string) => Promise<string | null>
   saveDocument: (documentId: string, payload: SaveEditorDocumentPayload) => SaveDocumentResponse
   notifyError: () => void
   formatSaving: () => string
@@ -121,32 +123,37 @@ export const useEditorAutosave = ({
     saveFailed.value = false
 
     try {
-      let documentId = effectiveDocumentId.value
+      // 先定下这一轮要存的内容，两条分支都以它为准做事后的脏比对
+      const contentToSave = getContentHtml()
+      const documentId = effectiveDocumentId.value
 
-      // 草稿模式：首次非空保存走 ensureDraftProject（创建 project + 初始 document + replace 路由）
-      if (!documentId) {
-        documentId = await ensureDraftProject()
-        if (!documentId) {
+      if (documentId) {
+        const response = await saveDocument(documentId, {
+          title: getTitle(),
+          content: contentToSave
+        })
+        document.value = response.data.document
+      } else {
+        // 草稿模式：首次非空保存走 ensureDraftProject（创建 project + 初始 document + replace 路由）
+        // 它内部会把 contentToSave 写进新文档，所以这里不再重复保存一次
+        const draftId = await ensureDraftProject(contentToSave)
+
+        if (!draftId) {
           return
         }
-
-        lastSavedAt.value = Date.now()
-        resetDirtyBaseline()
-        return
       }
 
-      const contentToSave = getContentHtml()
-      const response = await saveDocument(documentId, {
-        title: getTitle(),
-        content: contentToSave
-      })
-      document.value = response.data.document
       lastSavedAt.value = Date.now()
 
-      const currentContent = getContentHtml()
-      initialSnapshot.value = currentContent
-      // 保存期间若用户继续输入，dirty 仍为 true，需重新调度 autosave
-      dirty.value = currentContent !== contentToSave
+      // baseline 记的必须是「服务端上现在存着的那份」，而不是「此刻编辑器里的那份」。
+      //
+      // 落盘要好几个来回（草稿分支还要建项目、换路由），用户完全来得及继续敲。
+      // 把 baseline 设成当前内容，等于宣布这段新内容已经保存过了：
+      // 随后 markDirty() 拿当前内容和它自己比，永远相等，scheduleAutosave() 于是
+      // 立刻把 dirty 抹回 false 并直接返回 —— 那段内容再也不会被写出去，
+      // 离开页面时 flushAutosave() 看到的也是 dirty=false。
+      initialSnapshot.value = contentToSave
+      markDirty()
 
       if (dirty.value) {
         scheduleAutosave()

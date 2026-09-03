@@ -36,6 +36,7 @@
       data 是空的 {}（等价于「任意值」），同样没有任何一侧能报警。
 */
 import { describe, expect, it } from 'vitest'
+import { SITE_CONTENT_LOCALE_MAP, SUPPORTED_LOCALES } from '../../config/site'
 import {
   AUTH_API_ENDPOINTS,
   REGISTER_PASSWORD_MIN_LENGTH,
@@ -50,6 +51,7 @@ import {
   jsonTypesOf,
   navigate,
   nonNullBranch,
+  queryParamEnum,
   readRepoFile,
   requestBodySchema,
   specEndpoints,
@@ -526,6 +528,26 @@ describe('backend API contract', () => {
       usernameMax: REGISTER_USERNAME_MAX_LENGTH,
       passwordMin: REGISTER_PASSWORD_MIN_LENGTH
     })
+  })
+
+  it('only asks the backend for content languages it actually serves', () => {
+    // 站点 15 个语言，后端内容只有 2 个。不做映射时后端会把其余 13 个全落到 zh-CN，
+    // 页面外壳是本地语言而正文是中文，而站点还在 hreflang 里声明它们是法语版、韩语版。
+    const supported = queryParamEnum('GET /content/news', 'locale')
+
+    expect(supported, '契约里 /content/news 没有描述 locale 枚举').not.toBeNull()
+
+    const requested = [...new Set(Object.values(SITE_CONTENT_LOCALE_MAP))].sort()
+    const unsupported = requested.filter((locale) => !supported!.includes(locale))
+
+    expect(unsupported, '前端会向后端请求它并不提供的内容语言（会被 400）').toEqual([])
+  })
+
+  it('maps every supported site locale to a content language', () => {
+    // Record<SupportedLocale, ...> 已经保证不漏键，这里再确认没有空值混进去
+    const missing = SUPPORTED_LOCALES.filter((locale) => !SITE_CONTENT_LOCALE_MAP[locale])
+
+    expect(missing, '这些站点语言没有指定内容语言回退目标').toEqual([])
   })
 
   it('derives media URLs from the base with the API prefix stripped', () => {

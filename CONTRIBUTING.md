@@ -28,7 +28,8 @@ pnpm quality
 pnpm test:unit        # 纯函数 / 配置 / 静态扫描，秒级
 pnpm test:component   # 组件与页面渲染（Nuxt 运行时）
 pnpm test:coverage    # 带覆盖率阈值
-pnpm test:e2e         # 先 build:e2e，再用 Playwright 跑真实浏览器
+pnpm test:e2e         # 经 scripts/run-e2e.mjs：先 build:e2e，再用 Playwright 跑真实浏览器
+                      # 端口被占用：E2E_APP_PORT=3411 STUB_API_PORT=2131 pnpm test:e2e
 ```
 
 提交信息走 Conventional Commits，由 commitlint 校验（`feat:` / `fix:` / `docs:` / `refactor:` / `test:` / `chore:`）。

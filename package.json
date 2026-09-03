@@ -55,7 +55,7 @@
     "test": "vitest run",
     "test:component": "vitest run tests/component tests/nuxt",
     "test:coverage": "vitest run --coverage",
-    "test:e2e": "corepack pnpm run build:e2e && playwright test",
+    "test:e2e": "node scripts/run-e2e.mjs",
     "test:e2e:only": "playwright test",
     "test:unit": "vitest run tests/unit",
     "test:watch": "vitest",

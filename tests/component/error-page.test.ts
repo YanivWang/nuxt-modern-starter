@@ -18,6 +18,7 @@
 
   【边界与注意】
     error.forbidden 是 app/middleware/auth.ts 抛 403 时传入的 key，必须能被翻译出来。
+    「返回首页」的目标必须带当前语言前缀，否则非默认语言用户会被送回默认语言站点。
 */
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
@@ -58,9 +59,23 @@ describe('error page', () => {
     expect(wrapper.get('.page-eyebrow').text()).toBe('500')
   })
 
-  it('clears the error back to the home route', async () => {
-    const wrapper = await mountError({ statusCode: 404 })
+  it('clears the error back to the home route of the current language', async () => {
+    // 写死 '/' 会把非默认语言的用户送去中文站：'/' 是 zh-CN 的 canonical 首页，
+    // 而非产品路径的 locale 解析根本不看语言 cookie，一律回 DEFAULT_LOCALE。
+    const languageStore = useLanguageStore()
+    await languageStore.chooseLanguage('en-US')
 
+    const wrapper = await mountError({ statusCode: 404 })
+    await wrapper.get('.page-back-link').trigger('click')
+
+    expect(clearErrorMock).toHaveBeenCalledWith({ redirect: '/en' })
+  })
+
+  it('keeps the default language home unprefixed', async () => {
+    const languageStore = useLanguageStore()
+    await languageStore.chooseLanguage('zh-CN')
+
+    const wrapper = await mountError({ statusCode: 404 })
     await wrapper.get('.page-back-link').trigger('click')
 
     expect(clearErrorMock).toHaveBeenCalledWith({ redirect: '/' })

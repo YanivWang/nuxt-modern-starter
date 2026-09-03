@@ -18,7 +18,6 @@ describe('useDraftProject', () => {
       effectiveDocumentId: ref<string | null>(null),
       draftDocumentId,
       document: editorDocument,
-      getContentHtml: () => '<p><br></p>',
       getTitle: () => 'Untitled',
       createProject,
       saveDocument,
@@ -26,7 +25,7 @@ describe('useDraftProject', () => {
       onProjectCreated: vi.fn()
     })
 
-    await expect(ensureDraftProject()).resolves.toBeNull()
+    await expect(ensureDraftProject('<p><br></p>')).resolves.toBeNull()
     expect(createProject).not.toHaveBeenCalled()
     expect(saveDocument).not.toHaveBeenCalled()
     expect(draftDocumentId.value).toBeNull()
@@ -46,7 +45,6 @@ describe('useDraftProject', () => {
       effectiveDocumentId: ref<string | null>(null),
       draftDocumentId,
       document: editorDocument,
-      getContentHtml: () => '<p>First slide</p>',
       getTitle: () => 'My deck',
       createProject,
       saveDocument,
@@ -54,7 +52,7 @@ describe('useDraftProject', () => {
       onProjectCreated
     })
 
-    await expect(ensureDraftProject()).resolves.toBe('document_1')
+    await expect(ensureDraftProject('<p>First slide</p>')).resolves.toBe('document_1')
     expect(createProject).toHaveBeenCalledWith({ title: 'My deck' })
     expect(saveDocument).toHaveBeenCalledWith('document_1', {
       title: 'My deck',

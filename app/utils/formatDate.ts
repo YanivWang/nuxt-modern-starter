@@ -10,7 +10,7 @@
     formatDateOnly、formatPublishedDate、formatWorkspaceDateTime
 
   【依赖关系】
-    - 依赖：config/site.ts（SupportedLocale）
+    - 依赖：config/site.ts（SupportedLocale、SITE_INTL_LOCALE_MAP）
     - 被引用：news 页面、WorkspaceProjectCard 等
 
   【渲染 / 数据】
@@ -18,8 +18,15 @@
 
   【边界与注意】
     非法 ISO 字符串原样返回，避免 UI 崩溃。
+    传给 Intl 的必须是 SITE_INTL_LOCALE_MAP 转换后的标签，不能直接用站点 locale 标识。
 */
-import type { SupportedLocale } from '../../config/site'
+import { SITE_INTL_LOCALE_MAP, type SupportedLocale } from '../../config/site'
+
+/**
+ * 站点内部 locale 标识不一定是合法 BCP 47 语言标签（如 'ph-PH'），
+ * 直接丢给 Intl 会被静默回退到默认语言。统一经 SITE_INTL_LOCALE_MAP 转换。
+ */
+const intlLocale = (locale: SupportedLocale) => SITE_INTL_LOCALE_MAP[locale]
 
 export const formatDateOnly = (isoDate: string) => {
   const datePart = isoDate.split('T')[0]
@@ -47,7 +54,7 @@ export const formatPublishedDate = (isoDate: string, locale: SupportedLocale) =>
   }
 
   // 新闻发布日期固定 UTC，避免用户时区导致「同一天」显示不一致
-  return new Intl.DateTimeFormat(locale, {
+  return new Intl.DateTimeFormat(intlLocale(locale), {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
@@ -61,7 +68,7 @@ export const formatWorkspaceDateTime = (isoDate: string, locale: SupportedLocale
     return isoDate
   }
 
-  return new Intl.DateTimeFormat(locale, {
+  return new Intl.DateTimeFormat(intlLocale(locale), {
     year: 'numeric',
     month: locale === 'zh-CN' ? 'long' : 'short',
     day: 'numeric',

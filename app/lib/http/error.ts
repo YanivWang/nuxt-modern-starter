@@ -8,7 +8,7 @@
 
   【主要导出 / 路由】
     ApiError、createApiError、normalizeApiError、assertApiSuccess、
-    isUnauthorizedError、getApiErrorMessage
+    isUnauthorizedError、getApiErrorMessage、resolveUpstreamPageStatus
 
   【依赖关系】
     - 依赖：app/lib/http/types.ts
@@ -19,6 +19,8 @@
 
   【边界与注意】
     normalizeApiError 只在 HTTP 边界将 ofetch 形状转换一次；其余层仅消费 ApiError。
+    公开内容页拿不到数据时用 resolveUpstreamPageStatus 决定状态码，不要一律 404 ——
+    理由见该函数注释。
 */
 import type { ApiResponse } from './types'
 
@@ -87,6 +89,22 @@ export const assertApiSuccess = <T>(response: ApiResponse<T>) => {
 /** UI 只展示 HTTP 边界产出的 ApiError message；未知异常使用调用方文案 */
 export const getApiErrorMessage = (error: unknown, defaultMessage: string) =>
   error instanceof ApiError ? error.message : defaultMessage
+
+/**
+ * 把「拉取页面数据失败」映射成该页应当返回的 HTTP 状态。
+ *
+ * 只有上游明确说 404 才是 404，其余（5xx、限流、断网、超时）一律 503。
+ * 两者对搜索引擎的含义完全相反：404 是「永久没有了，从索引里删掉」，
+ * 503 是「暂时不可用，稍后再来」。把后端故障也报成 404，等于让一次抖动
+ * 把所有有效内容 URL 从索引里抹掉。
+ *
+ * 入参可能是 useAsyncData 包装过的 NuxtError，真实错误在 cause 上。
+ */
+export const resolveUpstreamPageStatus = (error: unknown): 404 | 503 => {
+  const cause = (error as { cause?: unknown } | null)?.cause ?? error
+
+  return (cause as { statusCode?: number } | null)?.statusCode === 404 ? 404 : 503
+}
 
 /** 鉴权层只识别规范化后的 ApiError，不再兼容 raw ofetch 或普通对象 */
 export const isUnauthorizedError = (error: unknown) =>

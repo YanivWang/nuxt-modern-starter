@@ -13,6 +13,8 @@
 
   【依赖关系】
     - 依赖：config/site.ts、config/routes.ts、runtimeConfig.public.apiBase（新闻 slug）
+    新闻 slug 带 1 小时进程内缓存，避免公开的 /sitemap.xml 把后端按 IP 计的配额烧光，
+    见 fetchNewsSlugs。
     - 被引用：server/routes/sitemap.xml.ts、server/routes/robots.txt.ts、tests/unit/seo-server-routes.test.ts
 
   【渲染 / 数据】
@@ -60,7 +62,24 @@ const absoluteUrl = (siteUrl: string, path: string) => `${normalizeSiteUrl(siteU
 const publicContentDetailPaths = (slugs: readonly string[]) =>
   SUPPORTED_LOCALES.flatMap((locale) => slugs.map((slug) => localizedPath(`/news/${slug}`, locale)))
 
-export const fetchNewsSlugs = async (apiBase: string) => {
+/**
+ * 新闻 slug 的进程内缓存。
+ *
+ * /sitemap.xml 是公开、无需登录的端点，而它每被请求一次就要向后端发一次 /content/news。
+ * 后端限流按 IP 计数，从它的视角看整个 SSR 服务器只是一个客户端 ——
+ * 于是任何人反复拉 sitemap 都在消耗全站 SSR 共享的那一份后端配额。
+ * slug 集合变化频率以天计，缓存一小时既不影响收录，也让请求量与爬虫频率脱钩。
+ *
+ * 失败结果不缓存：后端恢复后下一次请求就该拿到真实数据，而不是继续用一小时的兜底列表。
+ */
+const NEWS_SLUGS_TTL_MS = 60 * 60 * 1000
+let newsSlugsCache: { slugs: string[]; expiresAt: number } | null = null
+
+export const fetchNewsSlugs = async (apiBase: string, now = Date.now()) => {
+  if (newsSlugsCache && newsSlugsCache.expiresAt > now) {
+    return [...newsSlugsCache.slugs]
+  }
+
   try {
     const response = await $fetch<ApiResponse<{ articles: { slug: string }[] }>>('/content/news', {
       baseURL: apiBase,
@@ -69,11 +88,19 @@ export const fetchNewsSlugs = async (apiBase: string) => {
       }
     })
 
-    return response.data.articles.map((article) => article.slug)
+    const slugs = response.data.articles.map((article) => article.slug)
+    newsSlugsCache = { slugs, expiresAt: now + NEWS_SLUGS_TTL_MS }
+
+    return [...slugs]
   } catch {
-    // API 不可用时用静态 fallback，保证 sitemap 仍可生成
+    // API 不可用时用静态 fallback，保证 sitemap 仍可生成；不写缓存，后端恢复后立即回到真实数据
     return [...FALLBACK_NEWS_SLUGS]
   }
+}
+
+/** 仅供测试重置进程内缓存 */
+export const resetNewsSlugsCacheForTests = () => {
+  newsSlugsCache = null
 }
 
 export const getSitemapEntries = (

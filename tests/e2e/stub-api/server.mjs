@@ -127,16 +127,29 @@ let state = seed()
 const DEFAULT_PAGE_LIMIT = 20
 const MAX_PAGE_LIMIT = 100
 
+/**
+ * 非法取值按后端的方式**拒绝**，而不是静默钳制。
+ *
+ * 后端的 paginationQuerySchema 用 Zod 的 min/max 校验，limit=0 或 limit=500 直接 400。
+ * 桩这边如果悄悄改成 20 或 100，前端写出越界请求时 E2E 依然全绿，
+ * 而真实后端会 400 —— 桩比后端宽容，就等于给了一份现实中不存在的保证。
+ * 返回 null 表示参数非法，由调用方回 400。
+ */
 const parsePagination = (searchParams) => {
-  const rawLimit = Number(searchParams.get('limit'))
-  const rawOffset = Number(searchParams.get('offset'))
-  const limit =
-    Number.isFinite(rawLimit) && rawLimit >= 1
-      ? Math.min(rawLimit, MAX_PAGE_LIMIT)
-      : DEFAULT_PAGE_LIMIT
-  const offset = Number.isFinite(rawOffset) && rawOffset >= 0 ? rawOffset : 0
+  const parse = (name, fallback) => {
+    const raw = searchParams.get(name)
+    if (raw === null || raw === '') return fallback
+    const value = Number(raw)
+    return Number.isInteger(value) ? value : null
+  }
 
-  return { limit: Math.trunc(limit), offset: Math.trunc(offset) }
+  const limit = parse('limit', DEFAULT_PAGE_LIMIT)
+  const offset = parse('offset', 0)
+
+  if (limit === null || limit < 1 || limit > MAX_PAGE_LIMIT) return null
+  if (offset === null || offset < 0) return null
+
+  return { limit, offset }
 }
 
 const envelope = (data, code = 200, message = 'ok') => ({ code, message, data })
@@ -334,7 +347,13 @@ const routes = [
     handle: (req, res, { searchParams }) => {
       if (!isAuthorized(req)) return unauthorized(res)
 
-      const { limit, offset } = parsePagination(searchParams)
+      const page = parsePagination(searchParams)
+
+      if (!page) {
+        return send(res, 400, envelope(null, 400, 'limit 或 offset 不合法'))
+      }
+
+      const { limit, offset } = page
       // 与后端一致按 updatedAt DESC 排序后再切片，否则翻页会出现重复或漏项
       const ordered = [...state.projects].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
       const rows = ordered.slice(offset, offset + limit)

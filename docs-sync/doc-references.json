@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-09-03T01:40:28.317Z",
+  "generatedAt": "2026-09-03T05:52:54.879Z",
   "docFileCount": 33,
-  "referenceCount": 1314,
+  "referenceCount": 1319,
   "pathAllowlist": [
     "app/features/my-feature/",
     "app/features/my-feature/components/",
@@ -3063,7 +3063,7 @@
       "line": 10,
       "type": "script",
       "value": "test:e2e",
-      "context": "pnpm test:e2e        # 先 build:e2e，再用 Playwright 跑真实浏览器"
+      "context": "pnpm test:e2e        # 经 scripts/run-e2e.mjs：先 build:e2e，再用 Playwright 跑真实浏览器"
     },
     {
       "docFile": "docs-site/development/testing.md",
@@ -3351,6 +3351,41 @@
       "type": "script",
       "value": "docker:build",
       "context": "pnpm docker:build   # 若涉及部署"
+    },
+    {
+      "docFile": "docs-site/development/testing.md",
+      "line": 147,
+      "type": "file-path",
+      "value": "scripts/run-e2e.mjs",
+      "context": "不需要改 `.env.e2e`。`scripts/run-e2e.mjs` 会把对应的 `NUXT_PUBLIC_SITE_URL` /"
+    },
+    {
+      "docFile": "docs-site/development/testing.md",
+      "line": 147,
+      "type": "env-var",
+      "value": "NUXT_PUBLIC_SITE_URL",
+      "context": "不需要改 `.env.e2e`。`scripts/run-e2e.mjs` 会把对应的 `NUXT_PUBLIC_SITE_URL` /"
+    },
+    {
+      "docFile": "docs-site/development/testing.md",
+      "line": 147,
+      "type": "symbol",
+      "value": "NUXT_PUBLIC_SITE_URL",
+      "context": "不需要改 `.env.e2e`。`scripts/run-e2e.mjs` 会把对应的 `NUXT_PUBLIC_SITE_URL` /"
+    },
+    {
+      "docFile": "docs-site/development/testing.md",
+      "line": 148,
+      "type": "env-var",
+      "value": "NUXT_PUBLIC_API_BASE",
+      "context": "`NUXT_PUBLIC_API_BASE` 同时传给**构建**和 Playwright —— 两个阶段必须拿到同一份端口："
+    },
+    {
+      "docFile": "docs-site/development/testing.md",
+      "line": 148,
+      "type": "symbol",
+      "value": "NUXT_PUBLIC_API_BASE",
+      "context": "`NUXT_PUBLIC_API_BASE` 同时传给**构建**和 Playwright —— 两个阶段必须拿到同一份端口："
     },
     {
       "docFile": "docs-site/guide/getting-started.md",
@@ -3699,7 +3734,7 @@
       "docFile": "docs-site/guide/overview.md",
       "line": 92,
       "type": "test-count",
-      "value": "53/303",
+      "value": "55/321",
       "context": "| 测试   | Vitest 4.1.11 + @nuxt/test-utils 4.0.3；`vitest.config.ts` 用 `defineVitestConfig` + `include: tests/**/*.test.ts"
     },
     {

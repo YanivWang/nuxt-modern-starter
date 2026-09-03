@@ -9,7 +9,8 @@
 
   【主要导出 / 路由】
     SITE_NAME、SITE_DESCRIPTION、DEFAULT_SITE_URL、DEFAULT_LOCALE、SUPPORTED_LOCALES、
-    SITE_LOCALE_PREFIX_MAP、SITE_HREFLANG_MAP、SITE_LOCALE_OPTIONS、PUBLIC_PAGE_PATHS、NAV_ITEMS、
+    SITE_LOCALE_PREFIX_MAP、SITE_HREFLANG_MAP、SITE_INTL_LOCALE_MAP、SITE_CONTENT_LOCALE_MAP、
+    SITE_LOCALE_OPTIONS、PUBLIC_PAGE_PATHS、NAV_ITEMS、
     DEFAULT_SEO、SITE_ORG、SupportedLocale
 
   【依赖关系】
@@ -88,6 +89,67 @@ export const SITE_HREFLANG_MAP: Record<SupportedLocale, string> = {
   'de-DE': 'de',
   'fr-FR': 'fr',
   'ru-RU': 'ru',
+  'zh-HK': 'zh-HK',
+  'pt-BR': 'pt-BR'
+}
+
+/**
+ * 站点 locale → 后端**内容**语言。
+ *
+ * 站点支持 15 个语言，但 nuxt-modern-starter-api 的新闻与定价只有 zh-CN / en-US 两种
+ * （见契约里 /content/* 的 locale 枚举）。不做映射时，后端按「accept-language 以 en 开头」
+ * 判断，其余一律落到 zh-CN —— 于是 /fr/news、/ko/pricing 这些页面外壳是本地语言、
+ * 正文却是中文，而站点还在 hreflang 里声明它们是法语版、韩语版。
+ *
+ * 这里显式选择回退目标，与站点自己的既有约定一致：config/content/faq.ts 的
+ * resolveLocalizedContent 缺翻译时就是 en-US → zh-CN。中文圈落 zh-CN，其余落 en-US——
+ * 对法语、韩语、葡语读者来说英文正文远比中文正文可读。
+ *
+ * 逐条列全而不是「只写例外」：新增语言时必须显式决定它的内容语言。
+ * 取值范围由 tests/unit/api-contract.test.ts 对着契约里的 locale 枚举核对。
+ */
+export const SITE_CONTENT_LOCALE_MAP: Record<SupportedLocale, 'zh-CN' | 'en-US'> = {
+  'zh-CN': 'zh-CN',
+  'zh-HK': 'zh-CN',
+  'en-US': 'en-US',
+  'pt-PT': 'en-US',
+  'pt-BR': 'en-US',
+  'es-ES': 'en-US',
+  'ko-KR': 'en-US',
+  'th-TH': 'en-US',
+  'ms-MY': 'en-US',
+  'id-ID': 'en-US',
+  'ph-PH': 'en-US',
+  'ja-JP': 'en-US',
+  'de-DE': 'en-US',
+  'fr-FR': 'en-US',
+  'ru-RU': 'en-US'
+}
+
+/**
+ * 传给 Intl.* 的 BCP 47 标签。
+ *
+ * SUPPORTED_LOCALES 的键是站点内部标识，不保证是合法语言标签：'ph' 不是 ISO 639
+ * 语言码（菲律宾语是 fil / tl），Intl 认不出来又不会报错，只会静默回退到默认语言 ——
+ * 表现为菲律宾语下的新闻发布日期和工作台时间戳全是英文格式，没有任何报错。
+ * 其余语言的标签与内部标识一致，这里逐条列全而不是「只写例外」，
+ * 是为了让新增语言时必须显式给出它的 Intl 标签。
+ * 由 tests/unit/format-date.test.ts 断言每一条都不会被 Intl 回退。
+ */
+export const SITE_INTL_LOCALE_MAP: Record<SupportedLocale, string> = {
+  'zh-CN': 'zh-CN',
+  'en-US': 'en-US',
+  'pt-PT': 'pt-PT',
+  'es-ES': 'es-ES',
+  'ko-KR': 'ko-KR',
+  'th-TH': 'th-TH',
+  'ms-MY': 'ms-MY',
+  'id-ID': 'id-ID',
+  'ph-PH': 'fil-PH',
+  'ja-JP': 'ja-JP',
+  'de-DE': 'de-DE',
+  'fr-FR': 'fr-FR',
+  'ru-RU': 'ru-RU',
   'zh-HK': 'zh-HK',
   'pt-BR': 'pt-BR'
 }

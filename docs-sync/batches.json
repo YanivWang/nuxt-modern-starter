@@ -187,15 +187,16 @@
     },
     {
       "id": 8,
-      "name": "docker + vitest.config + doc-review",
+      "name": "docker + 测试配置 + doc-review",
       "files": [
         "docker/docker-compose.base.yaml",
         "docker/docker-compose.dev.yaml",
         "docker/docker-compose.yaml",
         "docker/nginx/gateway.docker.conf",
+        "playwright.config.ts",
         "vitest.config.ts"
       ]
     }
   ],
-  "totalFiles": 148
+  "totalFiles": 149
 }

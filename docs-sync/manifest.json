@@ -1,7 +1,6 @@
 {
-  "generatedAt": "2026-09-02T00:58:26.101Z",
-  "findCommand": "find app server config docker nuxt.config.ts vitest.config.ts -type f \\( -name \"*.ts\" -o -name \"*.vue\" -o -name \"*.js\" -o -name \"*.scss\" -o -name \"*.yaml\" -o -name \"*.conf\" \\) 2>/dev/null | sort",
-  "sourceFileCount": 148,
+  "findCommand": "find app server config docker nuxt.config.ts vitest.config.ts playwright.config.ts -type f \\( -name \"*.ts\" -o -name \"*.vue\" -o -name \"*.js\" -o -name \"*.scss\" -o -name \"*.yaml\" -o -name \"*.conf\" \\) 2>/dev/null | sort",
+  "sourceFileCount": 149,
   "docFileCount": 33,
   "sourceFiles": [
     {
@@ -933,6 +932,13 @@
       "type": "ts",
       "module": "config",
       "batch": 1,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "playwright.config.ts",
+      "type": "ts",
+      "module": "app-root",
+      "batch": 8,
       "hasHeaderComment": true
     },
     {
