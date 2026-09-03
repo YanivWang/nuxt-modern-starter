@@ -1,18 +1,18 @@
 /*
   【文件职责】
     营销归因参数持久化：从 URL query 捕获 utm_* / gclid 等，localStorage last-touch 按 key 合并。
-    mergeAttributionIntoBody 将归因字段浅合并进注册请求 body。
+    纯客户端能力：本模块只负责采集与保存，不往任何请求里注入字段。
 
   【架构位置】
     共享层 — app/utils，被 app/plugins/attribution.client.ts、app/api/auth.ts 消费。
 
   【主要导出 / 路由】
-    saveAttributionParams、getAttributionParams、clearAttributionParams、mergeAttributionIntoBody、
+    saveAttributionParams、getAttributionParams、clearAttributionParams、
     ATTRIBUTION_STORAGE_KEY、ATTRIBUTION_KEY_PATTERNS
 
   【依赖关系】
     - 依赖：无（client-only localStorage）
-    - 被引用：attribution.client plugin、registerApi
+    - 被引用：app/plugins/attribution.client.ts
 
   【渲染 / 数据】
     仅客户端；SSR 时 read/write 均为 no-op；无渠道 key 时不写 storage。
@@ -20,6 +20,10 @@
   【边界与注意】
     last-touch 按 key：本次 query 中的 key 覆盖 storage 同 key，其他 key 保留。
     修改 ATTRIBUTION_KEY_PATTERNS 需同步 tests/unit/attribution-params.test.ts。
+
+    归因只留在浏览器里。此前 registerApi 会把这些字段合并进注册请求 body，
+    但它们既不在 OpenAPI 的 /register 请求体里、后端也不消费，是一条从未接通的暗管。
+    要做服务端归因，应当新建带契约与存储的独立功能，不要再从这里往请求里塞字段。
 */
 export const ATTRIBUTION_STORAGE_KEY = 'attribution_params'
 
@@ -123,7 +127,3 @@ export const clearAttributionParams = (): void => {
 
   localStorage.removeItem(ATTRIBUTION_STORAGE_KEY)
 }
-
-/** 将已存归因字段浅合并进请求 body；SSR / 无 localStorage 时原样返回 body */
-export const mergeAttributionIntoBody = <T extends Record<string, unknown>>(body: T): T =>
-  ({ ...getAttributionParams(), ...body }) as T

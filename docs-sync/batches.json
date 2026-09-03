@@ -187,16 +187,21 @@
     },
     {
       "id": 8,
-      "name": "docker + 测试配置 + doc-review",
+      "name": "docker + 构建脚本 + 测试配置 + doc-review",
       "files": [
         "docker/docker-compose.base.yaml",
         "docker/docker-compose.dev.yaml",
         "docker/docker-compose.yaml",
         "docker/nginx/gateway.docker.conf",
         "playwright.config.ts",
+        "scripts/generate-theme-scss.mjs",
+        "scripts/i18n-manager-lib.mjs",
+        "scripts/i18n-manager.mjs",
+        "scripts/run-e2e.mjs",
+        "scripts/sync-api-contract.mjs",
         "vitest.config.ts"
       ]
     }
   ],
-  "totalFiles": 149
+  "totalFiles": 154
 }

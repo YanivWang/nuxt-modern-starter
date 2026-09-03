@@ -509,6 +509,21 @@ describe('backend API contract', () => {
     ).toBe(true)
   })
 
+  it('never sends register fields the contract does not declare', () => {
+    // 曾把 localStorage 的 utm_* / gclid 浅合并进注册 body：那些键不在契约的请求体里，
+    // 后端 Zod 非 strict 会静默丢弃 —— 一条从头到尾没人消费的暗管。
+    // 契约机制存在的意义就是不让「接口说一套做一套」，请求侧同样适用。
+    const declared = new Set(Object.keys(requestBodySchema('POST /register')?.properties ?? {}))
+    const source = readRepoFile('app/api/auth.ts')
+    const registerCall = source.slice(source.indexOf('export const registerApi'))
+
+    expect(declared, '契约里 /register 没有描述请求体').not.toEqual(new Set())
+    // 只查 import：注释里提到该模块是可以的（那里解释了为什么不再发），
+    // 真正要挡的是把它的值重新接回请求体。
+    expect(source, 'auth adapter 不应再依赖归因模块').not.toMatch(/^import .*attribution-params/m)
+    expect(registerCall).not.toContain('mergeAttributionIntoBody')
+  })
+
   it('validates registration input by the same lengths the backend enforces', () => {
     // 客户端校验比服务端松等于没有：表单放行、请求发出、再被 400 打回来。
     // 这些数字曾经只写在 sign-up.vue 的表单规则里（密码写的 6，后端要求 8）。

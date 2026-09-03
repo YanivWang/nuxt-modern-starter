@@ -1,6 +1,6 @@
 {
-  "findCommand": "find app server config docker nuxt.config.ts vitest.config.ts playwright.config.ts -type f \\( -name \"*.ts\" -o -name \"*.vue\" -o -name \"*.js\" -o -name \"*.scss\" -o -name \"*.yaml\" -o -name \"*.conf\" \\) 2>/dev/null | sort",
-  "sourceFileCount": 149,
+  "findCommand": "find app server config docker scripts nuxt.config.ts vitest.config.ts playwright.config.ts -type f \\( -name \"*.ts\" -o -name \"*.vue\" -o -name \"*.js\" -o -name \"*.mjs\" -o -name \"*.scss\" -o -name \"*.yaml\" -o -name \"*.conf\" \\) 2>/dev/null | sort",
+  "sourceFileCount": 154,
   "docFileCount": 33,
   "sourceFiles": [
     {
@@ -938,6 +938,41 @@
       "path": "playwright.config.ts",
       "type": "ts",
       "module": "app-root",
+      "batch": 8,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "scripts/generate-theme-scss.mjs",
+      "type": "mjs",
+      "module": "scripts",
+      "batch": 8,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "scripts/i18n-manager-lib.mjs",
+      "type": "mjs",
+      "module": "scripts",
+      "batch": 8,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "scripts/i18n-manager.mjs",
+      "type": "mjs",
+      "module": "scripts",
+      "batch": 8,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "scripts/run-e2e.mjs",
+      "type": "mjs",
+      "module": "scripts",
+      "batch": 8,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "scripts/sync-api-contract.mjs",
+      "type": "mjs",
+      "module": "scripts",
       "batch": 8,
       "hasHeaderComment": true
     },

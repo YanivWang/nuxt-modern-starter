@@ -1,4 +1,25 @@
 #!/usr/bin/env node
+/*
+  【文件职责】
+    同步后端 OpenAPI 契约到 contracts/openapi.yaml，并把来源记进 contracts/SOURCE.json。
+
+  【架构位置】
+    scripts — 由 package.json 的 contract:sync / contract:check 调用；check 接在 quality 链与 CI 上。
+
+  【主要导出 / 路由】
+    无（可执行脚本）；--check 只比对不写入，--from 指定源，--allow-dirty 允许同步未提交的上游。
+
+  【依赖关系】
+    - 依赖：../nuxt-modern-starter-api/docs/openapi.yaml（默认源）、contracts/SOURCE.json
+    - 被引用：package.json contract:sync / contract:check、CI static job、
+      tests/unit/api-contract.test.ts（消费同步下来的副本）
+
+  【渲染 / 数据】
+    只读写仓库内文件，不访问网络。
+
+  【边界与注意】
+    详细设计说明见下方。
+*/
 /**
  * 同步后端 OpenAPI 契约到 contracts/openapi.yaml，并记录它的来源。
  *

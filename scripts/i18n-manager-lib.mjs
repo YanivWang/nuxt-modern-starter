@@ -1,6 +1,31 @@
+/*
+  【文件职责】
+    i18n 治理的纯函数库：扁平化文案树、扫描源码里的键引用、比对各语言缺漏。
+    与命令行外壳分离，便于在 tests/unit/i18n-manager.test.ts 里直接验证。
+
+  【架构位置】
+    scripts — 被 scripts/i18n-manager.mjs 消费。
+
+  【主要导出 / 路由】
+    DEFAULT_INCLUDE_DIRS、SOURCE_FILE_PATTERN、flattenMessages、
+    buildLocaleDiff、checkLocaleHealth、scanUsedDiffRows、scanUnusedDiffRows
+
+  【依赖关系】
+    - 依赖：无（只读文件系统）
+    - 被引用：scripts/i18n-manager.mjs、tests/unit/i18n-manager.test.ts
+
+  【渲染 / 数据】
+    无副作用的纯计算，调用方负责读写磁盘。
+
+  【边界与注意】
+    键的提取基于静态文本匹配，动态拼接的键（`t(`a.${b}`)`）扫不出来，
+    因此 unused 结果是「疑似」而非结论，删除前需人工确认。
+*/
 import fs from 'node:fs'
 import path from 'node:path'
 
+// 扫描范围只含运行时源码：i18n/ 自身与 tests/ 不算「使用方」，
+// 把它们算进来会让每个键都显得有人用，unused 直接失去意义。
 export const DEFAULT_INCLUDE_DIRS = ['app', 'config', 'server']
 export const SOURCE_FILE_PATTERN = /\.(?:vue|ts|js|mjs|cjs|mts|cts)$/
 

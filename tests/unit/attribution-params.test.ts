@@ -20,11 +20,11 @@
 */
 // @vitest-environment happy-dom
 import { afterEach, describe, expect, it } from 'vitest'
+import * as attributionModule from '../../app/utils/attribution-params'
 import {
   ATTRIBUTION_STORAGE_KEY,
   clearAttributionParams,
   getAttributionParams,
-  mergeAttributionIntoBody,
   saveAttributionParams
 } from '../../app/utils/attribution-params'
 
@@ -103,21 +103,13 @@ describe('attribution params', () => {
     expect(getAttributionParams()).toEqual({})
   })
 
-  it('merges stored attribution into request body with body taking precedence', () => {
+  it('keeps attribution in the browser and out of any request body', () => {
+    // 归因此前会被合并进 /register 的请求体，而那些字段不在 OpenAPI 的请求体里、
+    // 后端也不消费。本模块现在只负责采集与保存，不提供任何往请求里注入的能力。
     saveAttributionParams({ utm_source: 'ad', gclid: 'abc' })
 
-    expect(
-      mergeAttributionIntoBody({
-        username: 'demo',
-        password: 'secret',
-        utm_source: 'override'
-      })
-    ).toEqual({
-      utm_source: 'override',
-      gclid: 'abc',
-      username: 'demo',
-      password: 'secret'
-    })
+    expect(getAttributionParams()).toEqual({ utm_source: 'ad', gclid: 'abc' })
+    expect(Object.keys(attributionModule)).not.toContain('mergeAttributionIntoBody')
   })
 
   it('clears stored attribution params', () => {

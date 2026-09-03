@@ -1,6 +1,6 @@
 /*
   【文件职责】
-    单测：app/api/auth refreshAccessTokenOnce 单飞、register 归因合并。
+    单测：app/api/auth refreshAccessTokenOnce 单飞、register 请求体只含契约字段。
 
   【架构位置】
     tests/unit — mock auth-session、clients、attribution。
@@ -10,7 +10,7 @@
 
   【依赖关系】
     - 依赖：app/api/auth.ts
-    - mock：useAuthSession、createAuthApiClient、mergeAttributionIntoBody
+    - mock：useAuthSession、createAuthApiClient
 
   【渲染 / 数据】
     无
@@ -39,17 +39,9 @@ const clientMocks = vi.hoisted(() => ({
   request: vi.fn()
 }))
 
-const attributionMocks = vi.hoisted(() => ({
-  mergeAttributionIntoBody: vi.fn((body: Record<string, unknown>) => ({
-    ...body,
-    utm_source: 'ads'
-  }))
-}))
-
 vi.mock('../../app/utils/auth-session', () => ({
   useAuthSession: () => sessionMocks
 }))
-vi.mock('../../app/utils/attribution-params', () => attributionMocks)
 vi.mock('../../app/api/clients', () => ({
   createAuthApiClient: vi.fn(() => ({
     request: clientMocks.request
@@ -154,7 +146,10 @@ describe('auth api', () => {
     })
   })
 
-  it('merges attribution params into register payloads', async () => {
+  it('sends only the fields the register contract declares', async () => {
+    // 此前这里把 localStorage 的 utm_* / gclid 浅合并进 body。那些键不在 OpenAPI
+    // 的 /register 请求体里，后端 Zod 非 strict 会静默丢弃 —— 一条从未接通的暗管。
+    // 契约侧的对应断言在 tests/unit/api-contract.test.ts。
     clientMocks.request.mockResolvedValue({
       code: 200,
       message: 'created',
@@ -164,17 +159,9 @@ describe('auth api', () => {
     const { registerApi } = await import('../../app/api/auth')
     await registerApi({ username: 'alice', password: 'secret' })
 
-    expect(attributionMocks.mergeAttributionIntoBody).toHaveBeenCalledWith({
-      username: 'alice',
-      password: 'secret'
-    })
     expect(clientMocks.request).toHaveBeenCalledWith('/register', {
       method: 'POST',
-      body: {
-        username: 'alice',
-        password: 'secret',
-        utm_source: 'ads'
-      }
+      body: { username: 'alice', password: 'secret' }
     })
   })
 })

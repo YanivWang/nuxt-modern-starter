@@ -19,6 +19,7 @@ const moduleOf = (p) => {
   if (p.startsWith('config/')) return 'config'
   if (p.startsWith('server/')) return 'server'
   if (p.startsWith('docker/')) return 'docker'
+  if (p.startsWith('scripts/')) return 'scripts'
   if (p === 'nuxt.config.ts' || p === 'vitest.config.ts') return 'config'
   if (p.startsWith('app/lib/')) return 'lib-http'
   if (p.startsWith('app/api/')) return 'api'
@@ -98,9 +99,12 @@ const batchRules = [
   },
   {
     id: 8,
-    name: 'docker + 测试配置 + doc-review',
+    name: 'docker + 构建脚本 + 测试配置 + doc-review',
     match: (p) =>
-      p.startsWith('docker/') || p === 'vitest.config.ts' || p === 'playwright.config.ts'
+      p.startsWith('docker/') ||
+      p.startsWith('scripts/') ||
+      p === 'vitest.config.ts' ||
+      p === 'playwright.config.ts'
   }
 ]
 

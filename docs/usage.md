@@ -172,7 +172,7 @@ Capture behavior:
 
 Registration example:
 
-- `registerApi()` merges stored attribution into the request body before sending. Note that `nuxt-modern-starter-api` does **not** consume these fields today: its register schema parses `{ username, password }` with a non-strict Zod object, so the extra keys are silently stripped and never persisted. The client-side capture is still useful (the values stay in `localStorage` for your own analytics), but treat server-side attribution as not yet implemented rather than assuming it is being recorded.
+- Attribution stays in the browser. `registerApi()` sends only the fields the OpenAPI contract declares (`username`, `password`). It previously merged the stored `utm_*` / `gclid` values into the register body, but those keys are not part of the contract's request schema and `nuxt-modern-starter-api` parses the body with a non-strict Zod object, so they were silently dropped — a pipe that was never connected at either end. Server-side attribution is deliberately not implemented: if you need it, build it as its own feature with a declared contract and durable storage rather than smuggling extra keys through the auth endpoint. `tests/unit/api-contract.test.ts` fails if the register adapter starts depending on the attribution module again.
 - Backend acceptance of these fields is a fork-specific API contract.
 - Login conversion is not wired in v1; call `mergeAttributionIntoBody()` inside `loginApi()` in fork projects when needed.
 
@@ -192,7 +192,7 @@ Manual checks:
 # land with params, inspect localStorage key attribution_params
 /?utm_source=test
 
-# register request body should include stored attribution fields
+# register request body must contain only username and password
 ```
 
 ## Analytics Plugin Slot

@@ -12,13 +12,12 @@
     并 re-export createAuthApiClient / AuthApiClientOptions
 
   【依赖关系】
-    - 依赖：config/auth.ts、app/api/clients.ts、app/utils/auth-session.ts、app/utils/attribution-params.ts、
-      app/types/user-profile.ts
+    - 依赖：config/auth.ts、app/api/clients.ts、app/utils/auth-session.ts、app/types/user-profile.ts
     - 被引用：app/stores/auth.ts、app/api/workspace-project.ts、app/features/editor/api.ts
 
   【渲染 / 数据】
     adapter 相对路径：/login、/register、/refresh、/me 等（base 已含 /api/v1）。
-    register 合并归因参数；Product client 默认从 cookie 读 accessToken。
+    register 只发契约字段（不再夹带归因参数）；Product client 默认从 cookie 读 accessToken。
 
   【边界与注意】
     createProductApiClient 定义在此文件，不在 app/api/clients.ts。
@@ -35,7 +34,6 @@ import type { ApiResponse } from '../lib/http/types'
 import type { UserProfile, WritableUserProfileFields } from '../types/user-profile'
 import { createAuthApiClient, type AuthApiClientOptions } from './clients'
 import { useAuthSession } from '../utils/auth-session'
-import { mergeAttributionIntoBody } from '../utils/attribution-params'
 import { isUnauthorizedError } from '../lib/http/error'
 
 export { createAuthApiClient, type AuthApiClientOptions } from './clients'
@@ -252,10 +250,22 @@ export const normalizeAuthUser = (user: BackendUser): AuthUser => ({
   permissions: user.permissions ?? []
 })
 
+/**
+ * 注册只发契约声明过的字段。
+ *
+ * 这里曾把 localStorage 里的 utm_* / gclid 等归因参数浅合并进 body。那些键既不在
+ * OpenAPI 的 /register 请求体里，后端的 Zod 也不是 strict 的 —— 它们被静默丢弃，
+ * 整条链路从头到尾没有任何一端消费过。
+ *
+ * 删掉不是为了省事：本仓库所有契约机制都在防「接口说一套做一套」，
+ * 而往请求里塞一份合同外的载荷正是那件事本身。真要做归因，应当是带契约、
+ * 带存储、独立于鉴权领域的功能，而不是搭在注册接口上的暗管。
+ * 采集本身保留（见 app/utils/attribution-params.ts），它对客户端分析仍然有用。
+ */
 export const registerApi = (payload: RegisterPayload) =>
   sendAuthApiRequest<AuthEnvelope>(AUTH_API_ENDPOINTS.register, {
     method: 'POST',
-    body: mergeAttributionIntoBody(payload) as RegisterPayload & Record<string, string>
+    body: payload
   })
 
 export const loginApi = (payload: LoginPayload) =>

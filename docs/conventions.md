@@ -148,7 +148,7 @@ Third-party analytics scripts should stay behind explicit env toggles. The start
 
 The global CSP currently keeps `script-src 'unsafe-inline'` because prerendered and SWR-cached HTML includes executable inline scripts for `theme-init` and Nuxt runtime config. Do not switch to per-response nonces while keeping prerender/SWR caches; nonce reuse in cached HTML defeats the model. Removing `unsafe-inline` requires a separate build-time hash injection implementation and validation against generated HTML.
 
-Channel attribution uses client-side `localStorage` only. It does not affect SSR, prerender, SWR, or CDN cache safety. Clear attribution only on explicit logout; do not tie attribution cleanup to generic auth reset paths.
+Channel attribution uses client-side `localStorage` only, and stays there: no request body carries these fields. It does not affect SSR, prerender, SWR, or CDN cache safety. Clear attribution only on explicit logout; do not tie attribution cleanup to generic auth reset paths. Adding server-side attribution means a new feature with its own contract and storage, not extra keys appended to an existing endpoint.
 
 Fork projects targeting EU or other consent-regulated regions must add their own cookie or consent banner (CMP). The starter does not ship a CMP.
 

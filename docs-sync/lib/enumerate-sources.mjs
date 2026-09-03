@@ -10,7 +10,7 @@ import path from 'node:path'
 export const ROOT = path.resolve(import.meta.dirname, '../..')
 
 export const FIND_SOURCES_CMD =
-  'find app server config docker nuxt.config.ts vitest.config.ts playwright.config.ts -type f \\( -name "*.ts" -o -name "*.vue" -o -name "*.js" -o -name "*.scss" -o -name "*.yaml" -o -name "*.conf" \\) 2>/dev/null | sort'
+  'find app server config docker scripts nuxt.config.ts vitest.config.ts playwright.config.ts -type f \\( -name "*.ts" -o -name "*.vue" -o -name "*.js" -o -name "*.mjs" -o -name "*.scss" -o -name "*.yaml" -o -name "*.conf" \\) 2>/dev/null | sort'
 
 export const FIND_DOCS_CMDS = [
   'find docs-site -name "*.md" | sort',

@@ -1,3 +1,25 @@
+/*
+  【文件职责】
+    从 config/theme-palette.json 生成 app/assets/styles/tokens 下的 _variables.scss 与 _dark.scss。
+    色值的唯一来源是那份 JSON，SCSS 是它的产物，不应手改。
+
+  【架构位置】
+    scripts — 由 package.json 的 prebuild* 钩子在每次构建前执行。
+
+  【主要导出 / 路由】
+    无（可执行脚本）；写出 tokens/_variables.scss 与 tokens/_dark.scss。
+
+  【依赖关系】
+    - 依赖：config/theme-palette.json、prettier（复用仓库 .prettierrc 排版生成物）
+    - 被引用：package.json 的 generate:theme 与各 prebuild 钩子
+
+  【渲染 / 数据】
+    构建期一次性执行；产物是纯 CSS 变量声明，不含逻辑。
+
+  【边界与注意】
+    生成物带「AUTO-GENERATED」标记：手改会在下次构建被覆盖。
+    新增 token 要同时改 cssVarMap 与 theme-palette.json，只改一处会生成出引用不到的变量。
+*/
 import { readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
