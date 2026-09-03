@@ -105,6 +105,12 @@
   "news": {
     "title": "Lanzamientos y notas de Nuxt Modern Starter",
     "lead": "Sigue releases del starter, prácticas de despliegue y guías de extensión. Estas páginas también demuestran listados/detalle de noticias, Article JSON-LD y reglas de caché SWR.",
-    "notFound": "No se encontró este artículo de noticias"
+    "notFound": "No se encontró este artículo de noticias",
+    "archiveTitle": "Archivo de noticias · Página {page}",
+    "pagination": {
+      "previous": "Anterior",
+      "next": "Siguiente",
+      "status": "Página {page} de {total}"
+    }
   }
 }

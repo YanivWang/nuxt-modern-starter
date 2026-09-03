@@ -105,6 +105,12 @@
   "news": {
     "title": "รีลีสและบันทึก Nuxt Modern Starter",
     "lead": "ติดตามรีลีส starter แนวทาง deploy และคำแนะนำการขยาย หน้าเหล่านี้ยังสาธิตรายการ/รายละเอียดข่าว Article JSON-LD และกฎ cache SWR",
-    "notFound": "ไม่พบบทความข่าวนี้"
+    "notFound": "ไม่พบบทความข่าวนี้",
+    "archiveTitle": "คลังข่าว · หน้า {page}",
+    "pagination": {
+      "previous": "ก่อนหน้า",
+      "next": "ถัดไป",
+      "status": "หน้า {page} จาก {total}"
+    }
   }
 }

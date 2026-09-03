@@ -1,6 +1,6 @@
 {
   "findCommand": "find app server config docker scripts nuxt.config.ts vitest.config.ts playwright.config.ts -type f \\( -name \"*.ts\" -o -name \"*.vue\" -o -name \"*.js\" -o -name \"*.mjs\" -o -name \"*.scss\" -o -name \"*.yaml\" -o -name \"*.conf\" \\) 2>/dev/null | sort",
-  "sourceFileCount": 154,
+  "sourceFileCount": 156,
   "docFileCount": 33,
   "sourceFiles": [
     {
@@ -145,6 +145,13 @@
     },
     {
       "path": "app/components/base/BasePicture.vue",
+      "type": "vue",
+      "module": "components",
+      "batch": 4,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/components/base/NewsArticleList.vue",
       "type": "vue",
       "module": "components",
       "batch": 4,
@@ -649,6 +656,13 @@
     },
     {
       "path": "app/pages/[[language]]/news/index.vue",
+      "type": "vue",
+      "module": "pages",
+      "batch": 5,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "app/pages/[[language]]/news/page/[page].vue",
       "type": "vue",
       "module": "pages",
       "batch": 5,

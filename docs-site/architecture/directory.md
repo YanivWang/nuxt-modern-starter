@@ -30,7 +30,7 @@ nuxt-modern-starter/
 | `[[language]]/pricing.vue`      | `/pricing`               | 定价（SSR）                        |
 | `[[language]]/about.vue`        | `/about`                 | 关于（prerender）                  |
 | `[[language]]/help.vue`         | `/help`                  | 帮助 + FAQ                         |
-| `[[language]]/news/`            | `/news/**`               | 新闻列表/详情                      |
+| `[[language]]/news/`            | `/news/**`               | 新闻列表 / 归档分页 / 详情         |
 | `[[language]]/sign-in.vue`      | `/sign-in`               | 登录（noindex）                    |
 | `[[language]]/sign-up.vue`      | `/sign-up`               | 注册（noindex）                    |
 | `[[language]]/[...slug].vue`    | 未匹配                   | 404                                |

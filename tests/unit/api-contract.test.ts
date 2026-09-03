@@ -423,7 +423,7 @@ const RESPONSE_DATA_KEYS: Record<string, readonly string[] | null> = {
   'POST /uploads/large/{uploadId}/merge': ['merged', 'url'],
   // 取消任务返回空对象而不是 null
   'DELETE /uploads/large/{uploadId}': [],
-  'GET /content/news': ['articles'],
+  'GET /content/news': ['articles', 'pagination'],
   'GET /content/news/{slug}': ['article'],
   'GET /content/pricing': ['pricing']
 }

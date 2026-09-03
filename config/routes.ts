@@ -74,12 +74,59 @@ export const hasTrailingSlash = (path: string) => path.length > 1 && path.endsWi
 export const withoutTrailingSlash = (path: string) => path.replace(/\/+$/, '') || '/'
 
 /**
+ * 新闻索引每页条数。
+ *
+ * 放在 config 而不是 adapter 里：归档页 URL（/news/page/N）里的 N 由它算出，
+ * 页面、sitemap、canonical 规则三处都要用同一个值。散在 app/ 的话，
+ * server 层为拿一个常量就得值导入整个 API adapter。
+ *
+ * 与后端 DEFAULT_PAGE_LIMIT 同为 20，但请求时显式传出去，不靠双方默认值撞上 ——
+ * 一旦哪天两边不再相等，页码与实际内容会静默错位。
+ */
+export const NEWS_PAGE_SIZE = 20
+
+/** 归档页路径段：/news/page/2。独立成常量，路由文件与 canonical 规则共用。 */
+export const NEWS_ARCHIVE_SEGMENT = 'page'
+
+export const newsArchivePath = (page: number) => `/news/${NEWS_ARCHIVE_SEGMENT}/${page}`
+
+/**
+ * 从新闻总数算出归档页总数。总数为 0 时仍算 1 页 —— 空列表也要有 /news 可访问。
+ */
+export const newsTotalPages = (totalArticles: number, pageSize: number = NEWS_PAGE_SIZE) =>
+  Math.max(1, Math.ceil(totalArticles / pageSize))
+
+/**
+ * /news/page/1 → /news，/en/news/page/1 → /en/news。
+ *
+ * 第 1 页有两个可达 URL 时，两个都会被收录成同一份内容。归档分页必须只有一个
+ * canonical 入口，否则站内出现整页级别的重复内容。sitemap 里也只收 /news 与第 2 页起。
+ *
+ * 非默认语言前缀要一并处理：这一步跑在「去默认语言前缀」之后，
+ * 那一步只摘 zh，/en/news/page/1 到这里仍然带着前缀。只判无前缀形式的话，
+ * 14 个非默认语言的归档首页会各自留下一个重复 URL。
+ *
+ * 只折 page/1：page/2 以上是各自独立的页面，自指 canonical。
+ */
+const newsArchiveFirstPageToCanonical = (path: string): string | null => {
+  if (path === newsArchivePath(1)) return '/news'
+
+  const localePrefixes = Object.values(SITE_LOCALE_PREFIX_MAP)
+  const [firstSegment, ...rest] = path.split('/').filter(Boolean)
+
+  if (!firstSegment || !localePrefixes.includes(firstSegment)) return null
+
+  return `/${rest.join('/')}` === newsArchivePath(1) ? `/${firstSegment}/news` : null
+}
+
+/**
  * 请求路径规范化的唯一来源：返回应当 301 过去的 canonical path，已规范则返回 null。
  *
- * 按优先级串联三条规则（与 app/middleware/locale.global.ts 的决策树同序）：
+ * 按优先级串联四条规则（与 app/middleware/locale.global.ts 的决策树同序）：
  *   1. 去尾斜杠：/about/ → /about
  *   2. 去默认语言前缀：/zh/pricing → /pricing
  *   3. 产品 URL 语言中性：/en/workspace → /workspace
+ *   4. 新闻归档首页折回：/news/page/1 → /news
  *
  * 逐条化简而不是「命中即返回」，是为了让 /en/workspace/ 这类叠加情形一次收敛到 /workspace，
  * 避免连跳两次 301。
@@ -100,6 +147,7 @@ export const canonicalRequestPath = (path: string): string | null => {
   }
 
   current = localizedProductPathToCanonical(current) ?? current
+  current = newsArchiveFirstPageToCanonical(current) ?? current
 
   return current === normalizedInput ? null : current
 }

@@ -105,6 +105,12 @@
   "news": {
     "title": "Nuxt Modern Starter Releases und Notizen",
     "lead": "Verfolgen Sie Starter-Releases, Deployment-Praxis und Erweiterungshinweise. Diese Seiten demonstrieren auch News-Listen/Details, Article JSON-LD und SWR-Cache-Regeln.",
-    "notFound": "Dieser News-Artikel wurde nicht gefunden"
+    "notFound": "Dieser News-Artikel wurde nicht gefunden",
+    "archiveTitle": "Nachrichtenarchiv · Seite {page}",
+    "pagination": {
+      "previous": "Zurück",
+      "next": "Weiter",
+      "status": "Seite {page} von {total}"
+    }
   }
 }

@@ -188,19 +188,37 @@ const readBody = (req) =>
 
 const isAuthorized = (req) => req.headers.authorization === `Bearer ${ACCESS_TOKEN}`
 
+/**
+ * 新闻桩数据。
+ *
+ * 条数刻意超过一页（前端 NEWS_PAGE_SIZE = 20），否则 /news/page/2 这类归档页
+ * 在 E2E 里根本不存在，翻页链路等于没被覆盖。
+ * 前两篇保持固定 slug 与标题，既有用例按它们断言。
+ */
 const newsArticles = [
   {
     slug: 'starter-release',
     title: 'Starter release',
     description: 'The first public build of the starter.',
-    publishedAt: '2026-07-01T00:00:00.000Z'
+    publishedAt: '2026-07-25T00:00:00.000Z'
   },
   {
     slug: 'deployment-guide',
     title: 'Deployment guide',
     description: 'Docker, Compose and Nginx samples.',
-    publishedAt: '2026-07-02T00:00:00.000Z'
-  }
+    publishedAt: '2026-07-24T00:00:00.000Z'
+  },
+  // 补足到 23 篇：第 1 页 20 篇、第 2 页 3 篇，两页都有内容可断言。
+  ...Array.from({ length: 21 }, (_, index) => {
+    const ordinal = index + 1
+    return {
+      slug: `archive-note-${ordinal}`,
+      title: `Archive note ${ordinal}`,
+      description: `Filler article ${ordinal} used to exercise news pagination.`,
+      // 日期递减，与后端 publishedAt DESC 的排序一致
+      publishedAt: `2026-07-${String(23 - index).padStart(2, '0')}T00:00:00.000Z`
+    }
+  })
 ]
 
 const pricingPage = {
@@ -499,7 +517,32 @@ const routes = [
     contract: 'GET /content/news',
     method: 'GET',
     match: (p) => p === '/content/news',
-    handle: (_req, res) => send(res, 200, envelope({ articles: newsArticles }))
+    handle: (_req, res, { searchParams }) => {
+      const page = parsePagination(searchParams)
+
+      if (!page) {
+        return send(res, 400, envelope(null, 400, 'limit 或 offset 不合法'))
+      }
+
+      const { limit, offset } = page
+      // 与后端一致按 publishedAt DESC 排序后再切片，否则翻页会重复或漏项
+      const ordered = [...newsArticles].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
+      const rows = ordered.slice(offset, offset + limit)
+
+      send(
+        res,
+        200,
+        envelope({
+          articles: rows,
+          pagination: {
+            total: ordered.length,
+            limit,
+            offset,
+            hasMore: offset + rows.length < ordered.length
+          }
+        })
+      )
+    }
   },
   {
     contract: 'GET /content/news/{slug}',

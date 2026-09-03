@@ -105,6 +105,12 @@
   "news": {
     "title": "Nuxt Modern Starter のリリースとノート",
     "lead": "スターターのリリース、デプロイ実践、拡張ガイドを追跡。ニュース一覧/詳細、Article JSON-LD、SWR キャッシュルールのデモも兼ねています。",
-    "notFound": "このニュース記事は見つかりませんでした"
+    "notFound": "このニュース記事は見つかりませんでした",
+    "archiveTitle": "ニュースアーカイブ · {page} ページ目",
+    "pagination": {
+      "previous": "前へ",
+      "next": "次へ",
+      "status": "{total} ページ中 {page} ページ目"
+    }
   }
 }

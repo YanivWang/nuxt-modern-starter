@@ -64,6 +64,41 @@ test.describe('public site', () => {
     await expect(page.locator('meta[property="og:type"]')).toHaveAttribute('content', 'article')
   })
 
+  test('paginates the news archive with crawlable server-rendered pages', async ({ page }) => {
+    await page.goto('/news')
+
+    // 按类名而不是文案定位：默认语言是 zh-CN，按 'Next' 选会在默认语言下找不到
+    const nextLink = page.locator('.news-pagination__link--next')
+    await expect(nextLink).toHaveAttribute('href', '/news/page/2')
+
+    await nextLink.click()
+    await expect(page).toHaveURL('/news/page/2')
+
+    // 归档页是服务端渲染的：canonical 自指，且能被直接访问而不是只在客户端存在
+    const response = await page.goto('/news/page/2')
+    expect(response?.status()).toBe(200)
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /\/news\/page\/2$/)
+    await expect(page.locator('.news-pagination__link--prev')).toHaveAttribute('href', '/news')
+  })
+
+  test('sends the first archive page back to the news index', async ({ page }) => {
+    // /news 与 /news/page/1 是同一份内容，两个都可达就会被当作重复内容收录
+    await page.goto('/news/page/1')
+    await expect(page).toHaveURL('/news')
+
+    await page.goto('/en/news/page/1')
+    await expect(page).toHaveURL('/en/news')
+  })
+
+  test('returns 404 for archive pages that do not exist', async ({ page }) => {
+    // 夹到最近一页会让任意 /news/page/9999 都返回 200，等于制造无限份重复内容
+    const beyondEnd = await page.goto('/news/page/9999')
+    expect(beyondEnd?.status()).toBe(404)
+
+    const malformed = await page.goto('/news/page/abc')
+    expect(malformed?.status()).toBe(404)
+  })
+
   test('redirects the default-language prefix to the unprefixed canonical path', async ({
     page
   }) => {

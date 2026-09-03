@@ -7,14 +7,15 @@
     共享层 — app/api，供公开 SEO 页面（pricing、news、help）消费。
 
   【主要导出 / 路由】
-    getFaqItems、fetchNewsArticles、fetchLocalizedNewsArticle、fetchPricingPage
+    getFaqItems、NewsArticleList、fetchNewsArticles、fetchLocalizedNewsArticle、fetchPricingPage
 
   【依赖关系】
-    - 依赖：app/api/clients.ts、config/content/faq.ts、config/site.ts（SITE_CONTENT_LOCALE_MAP）
+    - 依赖：app/api/clients.ts、config/content/faq.ts、config/site.ts（SITE_CONTENT_LOCALE_MAP）、
+      config/routes.ts（NEWS_PAGE_SIZE）
     - 被引用：app/pages/[[language]]/pricing.vue、news/*、help.vue
 
   【渲染 / 数据】
-    adapter 相对路径：/content/news、/content/news/:slug、/content/pricing。
+    adapter 相对路径：/content/news（分页，limit/offset）、/content/news/:slug、/content/pricing。
     页面注释可写完整路径 GET /api/v1/content/pricing（便于联调）。
 
   【边界与注意】
@@ -22,9 +23,10 @@
     远程内容只有 zh-CN / en-US 两种语言，站点其余 13 个语言按 SITE_CONTENT_LOCALE_MAP 回退；
     不做映射的话，后端会把它们全部落到 zh-CN，页面外壳是本地语言而正文是中文。
 */
-import type { ApiResponse } from '../lib/http/types'
+import type { ApiPagination, ApiResponse } from '../lib/http/types'
 import { faqItems, resolveLocalizedContent } from '../../config/content/faq'
 import { SITE_CONTENT_LOCALE_MAP, type SupportedLocale } from '../../config/site'
+import { NEWS_PAGE_SIZE } from '../../config/routes'
 import { createPublicApiClient } from './clients'
 
 /**
@@ -81,15 +83,24 @@ export const getFaqItems = (locale: SupportedLocale) =>
     answer: resolveLocalizedContent(item.answer, locale)
   }))
 
-export const fetchNewsArticles = (locale: SupportedLocale) => {
+export type NewsArticleList = {
+  articles: LocalizedNewsArticleSummary[]
+  pagination: ApiPagination
+}
+
+export const fetchNewsArticles = (
+  locale: SupportedLocale,
+  { limit = NEWS_PAGE_SIZE, offset = 0 }: { limit?: number; offset?: number } = {}
+) => {
   const contentLocale = contentLocaleOf(locale)
 
-  return createPublicApiClient({ locale: contentLocale }).request<
-    ApiResponse<{ articles: LocalizedNewsArticleSummary[] }>
-  >('/content/news', {
-    method: 'GET',
-    query: { locale: contentLocale }
-  })
+  return createPublicApiClient({ locale: contentLocale }).request<ApiResponse<NewsArticleList>>(
+    '/content/news',
+    {
+      method: 'GET',
+      query: { locale: contentLocale, limit, offset }
+    }
+  )
 }
 
 export const fetchLocalizedNewsArticle = (slug: string, locale: SupportedLocale) => {

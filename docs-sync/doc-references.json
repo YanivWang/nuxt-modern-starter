@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-09-03T08:40:35.599Z",
+  "generatedAt": "2026-09-03T09:47:48.879Z",
   "docFileCount": 33,
-  "referenceCount": 1320,
+  "referenceCount": 1326,
   "pathAllowlist": [
     "app/features/my-feature/",
     "app/features/my-feature/components/",
@@ -554,217 +554,217 @@
     },
     {
       "docFile": "docs-site/architecture/data-flow.md",
-      "line": 70,
+      "line": 73,
       "type": "symbol",
       "value": "createAuthApiClient",
       "context": "`createProductApiClient()` 也在 `auth.ts` 导出，内部组合 `createAuthApiClient` + `refreshAccessTokenOnce` 单飞 refresh（并发 401 共享同一 "
     },
     {
       "docFile": "docs-site/architecture/data-flow.md",
-      "line": 70,
+      "line": 73,
       "type": "symbol",
       "value": "refreshAccessTokenOnce",
       "context": "`createProductApiClient()` 也在 `auth.ts` 导出，内部组合 `createAuthApiClient` + `refreshAccessTokenOnce` 单飞 refresh（并发 401 共享同一 "
     },
     {
       "docFile": "docs-site/architecture/data-flow.md",
-      "line": 70,
+      "line": 73,
       "type": "symbol",
       "value": "refreshPromise",
       "context": "`createProductApiClient()` 也在 `auth.ts` 导出，内部组合 `createAuthApiClient` + `refreshAccessTokenOnce` 单飞 refresh（并发 401 共享同一 "
     },
     {
       "docFile": "docs-site/architecture/data-flow.md",
-      "line": 72,
+      "line": 75,
       "type": "symbol",
       "value": "fetchMeApi",
       "context": "`fetchMeApi` / `fetchProfileApi` / `updateProfileApi` 通过 `sendAuthApiRequest(..., { retryOnUnauthorized: true })` 启用 401"
     },
     {
       "docFile": "docs-site/architecture/data-flow.md",
-      "line": 72,
+      "line": 75,
       "type": "symbol",
       "value": "fetchProfileApi",
       "context": "`fetchMeApi` / `fetchProfileApi` / `updateProfileApi` 通过 `sendAuthApiRequest(..., { retryOnUnauthorized: true })` 启用 401"
     },
     {
       "docFile": "docs-site/architecture/data-flow.md",
-      "line": 72,
+      "line": 75,
       "type": "symbol",
       "value": "updateProfileApi",
       "context": "`fetchMeApi` / `fetchProfileApi` / `updateProfileApi` 通过 `sendAuthApiRequest(..., { retryOnUnauthorized: true })` 启用 401"
     },
     {
       "docFile": "docs-site/architecture/data-flow.md",
-      "line": 97,
+      "line": 100,
       "type": "file-path",
       "value": "app/api/auth.ts",
       "context": "实现位置：`app/api/auth.ts` 的 `refreshAccessTokenOnce`。"
     },
     {
       "docFile": "docs-site/architecture/data-flow.md",
-      "line": 107,
+      "line": 110,
       "type": "env-var",
       "value": "NUXT_REVALIDATE_SECRET",
       "context": "  Header: x-revalidate-secret: <NUXT_REVALIDATE_SECRET>"
     },
     {
       "docFile": "docs-site/architecture/data-flow.md",
-      "line": 115,
+      "line": 118,
       "type": "symbol",
       "value": "SUPPORTED_LOCALES",
       "context": "`slug` 快捷方式会展开为 **全部 `SUPPORTED_LOCALES`（15 种）的新闻列表 + 详情，共 30 条路径**"
     },
     {
       "docFile": "docs-site/architecture/data-flow.md",
-      "line": 116,
+      "line": 119,
       "type": "file-path",
       "value": "tests/unit/revalidate.test.ts",
       "context": "（`getNewsRevalidatePaths()`，见 `tests/unit/revalidate.test.ts` 的 `SUPPORTED_LOCALES.length * 2` 断言）。"
     },
     {
       "docFile": "docs-site/architecture/data-flow.md",
-      "line": 117,
+      "line": 120,
       "type": "symbol",
       "value": "revalidateSecret",
       "context": "未配置 `revalidateSecret`（`NUXT_REVALIDATE_SECRET`）时返回 503。"
     },
     {
       "docFile": "docs-site/architecture/data-flow.md",
-      "line": 117,
+      "line": 120,
       "type": "symbol",
       "value": "NUXT_REVALIDATE_SECRET",
       "context": "未配置 `revalidateSecret`（`NUXT_REVALIDATE_SECRET`）时返回 503。"
     },
     {
       "docFile": "docs-site/architecture/data-flow.md",
-      "line": 125,
+      "line": 128,
       "type": "file-path",
       "value": "config/content/faq.ts",
       "context": "| `getFaqItems`               | —    | 本地 `config/content/faq.ts` |"
     },
     {
       "docFile": "docs-site/architecture/data-flow.md",
-      "line": 125,
+      "line": 128,
       "type": "symbol",
       "value": "getFaqItems",
       "context": "| `getFaqItems`               | —    | 本地 `config/content/faq.ts` |"
     },
     {
       "docFile": "docs-site/architecture/data-flow.md",
-      "line": 126,
+      "line": 129,
       "type": "symbol",
       "value": "fetchNewsArticles",
       "context": "| `fetchNewsArticles`         | GET  | `/content/news`              |"
     },
     {
       "docFile": "docs-site/architecture/data-flow.md",
-      "line": 127,
+      "line": 130,
       "type": "symbol",
       "value": "fetchLocalizedNewsArticle",
       "context": "| `fetchLocalizedNewsArticle` | GET  | `/content/news/:slug`        |"
     },
     {
       "docFile": "docs-site/architecture/data-flow.md",
-      "line": 128,
+      "line": 131,
       "type": "symbol",
       "value": "fetchPricingPage",
       "context": "| `fetchPricingPage`          | GET  | `/content/pricing`           |"
     },
     {
       "docFile": "docs-site/architecture/data-flow.md",
-      "line": 134,
+      "line": 137,
       "type": "symbol",
       "value": "registerApi",
       "context": "| `registerApi`      | POST  | `/register`   |"
     },
     {
       "docFile": "docs-site/architecture/data-flow.md",
-      "line": 135,
+      "line": 138,
       "type": "symbol",
       "value": "loginApi",
       "context": "| `loginApi`         | POST  | `/login`      |"
     },
     {
       "docFile": "docs-site/architecture/data-flow.md",
-      "line": 136,
+      "line": 139,
       "type": "symbol",
       "value": "refreshApi",
       "context": "| `refreshApi`       | POST  | `/refresh`    |"
     },
     {
       "docFile": "docs-site/architecture/data-flow.md",
-      "line": 137,
+      "line": 140,
       "type": "symbol",
       "value": "logoutApi",
       "context": "| `logoutApi`        | POST  | `/logout`     |"
     },
     {
       "docFile": "docs-site/architecture/data-flow.md",
-      "line": 146,
+      "line": 149,
       "type": "symbol",
       "value": "fetchWorkspaceProjects",
       "context": "| `fetchWorkspaceProjects` | GET    | `/projects`     |"
     },
     {
       "docFile": "docs-site/architecture/data-flow.md",
-      "line": 147,
+      "line": 150,
       "type": "symbol",
       "value": "fetchWorkspaceProject",
       "context": "| `fetchWorkspaceProject`  | GET    | `/projects/:id` |"
     },
     {
       "docFile": "docs-site/architecture/data-flow.md",
-      "line": 148,
+      "line": 151,
       "type": "symbol",
       "value": "createWorkspaceProject",
       "context": "| `createWorkspaceProject` | POST   | `/projects`     |"
     },
     {
       "docFile": "docs-site/architecture/data-flow.md",
-      "line": 149,
+      "line": 152,
       "type": "symbol",
       "value": "updateWorkspaceProject",
       "context": "| `updateWorkspaceProject` | PATCH  | `/projects/:id` |"
     },
     {
       "docFile": "docs-site/architecture/data-flow.md",
-      "line": 150,
+      "line": 153,
       "type": "symbol",
       "value": "deleteWorkspaceProject",
       "context": "| `deleteWorkspaceProject` | DELETE | `/projects/:id` |"
     },
     {
       "docFile": "docs-site/architecture/data-flow.md",
-      "line": 152,
+      "line": 155,
       "type": "route",
       "value": "/docs/new",
       "context": "`createWorkspaceProject` 返回 `{ project, document }`；`WORKSPACE_NEW_PROJECT_ID = 'new'` 用于 `/docs/new` 路由。"
     },
     {
       "docFile": "docs-site/architecture/data-flow.md",
-      "line": 158,
+      "line": 161,
       "type": "symbol",
       "value": "fetchEditorDocument",
       "context": "| `fetchEditorDocument` | GET   | `/documents/:documentId` |"
     },
     {
       "docFile": "docs-site/architecture/data-flow.md",
-      "line": 159,
+      "line": 162,
       "type": "symbol",
       "value": "saveEditorDocument",
       "context": "| `saveEditorDocument`  | PATCH | `/documents/:documentId` |"
     },
     {
       "docFile": "docs-site/architecture/data-flow.md",
-      "line": 162,
+      "line": 165,
       "type": "env-var",
       "value": "NUXT_PUBLIC_API_BASE",
       "context": "`NUXT_PUBLIC_API_BASE` 已含 `/api/v1` 前缀，适配器里写 `/projects` 而非 `/api/v1/projects`。"
     },
     {
       "docFile": "docs-site/architecture/data-flow.md",
-      "line": 162,
+      "line": 165,
       "type": "symbol",
       "value": "NUXT_PUBLIC_API_BASE",
       "context": "`NUXT_PUBLIC_API_BASE` 已含 `/api/v1` 前缀，适配器里写 `/projects` 而非 `/api/v1/projects`。"
@@ -837,7 +837,7 @@
       "line": 33,
       "type": "route",
       "value": "/news",
-      "context": "| `[[language]]/news/`            | `/news/**`               | 新闻列表/详情                      |"
+      "context": "| `[[language]]/news/`            | `/news/**`               | 新闻列表 / 归档分页 / 详情         |"
     },
     {
       "docFile": "docs-site/architecture/directory.md",
@@ -1656,151 +1656,186 @@
       "line": 85,
       "type": "route",
       "value": "/en/about",
-      "context": "| 关于     | `/about`、`/en/about`           | `about.vue`       | **prerender**   | 构建时静态 HTML，纯 i18n                     "
+      "context": "| 关于     | `/about`、`/en/about`           | `about.vue`            | **prerender**   | 构建时静态 HTML，纯 i18n                "
     },
     {
       "docFile": "docs-site/architecture/routing.md",
       "line": 86,
       "type": "route",
       "value": "/en/help",
-      "context": "| 帮助     | `/help`、`/en/help`             | `help.vue`        | **prerender**   | 构建时静态 HTML；i18n 文案 + FAQ 本地 config    "
+      "context": "| 帮助     | `/help`、`/en/help`             | `help.vue`             | **prerender**   | 构建时静态 HTML；i18n 文案 + FAQ 本地 confi"
     },
     {
       "docFile": "docs-site/architecture/routing.md",
       "line": 87,
       "type": "route",
       "value": "/en/pricing",
-      "context": "| 定价     | `/pricing`、`/en/pricing`       | `pricing.vue`     | **SSR**（默认） | 每次请求服务端渲染，内容来自 API                   |"
+      "context": "| 定价     | `/pricing`、`/en/pricing`       | `pricing.vue`          | **SSR**（默认） | 每次请求服务端渲染，内容来自 API                   "
     },
     {
       "docFile": "docs-site/architecture/routing.md",
       "line": 88,
       "type": "route",
       "value": "/en/news",
-      "context": "| 新闻列表 | `/news`、`/en/news`             | `news/index.vue`  | **SWR 3600s**   | 摘要来自 API；基础 SEO meta；支持按需 revalidate   |"
+      "context": "| 新闻列表 | `/news`、`/en/news`             | `news/index.vue`       | **SWR 3600s**   | 摘要来自 API（分页第 1 页）；基础 SEO meta；支持按需 "
     },
     {
       "docFile": "docs-site/architecture/routing.md",
       "line": 89,
+      "type": "route",
+      "value": "/news/page/:page",
+      "context": "| 新闻归档 | `/news/page/:page`（第 2 页起） | `news/page/[page].vue` | **SWR 3600s**   | 服务端渲染的编号分页页，自指 canonical；落在 `/news/**` "
+    },
+    {
+      "docFile": "docs-site/architecture/routing.md",
+      "line": 90,
       "type": "route",
       "value": "/news/:slug",
-      "context": "| 新闻详情 | `/news/:slug`、`/en/news/:slug` | `news/[slug].vue` | **SWR 3600s**   | 正文来自 API；Article JSON-LD；支持按需 revalidate"
+      "context": "| 新闻详情 | `/news/:slug`、`/en/news/:slug` | `news/[slug].vue`      | **SWR 3600s**   | 正文来自 API；Article JSON-LD；支持按需 reval"
     },
     {
       "docFile": "docs-site/architecture/routing.md",
-      "line": 89,
+      "line": 90,
       "type": "route",
       "value": "/en/news/:slug",
-      "context": "| 新闻详情 | `/news/:slug`、`/en/news/:slug` | `news/[slug].vue` | **SWR 3600s**   | 正文来自 API；Article JSON-LD；支持按需 revalidate"
+      "context": "| 新闻详情 | `/news/:slug`、`/en/news/:slug` | `news/[slug].vue`      | **SWR 3600s**   | 正文来自 API；Article JSON-LD；支持按需 reval"
     },
     {
       "docFile": "docs-site/architecture/routing.md",
-      "line": 90,
+      "line": 97,
+      "type": "route",
+      "value": "/news/page/1",
+      "context": "- 第 1 页的 canonical 是 `/news`，`/news/page/1` 由 `canonicalRequestPath` 301 折回。"
+    },
+    {
+      "docFile": "docs-site/architecture/routing.md",
+      "line": 97,
+      "type": "symbol",
+      "value": "canonicalRequestPath",
+      "context": "- 第 1 页的 canonical 是 `/news`，`/news/page/1` 由 `canonicalRequestPath` 301 折回。"
+    },
+    {
+      "docFile": "docs-site/architecture/routing.md",
+      "line": 101,
+      "type": "route",
+      "value": "/news/page/9999",
+      "context": "  夹取会让任意 `/news/page/9999` 都返回 200，等于给爬虫制造无限份重复内容。"
+    },
+    {
+      "docFile": "docs-site/architecture/routing.md",
+      "line": 102,
+      "type": "symbol",
+      "value": "NEWS_PAGE_SIZE",
+      "context": "- 每页条数由 `config/routes.ts` 的 `NEWS_PAGE_SIZE` 决定，页面与 sitemap 共用同一个值。"
+    },
+    {
+      "docFile": "docs-site/architecture/routing.md",
+      "line": 103,
       "type": "route",
       "value": "/en/sign-in",
-      "context": "| 登录     | `/sign-in`、`/en/sign-in`       | `sign-in.vue`     | **SSR**（默认） | noindex，不在 `PUBLIC_PAGE_PATHS`            "
+      "context": "  | 登录 | `/sign-in`、`/en/sign-in` | `sign-in.vue` | **SSR**（默认） | noindex，不在 `PUBLIC_PAGE_PATHS` |"
     },
     {
       "docFile": "docs-site/architecture/routing.md",
-      "line": 90,
+      "line": 103,
       "type": "symbol",
       "value": "PUBLIC_PAGE_PATHS",
-      "context": "| 登录     | `/sign-in`、`/en/sign-in`       | `sign-in.vue`     | **SSR**（默认） | noindex，不在 `PUBLIC_PAGE_PATHS`            "
+      "context": "  | 登录 | `/sign-in`、`/en/sign-in` | `sign-in.vue` | **SSR**（默认） | noindex，不在 `PUBLIC_PAGE_PATHS` |"
     },
     {
       "docFile": "docs-site/architecture/routing.md",
-      "line": 91,
+      "line": 104,
       "type": "route",
       "value": "/sign-up",
-      "context": "| 注册     | `/sign-up`、`/en/sign-up`       | `sign-up.vue`     | **SSR**（默认） | noindex，不在 `PUBLIC_PAGE_PATHS`            "
+      "context": "  | 注册 | `/sign-up`、`/en/sign-up` | `sign-up.vue` | **SSR**（默认） | noindex，不在 `PUBLIC_PAGE_PATHS` |"
     },
     {
       "docFile": "docs-site/architecture/routing.md",
-      "line": 91,
+      "line": 104,
       "type": "route",
       "value": "/en/sign-up",
-      "context": "| 注册     | `/sign-up`、`/en/sign-up`       | `sign-up.vue`     | **SSR**（默认） | noindex，不在 `PUBLIC_PAGE_PATHS`            "
+      "context": "  | 注册 | `/sign-up`、`/en/sign-up` | `sign-up.vue` | **SSR**（默认） | noindex，不在 `PUBLIC_PAGE_PATHS` |"
     },
     {
       "docFile": "docs-site/architecture/routing.md",
-      "line": 98,
+      "line": 111,
       "type": "file-path",
       "value": "app/pages/workspace/index.vue",
       "context": "| 工作台 | `/workspace`             | `workspace/index.vue`           | **CSR**  | 需 `auth` 中间件；列表/删除；创建跳转 `/docs/new`     "
     },
     {
       "docFile": "docs-site/architecture/routing.md",
-      "line": 99,
+      "line": 112,
       "type": "file-path",
       "value": "app/pages/workspace/templates/index.vue",
       "context": "| 模板   | `/workspace/templates`   | `workspace/templates/index.vue` | **CSR**  | 占位 UI                                  "
     },
     {
       "docFile": "docs-site/architecture/routing.md",
-      "line": 100,
+      "line": 113,
       "type": "file-path",
       "value": "docs/[id].vue",
       "context": "| 编辑器 | `/docs/:id`、`/docs/new` | `docs/[id].vue`                 | **CSR**  | YanivEditor；`WORKSPACE_NEW_PROJECT_ID`（`/"
     },
     {
       "docFile": "docs-site/architecture/routing.md",
-      "line": 100,
+      "line": 113,
       "type": "file-path",
       "value": "app/pages/docs/[id].vue",
       "context": "| 编辑器 | `/docs/:id`、`/docs/new` | `docs/[id].vue`                 | **CSR**  | YanivEditor；`WORKSPACE_NEW_PROJECT_ID`（`/"
     },
     {
       "docFile": "docs-site/architecture/routing.md",
-      "line": 100,
+      "line": 113,
       "type": "symbol",
       "value": "WORKSPACE_NEW_PROJECT_ID",
       "context": "| 编辑器 | `/docs/:id`、`/docs/new` | `docs/[id].vue`                 | **CSR**  | YanivEditor；`WORKSPACE_NEW_PROJECT_ID`（`/"
     },
     {
       "docFile": "docs-site/architecture/routing.md",
-      "line": 100,
+      "line": 113,
       "type": "symbol",
       "value": "ensureDraftProject",
       "context": "| 编辑器 | `/docs/:id`、`/docs/new` | `docs/[id].vue`                 | **CSR**  | YanivEditor；`WORKSPACE_NEW_PROJECT_ID`（`/"
     },
     {
       "docFile": "docs-site/architecture/routing.md",
-      "line": 100,
+      "line": 113,
       "type": "symbol",
       "value": "EDITOR_AUTOSAVE_DEBOUNCE_MS",
       "context": "| 编辑器 | `/docs/:id`、`/docs/new` | `docs/[id].vue`                 | **CSR**  | YanivEditor；`WORKSPACE_NEW_PROJECT_ID`（`/"
     },
     {
       "docFile": "docs-site/architecture/routing.md",
-      "line": 101,
+      "line": 114,
       "type": "file-path",
       "value": "app/pages/account.vue",
       "context": "| 账户   | `/account`               | `account.vue`                   | **CSR**  | profile + 退出                           "
     },
     {
       "docFile": "docs-site/architecture/routing.md",
-      "line": 103,
+      "line": 116,
       "type": "symbol",
       "value": "csrRouteRules",
       "context": "> 未单独配置 `routeRules` 的公开路由均走 **SSR（默认）**；产品区由 `csrRouteRules` 统一设为 **CSR**。"
     },
     {
       "docFile": "docs-site/architecture/routing.md",
-      "line": 113,
+      "line": 126,
       "type": "symbol",
       "value": "usePageSeo",
       "context": "| 首页     | Hero（定位 + 主/次 CTA）/ Stats / Features / Workflow / Closing CTA；主 CTA → `/sign-up`，次 CTA → `/pricing`；`usePageS"
     },
     {
       "docFile": "docs-site/architecture/routing.md",
-      "line": 119,
+      "line": 132,
       "type": "symbol",
       "value": "resolveSafeRedirectPath",
       "context": "| 登录     | 居中 auth-card；`?redirect=` 安全回跳（`resolveSafeRedirectPath`），默认 `/workspace`；支持 `?username=` 预填                 "
     },
     {
       "docFile": "docs-site/architecture/routing.md",
-      "line": 129,
+      "line": 142,
       "type": "symbol",
       "value": "cachedProject",
       "context": "| 编辑器 | `editor` 全屏 layout；`/docs/new` 草稿模式，首次非空保存后 `replace` 到 `/docs/:id`；`cachedProject` 防切换闪烁；YanivEditor（`mode: edi"
@@ -1915,42 +1950,49 @@
       "line": 68,
       "type": "file-path",
       "value": "server/api/revalidate.post.ts",
-      "context": "| 入口   | `server/api/revalidate.post.ts`                                       |"
+      "context": "| 入口   | `server/api/revalidate.post.ts`                                                                                "
     },
     {
       "docFile": "docs-site/architecture/seo.md",
       "line": 69,
       "type": "file-path",
       "value": "server/utils/revalidate.ts",
-      "context": "| 工具   | `server/utils/revalidate.ts`（cache key 算法与 Nitro SWR 保持一致）   |"
+      "context": "| 工具   | `server/utils/revalidate.ts`（cache key 算法与 Nitro SWR 保持一致）                                                     "
     },
     {
       "docFile": "docs-site/architecture/seo.md",
       "line": 70,
       "type": "env-var",
       "value": "NUXT_REVALIDATE_SECRET",
-      "context": "| 鉴权   | Header `x-revalidate-secret`，值来自 `NUXT_REVALIDATE_SECRET`         |"
+      "context": "| 鉴权   | Header `x-revalidate-secret`，值来自 `NUXT_REVALIDATE_SECRET`                                                      "
     },
     {
       "docFile": "docs-site/architecture/seo.md",
       "line": 70,
       "type": "symbol",
       "value": "NUXT_REVALIDATE_SECRET",
-      "context": "| 鉴权   | Header `x-revalidate-secret`，值来自 `NUXT_REVALIDATE_SECRET`         |"
+      "context": "| 鉴权   | Header `x-revalidate-secret`，值来自 `NUXT_REVALIDATE_SECRET`                                                      "
     },
     {
       "docFile": "docs-site/architecture/seo.md",
       "line": 72,
       "type": "route",
       "value": "/news",
-      "context": "| `slug` | 展开为全部 15 种语言的 `/news` 与 `/news/:slug`，共 30 条路径一并失效 |"
+      "context": "| `slug` | 展开为全部 15 种语言的 `/news` 与 `/news/:slug`，共 30 条路径一并失效。归档页 `/news/page/N` 不在其中：它们同样走 SWR 1h，靠自然过期刷新 |"
     },
     {
       "docFile": "docs-site/architecture/seo.md",
       "line": 72,
       "type": "route",
       "value": "/news/:slug",
-      "context": "| `slug` | 展开为全部 15 种语言的 `/news` 与 `/news/:slug`，共 30 条路径一并失效 |"
+      "context": "| `slug` | 展开为全部 15 种语言的 `/news` 与 `/news/:slug`，共 30 条路径一并失效。归档页 `/news/page/N` 不在其中：它们同样走 SWR 1h，靠自然过期刷新 |"
+    },
+    {
+      "docFile": "docs-site/architecture/seo.md",
+      "line": 72,
+      "type": "route",
+      "value": "/news/page/N",
+      "context": "| `slug` | 展开为全部 15 种语言的 `/news` 与 `/news/:slug`，共 30 条路径一并失效。归档页 `/news/page/N` 不在其中：它们同样走 SWR 1h，靠自然过期刷新 |"
     },
     {
       "docFile": "docs-site/architecture/seo.md",
@@ -3734,7 +3776,7 @@
       "docFile": "docs-site/guide/overview.md",
       "line": 92,
       "type": "test-count",
-      "value": "55/322",
+      "value": "55/329",
       "context": "| 测试   | Vitest 4.1.11 + @nuxt/test-utils 4.0.3；`vitest.config.ts` 用 `defineVitestConfig` + `include: tests/**/*.test.ts"
     },
     {

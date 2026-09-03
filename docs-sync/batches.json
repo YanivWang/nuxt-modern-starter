@@ -71,6 +71,7 @@
         "app/components/base/BaseButton.vue",
         "app/components/base/BaseLogo.vue",
         "app/components/base/BasePicture.vue",
+        "app/components/base/NewsArticleList.vue",
         "app/components/base/PageContainer.vue",
         "app/components/layout/AppFooter.vue",
         "app/components/layout/AppHeader.vue",
@@ -129,6 +130,7 @@
         "app/pages/[[language]]/index.vue",
         "app/pages/[[language]]/news/[slug].vue",
         "app/pages/[[language]]/news/index.vue",
+        "app/pages/[[language]]/news/page/[page].vue",
         "app/pages/[[language]]/pricing.vue",
         "app/pages/[[language]]/sign-in.vue",
         "app/pages/[[language]]/sign-up.vue",
@@ -203,5 +205,5 @@
       ]
     }
   ],
-  "totalFiles": 154
+  "totalFiles": 156
 }

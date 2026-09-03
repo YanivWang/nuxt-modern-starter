@@ -105,6 +105,12 @@
   "news": {
     "title": "Nuxt Modern Starter release at note",
     "lead": "Subaybayan ang starter release, deployment practice, at extension guidance. Ipinapakita rin ng page na ito ang news list/detail, Article JSON-LD, at SWR cache rule.",
-    "notFound": "Hindi mahanap ang artikulong ito"
+    "notFound": "Hindi mahanap ang artikulong ito",
+    "archiveTitle": "Archive ng balita · Pahina {page}",
+    "pagination": {
+      "previous": "Nakaraan",
+      "next": "Susunod",
+      "status": "Pahina {page} ng {total}"
+    }
   }
 }

@@ -26,6 +26,7 @@ import {
   getFaqItems
 } from '../../app/api/public'
 import { createPublicApiClient } from '../../app/api/clients'
+import { NEWS_PAGE_SIZE } from '../../config/routes'
 
 vi.mock('../../app/api/clients', () => ({
   createPublicApiClient: vi.fn()
@@ -61,9 +62,26 @@ describe('public content api', () => {
     await fetchNewsArticles('en-US')
 
     expect(createPublicApiClient).toHaveBeenCalledWith({ locale: 'en-US' })
+    // limit/offset 显式传出，不靠前后端默认值撞上：归档页 URL 的页码是按 limit 算的
     expect(request).toHaveBeenCalledWith('/content/news', {
       method: 'GET',
-      query: { locale: 'en-US' }
+      query: { locale: 'en-US', limit: NEWS_PAGE_SIZE, offset: 0 }
+    })
+  })
+
+  it('turns a page number into the matching offset', async () => {
+    const request = vi.fn().mockResolvedValue({
+      code: 200,
+      message: 'ok',
+      data: { articles: [], pagination: { total: 0, limit: 20, offset: 40, hasMore: false } }
+    })
+    vi.mocked(createPublicApiClient).mockReturnValue({ request })
+
+    await fetchNewsArticles('en-US', { limit: NEWS_PAGE_SIZE, offset: 2 * NEWS_PAGE_SIZE })
+
+    expect(request).toHaveBeenCalledWith('/content/news', {
+      method: 'GET',
+      query: { locale: 'en-US', limit: NEWS_PAGE_SIZE, offset: 40 }
     })
   })
 
@@ -78,7 +96,7 @@ describe('public content api', () => {
     expect(createPublicApiClient).toHaveBeenCalledWith({ locale: 'en-US' })
     expect(request).toHaveBeenCalledWith('/content/news', {
       method: 'GET',
-      query: { locale: 'en-US' }
+      query: { locale: 'en-US', limit: NEWS_PAGE_SIZE, offset: 0 }
     })
   })
 

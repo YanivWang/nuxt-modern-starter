@@ -105,6 +105,12 @@
   "news": {
     "title": "Keluaran dan nota Nuxt Modern Starter",
     "lead": "Jejaki keluaran starter, amalan deployment, dan panduan lanjutan. Halaman ini juga tunjuk senarai/detail berita, Article JSON-LD, dan peraturan cache SWR.",
-    "notFound": "Artikel berita ini tidak dijumpai"
+    "notFound": "Artikel berita ini tidak dijumpai",
+    "archiveTitle": "Arkib berita · Halaman {page}",
+    "pagination": {
+      "previous": "Sebelumnya",
+      "next": "Seterusnya",
+      "status": "Halaman {page} daripada {total}"
+    }
   }
 }

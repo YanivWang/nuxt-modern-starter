@@ -49,7 +49,10 @@ Page / Store / Feature Component
 ```ts
 // app/api/public.ts
 export const fetchNewsArticles = (locale: SupportedLocale) =>
-  createPublicApiClient({ locale }).request('/content/news', { method: 'GET' })
+  createPublicApiClient({ locale }).request('/content/news', {
+    method: 'GET',
+    query: { locale, limit, offset }
+  })
 ```
 
 本地 FAQ 不走 HTTP：

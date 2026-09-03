@@ -10,7 +10,7 @@
     WorkspaceProjectListQuery、CreateWorkspaceProjectPayload、UpdateWorkspaceProjectPayload
 
   【依赖关系】
-    - 依赖：无
+    - 依赖：app/lib/http/types.ts（ApiPagination）
     - 被引用：app/api/workspace-project.ts、workspace feature、editor feature、tests/fixtures
 
   【渲染 / 数据】
@@ -19,6 +19,7 @@
   【边界与注意】
     仅描述项目领域数据形状，不包含请求实现或 UI 组件类型。
 */
+import type { ApiPagination } from '../lib/http/types'
 /** 与后端 ProjectAccent 同源；后端出库时会把越界取值归一化为 blue。 */
 export type WorkspaceProjectAccent = 'blue' | 'green' | 'violet' | 'amber' | 'cyan' | 'rose'
 
@@ -43,15 +44,10 @@ export type WorkspaceProject = {
 }
 
 /**
- * 列表分页元信息，与后端 shared/http/pagination 的约定一一对应。
- * hasMore 由服务端按 offset + 本页条数 < total 计算，前端不要自己推断。
+ * 列表分页元信息。全站共用 ApiPagination 一份定义，这里只保留一个别名：
+ * 形状本身归 app/lib/http/types.ts 管，工作台和公开内容不各留一份副本。
  */
-export type WorkspaceProjectPagination = {
-  total: number
-  limit: number
-  offset: number
-  hasMore: boolean
-}
+export type WorkspaceProjectPagination = ApiPagination
 
 export type WorkspaceProjectListQuery = {
   limit?: number

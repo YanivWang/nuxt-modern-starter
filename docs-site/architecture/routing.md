@@ -79,17 +79,30 @@ Nitro 升级导致算法漂移时会红 —— 这条风险由该测试在 CI �
 
 ### 公开 SEO 区（`app/pages/[[language]]/`）
 
-| 页面     | 路由                            | 页面文件          | 渲染方式        | 说明                                               |
-| -------- | ------------------------------- | ----------------- | --------------- | -------------------------------------------------- |
-| 首页     | `/`、`/en`                      | `index.vue`       | **prerender**   | 构建时静态 HTML，纯 i18n                           |
-| 关于     | `/about`、`/en/about`           | `about.vue`       | **prerender**   | 构建时静态 HTML，纯 i18n                           |
-| 帮助     | `/help`、`/en/help`             | `help.vue`        | **prerender**   | 构建时静态 HTML；i18n 文案 + FAQ 本地 config       |
-| 定价     | `/pricing`、`/en/pricing`       | `pricing.vue`     | **SSR**（默认） | 每次请求服务端渲染，内容来自 API                   |
-| 新闻列表 | `/news`、`/en/news`             | `news/index.vue`  | **SWR 3600s**   | 摘要来自 API；基础 SEO meta；支持按需 revalidate   |
-| 新闻详情 | `/news/:slug`、`/en/news/:slug` | `news/[slug].vue` | **SWR 3600s**   | 正文来自 API；Article JSON-LD；支持按需 revalidate |
-| 登录     | `/sign-in`、`/en/sign-in`       | `sign-in.vue`     | **SSR**（默认） | noindex，不在 `PUBLIC_PAGE_PATHS`                  |
-| 注册     | `/sign-up`、`/en/sign-up`       | `sign-up.vue`     | **SSR**（默认） | noindex，不在 `PUBLIC_PAGE_PATHS`                  |
-| 404 兜底 | 未匹配的公开路径（如 `/foo`）   | `[...slug].vue`   | **SSR**（默认） | HTTP 404 + noindex                                 |
+| 页面     | 路由                            | 页面文件               | 渲染方式        | 说明                                                            |
+| -------- | ------------------------------- | ---------------------- | --------------- | --------------------------------------------------------------- |
+| 首页     | `/`、`/en`                      | `index.vue`            | **prerender**   | 构建时静态 HTML，纯 i18n                                        |
+| 关于     | `/about`、`/en/about`           | `about.vue`            | **prerender**   | 构建时静态 HTML，纯 i18n                                        |
+| 帮助     | `/help`、`/en/help`             | `help.vue`             | **prerender**   | 构建时静态 HTML；i18n 文案 + FAQ 本地 config                    |
+| 定价     | `/pricing`、`/en/pricing`       | `pricing.vue`          | **SSR**（默认） | 每次请求服务端渲染，内容来自 API                                |
+| 新闻列表 | `/news`、`/en/news`             | `news/index.vue`       | **SWR 3600s**   | 摘要来自 API（分页第 1 页）；基础 SEO meta；支持按需 revalidate |
+| 新闻归档 | `/news/page/:page`（第 2 页起） | `news/page/[page].vue` | **SWR 3600s**   | 服务端渲染的编号分页页，自指 canonical；落在 `/news/**` 规则内  |
+| 新闻详情 | `/news/:slug`、`/en/news/:slug` | `news/[slug].vue`      | **SWR 3600s**   | 正文来自 API；Article JSON-LD；支持按需 revalidate              |
+
+### 新闻归档分页
+
+新闻索引用服务端渲染的编号页而不是客户端「加载更多」：归档页要能被爬取，
+只存在于客户端的分页对收录没有意义。
+
+- 第 1 页的 canonical 是 `/news`，`/news/page/1` 由 `canonicalRequestPath` 301 折回。
+  两个 URL 同内容会被当成重复内容收录，归档分页必须只有一个入口。
+- 第 2 页起自指 canonical，并照常输出全部 15 种语言的 hreflang。
+- 非法页码（`0`、负数、`01`、小数、超出总页数）一律 404，不夹到最近一页 ——
+  夹取会让任意 `/news/page/9999` 都返回 200，等于给爬虫制造无限份重复内容。
+- 每页条数由 `config/routes.ts` 的 `NEWS_PAGE_SIZE` 决定，页面与 sitemap 共用同一个值。
+  | 登录 | `/sign-in`、`/en/sign-in` | `sign-in.vue` | **SSR**（默认） | noindex，不在 `PUBLIC_PAGE_PATHS` |
+  | 注册 | `/sign-up`、`/en/sign-up` | `sign-up.vue` | **SSR**（默认） | noindex，不在 `PUBLIC_PAGE_PATHS` |
+  | 404 兜底 | 未匹配的公开路径（如 `/foo`） | `[...slug].vue` | **SSR**（默认） | HTTP 404 + noindex |
 
 ### 登录产品区（语言中性 URL，不带 `/en` 前缀）
 

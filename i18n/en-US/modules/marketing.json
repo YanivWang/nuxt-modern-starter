@@ -105,6 +105,12 @@
   "news": {
     "title": "Nuxt Modern Starter releases and notes",
     "lead": "Track starter releases, deployment practices, and extension guidance. These pages also demonstrate news list/detail layouts, detail-page Article JSON-LD, and SWR cache rules.",
-    "notFound": "This news article was not found"
+    "notFound": "This news article was not found",
+    "archiveTitle": "News archive · Page {page}",
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "status": "Page {page} of {total}"
+    }
   }
 }

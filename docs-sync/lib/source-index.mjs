@@ -219,7 +219,11 @@ export const buildRouteIndex = ({ pageRoutes }) => {
 
   for (const p of publicPaths) {
     routes.add(p)
-    if (p === '/news') routes.add('/news/:slug')
+    // 单括号参数（[slug].vue / [page].vue）不由上面的文件名推导覆盖，这里显式登记。
+    if (p === '/news') {
+      routes.add('/news/:slug')
+      routes.add('/news/page/:page')
+    }
   }
 
   for (const prefix of (() => {
@@ -235,6 +239,7 @@ export const buildRouteIndex = ({ pageRoutes }) => {
       else routes.add(`/${prefix}${p}`)
     }
     routes.add(`/${prefix}/news/:slug`)
+    routes.add(`/${prefix}/news/page/:page`)
     routes.add(`/${prefix}/sign-in`)
     routes.add(`/${prefix}/sign-up`)
     routes.add(`/${prefix}/workspace`)
@@ -261,9 +266,15 @@ export const isPathPattern = (value) =>
 
 export const isExternalScript = (value) => new Set(['docker:dev']).has(value)
 
+/** 文档里的归档页会写成具体页码（/news/page/2，反例 /news/page/9999，或占位 /news/page/N）。 */
+const NEWS_ARCHIVE_PATH = /^(?:\/[a-z]{2}(?:-[a-z]{2})?)?\/news\/page\/[^/]+$/i
+
 export const routeMatches = (value, routeIndex) => {
   const normalized = value.replace(/\/$/, '') || '/'
   if (routeIndex.has(normalized)) return true
+
+  // 它们都对应同一个真实路由 news/page/[page].vue，不是各自独立的路径
+  if (NEWS_ARCHIVE_PATH.test(normalized)) return routeIndex.has('/news/page/:page')
 
   // Localized product paths that 301 to canonical (e.g. /en/docs/** → /docs/**)
   if (/^\/en\/(workspace|docs|account)(?:\/|$)/.test(normalized)) return true
