@@ -19,7 +19,7 @@
 
 | 键                       | 默认                           | 说明                                                                |
 | ------------------------ | ------------------------------ | ------------------------------------------------------------------- |
-| `appEnv`                 | `development`                  | 为 `production` 时 auth cookie 置 `secure`                          |
+| `appEnv`                 | `development`                  | 与 `siteUrl` 一起决定 auth cookie 是否置 `secure`                   |
 | `apiBase`                | `http://localhost:2027/api/v1` | 已含 `/api/v1` 前缀；adapter 写 `/projects` 而非 `/api/v1/projects` |
 | `siteUrl`                | `http://localhost:3000`        | canonical / sitemap 基础 URL                                        |
 | `googleSiteVerification` | 空                             | 传入 `usePageSeo({ siteVerification })`；空值不输出 meta            |

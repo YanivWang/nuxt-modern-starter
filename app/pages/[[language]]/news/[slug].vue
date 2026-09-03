@@ -24,7 +24,7 @@
   - 被引用：新闻列表页链接、sitemap 按 slug 收录
 
   【渲染 / 数据】
-    SSR + SWR；fetchLocalizedNewsArticle → adapter /content/news/:slug（网关 GET /api/content/news/:slug）。
+    SSR + SWR；fetchLocalizedNewsArticle → adapter /content/news/:slug（网关 GET /api/v1/content/news/:slug）。
     useAsyncData 水合复用 payload。
 
   【边界与注意】

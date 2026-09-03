@@ -10,7 +10,8 @@
     describe backend API contract
 
   【依赖关系】
-    - 依赖：contracts/openapi.yaml、config/auth.ts、.env.*、tests/e2e/stub-api/server.mjs
+    - 依赖：contracts/openapi.yaml、config/auth.ts、.env.*、nuxt.config.ts、
+      tests/e2e/stub-api/server.mjs、app/features/editor/upload/resolve-upload-url.ts
     - 类型依赖：app/types/*、app/api/*、app/features/editor/upload/types（仅 import type，不进运行时）
     - mock：无
 
@@ -35,7 +36,12 @@
       data 是空的 {}（等价于「任意值」），同样没有任何一侧能报警。
 */
 import { describe, expect, it } from 'vitest'
-import { AUTH_API_ENDPOINTS } from '../../config/auth'
+import {
+  AUTH_API_ENDPOINTS,
+  REGISTER_PASSWORD_MIN_LENGTH,
+  REGISTER_USERNAME_MAX_LENGTH,
+  REGISTER_USERNAME_MIN_LENGTH
+} from '../../config/auth'
 import {
   API_PREFIX,
   deref,
@@ -51,7 +57,8 @@ import {
   type JsonType,
   type SchemaNode
 } from './support/openapi-contract'
-// 全部是 import type：编译后被擦除，不会在 happy-dom 环境里拉起 Nuxt 自动导入
+// 除 resolveUploadUrl 外全部是 import type：编译后被擦除，不会在 happy-dom 环境里拉起
+// Nuxt 自动导入。resolveUploadUrl 所在模块不依赖任何 Nuxt 运行时，可以直接跑。
 import type { BackendUser, TokenData } from '../../app/api/auth'
 import type {
   LocalizedNewsArticle,
@@ -70,6 +77,7 @@ import type {
   WorkspaceProjectAccent,
   WorkspaceProjectPagination
 } from '../../app/types/workspace-project'
+import { resolveUploadUrl } from '../../app/features/editor/upload/resolve-upload-url'
 import type { UploadImagesResult } from '../../app/features/editor/upload-api'
 import type {
   LargeUploadInitResponse,
@@ -219,7 +227,9 @@ const BACKEND_USER_FIELDS: Record<keyof BackendUser, FieldSpec> = {
   username: 'string',
   avatar: ['string', 'null'],
   nickname: ['string', 'null'],
-  // 后端不返回角色与权限，由 normalizeAuthUser 兜底成空数组
+  // 后端有账号角色但刻意不下发（下发会诱导前端拿它当授权），
+  // 由 normalizeAuthUser 兜底成空数组。frontendOnly 因此是长期状态：
+  // 契约里哪天真出现了 roles，这条会变红，提醒先确认它是不是能力标识而非授权依据。
   roles: 'array',
   permissions: 'array'
 }
@@ -479,6 +489,53 @@ describe('backend API contract', () => {
         true
       )
     }
+  })
+
+  it('points the runtimeConfig fallback at the versioned prefix too', () => {
+    // 只校验 .env.* 是不够的：没有 dotenv 的运行方式（裸 node .output/server/index.mjs、
+    // vitest 的 nuxt 环境）拿到的是 nuxt.config.ts 里的兜底字面量。
+    // /api/v1 迁移当初漏了这一处，于是 nuxt 环境下的单测一直跑在已下线的旧前缀上，
+    // 反过来把 resolveUploadUrl 的前缀 bug 盖住了。
+    const fallback = readRepoFile('nuxt.config.ts').match(
+      /NUXT_PUBLIC_API_BASE \|\| '([^']+)'/
+    )?.[1]
+
+    expect(fallback, 'nuxt.config.ts 里找不到 apiBase 兜底值').toBeTruthy()
+    expect(
+      fallback!.endsWith(API_PREFIX),
+      `nuxt.config.ts 的 apiBase 兜底值未指向 ${API_PREFIX}`
+    ).toBe(true)
+  })
+
+  it('validates registration input by the same lengths the backend enforces', () => {
+    // 客户端校验比服务端松等于没有：表单放行、请求发出、再被 400 打回来。
+    // 这些数字曾经只写在 sign-up.vue 的表单规则里（密码写的 6，后端要求 8）。
+    const body = requestBodySchema('POST /register')
+    const username = body?.properties?.username
+    const password = body?.properties?.password
+
+    expect(username, '契约里 /register 没有描述 username').toBeDefined()
+    expect(password, '契约里 /register 没有描述 password').toBeDefined()
+
+    expect({
+      usernameMin: (username as { minLength?: number }).minLength,
+      usernameMax: (username as { maxLength?: number }).maxLength,
+      passwordMin: (password as { minLength?: number }).minLength
+    }).toEqual({
+      usernameMin: REGISTER_USERNAME_MIN_LENGTH,
+      usernameMax: REGISTER_USERNAME_MAX_LENGTH,
+      passwordMin: REGISTER_PASSWORD_MIN_LENGTH
+    })
+  })
+
+  it('derives media URLs from the base with the API prefix stripped', () => {
+    // 静态上传目录挂在 API 应用根上，业务接口才在版本前缀下。
+    // 这条把「前缀怎么剥」和 spec 里的前缀钉在一起：抬版本号时任何一处没跟上都会红。
+    const apiBase = `https://media.example.com${API_PREFIX}`
+
+    expect(resolveUploadUrl('/uploads/a.webp', apiBase)).toBe(
+      'https://media.example.com/uploads/a.webp'
+    )
   })
 
   it('resolves every consumed endpoint in the spec', () => {

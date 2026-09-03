@@ -74,7 +74,7 @@ definePageMeta({
 </script>
 ```
 
-可选 RBAC（后端暂未返回 roles/permissions，前端预留）：
+可选 RBAC（当前恒不命中，见下方说明）：
 
 ```vue
 <script setup lang="ts">
@@ -87,6 +87,17 @@ definePageMeta({
 })
 </script>
 ```
+
+::: warning 后端刻意不下发 roles
+后端有账号角色（`Users.role`，取值 `user` / `admin`），但 `GET /api/v1/me` **不返回**它，
+理由写在后端的 `user.contract.ts` 里：把角色下发给浏览器只会诱导前端拿它做权限判断，
+而客户端判断从来不是授权——授权在服务端按每次请求查库完成（内容写接口就是这么挂的）。
+
+因此 `normalizeAuthUser()` 把 `roles` / `permissions` 兜底成空数组，
+上面这段 `auth.meta` 对任何用户都不会通过，页面会 403。这不是「等后端补字段」的临时状态，
+而是既定分工。前端确实需要按角色显示/隐藏 UI 时，应当拿一个**为此设计的**能力标识
+（专门的接口或 capability 字段），并且始终只当作展示层开关——真正的拦截在服务端。
+:::
 
 ## 登录重定向
 

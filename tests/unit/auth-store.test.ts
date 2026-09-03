@@ -20,13 +20,22 @@
   【边界与注意】
     不覆盖 UI router.push；register 断言不自动 fetchMe；修改 store action 须同步。
     令牌断言一律读 useAuthSession()，store 不再持有令牌（见 tests/unit/ssr-cache-safety.test.ts）。
+    readPersisted 的用例直接写 document.cookie：它存在的意义就是绕开 ref，
+    用 ref 去断言等于没测到这一点。
 */
 import { createPinia, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { useAuthStore } from '../../app/stores/auth'
 import { useAuth } from '../../app/composables/useAuth'
 import { createApiError } from '../../app/lib/http/error'
-import { tokenCookieOptions, useAuthSession } from '../../app/utils/auth-session'
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
+import { AUTH_COOKIE_KEYS } from '../../config/auth'
+import {
+  requiresSecureCookie,
+  tokenCookieOptions,
+  useAuthSession
+} from '../../app/utils/auth-session'
 
 const apiMocks = vi.hoisted(() => ({
   loginApi: vi.fn(),
@@ -128,6 +137,58 @@ describe('auth store', () => {
     })
   })
 
+  it('reads the tokens the browser actually holds, not this app instance ref', () => {
+    // 跨标签页判断「别的标签页是不是已经换过令牌了」必须看 document.cookie：
+    // ref 只是本 app 实例的快照，另一个标签页写完要靠 BroadcastChannel 异步同步过来。
+    // 见 app/api/auth.ts 的 withCrossTabRefreshLock。
+    document.cookie = `${AUTH_COOKIE_KEYS.accessToken}=cookie-access; path=/`
+    document.cookie = `${AUTH_COOKIE_KEYS.refreshToken}=${encodeURIComponent('cookie/refresh')}; path=/`
+
+    expect(session().readPersisted()).toEqual({
+      accessToken: 'cookie-access',
+      refreshToken: 'cookie/refresh'
+    })
+  })
+
+  it('reports a missing or empty token cookie as null', () => {
+    document.cookie = `${AUTH_COOKIE_KEYS.accessToken}=; path=/; max-age=0`
+    document.cookie = `${AUTH_COOKIE_KEYS.refreshToken}=; path=/; max-age=0`
+
+    expect(session().readPersisted()).toEqual({ accessToken: null, refreshToken: null })
+  })
+
+  it('marks token cookies Secure whenever the site is served over https', () => {
+    // 判据跟传输协议走，不跟环境标签走
+    expect(requiresSecureCookie('development', 'http://localhost:3000')).toBe(false)
+    expect(requiresSecureCookie('production', 'http://internal.example')).toBe(true)
+    expect(requiresSecureCookie('test', 'https://test.example.com')).toBe(true)
+    expect(requiresSecureCookie('staging', 'https://staging.example.com')).toBe(true)
+  })
+
+  it('marks token cookies Secure in every tracked https environment profile', () => {
+    // 直接拿仓库里的环境层比对：.env.test 就是 APP_ENV=test + https 站点 URL 的组合，
+    // 只按 appEnv 判断时它的令牌 cookie 不带 Secure，而这里读的是真实文件，不是复述规则。
+    const readEnv = (envFile: string) => {
+      const lines = readFileSync(resolve(import.meta.dirname, '../..', envFile), 'utf8').split('\n')
+      const valueOf = (key: string) =>
+        lines
+          .find((line) => line.startsWith(`${key}=`))
+          ?.slice(key.length + 1)
+          .trim() ?? ''
+
+      return { appEnv: valueOf('NUXT_PUBLIC_APP_ENV'), siteUrl: valueOf('NUXT_PUBLIC_SITE_URL') }
+    }
+
+    for (const envFile of ['.env.dev', '.env.test', '.env.prod', '.env.e2e']) {
+      const { appEnv, siteUrl } = readEnv(envFile)
+
+      expect(
+        requiresSecureCookie(appEnv, siteUrl),
+        `${envFile}（${appEnv} / ${siteUrl}）的令牌 cookie Secure 判定不符合传输协议`
+      ).toBe(siteUrl.startsWith('https://') || appEnv === 'production')
+    }
+  })
+
   it('clears tokens and user on logout', async () => {
     apiMocks.logoutApi.mockResolvedValue({ code: 200, message: 'ok' })
 
@@ -202,7 +263,7 @@ describe('auth store', () => {
     expect(session().refreshToken.value).toBeFalsy()
   })
 
-  it('fills user from /api/me', async () => {
+  it('fills user from /api/v1/me', async () => {
     apiMocks.fetchMeApi.mockResolvedValue({
       code: 200,
       message: 'ok',

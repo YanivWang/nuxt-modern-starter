@@ -103,7 +103,11 @@ export default defineNuxtConfig({
     revalidateSecret: process.env.NUXT_REVALIDATE_SECRET || '',
     public: {
       appEnv: process.env.NUXT_PUBLIC_APP_ENV || 'development',
-      apiBase: process.env.NUXT_PUBLIC_API_BASE || 'http://localhost:2027/api',
+      // 必须带 /api/v1：后端已下线无版本别名，兜底值少了版本段的话，
+      // 没配 NUXT_PUBLIC_API_BASE 的运行方式（裸 node .output/server/index.mjs、
+      // vitest 的 nuxt 环境）会对每个业务请求拿到 404。
+      // tests/unit/api-contract.test.ts 拿 spec 里的前缀比对这个字面量。
+      apiBase: process.env.NUXT_PUBLIC_API_BASE || 'http://localhost:2027/api/v1',
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000',
       googleSiteVerification: process.env.NUXT_PUBLIC_GOOGLE_SITE_VERIFICATION || '',
       baiduSiteVerification: process.env.NUXT_PUBLIC_BAIDU_SITE_VERIFICATION || '',

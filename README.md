@@ -25,7 +25,7 @@ The quick-start target is `pnpm install && pnpm dev`: a new project should be ab
 | @pinia/nuxt           | 0.11.3  |
 | ant-design-vue        | 4.2.6   |
 | @ant-design-vue/nuxt  | 1.4.6   |
-| @yanivjs/yaniv-editor | 0.1.4   |
+| @yanivjs/yaniv-editor | 0.3.0   |
 | Vitest                | 4.1.11  |
 
 When upgrading dependencies, update this section and run at least:
@@ -49,9 +49,9 @@ pnpm build
 - Feature-first product modules under `app/features/*` for workspace, editor, product shell, account shell, templates, and future SaaS workflows.
 - Opt-in Bearer Token auth module with sign-in, sign-up, logout, user menu, safe redirect handling, and protected-route examples.
 - Cache-safe sessions: tokens live in `app/utils/auth-session.ts` and never enter Pinia state (which is serialized into the SSR payload), auth bootstrap is client-only, and session-dependent UI stays inside `<ClientOnly>`. Prerendered and SWR-cached HTML is therefore identical for every visitor, and `tests/unit/ssr-cache-safety.test.ts` enforces both invariants.
-- Product workspace at `/workspace`: list, create (navigate to `/docs/new`), and delete projects via `nuxt-modern-starter-api` (`GET/POST/PATCH/DELETE /api/projects`). Dashboard prefetches the editor route on idle.
+- Product workspace at `/workspace`: list, create (navigate to `/docs/new`), and delete projects via `nuxt-modern-starter-api` (`GET/POST/PATCH/DELETE /api/v1/projects`). Dashboard prefetches the editor route on idle.
 - Theme templates placeholder at `/workspace/templates` (6 dashed cards + empty state, no API). Templates, AI generation, export, monetization, and domain-specific workflows are optional product extensions, not default requirements for the SaaS foundation.
-- Editor at `/docs/:id` and `/docs/new` (`:id` is the project id or `new`): resolves `documentId`, loads content with `GET /api/documents/:documentId`, autosaves with `PATCH /api/documents/:documentId` (2s debounce, flush on route leave), and updates titles with `PATCH /api/projects/:projectId` through `@yanivjs/yaniv-editor` (PPT editor, `mode: edit`, `preset: full`).
+- Editor at `/docs/:id` and `/docs/new` (`:id` is the project id or `new`): resolves `documentId`, loads content with `GET /api/v1/documents/:documentId`, autosaves with `PATCH /api/v1/documents/:documentId` (2s debounce, flush on route leave), and updates titles with `PATCH /api/v1/projects/:projectId` through `@yanivjs/yaniv-editor` (PPT editor, `mode: edit`, `preset: full`).
 - Product account at `/account`: dedicated account layout, profile payload, and logout (via user menu).
 - Authenticated business responses use the shared `{ code, message, data }` envelope with automatic `code === 200` validation in the HTTP client.
 - The backend OpenAPI contract is vendored at `contracts/openapi.yaml` and checked by `tests/unit/api-contract.test.ts` at two levels. Paths: every environment layer must point at the versioned API prefix, every consumed endpoint must exist in the contract, and the E2E stub must serve the same prefix. Fields: every consumed response must describe a real payload shape, the top-level `data` keys must match the declared set exactly (so a new required backend field cannot be silently dropped), and every field of the frontend domain types must exist in the contract with a matching JSON type. The E2E stub is held to the same contract: `tests/unit/stub-api-contract.test.ts` boots it on an ephemeral port and validates every response against the spec with ajv, so E2E can never pass against a response shape the real backend would not produce. `contracts/SOURCE.json` records the upstream commit and a checksum, and `pnpm contract:check` verifies the checksum even when the backend repo is absent. Error responses are covered too: every consumed endpoint's declared non-2xx statuses must match a registered set exactly, and every authenticated endpoint must declare 401 so the client's refresh-and-retry path has contract backing. Run `pnpm contract:sync` after the backend changes its contract; never edit the vendored copy by hand.

@@ -22,7 +22,7 @@
   - 被引用：AppHeader、sitemap（server/utils/seo 动态 slug）
 
   【渲染 / 数据】
-    SSR + SWR 1h；fetchNewsArticles → adapter /content/news（网关 GET /api/content/news）。
+    SSR + SWR 1h；fetchNewsArticles → adapter /content/news（网关 GET /api/v1/content/news）。
     useAsyncData 水合复用 payload。
 
   子组件：

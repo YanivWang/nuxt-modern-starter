@@ -40,6 +40,11 @@ import { message } from 'ant-design-vue'
 import { useI18n } from 'vue-i18n'
 import { getApiErrorMessage } from '~/lib/http/error'
 import { pushSafely } from '~/utils/navigate-safely'
+import {
+  REGISTER_PASSWORD_MIN_LENGTH,
+  REGISTER_USERNAME_MAX_LENGTH,
+  REGISTER_USERNAME_MIN_LENGTH
+} from '~~/config/auth'
 
 const router = useRouter()
 const languageStore = useLanguageStore()
@@ -61,6 +66,28 @@ usePageSeo({
   description: t('auth.register.title'),
   noindex: true
 })
+
+// 长度取自 config/auth.ts，与后端 registerSchema 同源：
+// 客户端规则一旦比服务端松，用户就只能等一次 400 才知道自己填得不对。
+const usernameRules = computed(() => [
+  { required: true, message: t('auth.validation.usernameRequired') },
+  {
+    min: REGISTER_USERNAME_MIN_LENGTH,
+    max: REGISTER_USERNAME_MAX_LENGTH,
+    message: t('auth.validation.usernameLength', {
+      min: REGISTER_USERNAME_MIN_LENGTH,
+      max: REGISTER_USERNAME_MAX_LENGTH
+    })
+  }
+])
+
+const passwordRules = computed(() => [
+  { required: true, message: t('auth.validation.passwordRequired') },
+  {
+    min: REGISTER_PASSWORD_MIN_LENGTH,
+    message: t('auth.validation.passwordMin', { min: REGISTER_PASSWORD_MIN_LENGTH })
+  }
+])
 
 const validatePasswordConfirm = async (_rule: unknown, value: string) => {
   if (!value) {
@@ -104,22 +131,11 @@ const handleSubmit = async () => {
         <h1 class="auth-card__title">{{ $t('auth.register.title') }}</h1>
 
         <a-form :model="form" layout="vertical" @finish="handleSubmit">
-          <a-form-item
-            name="username"
-            :label="$t('auth.form.username')"
-            :rules="[{ required: true, message: $t('auth.validation.usernameRequired') }]"
-          >
+          <a-form-item name="username" :label="$t('auth.form.username')" :rules="usernameRules">
             <a-input v-model:value="form.username" autocomplete="username" size="large" />
           </a-form-item>
 
-          <a-form-item
-            name="password"
-            :label="$t('auth.form.password')"
-            :rules="[
-              { required: true, message: $t('auth.validation.passwordRequired') },
-              { min: 6, message: $t('auth.validation.passwordMin') }
-            ]"
-          >
+          <a-form-item name="password" :label="$t('auth.form.password')" :rules="passwordRules">
             <a-input-password
               v-model:value="form.password"
               autocomplete="new-password"

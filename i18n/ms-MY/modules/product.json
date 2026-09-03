@@ -37,9 +37,10 @@
     },
     "validation": {
       "usernameRequired": "Sila masukkan nama pengguna",
+      "usernameLength": "Nama pengguna mesti antara {min} hingga {max} aksara",
       "passwordRequired": "Sila masukkan kata laluan",
       "confirmPasswordRequired": "Sila sahkan kata laluan",
-      "passwordMin": "Kata laluan mesti sekurang-kurangnya 6 aksara",
+      "passwordMin": "Kata laluan mesti sekurang-kurangnya {min} aksara",
       "passwordMismatch": "Kedua-dua kata laluan tidak sepadan"
     },
     "errors": {

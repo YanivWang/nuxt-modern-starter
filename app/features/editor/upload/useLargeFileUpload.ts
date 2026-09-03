@@ -9,7 +9,8 @@
     useLargeFileUpload
 
   【依赖关系】
-    - 依赖：createLargeFileUploadApi、computeFileMd5、large-upload-persistence、constants
+    - 依赖：createLargeFileUploadApi、computeFileMd5、large-upload-persistence、constants、
+      app/lib/http/error（ApiError —— 重试判据）
     - 被引用：composables/useEditorMediaUpload.ts
 
   【渲染 / 数据】
@@ -19,8 +20,10 @@
     首次上传会先算整文件 MD5；API 若返回 instant=true 则走秒传，不再 PUT 分片。
     localStorage 只保存 uploadId，真正续传前仍用 getStatus 校验文件名、大小与任务状态。
     进度条 0~95 留给 MD5 + PUT，merge 固定从 96 到 100，避免上传完成前显示满格。
+    重试只针对 5xx 与传输失败，判据与理由见 isRetryable。
 */
 import { computed, ref, shallowRef } from 'vue'
+import { ApiError } from '~/lib/http/error'
 import { createLargeFileUploadApi } from '../upload-api'
 import {
   LARGE_UPLOAD_DEFAULT_CHUNK_SIZE,
@@ -64,15 +67,26 @@ const runPool = async <T>(
   await Promise.all(runners)
 }
 
-const isRetryable = (err: unknown): boolean => {
-  if (!err || typeof err !== 'object') return false
-  const e = err as { type?: string; status?: number; statusCode?: number; message?: string }
-  if (e.type === 'canceled') return false
-  const status = e.status ?? e.statusCode
-  return (
-    e.type === 'network' || e.type === 'timeout' || (typeof status === 'number' && status >= 500)
-  )
-}
+/**
+ * 只重试「再发一次可能会成功」的失败。
+ *
+ * 判据只看 statusCode：HTTP 边界已经把所有异常归一成 ApiError（见 app/lib/http/error.ts），
+ * 传输层失败（断网、超时）没有响应可读，normalizeApiError 给它 500，
+ * 于是和服务端 5xx 落在同一条分支上 —— 这正是想要的效果。
+ *
+ * 4xx 一律不重试：分片下标越界、MD5 不符、任务不存在 / 已过期 / 不属于本人，
+ * 重发同样的请求只会得到同样的答案。429 也不重试：后端限流窗口是分钟到十五分钟级，
+ * 而这里的退避只有几百毫秒，重试除了多打两次请求什么都改变不了；
+ * 它的错误文案（「请求过于频繁，请稍后再试」）本身就是给用户看的正确提示。
+ *
+ * 取消不经过这里：调用方在进入本函数之前先判断 ac.signal.aborted。
+ *
+ * 这里原先按 axios 的错误形状判断（err.type === 'network' | 'timeout' | 'canceled'），
+ * 而本项目的 HTTP 层是 ofetch + ApiError，那几个分支从来不会命中 ——
+ * 真正在起作用的一直只有 status >= 500 这一条。
+ */
+const isRetryable = (error: unknown): boolean =>
+  error instanceof ApiError && error.statusCode >= 500
 
 const UPLOAD_PROGRESS_PREP_FLOOR = 22
 

@@ -64,9 +64,11 @@ digest(path).replace(/[-_]/g, '').slice(0, 10)
 ```
 
 不能改用 ohash 导出的 `hash()` —— 它会先 serialize 再 digest 且不截断，算出的 key
-永远匹配不到真实条目，`/api/revalidate` 会一直返回 `No matching SWR cache entries`，
-而缓存实际从未被清除。`tests/unit/revalidate-nitro-contract.test.ts` 从 nitropack 源码
-提取真实实现来比对，Nitro 升级导致算法漂移时会红。
+永远匹配不到真实条目，`/api/revalidate` 会一直报「全部未命中」，而缓存实际从未被清除。
+`tests/unit/revalidate-nitro-contract.test.ts` 从 nitropack 源码提取真实实现来比对，
+Nitro 升级导致算法漂移时会红 —— 这条风险由该测试在 CI 里拦，而不是靠线上的未命中来推断：
+未命中本身是正常状态（页面还没被访问过、进程刚重启、缓存刚过期），
+因此 `/api/revalidate` 对未命中返回 207 + 明细，不当作失败。
 
 另外，缓存本身默认按进程隔离，多实例部署下 revalidate 只影响收到请求的那个进程，
 见[部署概览](/deployment/overview)的「SWR 页面缓存与多实例」。

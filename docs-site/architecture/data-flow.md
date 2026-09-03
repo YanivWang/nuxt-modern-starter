@@ -159,7 +159,7 @@ server/utils/revalidate.ts → purgeRouteCaches()
 | `saveEditorDocument`  | PATCH | `/documents/:documentId` |
 
 ::: info
-`NUXT_PUBLIC_API_BASE` 已含 `/api` 前缀，适配器里写 `/projects` 而非 `/api/projects`。
+`NUXT_PUBLIC_API_BASE` 已含 `/api/v1` 前缀，适配器里写 `/projects` 而非 `/api/v1/projects`。
 :::
 
 ## 错误处理约定

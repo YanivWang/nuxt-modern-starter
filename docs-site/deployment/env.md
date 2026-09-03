@@ -42,6 +42,7 @@ NUXT_REVALIDATE_SECRET=replace_with_random_revalidate_secret
 | `NUXT_REVALIDATE_SECRET`               | `revalidateSecret`              | SWR 按需失效 webhook 密钥                       | 示例占位符（生产须替换）        |
 | `NUXT_CACHE_DRIVER`                    | —（构建期读）                   | SWR 缓存驱动：`memory` \| `fs`                  | `memory`                        |
 | `NUXT_CACHE_FS_BASE`                   | —（构建期读）                   | `fs` 驱动的存储目录                             | `./.data/cache`                 |
+| `NUXT_TRUSTED_PROXY_DEPTH`             | —（运行时读）                   | 本服务前面的可信反向代理层数                    | `0`                             |
 | `NUXT_LOG_LEVEL`                       | —（进程启动时读）               | 服务端日志级别 `debug`\|`info`\|`warn`\|`error` | `info`（`.env.dev` 为 `debug`） |
 | `NUXT_PUBLIC_ERROR_REPORTING_ENABLED`  | `public.errorReportingEnabled`  | 客户端错误上报开关，设 `false` 关闭             | `true`                          |
 
@@ -76,21 +77,43 @@ NUXT_REVALIDATE_SECRET=replace_with_random_revalidate_secret
 两者分工的意义：进程活着但配置缺失时 `healthz` 200 而 `readyz` 503，
 编排系统据此把实例摘出负载均衡，而不是反复重启它。
 
-## NUXT_PUBLIC_APP_ENV 与 Cookie
+## NUXT_TRUSTED_PROXY_DEPTH 与限流
+
+`server/utils/client-ip.ts` 用它决定客户端 IP 从哪里取，而客户端 IP 就是限流的 key。
+
+- `0`（默认）：不看 `x-forwarded-for`，只用连接地址。适用于直接对外的部署。
+- `N`：取 `x-forwarded-for` **右数第 N 项**。反向代理是往右追加真实来源的
+  （nginx 的 `$proxy_add_x_forwarded_for`），所以右数第 N 项才是网关看到的客户端。
+
+不要取最左项。最左项由客户端自己写，拿它当限流 key 时，攻击者每个请求换一个伪造 IP
+就能绕过配额，还能顺带把限流器的 bucket 表撑大 —— 本该防刷的组件反而成了放大器。
+
+仓库自带的 Compose 栈（`docker/docker-compose.base.yaml`）在 nuxt 前面只有一层 nginx 网关，
+因此显式设为 `1`。跟踪的 `.env.*` 一律是 `0`：不知道拓扑时，宁可粒度粗，也不要一个可伪造的 key。
+
+## Cookie 的 Secure 判据
 
 `app/utils/auth-session.ts`：
 
 ```ts
-secure: config.public.appEnv === 'production'
+secure: requiresSecureCookie(config.public.appEnv, config.public.siteUrl)
+// appEnv === 'production' || siteUrl.startsWith('https://')
 ```
 
-| 环境          | 设置方式                   | cookie secure |
-| ------------- | -------------------------- | ------------- |
-| 本地 pnpm dev | 默认 `development`         | false         |
-| Docker 生产栈 | Compose 注入 `production`  | true          |
-| Docker 开发栈 | Compose 注入 `development` | false         |
+判据跟**实际传输协议**走，不跟环境标签走。只看 `appEnv === 'production'` 的话，
+任何跑在 HTTPS 上却不叫 `production` 的环境（预发、灰度，以及本仓库
+`.env.test` 里 `APP_ENV=test` + `SITE_URL=https://…` 的组合）都会把令牌写成
+不带 `Secure` 的 cookie，一次降级到 http 的请求就能把它明文发出去。
 
-**生产 HTTPS 登录** 必须 `NUXT_PUBLIC_APP_ENV=production` + HTTPS。
+| 环境          | `NUXT_PUBLIC_APP_ENV` | `NUXT_PUBLIC_SITE_URL`  | cookie secure |
+| ------------- | --------------------- | ----------------------- | ------------- |
+| 本地 pnpm dev | `development`         | `http://localhost:3000` | false         |
+| E2E           | `development`         | `http://127.0.0.1:3399` | false         |
+| 预发 / 测试   | `test`                | `https://…`             | true          |
+| Docker 生产栈 | `production`          | `https://…`             | true          |
+
+`appEnv === 'production'` 这一支保留下来，是为了兼容 `siteUrl` 还没配成真实
+https 域名的生产部署：两条是「或」的关系，只会让 `Secure` 出现得更多。
 
 ## 生产注意
 

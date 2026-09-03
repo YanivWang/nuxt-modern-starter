@@ -37,9 +37,10 @@
     },
     "validation": {
       "usernameRequired": "Please enter a username",
+      "usernameLength": "Username must be between {min} and {max} characters",
       "passwordRequired": "Please enter a password",
       "confirmPasswordRequired": "Please confirm your password",
-      "passwordMin": "Password must be at least 6 characters",
+      "passwordMin": "Password must be at least {min} characters",
       "passwordMismatch": "The two passwords do not match"
     },
     "errors": {

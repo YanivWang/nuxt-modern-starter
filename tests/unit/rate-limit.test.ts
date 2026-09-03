@@ -58,6 +58,27 @@ describe('createRateLimiter', () => {
     expect(limiter.size()).toBe(1)
   })
 
+  it('bounds the tracked key space so a public endpoint cannot be flooded into OOM', () => {
+    // key 来自请求方，公开端点上它就是攻击面：没有上限时换一批 key 就能把 Map 撑爆
+    const limiter = createRateLimiter({ windowMs: 1000, max: 5, maxKeys: 10 })
+
+    for (let i = 0; i < 500; i += 1) {
+      limiter.consume(`spoofed-${i}`, 0)
+    }
+
+    expect(limiter.size()).toBeLessThanOrEqual(10)
+  })
+
+  it('evicts the oldest key rather than refusing everyone once the table is full', () => {
+    // 满了就拒绝的话，灌 key 的一方顺手就把正常用户一起挡在了外面
+    const limiter = createRateLimiter({ windowMs: 1000, max: 1, maxKeys: 2 })
+
+    limiter.consume('flood-1', 0)
+    limiter.consume('flood-2', 0)
+
+    expect(limiter.consume('legit', 0)).toBe(true)
+  })
+
   it('can be reset for test isolation', () => {
     const limiter = createRateLimiter({ windowMs: 1000, max: 1 })
 

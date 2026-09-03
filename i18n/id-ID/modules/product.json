@@ -37,9 +37,10 @@
     },
     "validation": {
       "usernameRequired": "Masukkan nama pengguna",
+      "usernameLength": "Nama pengguna harus {min} sampai {max} karakter",
       "passwordRequired": "Masukkan kata sandi",
       "confirmPasswordRequired": "Konfirmasi kata sandi",
-      "passwordMin": "Kata sandi minimal 6 karakter",
+      "passwordMin": "Kata sandi minimal {min} karakter",
       "passwordMismatch": "Kedua kata sandi tidak cocok"
     },
     "errors": {

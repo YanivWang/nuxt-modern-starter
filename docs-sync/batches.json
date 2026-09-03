@@ -178,6 +178,7 @@
         "server/routes/readyz.get.ts",
         "server/routes/robots.txt.ts",
         "server/routes/sitemap.xml.ts",
+        "server/utils/client-ip.ts",
         "server/utils/logger.ts",
         "server/utils/rate-limit.ts",
         "server/utils/revalidate.ts",
@@ -196,5 +197,5 @@
       ]
     }
   ],
-  "totalFiles": 147
+  "totalFiles": 148
 }

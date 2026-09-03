@@ -10,10 +10,16 @@
  * --check 无论有没有后端仓库都会核对摘要，副本被手工改过会立刻失败。
  * 上游是否已经更新则仍然只能在有后端仓库时判断 —— 那是引入这种做法的固有边界。
  *
+ * 同步会拒绝「上游这份文件有未提交改动」的情况：那样写下来的副本对应不到任何一个 commit，
+ * 而 SOURCE.json 里的 sourceCommit 记的是「最后一次改动该文件的 commit」——
+ * 两者一拼，记录就会声称副本来自某个 commit，而它其实来自别人的工作区。
+ * 真要拿在改的契约联调，用 --allow-dirty；那时 sourceCommit 记 null，不冒充任何 commit。
+ *
  * 用法：
- *   node scripts/sync-api-contract.mjs           # 从后端仓库同步
- *   node scripts/sync-api-contract.mjs --check   # 只比对，不写入；不一致时退出码 1
+ *   node scripts/sync-api-contract.mjs               # 从后端仓库同步
+ *   node scripts/sync-api-contract.mjs --check       # 只比对，不写入；不一致时退出码 1
  *   node scripts/sync-api-contract.mjs --from <path>
+ *   node scripts/sync-api-contract.mjs --allow-dirty # 允许同步未提交的上游改动
  */
 import { execFileSync } from 'node:child_process'
 import { createHash } from 'node:crypto'
@@ -28,6 +34,7 @@ const DEFAULT_SOURCE = resolve(ROOT, '../nuxt-modern-starter-api/docs/openapi.ya
 
 const args = process.argv.slice(2)
 const checkOnly = args.includes('--check')
+const allowDirty = args.includes('--allow-dirty')
 const fromIndex = args.indexOf('--from')
 const source = fromIndex >= 0 ? resolve(args[fromIndex + 1] ?? '') : DEFAULT_SOURCE
 
@@ -45,6 +52,21 @@ const upstreamCommit = (specPath) => {
     )
   } catch {
     return null
+  }
+}
+
+/** 上游这份文件是否有未提交改动；判断不了（不是 git 仓库、没有 git）时按「干净」处理 */
+const isUpstreamDirty = (specPath) => {
+  try {
+    return (
+      execFileSync('git', ['status', '--porcelain', '--', specPath], {
+        cwd: dirname(specPath),
+        encoding: 'utf8',
+        stdio: ['ignore', 'pipe', 'ignore']
+      }).trim().length > 0
+    )
+  } catch {
+    return false
   }
 }
 
@@ -104,13 +126,26 @@ if (!existsSync(source)) {
   process.exit(1)
 }
 
+const dirty = isUpstreamDirty(source)
+
+if (dirty && !allowDirty) {
+  console.error(
+    `[contract] 上游 ${source} 有未提交改动，拒绝同步。\n` +
+      '  副本会被写成一份对应不到任何 commit 的内容，而 SOURCE.json 仍会记上最后一次\n' +
+      '  改动该文件的 commit —— 那条记录就成了假的。\n' +
+      '  修复：先在后端仓库提交契约改动；确需拿在改的契约联调时用 --allow-dirty。'
+  )
+  process.exit(1)
+}
+
 const upstream = readFileSync(source, 'utf8')
 // 记录里不放同步时间：那会让每次 no-op 同步都产生一条 diff，评审时全是噪声。
 // 两个字段都由内容与上游历史决定，内容没变就不会有 diff。
 const record = {
   source: 'nuxt-modern-starter-api',
   sourcePath: 'docs/openapi.yaml',
-  sourceCommit: upstreamCommit(source),
+  // 上游是脏的时候记 null：宁可没有来源信息，也不要一条指向错误 commit 的来源信息
+  sourceCommit: dirty ? null : upstreamCommit(source),
   sha256: sha256(upstream)
 }
 const nextRecord = `${JSON.stringify(record, null, 2)}\n`

@@ -16,6 +16,11 @@
 
   【边界与注意】
     不覆盖 large-upload 分片并发与 Worker MD5。
+
+    期望的媒体 origin 必须与被测实现**各自独立**推导出来：
+    这里用 new URL(apiBase).origin，实现那边用「剥掉 /api[/vN] 前缀」。
+    此前测试里放了一份和实现一模一样的剥前缀正则，于是 base 从 /api 迁到 /api/v1 时
+    两边一起错、测试照样绿，媒体 URL 却全都多带了一段 /api/v1（404）。
 */
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 
@@ -29,21 +34,46 @@ vi.mock('../../app/api/auth', async (importOriginal) => {
   }
 })
 
-const apiOriginFromBase = (apiBase: string) => apiBase.replace(/\/api\/?$/, '')
+/** 静态资源挂在 API 应用根上，所以期望值就是 base 的 origin —— 与实现的推导路径无关 */
+const expectedUploadOrigin = () => new URL(useRuntimeConfig().public.apiBase as string).origin
 
 describe('resolveUploadUrl', () => {
-  it('joins API origin with relative /uploads path', async () => {
+  it('strips the versioned API prefix, not just /api', async () => {
     const { resolveUploadUrl } = await import('../../app/features/editor/upload/resolve-upload-url')
 
-    expect(resolveUploadUrl('/uploads/common/a.webp', 'http://localhost:2026/api')).toBe(
-      'http://localhost:2026/uploads/common/a.webp'
+    expect(resolveUploadUrl('/uploads/common/a.webp', 'http://localhost:2027/api/v1')).toBe(
+      'http://localhost:2027/uploads/common/a.webp'
+    )
+    // 前缀抬版本号（/api/v2）后不需要再改这里
+    expect(resolveUploadUrl('/uploads/common/a.webp', 'http://localhost:2027/api/v2/')).toBe(
+      'http://localhost:2027/uploads/common/a.webp'
+    )
+    // 下线前的无版本别名
+    expect(resolveUploadUrl('/uploads/common/a.webp', 'http://localhost:2027/api')).toBe(
+      'http://localhost:2027/uploads/common/a.webp'
+    )
+  })
+
+  it('keeps the parent path when the API is mounted under a sub-path', async () => {
+    const { resolveUploadUrl } = await import('../../app/features/editor/upload/resolve-upload-url')
+
+    expect(resolveUploadUrl('/uploads/a.webp', 'https://example.com/backend/api/v1')).toBe(
+      'https://example.com/backend/uploads/a.webp'
+    )
+  })
+
+  it('falls back to the origin instead of gluing an unrecognised API path onto media URLs', async () => {
+    const { resolveUploadUrl } = await import('../../app/features/editor/upload/resolve-upload-url')
+
+    expect(resolveUploadUrl('/uploads/a.webp', 'https://gateway.example.com/v1')).toBe(
+      'https://gateway.example.com/uploads/a.webp'
     )
   })
 
   it('keeps absolute http(s) URLs unchanged', async () => {
     const { resolveUploadUrl } = await import('../../app/features/editor/upload/resolve-upload-url')
 
-    expect(resolveUploadUrl('https://cdn.example.com/a.webp', 'http://localhost:2026/api')).toBe(
+    expect(resolveUploadUrl('https://cdn.example.com/a.webp', 'http://localhost:2027/api/v1')).toBe(
       'https://cdn.example.com/a.webp'
     )
   })
@@ -64,7 +94,7 @@ describe('editor upload api', () => {
     const { uploadImages } = await import('../../app/features/editor/upload-api')
     const file = new File(['x'], 'a.webp', { type: 'image/webp' })
     const result = await uploadImages([file])
-    const origin = apiOriginFromBase(useRuntimeConfig().public.apiBase as string)
+    const origin = expectedUploadOrigin()
 
     expect(request).toHaveBeenCalledWith(
       '/uploads',
@@ -97,7 +127,7 @@ describe('editor upload api', () => {
       mimeType: 'video/mp4',
       fileMd5: 'd41d8cd98f00b204e9800998ecf8427e'
     })
-    const origin = apiOriginFromBase(useRuntimeConfig().public.apiBase as string)
+    const origin = expectedUploadOrigin()
 
     expect(request).toHaveBeenCalledWith(
       '/uploads/large/init',

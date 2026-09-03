@@ -12,7 +12,8 @@ import {
   getNewsRevalidatePaths,
   isRevalidatablePath,
   purgeRouteCaches,
-  resolveRevalidatePaths
+  resolveRevalidatePaths,
+  resolveRevalidateStatus
 } from '../../server/utils/revalidate'
 import {
   consumeRevalidateRateLimit,
@@ -71,6 +72,16 @@ describe('revalidate helpers', () => {
     expect(resolved).toContain('/news/starter-release')
     expect(resolved).toContain('/en/news/starter-release')
     expect(resolved).toHaveLength(SUPPORTED_LOCALES.length * 2 + 1)
+  })
+
+  it('treats a cache miss as success, not as a failed revalidation', () => {
+    // 清缓存是幂等的：没有条目时目标状态已经达成。而「全部未命中」恰恰是最常见的正常情况——
+    // 新文章详情页从没被访问过、进程刚重启、缓存刚过期。
+    // 这里一度返回 500，于是后端每次正常发布都记一条 revalidate_failed 告警，
+    // 一条几乎总在响的告警等于没有告警。
+    expect(resolveRevalidateStatus({ purged: ['/news'], missed: [] })).toBe(200)
+    expect(resolveRevalidateStatus({ purged: ['/news'], missed: ['/en/news'] })).toBe(207)
+    expect(resolveRevalidateStatus({ purged: [], missed: ['/news', '/en/news'] })).toBe(207)
   })
 
   it('reports purged and missed cache paths explicitly', async () => {

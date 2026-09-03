@@ -20,6 +20,11 @@
   【边界与注意】
     未登录 redirect 到 localizedPath('/sign-in')，query.redirect 保留原 fullPath。
     RBAC：roles 任一命中即可；permissions 须全部满足。403 用 error.forbidden。
+
+    RBAC 目前恒不命中：后端有账号角色，但刻意不通过 /me 下发（把角色交给浏览器会诱导前端
+    拿它当授权，而授权在服务端按请求查库完成）。因此 normalizeAuthUser 兜底出的是空数组，
+    任何声明了 auth.roles / auth.permissions 的页面对所有人都会 403。
+    这是既定分工，不是等后端补字段 —— 需要按角色控制 UI 时应引入专门的能力标识。
     登录 redirect 安全校验在 sign-in 页 resolveSafeRedirectPath，不在此 middleware。
 */
 import { AUTH_REDIRECTS, type AuthRouteMeta } from '../../config/auth'

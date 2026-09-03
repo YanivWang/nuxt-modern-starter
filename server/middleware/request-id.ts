@@ -10,7 +10,8 @@
     default export（defineEventHandler）；作用于全部请求。
 
   【依赖关系】
-    - 依赖：config/observability.ts（REQUEST_ID_HEADER）、server/utils/logger.ts
+    - 依赖：config/observability.ts（REQUEST_ID_HEADER）、server/utils/client-ip.ts、
+      server/utils/logger.ts
     - 被引用：Nitro 自动注册；server/plugins/error-capture.ts 与
       server/api/telemetry/errors.post.ts 读 event.context.requestId
 
@@ -21,8 +22,9 @@
     只信任上游 requestId 的「形状」（长度与字符集），不信任内容 —— 否则外部可以往日志里注入任意文本。
     访问日志走 debug 级别：默认 info 下不输出，避免高流量站点被逐请求日志淹没。
 */
-import { defineEventHandler, getRequestIP, getRequestURL, getHeader, setHeader } from 'h3'
+import { defineEventHandler, getRequestURL, getHeader, setHeader } from 'h3'
 import { REQUEST_ID_HEADER } from '../../config/observability'
+import { getClientIp } from '../utils/client-ip'
 import { logger } from '../utils/logger'
 
 const SAFE_REQUEST_ID = /^[\w.-]{1,128}$/
@@ -41,6 +43,7 @@ export default defineEventHandler((event) => {
     requestId,
     method: event.method,
     path: getRequestURL(event).pathname,
-    ip: getRequestIP(event, { xForwardedFor: true })
+    // 与限流用的是同一个来源，否则日志里的 IP 和被限流的 key 对不上，排查时误导人
+    ip: getClientIp(event)
   })
 })

@@ -20,10 +20,10 @@
     POST /__reset（仅测试用，重置内存状态）
 
   【渲染 / 数据】
-    进程内内存状态；每个 spec 通过 POST /api/__reset 拿到确定性初始数据，
+    进程内内存状态；每个 spec 通过 POST /api/v1/__reset 拿到确定性初始数据，
     可传 { projects: N } 生成 N 条项目，用于验证「加载更多」的翻页行为。
 
-    GET /api/projects 的分页语义与后端 shared/http/pagination 保持一致：
+    GET /api/v1/projects 的分页语义与后端 shared/http/pagination 保持一致：
     limit 默认 20、上限 100，offset 默认 0，hasMore = offset + 本页条数 < total，
     排序 updatedAt DESC。桩与真实后端在这里必须逐字段一致 —— 它就是契约本身。
     公开内容端点必须真实存在：/news 与 /pricing 是 SSR / SWR 页面，

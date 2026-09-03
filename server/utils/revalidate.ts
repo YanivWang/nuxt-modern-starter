@@ -5,6 +5,10 @@
   【架构位置】
     server/utils — 被 server/api/revalidate.post.ts 消费。
 
+  【主要导出 / 路由】
+    normalizeRevalidatePath、isRevalidatablePath、buildRouteCacheKey、getNewsRevalidatePaths、
+    purgeRouteCache、purgeRouteCaches、resolveRevalidateStatus、resolveRevalidatePaths
+
   【边界与注意】
     routeRules SWR 使用 group `nitro/routes`；key 算法需与 Nitro cachedEventHandler 保持一致。
     哈希必须用 nitroCacheHash，不能用 ohash 的 hash()，原因见该函数注释。
@@ -30,7 +34,9 @@ function escapeCacheKey(key: string) {
  *   1. ohash.hash 会先 serialize 再 digest，Nitro 对字符串是直接 digest
  *   2. ohash.hash 返回完整摘要，Nitro 会去掉 -_ 并截断到 10 位
  * 用错的后果是静默的：算出的 key 永远匹配不到真实条目，
- * /api/revalidate 每次都报 "No matching SWR cache entries"，缓存实际从未被清除。
+ * /api/revalidate 每次都报「全部未命中」，缓存实际从未被清除。
+ * 这条风险由 tests/unit/revalidate-nitro-contract.test.ts 在 CI 里拦 ——
+ * 它拿 nitropack 自己的算法比对，而不是靠运行时的未命中来推断。
  */
 function nitroCacheHash(value: string) {
   return digest(value).replace(/[-_]/g, '').slice(0, 10)
@@ -128,6 +134,23 @@ export async function purgeRouteCaches(paths: readonly string[]) {
     purged,
     missed
   }
+}
+
+/**
+ * 清缓存结果对应的 HTTP 状态码。
+ *
+ * 未命中不是失败：清缓存是幂等操作，没有条目时目标状态（该路径没有陈旧缓存）已经达成。
+ * 而未命中恰恰是最常见的正常情况 —— 新文章的详情页从没被访问过、进程刚重启、缓存刚过期。
+ * 这里一度在全部未命中时返回 500，于是后端 revalidator 每次正常发布都记一条
+ * revalidate_failed 告警；一条几乎总在响的告警等于没有告警。
+ *
+ * 200 = 全部清掉了；207 = 有路径当时无缓存可清，明细在响应体里。
+ */
+export function resolveRevalidateStatus(result: {
+  purged: readonly string[]
+  missed: readonly string[]
+}) {
+  return result.missed.length > 0 ? 207 : 200
 }
 
 export function resolveRevalidatePaths(body: unknown) {

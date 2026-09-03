@@ -37,9 +37,10 @@
     },
     "validation": {
       "usernameRequired": "Maglagay ng username",
+      "usernameLength": "Ang username ay dapat {min} hanggang {max} character",
       "passwordRequired": "Maglagay ng password",
       "confirmPasswordRequired": "Kumpirmahin ang password",
-      "passwordMin": "Dapat hindi bababa sa 6 character ang password",
+      "passwordMin": "Dapat hindi bababa sa {min} character ang password",
       "passwordMismatch": "Hindi magkatugma ang dalawang password"
     },
     "errors": {

@@ -407,7 +407,7 @@
     {
       "id": "guide-ov-001",
       "docFile": "docs-site/guide/overview.md",
-      "claim": "Vitest 52 个测试文件、278 个用例",
+      "claim": "Vitest 53 个测试文件、303 个用例",
       "symbols": ["include"],
       "sourceFiles": ["vitest.config.ts"],
       "evidenceHint": "vitest.config.ts:4 (include)"
@@ -519,10 +519,10 @@
     {
       "id": "env-001",
       "docFile": "docs-site/deployment/env.md",
-      "claim": "auth cookie secure 当 appEnv === production",
-      "symbols": ["tokenCookieOptions", "appEnv"],
+      "claim": "auth cookie secure 当 appEnv === production 或 siteUrl 是 https",
+      "symbols": ["tokenCookieOptions", "requiresSecureCookie", "appEnv", "siteUrl"],
       "sourceFiles": ["app/utils/auth-session.ts", "nuxt.config.ts"],
-      "evidenceHint": "app/utils/auth-session.ts:11 (tokenCookieOptions); app/utils/auth-session.ts:44 (appEnv)"
+      "evidenceHint": "app/utils/auth-session.ts:52 (tokenCookieOptions); app/utils/auth-session.ts:49 (requiresSecureCookie)"
     },
     {
       "id": "env-002",
@@ -615,7 +615,7 @@
     {
       "id": "ts-ov-001",
       "docFile": "docs-site/tech-stack/overview.md",
-      "claim": "Nuxt 4.4.8 + @yanivjs/yaniv-editor 0.1.4",
+      "claim": "Nuxt 4.4.8 + @yanivjs/yaniv-editor 0.3.0",
       "symbols": ["nuxt", "@yanivjs/yaniv-editor"],
       "sourceFiles": ["package.json"],
       "evidenceHint": "package.json:2 (nuxt); package.json:72 (@yanivjs/yaniv-editor)"

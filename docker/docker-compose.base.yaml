@@ -30,6 +30,10 @@ services:
     environment:
       HOST: 0.0.0.0
       PORT: '3000'
+      # 两个 Compose 栈都把 nginx 网关放在 nuxt 前面，正好一层。
+      # 限流 key 因此取 x-forwarded-for 右数第 1 项 —— 网关追加的真实来源，
+      # 而不是客户端能随手写的最左项。见 server/utils/client-ip.ts。
+      NUXT_TRUSTED_PROXY_DEPTH: '1'
     healthcheck:
       # gateway depends_on condition: service_healthy 依赖此探活。
       # 打 /healthz 而不是 /：后者会跑一遍完整页面渲染栈，页面出错会被误判成进程已死并触发重启。

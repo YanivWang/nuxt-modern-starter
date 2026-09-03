@@ -28,21 +28,22 @@ The three env files are intentionally committed as starter baselines. Keep them 
 
 ### Runtime variables
 
-| Variable                               | Purpose                                                               | Local default                                                            |
-| -------------------------------------- | --------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| `NUXT_PUBLIC_SITE_URL`                 | Canonical site origin for SEO, sitemap, and robots                    | `http://localhost:3000`                                                  |
-| `NUXT_PUBLIC_API_BASE`                 | Backend API origin including the `/api/v1` prefix                     | `http://localhost:2027/api/v1`                                           |
-| `NUXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | Google Search Console verification token                              | empty                                                                    |
-| `NUXT_PUBLIC_BAIDU_SITE_VERIFICATION`  | Baidu verification token                                              | empty                                                                    |
-| `NUXT_PUBLIC_ANALYTICS_ENABLED`        | Must be exactly `true` to enable analytics plugin                     | `false`                                                                  |
-| `NUXT_PUBLIC_ANALYTICS_SCRIPT_SRC`     | Single deferred third-party script URL                                | empty                                                                    |
-| `NUXT_PUBLIC_ANALYTICS_DEFER_MS`       | Client defer before loading analytics script                          | `3000`                                                                   |
-| `NUXT_PUBLIC_APP_ENV`                  | Controls auth cookie `secure` flag via `runtimeConfig.public.appEnv`  | `development` locally; Docker Compose sets `production` or `development` |
-| `NUXT_REVALIDATE_SECRET`               | Server-only secret for `POST /api/revalidate` (`x-revalidate-secret`) | placeholder in tracked `.env.*`; override in real environments           |
-| `NUXT_CACHE_DRIVER`                    | SWR page-cache driver: `memory` or `fs`; read at **build** time       | `memory`                                                                 |
-| `NUXT_CACHE_FS_BASE`                   | Storage directory for the `fs` driver                                 | `./.data/cache`                                                          |
-| `NUXT_LOG_LEVEL`                       | Server log level: `debug`, `info`, `warn`, `error`                    | `info` (`debug` in `.env.dev`)                                           |
-| `NUXT_PUBLIC_ERROR_REPORTING_ENABLED`  | Set to `false` to disable client error reporting                      | `true`                                                                   |
+| Variable                               | Purpose                                                                                             | Local default                                                            |
+| -------------------------------------- | --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| `NUXT_PUBLIC_SITE_URL`                 | Canonical site origin for SEO, sitemap, and robots                                                  | `http://localhost:3000`                                                  |
+| `NUXT_PUBLIC_API_BASE`                 | Backend API origin including the `/api/v1` prefix                                                   | `http://localhost:2027/api/v1`                                           |
+| `NUXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | Google Search Console verification token                                                            | empty                                                                    |
+| `NUXT_PUBLIC_BAIDU_SITE_VERIFICATION`  | Baidu verification token                                                                            | empty                                                                    |
+| `NUXT_PUBLIC_ANALYTICS_ENABLED`        | Must be exactly `true` to enable analytics plugin                                                   | `false`                                                                  |
+| `NUXT_PUBLIC_ANALYTICS_SCRIPT_SRC`     | Single deferred third-party script URL                                                              | empty                                                                    |
+| `NUXT_PUBLIC_ANALYTICS_DEFER_MS`       | Client defer before loading analytics script                                                        | `3000`                                                                   |
+| `NUXT_PUBLIC_APP_ENV`                  | With `siteUrl`, decides the auth cookie `secure` flag                                               | `development` locally; Docker Compose sets `production` or `development` |
+| `NUXT_REVALIDATE_SECRET`               | Server-only secret for `POST /api/revalidate` (`x-revalidate-secret`)                               | placeholder in tracked `.env.*`; override in real environments           |
+| `NUXT_TRUSTED_PROXY_DEPTH`             | Trusted reverse-proxy hops in front of this service; picks the client IP used as the rate-limit key | `0` (no proxy trusted); the Compose stack sets `1`                       |
+| `NUXT_CACHE_DRIVER`                    | SWR page-cache driver: `memory` or `fs`; read at **build** time                                     | `memory`                                                                 |
+| `NUXT_CACHE_FS_BASE`                   | Storage directory for the `fs` driver                                                               | `./.data/cache`                                                          |
+| `NUXT_LOG_LEVEL`                       | Server log level: `debug`, `info`, `warn`, `error`                                                  | `info` (`debug` in `.env.dev`)                                           |
+| `NUXT_PUBLIC_ERROR_REPORTING_ENABLED`  | Set to `false` to disable client error reporting                                                    | `true`                                                                   |
 
 Production auth cookies are marked `secure` when `NUXT_PUBLIC_APP_ENV=production`, so real login flows must be served over HTTPS.
 

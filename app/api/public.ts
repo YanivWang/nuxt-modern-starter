@@ -15,7 +15,7 @@
 
   【渲染 / 数据】
     adapter 相对路径：/content/news、/content/news/:slug、/content/pricing。
-    页面注释可写完整路径 GET /api/content/pricing（便于联调）。
+    页面注释可写完整路径 GET /api/v1/content/pricing（便于联调）。
 
   【边界与注意】
     FAQ 不经远程 API；新闻 / 定价走 Public client，适合 SSR 公开页（不经 token）。

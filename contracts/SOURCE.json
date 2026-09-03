@@ -1,6 +1,6 @@
 {
   "source": "nuxt-modern-starter-api",
   "sourcePath": "docs/openapi.yaml",
-  "sourceCommit": "448211f877cc9a83dedbdba0667ab17856bcbbfd",
-  "sha256": "03a803c272ab73923fa94014e2cfc39f04d1387df1db21c3189948cffddc4dab"
+  "sourceCommit": "b9a61ff8997ce132508aa47ea67bb4c0eb1c5c65",
+  "sha256": "269f89fa6d62c75dc9ef75a29405fcf516100c44cbf7f57c34f42eb470f79690"
 }

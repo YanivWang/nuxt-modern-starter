@@ -10,7 +10,7 @@
     buildClientErrorReport、createErrorReportDeduper、ClientErrorReport、ClientErrorKind
 
   【依赖关系】
-    - 依赖：config/observability.ts（去重窗口、体积上限）
+    - 依赖：config/observability.ts（去重窗口、单字段字节预算）
     - 被引用：app/plugins/error-reporter.client.ts、tests/unit/error-report.test.ts
 
   【渲染 / 数据】
@@ -18,12 +18,15 @@
 
   【边界与注意】
     渲染错误会在一次 tick 内重复触发几十次，必须去重后再上报，否则一个坏组件就能把接口打满。
-    指纹取 kind + message + 栈顶一帧：同一抛出点的重复错误会收敛成一条，
+    指纹取 kind + 栈顶一帧 + message：同一抛出点的重复错误会收敛成一条，
     而不同抛出点的同名错误仍然区分得开。整条 stack 参与计算会让指纹过于敏感，失去去重效果。
+
+    每个字段的上限来自 config/observability.ts 的 CLIENT_ERROR_FIELD_MAX_BYTES，
+    与服务端 /api/telemetry/errors 共用同一份预算；本模块不再自己算一套。
 */
 import {
   CLIENT_ERROR_DEDUPE_WINDOW_MS,
-  CLIENT_ERROR_MAX_BODY_BYTES
+  CLIENT_ERROR_FIELD_MAX_BYTES
 } from '../../config/observability'
 
 export type ClientErrorKind = 'vue' | 'window' | 'unhandledrejection'
@@ -36,11 +39,34 @@ export type ClientErrorReport = {
   fingerprint: string
 }
 
-/** 单字段裁剪上限：留出余量，保证整体载荷不超过服务端的 CLIENT_ERROR_MAX_BODY_BYTES */
-const MAX_FIELD_LENGTH = Math.floor(CLIENT_ERROR_MAX_BODY_BYTES / 4)
+const TRUNCATION_MARKER = '…[truncated]'
 
-const truncate = (value: string) =>
-  value.length > MAX_FIELD_LENGTH ? `${value.slice(0, MAX_FIELD_LENGTH)}…[truncated]` : value
+const encoder = new TextEncoder()
+const decoder = new TextDecoder()
+
+const TRUNCATION_MARKER_BYTES = encoder.encode(TRUNCATION_MARKER).length
+
+/**
+ * 按 UTF-8 **字节**裁剪，不是按字符。
+ * 服务端的体积上限以字节计，而一个汉字占三字节 —— 按字符裁剪时，
+ * 同样「不超上限」的中文报告实际是英文报告的三倍大，会直接被 413 拒掉。
+ */
+const truncate = (value: string, maxBytes: number) => {
+  const bytes = encoder.encode(value)
+
+  if (bytes.length <= maxBytes) {
+    return value
+  }
+
+  let end = Math.max(0, maxBytes - TRUNCATION_MARKER_BYTES)
+
+  // 退到码点边界：UTF-8 续字节形如 10xxxxxx，从中间切开会解出替换字符
+  while (end > 0 && (bytes[end]! & 0xc0) === 0x80) {
+    end -= 1
+  }
+
+  return `${decoder.decode(bytes.subarray(0, end))}${TRUNCATION_MARKER}`
+}
 
 const toMessage = (error: unknown) => {
   if (error instanceof Error) {
@@ -59,25 +85,35 @@ const toMessage = (error: unknown) => {
 }
 
 const toStack = (error: unknown) =>
-  error instanceof Error && error.stack ? truncate(error.stack) : undefined
+  error instanceof Error && error.stack
+    ? truncate(error.stack, CLIENT_ERROR_FIELD_MAX_BYTES.stack)
+    : undefined
 
-/** 指纹只取栈顶一帧（stack 第 2 行）：足以区分抛出点，又不会被调用链的差异打散 */
+/**
+ * 指纹只取栈顶一帧（stack 第 2 行）：足以区分抛出点，又不会被调用链的差异打散。
+ * 栈帧排在 message 前面，因为超长 message 被裁掉尾巴时，先失去的应该是重复的报错文案，
+ * 而不是唯一能区分抛出点的那一帧。
+ */
 const toFingerprint = (kind: ClientErrorKind, message: string, stack?: string) =>
-  `${kind}:${message}:${stack?.split('\n')[1]?.trim() ?? ''}`
+  truncate(
+    `${kind}:${stack?.split('\n')[1]?.trim() ?? ''}:${message}`,
+    CLIENT_ERROR_FIELD_MAX_BYTES.fingerprint
+  )
 
 export const buildClientErrorReport = (
   kind: ClientErrorKind,
   error: unknown,
   path: string
 ): ClientErrorReport => {
-  const message = truncate(toMessage(error))
+  const message = truncate(toMessage(error), CLIENT_ERROR_FIELD_MAX_BYTES.message)
   const stack = toStack(error)
 
   return {
     kind,
     message,
     stack,
-    path,
+    // path 同样要裁：它来自 location.pathname，长度不受本模块控制
+    path: truncate(path, CLIENT_ERROR_FIELD_MAX_BYTES.path),
     fingerprint: toFingerprint(kind, message, stack)
   }
 }

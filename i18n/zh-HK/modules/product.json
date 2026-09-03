@@ -37,9 +37,10 @@
     },
     "validation": {
       "usernameRequired": "請輸入用戶名",
+      "usernameLength": "用戶名需為 {min}~{max} 個字符",
       "passwordRequired": "請輸入密碼",
       "confirmPasswordRequired": "請再次輸入密碼",
-      "passwordMin": "密碼至少需要 6 個字符",
+      "passwordMin": "密碼至少需要 {min} 個字符",
       "passwordMismatch": "兩次輸入的密碼不一致"
     },
     "errors": {

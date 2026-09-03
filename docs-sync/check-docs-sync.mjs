@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /**
- * Validates docs-sync manifest, batches, doc-claims, and header comments.
+ * Validates docs-sync manifest, batches, doc-claims, and header comments —
+ * including that every repo file path named inside a header comment actually exists.
  * Usage: node docs-sync/check-docs-sync.mjs [--batch N]
  */
 import fs from 'node:fs'
@@ -198,6 +199,68 @@ if (!batchId) {
     const content = read(rel)
     if (content && !hasInlineComment(content, rel)) {
       errors.push(`missing inline comment: ${rel}`)
+    }
+  }
+}
+
+// 7b. file paths named inside header comments must exist
+//
+// 头注释里的「依赖 / 被引用」写的是仓库内的真实路径，而此前没有任何一条检查看过它们 ——
+// 于是 server/api/telemetry/errors.post.ts 长期指着一个从不存在的 tests/unit/telemetry-errors.test.ts，
+// 全套门禁照样绿。头注释是这个仓库的主要导航方式，指错地方比不写更糟。
+//
+// 只校验「以已知源码后缀结尾、且首段是仓库内真实顶层目录」的引用：
+// 路由（/docs/new）、无后缀模块说明符（config/routes）与通配（app/api/*）都不在此列 ——
+// 它们无法与文件路径可靠区分，硬要校验只会制造假阳性。
+const HEADER_PATH_EXTENSIONS = [
+  'ts',
+  'vue',
+  'mjs',
+  'cjs',
+  'json',
+  'yaml',
+  'yml',
+  'scss',
+  'css',
+  'md'
+]
+// 构建产物不进版本库：CI 上不存在，本地存在，校验它只会得到一条时有时无的错误
+const HEADER_PATH_IGNORED_ROOTS = new Set([
+  '.output',
+  '.nuxt',
+  '.nitro',
+  'node_modules',
+  'coverage'
+])
+
+const repoTopLevelDirs = new Set(
+  fs
+    .readdirSync(ROOT, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => entry.name)
+)
+
+const headerPathPattern = new RegExp(
+  String.raw`[\w.@-]+(?:\/[\w.@\[\]-]+)+\.(?:${HEADER_PATH_EXTENSIONS.join('|')})`,
+  'g'
+)
+
+if (!batchId) {
+  for (const rel of manifest.sourceFiles.map((f) => f.path)) {
+    const content = read(rel)
+    if (!content) continue
+
+    const header = content.match(/【文件职责】[\s\S]*?(?:\*\/|-->)/)
+    if (!header) continue
+
+    for (const candidate of new Set(header[0].match(headerPathPattern) ?? [])) {
+      const [root] = candidate.split('/')
+      if (candidate.includes('*')) continue
+      if (HEADER_PATH_IGNORED_ROOTS.has(root)) continue
+      if (!repoTopLevelDirs.has(root)) continue
+      if (fs.existsSync(path.join(ROOT, candidate))) continue
+
+      errors.push(`header comment references a missing file: ${rel} → ${candidate}`)
     }
   }
 }

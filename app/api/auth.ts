@@ -25,6 +25,10 @@
     refresh 仅在明确 401 时清除令牌；临时网络/服务端错误保留本地会话。
     并发 401 共享同一 refreshPromise，该 Promise 挂在 nuxtApp 上而非模块单例，
     避免 SSR 下跨请求共用同一次 refresh。
+
+    app 内单飞只解决了一半：refresh token 在后端是一次性的，轮换后旧值再用一次
+    会被判成重放并撤销整条 token 家族，而多个标签页共用同一份 cookie。
+    因此 refresh 还要经 Web Locks 在**浏览器级别**串行，见 withCrossTabRefreshLock。
 */
 import { AUTH_API_ENDPOINTS, type AuthUser, type Permission, type Role } from '../../config/auth'
 import type { ApiResponse } from '../lib/http/types'
@@ -93,16 +97,76 @@ type NuxtAppWithRefresh = ReturnType<typeof useNuxtApp> & {
 /** 无 Nuxt 上下文时（如纯工具单测）退化为模块级单飞 */
 let fallbackRefreshPromise: Promise<string | null> | null = null
 
-const refreshAccessToken = async () => {
-  const session = useAuthSession()
+/** 同一浏览器内所有标签页共用的锁名 */
+const REFRESH_LOCK_NAME = 'nuxt-modern-starter:auth-refresh'
 
-  if (!session.refreshToken.value) {
-    session.clear()
-    return null
+/** 等锁上限：某个标签页的 refresh 卡住时，不能让其他标签页跟着一起挂死 */
+const REFRESH_LOCK_WAIT_MS = 10_000
+
+/**
+ * 跨标签页串行执行一次 refresh。
+ *
+ * 后端的 refresh token 是一次性的：轮换之后旧值再被使用一次会判定为重放，
+ * 于是**整条 token 家族**被撤销（OAuth 2.0 Security BCP 的标准做法）。
+ * 而同一个浏览器的多个标签页共用同一份 cookie —— 两个标签页同时遇到 401 时，
+ * 各自的 app 内单飞谁也拦不住对方，两边拿着同一个 refresh token 各发一次请求：
+ * 先到的那次正常轮换，后到的那次被判成重放，两个标签页一起被登出。
+ * 所以互斥必须做在浏览器级别，而不是 app 实例级别。
+ *
+ * Web Locks 不可用（SSR、老浏览器）或等待超时时退化为直接执行：
+ * 此时仍有 app 内单飞，且锁内那次「别人是不是已经换过了」的检查同样会跑。
+ */
+const withCrossTabRefreshLock = async <T>(run: () => Promise<T>): Promise<T> => {
+  const locks = globalThis.navigator?.locks
+
+  if (!locks) {
+    return run()
   }
 
   try {
-    const response = await refreshApi(session.refreshToken.value)
+    return await locks.request(
+      REFRESH_LOCK_NAME,
+      { signal: AbortSignal.timeout(REFRESH_LOCK_WAIT_MS) },
+      run
+    )
+  } catch (error) {
+    // 只有「等锁超时」才退化执行；run 自己抛的错必须原样向上抛。
+    if (error instanceof DOMException && error.name === 'TimeoutError') {
+      return run()
+    }
+
+    throw error
+  }
+}
+
+type AuthSession = ReturnType<typeof useAuthSession>
+
+/**
+ * 锁内的实际动作：先确认这次要用的 refresh token 还是不是浏览器里当前那一份。
+ * 等锁期间别的标签页可能已经轮换过一轮，此时旧值已经作废，
+ * 再拿它去换就是在自己触发重放检测 —— 直接采用对方换回来的那一对即可。
+ */
+const rotateOrAdoptTokens = async (session: AuthSession, attemptedRefreshToken: string) => {
+  const persisted = session.readPersisted()
+
+  if (
+    persisted.refreshToken &&
+    persisted.refreshToken !== attemptedRefreshToken &&
+    persisted.accessToken
+  ) {
+    session.write({
+      accessToken: persisted.accessToken,
+      refreshToken: persisted.refreshToken
+    })
+
+    return persisted.accessToken
+  }
+
+  // 浏览器里那一份优先：它比进锁前读到的值更新
+  const refreshToken = persisted.refreshToken || attemptedRefreshToken
+
+  try {
+    const response = await refreshApi(refreshToken)
     session.write(response.data)
     return response.data.accessToken
   } catch (error) {
@@ -111,6 +175,23 @@ const refreshAccessToken = async () => {
     }
     throw error
   }
+}
+
+const refreshAccessToken = async (): Promise<string | null> => {
+  const session = useAuthSession()
+
+  if (!session.refreshToken.value) {
+    session.clear()
+    return null
+  }
+
+  const attemptedRefreshToken = session.refreshToken.value
+  // 锁的回调在 await 之后才执行，Nuxt 上下文已经丢了；
+  // createAuthApiClient 要读 runtimeConfig，因此把上下文显式带进去。
+  const nuxtApp = tryUseNuxtApp()
+  const run = () => rotateOrAdoptTokens(session, attemptedRefreshToken)
+
+  return withCrossTabRefreshLock(() => (nuxtApp ? nuxtApp.runWithContext(run) : run()))
 }
 
 export const refreshAccessTokenOnce = () => {

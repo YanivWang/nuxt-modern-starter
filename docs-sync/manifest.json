@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-31T01:32:22.693Z",
+  "generatedAt": "2026-09-02T00:58:26.101Z",
   "findCommand": "find app server config docker nuxt.config.ts vitest.config.ts -type f \\( -name \"*.ts\" -o -name \"*.vue\" -o -name \"*.js\" -o -name \"*.scss\" -o -name \"*.yaml\" -o -name \"*.conf\" \\) 2>/dev/null | sort",
-  "sourceFileCount": 147,
+  "sourceFileCount": 148,
   "docFileCount": 33,
   "sourceFiles": [
     {
@@ -993,6 +993,13 @@
     },
     {
       "path": "server/routes/sitemap.xml.ts",
+      "type": "ts",
+      "module": "server",
+      "batch": 7,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "server/utils/client-ip.ts",
       "type": "ts",
       "module": "server",
       "batch": 7,

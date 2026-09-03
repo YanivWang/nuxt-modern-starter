@@ -37,9 +37,10 @@
     },
     "validation": {
       "usernameRequired": "Introduza um nome de utilizador",
+      "usernameLength": "O nome de utilizador deve ter entre {min} e {max} caracteres",
       "passwordRequired": "Introduza uma palavra-passe",
       "confirmPasswordRequired": "Confirme a palavra-passe",
-      "passwordMin": "A palavra-passe deve ter pelo menos 6 caracteres",
+      "passwordMin": "A palavra-passe deve ter pelo menos {min} caracteres",
       "passwordMismatch": "As duas palavras-passe não coincidem"
     },
     "errors": {
