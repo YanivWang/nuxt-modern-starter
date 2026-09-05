@@ -88,7 +88,7 @@ Nuxt 页面文件（`app/pages/*`）只做：
 | UI     | Ant Design Vue 4                                                                                                                             |
 | 样式   | SCSS 分层 token（`tokens/` + `patterns/` + `--app-*`）                                                                                       |
 | i18n   | vue-i18n（自建路由，不用 @nuxtjs/i18n）                                                                                                      |
-| 编辑器 | @yanivjs/yaniv-editor 0.3.0（`mode: edit`, `preset: full`）                                                                                  |
+| 编辑器 | @yanivjs/yaniv-editor 0.3.2（`mode: edit`, `preset: full`）                                                                                  |
 | 测试   | Vitest 4.1.11 + @nuxt/test-utils 4.0.3；`vitest.config.ts` 用 `defineVitestConfig` + `include: tests/**/*.test.ts`（55 测试文件 / 329 用例） |
 | 部署   | Nitro node-server + Docker + Nginx 样例                                                                                                      |
 
