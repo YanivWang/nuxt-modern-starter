@@ -15,8 +15,8 @@ importers:
         specifier: ^0.11.3
         version: 0.11.3(magicast@0.5.3)(pinia@3.0.4(typescript@5.9.3)(vue@3.5.39(typescript@5.9.3)))
       '@yanivjs/yaniv-editor':
-        specifier: ^0.3.1
-        version: 0.3.1(1710c9f1945458618940f5f1bdc4bf47)
+        specifier: ^0.3.2
+        version: 0.3.2(1710c9f1945458618940f5f1bdc4bf47)
       ant-design-vue:
         specifier: ^4.2.6
         version: 4.2.6(vue@3.5.39(typescript@5.9.3))
@@ -2862,8 +2862,8 @@ packages:
     resolution: {integrity: sha512-KRYzxepc14G/CEpEGc3Yn+JKaAeT63smlDr+vjB8jRfgTBBI9wRj/nkQEO+ucV8p8I9bfKLWp37uHgFrbntPvw==}
     engines: {node: '>=10.0.0'}
 
-  '@yanivjs/yaniv-editor@0.3.1':
-    resolution: {integrity: sha512-MYCBnDDmdGzc258gJxMEx0p25RPXcQ5z3979kbsT514/mKKCa/Ais96Aqj3xsaSbMdy9lt2KMFL0OFOkQTo4ag==}
+  '@yanivjs/yaniv-editor@0.3.2':
+    resolution: {integrity: sha512-y+Y1BhdpV54podtq1Nsq6Q1HHac9ZwipbyoeVFgVurfdcGnKdIJYKkfvXAZhNj8yIqDX/O5MgZK7egkCBNmwmQ==}
     engines: {node: '>=22.12.0', pnpm: '>=11.0.0'}
     peerDependencies:
       '@ant-design/icons-vue': ^7.0.1
@@ -9301,7 +9301,7 @@ snapshots:
   '@xmldom/xmldom@0.8.13':
     optional: true
 
-  '@yanivjs/yaniv-editor@0.3.1(1710c9f1945458618940f5f1bdc4bf47)':
+  '@yanivjs/yaniv-editor@0.3.2(1710c9f1945458618940f5f1bdc4bf47)':
     dependencies:
       '@ant-design/icons-vue': 7.0.1(vue@3.5.39(typescript@5.9.3))
       '@tiptap/core': 3.27.1(@tiptap/pm@3.27.1)
