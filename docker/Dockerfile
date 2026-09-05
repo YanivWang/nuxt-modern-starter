@@ -16,7 +16,7 @@
 #
 # 【边界与注意】
 #   HUSKY=0 禁用 git hooks；BUILD_ENV 默认 prod 对应 pnpm run build:prod。
-ARG PNPM_VERSION=11.5.2
+ARG PNPM_VERSION=11.25.0
 ARG NODE_IMAGE=node:22.22.3-alpine
 
 FROM ${NODE_IMAGE} AS base

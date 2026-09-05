@@ -2,10 +2,10 @@
   "name": "nuxt-modern-starter",
   "type": "module",
   "private": true,
-  "packageManager": "pnpm@11.5.2",
+  "packageManager": "pnpm@11.25.0",
   "engines": {
     "node": ">=22.22.3 <23",
-    "pnpm": ">=11.5.2 <12"
+    "pnpm": ">=11.25.0 <12"
   },
   "scripts": {
     "build": "nuxt build --dotenv .env.prod",

@@ -101,7 +101,7 @@ const docChanges = {
 const alignmentNotes = {
   1: [
     '「API 地址未写默认值」→ `nuxt.config.ts` `runtimeConfig.public.apiBase` = `http://localhost:2027/api`，`siteUrl` = `http://localhost:3000`',
-    '「Node/pnpm 版本未标明 engines」→ `package.json` `engines` 要求 Node 22.22.3、pnpm 11.5.2',
+    '「Node/pnpm 版本未标明 engines」→ `package.json` `engines` 要求 Node 22.22.3、pnpm 11.25.0',
     '「产品区 CSR 仅口头描述」→ `config/routes.ts` `productRoutePatterns` + `csrRouteRules` 写入 routing/overview 文档'
   ],
   2: [

@@ -19,13 +19,13 @@ The quick-start target is `pnpm install && pnpm dev`: a new project should be ab
 | Tool                  | Version |
 | --------------------- | ------- |
 | Node                  | 22.22.3 |
-| pnpm                  | 11.5.2  |
+| pnpm                  | 11.25.0 |
 | Nuxt                  | 4.4.8   |
 | vue-i18n              | 11.4.6  |
 | @pinia/nuxt           | 0.11.3  |
 | ant-design-vue        | 4.2.6   |
 | @ant-design-vue/nuxt  | 1.4.6   |
-| @yanivjs/yaniv-editor | 0.3.0   |
+| @yanivjs/yaniv-editor | 0.3.2   |
 | Vitest                | 4.1.11  |
 
 When upgrading dependencies, update this section and run at least:

@@ -1,8 +1,8 @@
 # Batch 3 Report: middleware + plugins + composables + utils
 
-Generated: 2026-08-25（深度审阅 + doc-claims 证据）
+Generated: 2026-09-05（深度审阅 + doc-claims 证据）
 
-## 已读文件（19/19）
+## 已读文件（22/22）
 
 - app/composables/useAuth.ts
 - app/composables/useCoarsePointer.ts
@@ -16,12 +16,15 @@ Generated: 2026-08-25（深度审阅 + doc-claims 证据）
 - app/plugins/analytics.client.ts
 - app/plugins/attribution.client.ts
 - app/plugins/auth.client.ts
+- app/plugins/error-reporter.client.ts
 - app/plugins/i18n.ts
 - app/utils/antdIcon.ts
 - app/utils/attribution-params.ts
 - app/utils/auth-session.ts
+- app/utils/error-report.ts
 - app/utils/formatDate.ts
 - app/utils/load-script.ts
+- app/utils/navigate-safely.ts
 - app/utils/safe-redirect.ts
 
 ## 代码-文档对齐说明
@@ -45,20 +48,20 @@ Generated: 2026-08-25（深度审阅 + doc-claims 证据）
 
 ## doc-claims 证据（本批源码关联 12 条）
 
-| claim        | 文档                                   | evidenceHint                                                                                                                               |
-| ------------ | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| routing-002  | `docs-site/architecture/routing.md`    | config/routes.ts:11 (localizedProductPathToCanonical); app/middleware/locale.global.ts:4 (resolveLocaleRouteDecision)                      |
-| auth-005     | `docs-site/architecture/auth.md`       | app/middleware/auth.ts:11 (buildAuthLoginRedirect); app/middleware/auth.ts:4 (resolveAuthMiddlewareDecision)                               |
-| auth-006     | `docs-site/architecture/auth.md`       | app/middleware/auth.ts:11 (isAuthorized)                                                                                                   |
-| seo-002      | `docs-site/architecture/seo.md`        | app/composables/usePageSeo.ts:4 (buildPageSeoLinks); app/composables/usePageSeo.ts:4 (noindex)                                             |
-| overview-002 | `docs-site/architecture/overview.md`   | server/middleware/product-canonical.ts:4 (localizedProductPathToCanonical); app/middleware/locale.global.ts:4 (resolveLocaleRouteDecision) |
-| addpage-002  | `docs-site/development/add-page.md`    | app/composables/useLocalePath.ts:3 (localePath); app/composables/useLocalePath.ts:13 (isProductPath)                                       |
-| addseo-001   | `docs-site/development/add-seo.md`     | app/composables/usePageSeo.ts:10 (usePageSeo)                                                                                              |
-| addseo-002   | `docs-site/development/add-seo.md`     | app/composables/usePageSeo.ts:10 (buildPageSeoScripts)                                                                                     |
-| conv-002     | `docs-site/development/conventions.md` | app/utils/safe-redirect.ts:4 (resolveSafeRedirectPath)                                                                                     |
-| env-001      | `docs-site/deployment/env.md`          | app/utils/auth-session.ts:4 (tokenCookieOptions); app/utils/auth-session.ts:4 (appEnv)                                                     |
-| pinia-002    | `docs-site/tech-stack/pinia.md`        | app/composables/useAuth.ts:3 (ensureSession)                                                                                               |
-| styles-002   | `docs-site/tech-stack/styles.md`       | config/theme.ts:149 (applyThemeCssVariables)                                                                                               |
+| claim        | 文档                                   | evidenceHint                                                                                                                         |
+| ------------ | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| routing-002  | `docs-site/architecture/routing.md`    | config/routes.ts:12 (localizedProductPathToCanonical); app/middleware/locale.global.ts:4 (resolveLocaleRouteDecision)                |
+| auth-005     | `docs-site/architecture/auth.md`       | app/middleware/auth.ts:11 (buildAuthLoginRedirect); app/middleware/auth.ts:4 (resolveAuthMiddlewareDecision)                         |
+| auth-006     | `docs-site/architecture/auth.md`       | app/middleware/auth.ts:11 (isAuthorized)                                                                                             |
+| seo-002      | `docs-site/architecture/seo.md`        | app/composables/usePageSeo.ts:4 (buildPageSeoLinks); app/composables/usePageSeo.ts:4 (noindex)                                       |
+| overview-002 | `docs-site/architecture/overview.md`   | app/middleware/locale.global.ts:16 (localizedProductPathToCanonical); app/middleware/locale.global.ts:4 (resolveLocaleRouteDecision) |
+| addpage-002  | `docs-site/development/add-page.md`    | app/composables/useLocalePath.ts:3 (localePath); app/composables/useLocalePath.ts:13 (isProductPath)                                 |
+| addseo-001   | `docs-site/development/add-seo.md`     | app/composables/usePageSeo.ts:10 (usePageSeo)                                                                                        |
+| addseo-002   | `docs-site/development/add-seo.md`     | app/composables/usePageSeo.ts:10 (buildPageSeoScripts)                                                                               |
+| conv-002     | `docs-site/development/conventions.md` | app/utils/safe-redirect.ts:4 (resolveSafeRedirectPath)                                                                               |
+| env-001      | `docs-site/deployment/env.md`          | app/utils/auth-session.ts:52 (tokenCookieOptions); app/utils/auth-session.ts:49 (requiresSecureCookie)                               |
+| pinia-002    | `docs-site/tech-stack/pinia.md`        | app/composables/useAuth.ts:3 (ensureSession)                                                                                         |
+| styles-002   | `docs-site/tech-stack/styles.md`       | config/theme.ts:149 (applyThemeCssVariables)                                                                                         |
 
 ## 代码-文档不一致项
 
@@ -66,6 +69,6 @@ Generated: 2026-08-25（深度审阅 + doc-claims 证据）
 
 ## 完成标准
 
-- [x] 已读文件数量 = 19
+- [x] 已读文件数量 = 22
 - [x] doc-claims 关联符号可在源码定位（见上表 evidenceHint）
 - [x] `pnpm docs:sync:check --batch 3`

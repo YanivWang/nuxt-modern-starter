@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-03T09:47:48.879Z",
+  "generatedAt": "2026-09-05T08:15:00.856Z",
   "docFileCount": 33,
   "referenceCount": 1326,
   "pathAllowlist": [
@@ -3440,15 +3440,15 @@
       "docFile": "docs-site/guide/getting-started.md",
       "line": 8,
       "type": "version",
-      "value": "pnpm=11.5.2",
-      "context": "| pnpm | 11.5.2  |"
+      "value": "pnpm=11.25.0",
+      "context": "| pnpm | 11.25.0 |"
     },
     {
       "docFile": "docs-site/guide/getting-started.md",
       "line": 10,
       "type": "file-path",
       "value": "package.json",
-      "context": "`package.json` `engines` 要求 Node **>=22.22.3 <23**、pnpm **>=11.5.2 <12**；上表是验证过的版本。"
+      "context": "`package.json` `engines` 要求 Node **>=22.22.3 <23**、pnpm **>=11.25.0 <12**；上表是验证过的版本。"
     },
     {
       "docFile": "docs-site/guide/getting-started.md",
@@ -5043,8 +5043,8 @@
       "docFile": "docs-site/tech-stack/overview.md",
       "line": 13,
       "type": "version",
-      "value": "@yanivjs/yaniv-editor=0.3.0",
-      "context": "| `@yanivjs/yaniv-editor`                       | 0.3.0 | PPT/幻灯片编辑器（`mode: edit`, `preset: full`） |"
+      "value": "@yanivjs/yaniv-editor=0.3.2",
+      "context": "| `@yanivjs/yaniv-editor`                       | 0.3.2 | PPT/幻灯片编辑器（`mode: edit`, `preset: full`） |"
     },
     {
       "docFile": "docs-site/tech-stack/overview.md",
@@ -9131,8 +9131,8 @@
       "docFile": "README.md",
       "line": 22,
       "type": "version",
-      "value": "pnpm=11.5.2",
-      "context": "| pnpm                  | 11.5.2  |"
+      "value": "pnpm=11.25.0",
+      "context": "| pnpm                  | 11.25.0 |"
     },
     {
       "docFile": "README.md",
@@ -9173,8 +9173,8 @@
       "docFile": "README.md",
       "line": 28,
       "type": "version",
-      "value": "@yanivjs/yaniv-editor=0.3.0",
-      "context": "| @yanivjs/yaniv-editor | 0.3.0   |"
+      "value": "@yanivjs/yaniv-editor=0.3.2",
+      "context": "| @yanivjs/yaniv-editor | 0.3.2   |"
     },
     {
       "docFile": "README.md",

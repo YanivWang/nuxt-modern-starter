@@ -1,13 +1,19 @@
-# Batch 8 Report: docker + vitest.config + doc-review
+# Batch 8 Report: docker + 构建脚本 + 测试配置 + doc-review
 
-Generated: 2026-08-25（深度审阅 + doc-claims 证据）
+Generated: 2026-09-05（深度审阅 + doc-claims 证据）
 
-## 已读文件（5/5）
+## 已读文件（11/11）
 
 - docker/docker-compose.base.yaml
 - docker/docker-compose.dev.yaml
 - docker/docker-compose.yaml
 - docker/nginx/gateway.docker.conf
+- playwright.config.ts
+- scripts/generate-theme-scss.mjs
+- scripts/i18n-manager-lib.mjs
+- scripts/i18n-manager.mjs
+- scripts/run-e2e.mjs
+- scripts/sync-api-contract.mjs
 - vitest.config.ts
 
 ## 代码-文档对齐说明
@@ -32,14 +38,15 @@ Generated: 2026-08-25（深度审阅 + doc-claims 证据）
 - docker-compose.yaml: gateway 等 nuxt healthy 后暴露
 - README 补充 docs:sync:check / docs:sync:enrich
 
-## doc-claims 证据（本批源码关联 4 条）
+## doc-claims 证据（本批源码关联 5 条）
 
-| claim        | 文档                               | evidenceHint                                                              |
-| ------------ | ---------------------------------- | ------------------------------------------------------------------------- |
-| guide-ov-001 | `docs-site/guide/overview.md`      | vitest.config.ts:19 (include)                                             |
-| test-001     | `docs-site/development/testing.md` | vitest.config.ts:9 (defineVitestConfig); vitest.config.ts:3 (environment) |
-| nginx-001    | `docs-site/deployment/nginx.md`    | docker/nginx/gateway.docker.conf:2 (/_nuxt/)                              |
-| nginx-002    | `docs-site/deployment/nginx.md`    | docker/nginx/gateway.docker.conf:8 (proxy_pass)                           |
+| claim        | 文档                               | evidenceHint                                                                |
+| ------------ | ---------------------------------- | --------------------------------------------------------------------------- |
+| guide-ov-001 | `docs-site/guide/overview.md`      | vitest.config.ts:4 (include)                                                |
+| test-001     | `docs-site/development/testing.md` | vitest.config.ts:10 (defineVitestConfig); vitest.config.ts:18 (environment) |
+| nginx-001    | `docs-site/deployment/nginx.md`    | docker/nginx/gateway.docker.conf:2 (/_nuxt/)                                |
+| nginx-002    | `docs-site/deployment/nginx.md`    | docker/nginx/gateway.docker.conf:8 (proxy_pass)                             |
+| styles-001   | `docs-site/tech-stack/styles.md`   | package.json:37 (generate:theme)                                            |
 
 ## 代码-文档不一致项
 
@@ -47,6 +54,6 @@ Generated: 2026-08-25（深度审阅 + doc-claims 证据）
 
 ## 完成标准
 
-- [x] 已读文件数量 = 5
+- [x] 已读文件数量 = 11
 - [x] doc-claims 关联符号可在源码定位（见上表 evidenceHint）
 - [x] `pnpm docs:sync:check --batch 8`

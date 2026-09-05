@@ -16,7 +16,7 @@
 #
 # 【边界与注意】
 #   不包含生产 build；与 Dockerfile 多阶段分离。
-ARG PNPM_VERSION=11.5.2
+ARG PNPM_VERSION=11.25.0
 ARG NODE_IMAGE=node:22.22.3-alpine
 FROM ${NODE_IMAGE}
 

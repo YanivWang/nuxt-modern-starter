@@ -1,14 +1,15 @@
 # Batch 4 Report: stores + layouts + components + app-root
 
-Generated: 2026-08-25（深度审阅 + doc-claims 证据）
+Generated: 2026-09-05（深度审阅 + doc-claims 证据）
 
-## 已读文件（23/23）
+## 已读文件（24/24）
 
 - app/app.vue
 - app/components/base/AppContainer.vue
 - app/components/base/BaseButton.vue
 - app/components/base/BaseLogo.vue
 - app/components/base/BasePicture.vue
+- app/components/base/NewsArticleList.vue
 - app/components/base/PageContainer.vue
 - app/components/layout/AppFooter.vue
 - app/components/layout/AppHeader.vue
@@ -50,7 +51,7 @@ Generated: 2026-08-25（深度审阅 + doc-claims 证据）
 
 | claim     | 文档                            | evidenceHint                                   |
 | --------- | ------------------------------- | ---------------------------------------------- |
-| pinia-001 | `docs-site/tech-stack/pinia.md` | app/stores/auth.ts:35 (clearAttributionParams) |
+| pinia-001 | `docs-site/tech-stack/pinia.md` | app/stores/auth.ts:40 (clearAttributionParams) |
 
 ## 代码-文档不一致项
 
@@ -58,6 +59,6 @@ Generated: 2026-08-25（深度审阅 + doc-claims 证据）
 
 ## 完成标准
 
-- [x] 已读文件数量 = 23
+- [x] 已读文件数量 = 24
 - [x] doc-claims 关联符号可在源码定位（见上表 evidenceHint）
 - [x] `pnpm docs:sync:check --batch 4`

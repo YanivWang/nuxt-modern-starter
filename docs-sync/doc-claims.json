@@ -391,7 +391,7 @@
     {
       "id": "guide-gs-001",
       "docFile": "docs-site/guide/getting-started.md",
-      "claim": "Node 22.22.3、pnpm 11.5.2 为 engines 要求",
+      "claim": "Node 22.22.3、pnpm 11.25.0 为 engines 要求",
       "symbols": ["engines"],
       "sourceFiles": ["package.json"],
       "evidenceHint": "package.json:6 (engines)"
@@ -503,7 +503,7 @@
     {
       "id": "scripts-001",
       "docFile": "docs-site/reference/scripts.md",
-      "claim": "engines node 22.22.3 pnpm 11.5.2",
+      "claim": "engines node 22.22.3 pnpm 11.25.0",
       "symbols": ["engines"],
       "sourceFiles": ["package.json"],
       "evidenceHint": "package.json:6 (engines)"

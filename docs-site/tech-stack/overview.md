@@ -10,7 +10,7 @@
 | [Pinia](https://pinia.vuejs.org/)             | 3.x   | 客户端状态                                       |
 | [vue-i18n](https://vue-i18n.intlify.dev/)     | 11.x  | 国际化                                           |
 | [Ant Design Vue](https://antdv.com/)          | 4.2.x | 组件库                                           |
-| `@yanivjs/yaniv-editor`                       | 0.3.0 | PPT/幻灯片编辑器（`mode: edit`, `preset: full`） |
+| `@yanivjs/yaniv-editor`                       | 0.3.2 | PPT/幻灯片编辑器（`mode: edit`, `preset: full`） |
 
 ## 开发工具链
 
