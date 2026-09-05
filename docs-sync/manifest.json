@@ -1,6 +1,6 @@
 {
   "findCommand": "find app server config docker scripts nuxt.config.ts vitest.config.ts playwright.config.ts -type f \\( -name \"*.ts\" -o -name \"*.vue\" -o -name \"*.js\" -o -name \"*.mjs\" -o -name \"*.scss\" -o -name \"*.yaml\" -o -name \"*.conf\" \\) 2>/dev/null | sort",
-  "sourceFileCount": 156,
+  "sourceFileCount": 157,
   "docFileCount": 33,
   "sourceFiles": [
     {
@@ -952,6 +952,13 @@
       "path": "playwright.config.ts",
       "type": "ts",
       "module": "app-root",
+      "batch": 8,
+      "hasHeaderComment": true
+    },
+    {
+      "path": "scripts/check-private-registry.mjs",
+      "type": "mjs",
+      "module": "scripts",
       "batch": 8,
       "hasHeaderComment": true
     },

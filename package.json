@@ -41,8 +41,9 @@
     "i18n:diff": "node scripts/i18n-manager.mjs diff",
     "i18n:scan": "node scripts/i18n-manager.mjs scan",
     "i18n:unused": "node scripts/i18n-manager.mjs unused",
+    "check:registry": "node scripts/check-private-registry.mjs",
     "lint": "eslint . --max-warnings 0",
-    "postinstall": "nuxt prepare",
+    "postinstall": "nuxt prepare && node scripts/check-private-registry.mjs",
     "prebuild": "node scripts/generate-theme-scss.mjs",
     "prebuild:dev": "node scripts/generate-theme-scss.mjs",
     "prebuild:e2e": "node scripts/generate-theme-scss.mjs",
@@ -50,7 +51,7 @@
     "prebuild:test": "node scripts/generate-theme-scss.mjs",
     "prepare": "husky",
     "preview": "nuxt preview",
-    "quality": "corepack pnpm lint && corepack pnpm format:check && corepack pnpm stylelint && corepack pnpm typecheck && corepack pnpm i18n:check && corepack pnpm depcruise && corepack pnpm contract:check && corepack pnpm docs:sync:check && corepack pnpm build && corepack pnpm test",
+    "quality": "corepack pnpm lint && corepack pnpm check:registry && corepack pnpm format:check && corepack pnpm stylelint && corepack pnpm typecheck && corepack pnpm i18n:check && corepack pnpm depcruise && corepack pnpm contract:check && corepack pnpm docs:sync:check && corepack pnpm build && corepack pnpm test",
     "stylelint": "stylelint \"**/*.{css,scss,vue}\"",
     "test": "vitest run",
     "test:component": "vitest run tests/component tests/nuxt",
@@ -109,5 +110,10 @@
     "vitepress": "^1.6.3",
     "vitest": "^4.1.11",
     "vue-tsc": "^3.1.8"
+  },
+  "privateRegistry": {
+    "allow": [
+      "@yanivjs/yaniv-editor@0.3.2"
+    ]
   }
 }

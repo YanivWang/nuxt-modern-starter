@@ -196,6 +196,7 @@
         "docker/docker-compose.yaml",
         "docker/nginx/gateway.docker.conf",
         "playwright.config.ts",
+        "scripts/check-private-registry.mjs",
         "scripts/generate-theme-scss.mjs",
         "scripts/i18n-manager-lib.mjs",
         "scripts/i18n-manager.mjs",
@@ -205,5 +206,5 @@
       ]
     }
   ],
-  "totalFiles": 156
+  "totalFiles": 157
 }
